@@ -1,0 +1,19 @@
+targets:
+  $default:
+    builders:
+      tailwind_elements|tailwind_config_builder:
+        generate_for:
+          - test/tailwind_config_builder_test.dart
+      source_gen|combining_builder:
+        options:
+          ignore_for_file:
+            - type=lint
+
+builders:
+  tailwind_config_builder:
+    import: "package:tailwind_elements/config/builder/builder.dart"
+    builder_factories: [ "tailwindConfigBuilder" ]
+    build_extensions: { ".dart": [ ".g.dart" ] }
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: [ "source_gen|combining_builder" ]
