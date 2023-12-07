@@ -3,7 +3,7 @@ targets:
     builders:
       tailwind_elements|tailwind_config_builder:
         generate_for:
-          - test/tailwind_config_builder_test.dart
+          - lib/tailwind_config.dart
       source_gen|combining_builder:
         options:
           ignore_for_file:

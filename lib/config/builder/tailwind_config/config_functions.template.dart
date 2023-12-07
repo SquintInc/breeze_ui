@@ -3,22 +3,52 @@
  * the next comment is for IDE completion purposes only, and will be stripped
  * during the build_runner process.
  */
+import 'dart:convert';
 import 'dart:core';
 
-import 'package:tailwind_elements/config/options/theme/units.dart';
+import 'package:tailwind_elements/config/builder/tailwind_config/tailwind_config.dart';
 
-const Map<String, dynamic> _defaultConfigFull = {};
-const Map<String, dynamic> _config = {};
+const Map<String, dynamic> _fullConfig = {};
+const Map<String, dynamic> _localConfig = {};
+const Map<String, dynamic> _colorsConfig = {};
 
 /* WARNING: build_runner will remove everything before this line */
 
-/// Generated TailwindCSS config class.
-///
-/// Contains methods to help read TailwindCSS options.
-class TailwindConfig {
-  final Map<dynamic, dynamic> _theme;
+/// Generated [TailwindConfig] class.
+class GeneratedTailwindConfig {
+  final Map<String, dynamic> _theme;
+  final Map<String, dynamic> _colors;
 
-  const TailwindConfig._(this._theme);
+  const GeneratedTailwindConfig._(this._theme, this._colors);
+
+  factory GeneratedTailwindConfig(
+      final Map<String, dynamic> fullConfig,
+      final Map<String, dynamic> localConfig,
+      final Map<String, dynamic> colorsConfig,
+      ) {
+    final Map<dynamic, dynamic> configThemeCopy =
+    localConfig.isNotEmpty ? {...localConfig['theme']} : {};
+    final Map<dynamic, dynamic>? extend = configThemeCopy.remove('extend');
+    final Map<dynamic, dynamic> combinedTheme = {
+      ...fullConfig['theme'],
+      ...configThemeCopy,
+    };
+    if (extend != null) {
+      for (final entry in extend.entries) {
+        final String key = entry.key;
+        final Map<String, dynamic> toAdd = entry.value;
+        (combinedTheme[key] as Map<String, dynamic>).addAll(toAdd);
+      }
+    }
+    return GeneratedTailwindConfig._(
+      Map.unmodifiable(combinedTheme),
+      colorsConfig,
+    );
+  }
+
+  dynamic _colorsGetter(final String colorKey) {
+    return _colors[colorKey];
+  }
 
   /// Getter function to retrieve a value from tailwind.config.js given a JSON key.
   ///
@@ -26,13 +56,17 @@ class TailwindConfig {
   ///
   /// e.g. themeKey = 'colors.blue.500' => theme['colors']['blue']['500']
   dynamic _themeValueGetter(
-    final String themeKey, [
-    final String? defaultValue,
-  ]) {
+      final String themeKey, [
+        final String? defaultValue,
+      ]) {
+    if (themeKey == 'colors') {
+      return _colors;
+    }
     final List<String> keys = themeKey.split('.');
-    dynamic curr = _theme;
+    dynamic curr = keys[0] == 'colors' ? _colors : _theme;
     for (final key in keys) {
       curr = curr[key];
+      if (curr == null) break;
     }
     if (curr == null && defaultValue != null) {
       return defaultValue;
@@ -48,8 +82,8 @@ class TailwindConfig {
   /// Takes in the breakpoints map and returns the same map with all keys prefixed
   /// with 'screen-'.
   Map<String, dynamic> _breakpointGetter(
-    final Map<String, dynamic> breakpoints,
-  ) =>
+      final Map<String, dynamic> breakpoints,
+      ) =>
       breakpoints
           .map((final key, final value) => MapEntry('screen-$key', value));
 
@@ -62,58 +96,28 @@ class TailwindConfig {
   /// Note that this method will return all key-value pairs, including CSS units
   /// that are not usable by tailwind_elements. To get only usable CSS units,
   /// use [getUsable].
-  Map<String, TwUnit>? get(final String key) {
-    final dynamic entriesOrFunc = _theme[key];
+  Map<dynamic, dynamic>? get(final String key) {
+    dynamic entriesOrFunc = _theme[key];
     if (entriesOrFunc == null) return null;
-    final Map<String, dynamic> entries = entriesOrFunc is Function
-        ? entriesOrFunc(
-            theme: _themeValueGetter,
-            breakpoints: _breakpointGetter,
-          )
-        : entriesOrFunc;
-
-    return entries
-        .map((final key, final value) => MapEntry(key, parseUnit(value)));
+    while (entriesOrFunc is Function) {
+      entriesOrFunc = entriesOrFunc(
+        theme: _themeValueGetter,
+        breakpoints: _breakpointGetter,
+        colors: _colorsGetter,
+      );
+    }
+    return entriesOrFunc;
   }
 
-  /// Gets a filtered mapping from the overall 'theme' object using the provided
-  /// string key. Tries to return a mapping of key-value pairs, where the value
-  /// is a CSS unit ([TwUnit]) parsed via [parseUnit]. This method filters out
-  /// any CSS units that are not usable by tailwind_elements.
-  ///
-  /// Returns null if the key is not found in the 'theme' object.
-  Map<String, TwUnit>? getUsable(final String key) {
-    final entries = get(key);
-    if (entries == null) return null;
-    return Map.unmodifiable(
-      Map.fromEntries(
-        entries.entries
-            .where((final entry) => entry.value.type != UnitType.ignored),
+  String toJson() {
+    return jsonEncode(
+      _theme.map(
+            (final String key, final dynamic value) => MapEntry(key, get(key)),
       ),
     );
   }
 }
 
-/// Combines the 'theme' objects from the full TailwindCSS config and the local
-/// TailwindCSS config. Handles local config overrides, as well as the 'extend'
-/// option in the local config.
-Map<dynamic, dynamic> _combinedTheme() {
-  final Map<dynamic, dynamic> configThemeCopy =
-      _config.isNotEmpty ? {..._config['theme']} : {};
-  final Map<dynamic, dynamic>? extend = configThemeCopy.remove('extend');
-  final Map<dynamic, dynamic> combinedTheme = {
-    ..._defaultConfigFull['theme'],
-    ...configThemeCopy,
-  };
-  if (extend != null) {
-    for (final entry in extend.entries) {
-      final String key = entry.key;
-      final Map<String, dynamic> toAdd = entry.value;
-      (combinedTheme[key] as Map<String, dynamic>).addAll(toAdd);
-    }
-  }
-  return Map.unmodifiable(combinedTheme);
-}
-
 /// Top-level generated [TailwindConfig] instance.
-final TailwindConfig tailwindConfig = TailwindConfig._(_combinedTheme());
+final GeneratedTailwindConfig tailwindConfig =
+GeneratedTailwindConfig(_fullConfig, _localConfig, _colorsConfig);
