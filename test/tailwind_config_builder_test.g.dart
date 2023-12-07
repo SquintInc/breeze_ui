@@ -5,7 +5,7 @@
 part of 'tailwind_config_builder_test.dart';
 
 // **************************************************************************
-// Generator: TailwindConfigBuilder
+// Generator: TailwindFullConfigBuilder
 // **************************************************************************
 
 typedef _ThemeValueGetter = dynamic Function(String, [String]);
@@ -1273,12 +1273,23 @@ final Map<String, dynamic> _defaultConfigFull = {
   'plugins': [],
 };
 
+// **************************************************************************
+// Generator: TailwindLocalConfigBuilder
+// **************************************************************************
+
 final Map<String, dynamic> _config = {};
 
+// **************************************************************************
+// Generator: TailwindConfigFunctionsBuilder
+// **************************************************************************
+
+/// Generated TailwindCSS config class.
+///
+/// Contains methods to help read TailwindCSS options.
 class TailwindConfig {
   final Map<dynamic, dynamic> _theme;
 
-  const TailwindConfig(this._theme);
+  const TailwindConfig._(this._theme);
 
   /// Getter function to retrieve a value from tailwind.config.js given a JSON key.
   ///
@@ -1313,6 +1324,15 @@ class TailwindConfig {
       breakpoints
           .map((final key, final value) => MapEntry('screen-$key', value));
 
+  /// Gets a mapping from the overall 'theme' object using the provided string
+  /// key. Tries to return a mapping of key-value pairs, where the value is a
+  /// CSS unit ([TwUnit]) parsed via [parseUnit].
+  ///
+  /// Returns null if the key is not found in the 'theme' object.
+  ///
+  /// Note that this method will return all key-value pairs, including CSS units
+  /// that are not usable by tailwind_elements. To get only usable CSS units,
+  /// use [getUsable].
   Map<String, TwUnit>? get(final String key) {
     final dynamic entriesOrFunc = _theme[key];
     if (entriesOrFunc == null) return null;
@@ -1327,6 +1347,12 @@ class TailwindConfig {
         .map((final key, final value) => MapEntry(key, parseUnit(value)));
   }
 
+  /// Gets a filtered mapping from the overall 'theme' object using the provided
+  /// string key. Tries to return a mapping of key-value pairs, where the value
+  /// is a CSS unit ([TwUnit]) parsed via [parseUnit]. This method filters out
+  /// any CSS units that are not usable by tailwind_elements.
+  ///
+  /// Returns null if the key is not found in the 'theme' object.
   Map<String, TwUnit>? getUsable(final String key) {
     final entries = get(key);
     if (entries == null) return null;
@@ -1339,194 +1365,9 @@ class TailwindConfig {
   }
 }
 
-enum Category {
-  theme,
-  aria,
-  backgrounds,
-  borders,
-  effects,
-  extend,
-  filters,
-  flexboxAndGrid,
-  interactivity,
-  layout,
-  sizing,
-  spacing,
-  svg,
-  tables,
-  transforms,
-  transitionsAndAnimations,
-  typography,
-}
-
-const Map<Category, Set<String>> _keysByCategory = {
-  Category.theme: {
-    'colors',
-    'screens',
-    'spacing',
-  },
-  Category.extend: {
-    'extend',
-  },
-  Category.aria: {
-    'aria',
-    'supports',
-    'data',
-  },
-  Category.backgrounds: {
-    'backgroundColor',
-    'backgroundImage',
-    'backgroundOpacity',
-    'backgroundPosition',
-    'backgroundSize',
-    'gradientColorStops',
-    'gradientColorStopPositions',
-  },
-  Category.borders: {
-    'borderColor',
-    'borderOpacity',
-    'borderRadius',
-    'borderSpacing',
-    'borderWidth',
-    'divideColor',
-    'divideOpacity',
-    'divideWidth',
-    'outlineColor',
-    'outlineOffset',
-    'outlineWidth',
-    'ringColor',
-    'ringOffsetColor',
-    'ringOffsetWidth',
-    'ringOpacity',
-    'ringWidth',
-  },
-  Category.effects: {
-    'boxShadow',
-    'boxShadowColor',
-    'opacity',
-  },
-  Category.filters: {
-    'backdropBlur',
-    'backdropBrightness',
-    'backdropContrast',
-    'backdropGrayscale',
-    'backdropHueRotate',
-    'backdropInvert',
-    'backdropOpacity',
-    'backdropSaturate',
-    'backdropSepia',
-    'blur',
-    'brightness',
-    'contrast',
-    'dropShadow',
-    'grayscale',
-    'hueRotate',
-    'invert',
-    'saturate',
-    'sepia',
-  },
-  Category.flexboxAndGrid: {
-    'flex',
-    'flexBasis',
-    'flexGrow',
-    'flexShrink',
-    'gap',
-    'gridAutoColumns',
-    'gridAutoRows',
-    'gridColumn',
-    'gridColumnEnd',
-    'gridColumnStart',
-    'gridRow',
-    'gridRowEnd',
-    'gridRowStart',
-    'gridTemplateColumns',
-    'gridTemplateRows',
-    'order',
-  },
-  Category.interactivity: {
-    'accentColor',
-    'caretColor',
-    'cursor',
-    'scrollMargin',
-    'scrollPadding',
-    'willChange',
-  },
-  Category.layout: {
-    'aspectRatio',
-    'columns',
-    'container',
-    'inset',
-    'objectPosition',
-    'zIndex',
-  },
-  Category.sizing: {
-    'height',
-    'maxHeight',
-    'maxWidth',
-    'minHeight',
-    'minWidth',
-    'width',
-    'size',
-  },
-  Category.spacing: {
-    'margin',
-    'padding',
-    'space',
-  },
-  Category.svg: {
-    'fill',
-    'stroke',
-    'strokeWidth',
-  },
-  Category.tables: {},
-  Category.transforms: {
-    'rotate',
-    'scale',
-    'skew',
-    'transformOrigin',
-    'translate',
-  },
-  Category.transitionsAndAnimations: {
-    'animation',
-    'keyframes',
-    'transitionDelay',
-    'transitionDuration',
-    'transitionProperty',
-    'transitionTimingFunction',
-  },
-  Category.typography: {
-    'content',
-    'fontFamily',
-    'fontSize',
-    'fontWeight',
-    'letterSpacing',
-    'lineHeight',
-    'listStyleType',
-    'listStyleImage',
-    'lineClamp',
-    'placeholderColor',
-    'placeholderOpacity',
-    'textColor',
-    'textDecorationColor',
-    'textDecorationThickness',
-    'textIndent',
-    'textOpacity',
-    'textUnderlineOffset',
-  },
-};
-
-final Map<String, Category> _keysToCategory = Map.unmodifiable(
-  _keysByCategory.entries.fold({}, (
-    final previousValue,
-    final element,
-  ) {
-    previousValue.addEntries(
-      element.value.map((final String key) => MapEntry(key, element.key)),
-    );
-    return previousValue;
-  }),
-);
-
+/// Combines the 'theme' objects from the full TailwindCSS config and the local
+/// TailwindCSS config. Handles local config overrides, as well as the 'extend'
+/// option in the local config.
 Map<dynamic, dynamic> _combinedTheme() {
   final Map<dynamic, dynamic> configThemeCopy =
       _config.isNotEmpty ? {..._config['theme']} : {};
@@ -1545,4 +1386,5 @@ Map<dynamic, dynamic> _combinedTheme() {
   return Map.unmodifiable(combinedTheme);
 }
 
-final TailwindConfig tailwindConfig = TailwindConfig(_combinedTheme());
+/// Top-level generated [TailwindConfig] instance.
+final TailwindConfig tailwindConfig = TailwindConfig._(_combinedTheme());
