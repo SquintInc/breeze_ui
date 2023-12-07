@@ -1,7 +1,7 @@
 name: tailwind_elements
 description: "A new Flutter package project."
 version: 0.0.1
-homepage:
+homepage: https://github.com/kvnxiao/tailwind_elements
 
 environment:
   sdk: ">=3.2.2 <4.0.0"
