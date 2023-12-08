@@ -6,6 +6,4 @@ class TwWidth {
   final TwUnit value;
 
   const TwWidth(this.value);
-
-  factory TwWidth.px(final double px) => TwWidth(PxUnit(px));
 }

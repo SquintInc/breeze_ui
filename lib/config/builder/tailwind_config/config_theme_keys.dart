@@ -4,7 +4,6 @@ enum Category {
   backgrounds,
   borders,
   effects,
-  extend,
   filters,
   flexboxAndGrid,
   interactivity,
@@ -23,9 +22,6 @@ const Map<Category, Set<String>> themeKeysByCategory = {
     'colors',
     'screens',
     'spacing',
-  },
-  Category.extend: {
-    'extend',
   },
   Category.aria: {
     'aria',

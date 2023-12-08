@@ -6,15 +6,13 @@
 import 'dart:convert';
 import 'dart:core';
 
-import 'package:tailwind_elements/config/builder/tailwind_config/tailwind_config.dart';
-
 const Map<String, dynamic> _fullConfig = {};
 const Map<String, dynamic> _localConfig = {};
 const Map<String, dynamic> _colorsConfig = {};
 
 /* WARNING: build_runner will remove everything before this line */
 
-/// Generated [TailwindConfig] class.
+/// Generated Tailwind config class. Keeps track of the merged theme and colors.
 class GeneratedTailwindConfig {
   final Map<String, dynamic> _theme;
   final Map<String, dynamic> _colors;
@@ -22,12 +20,12 @@ class GeneratedTailwindConfig {
   const GeneratedTailwindConfig._(this._theme, this._colors);
 
   factory GeneratedTailwindConfig(
-      final Map<String, dynamic> fullConfig,
-      final Map<String, dynamic> localConfig,
-      final Map<String, dynamic> colorsConfig,
-      ) {
+    final Map<String, dynamic> fullConfig,
+    final Map<String, dynamic> localConfig,
+    final Map<String, dynamic> colorsConfig,
+  ) {
     final Map<dynamic, dynamic> configThemeCopy =
-    localConfig.isNotEmpty ? {...localConfig['theme']} : {};
+        localConfig.isNotEmpty ? {...localConfig['theme']} : {};
     final Map<dynamic, dynamic>? extend = configThemeCopy.remove('extend');
     final Map<dynamic, dynamic> combinedTheme = {
       ...fullConfig['theme'],
@@ -56,9 +54,9 @@ class GeneratedTailwindConfig {
   ///
   /// e.g. themeKey = 'colors.blue.500' => theme['colors']['blue']['500']
   dynamic _themeValueGetter(
-      final String themeKey, [
-        final String? defaultValue,
-      ]) {
+    final String themeKey, [
+    final String? defaultValue,
+  ]) {
     if (themeKey == 'colors') {
       return _colors;
     }
@@ -82,8 +80,8 @@ class GeneratedTailwindConfig {
   /// Takes in the breakpoints map and returns the same map with all keys prefixed
   /// with 'screen-'.
   Map<String, dynamic> _breakpointGetter(
-      final Map<String, dynamic> breakpoints,
-      ) =>
+    final Map<String, dynamic> breakpoints,
+  ) =>
       breakpoints
           .map((final key, final value) => MapEntry('screen-$key', value));
 
@@ -112,7 +110,7 @@ class GeneratedTailwindConfig {
   String toJson() {
     return jsonEncode(
       _theme.map(
-            (final String key, final dynamic value) => MapEntry(key, get(key)),
+        (final String key, final dynamic value) => MapEntry(key, get(key)),
       ),
     );
   }
@@ -120,4 +118,4 @@ class GeneratedTailwindConfig {
 
 /// Top-level generated [TailwindConfig] instance.
 final GeneratedTailwindConfig tailwindConfig =
-GeneratedTailwindConfig(_fullConfig, _localConfig, _colorsConfig);
+    GeneratedTailwindConfig(_fullConfig, _localConfig, _colorsConfig);

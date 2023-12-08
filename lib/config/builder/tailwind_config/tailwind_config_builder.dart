@@ -6,6 +6,7 @@ import 'package:build/build.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 import 'package:source_gen/source_gen.dart';
+import 'package:tailwind_elements/config/builder/tailwind_config/tailwind_config.dart';
 
 const String configFullJsUrl =
     'https://raw.githubusercontent.com/tailwindlabs/tailwindcss/master/stubs/config.full.js';
@@ -83,13 +84,16 @@ String replaceConfigJsToDart(
       .replaceFirstMapped(RegExp(r'}\s+$'), (final match) => '};\n');
 }
 
-/// A [SharedPartBuilder] that generates a .g.dart Dart class containing the
-/// full default TailwindCSS config, the local TailwindCSS config, and
-/// additional functions to operate on the generated configs.
+/// A [SharedPartBuilder] that is used to parse TailwindCSS config files and
+/// generate Dart code in-memory so that it can be used by subsequent builders
+/// for generating Tailwind constants.
+///
+/// This builder doesn't generate any output to the .g.dart file.
 class TailwindConfigBuilder extends Generator {
   final BuilderOptions options;
+  final TailwindConfig config;
 
-  const TailwindConfigBuilder(this.options);
+  const TailwindConfigBuilder(this.options, this.config);
 
   static Future<String> fetchFullConfig() async {
     final response = await http.get(Uri.parse(configFullJsUrl));
@@ -121,8 +125,8 @@ class TailwindConfigBuilder extends Generator {
       );
     }
 
-    // Clean path string if it starts with a leading slash '/' as prefix
-    final packageUriPath = packageUri.path.startsWith('/')
+    // Clean path on Windows if it starts with a leading slash '/'
+    final packageUriPath = Platform.isWindows && packageUri.path.startsWith('/')
         ? packageUri.path.substring(1)
         : packageUri.path;
     final srcFile = File(packageUriPath);
@@ -136,6 +140,8 @@ class TailwindConfigBuilder extends Generator {
     return templateLines.sublist(removeBeforeIndex + 1).join('\n');
   }
 
+  /// Generate a temporary Dart source file containing the full TailwindCSS
+  /// configuration.
   static Future<String> generateConfig() async {
     final colorsConfig = await fetchColorsConfig();
     final fullConfig = await fetchFullConfig();
@@ -188,8 +194,11 @@ void main(_, final SendPort port) {
     final BuildStep buildStep,
   ) async {
     final configSrcCode = await generateConfig();
-    print(await decodeConfig(configSrcCode));
+    final Map<String, dynamic> themeConfigMapping =
+        await decodeConfig(configSrcCode);
 
-    return configSrcCode;
+    config.setTheme(themeConfigMapping);
+
+    return '// TailwindConfigBuilder ran successfully (${DateTime.now().toUtc().toIso8601String()})';
   }
 }

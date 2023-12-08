@@ -6,6 +6,4 @@ class TwHeight {
   final TwUnit value;
 
   const TwHeight(this.value);
-
-  factory TwHeight.px(final double px) => TwHeight(PxUnit(px));
 }
