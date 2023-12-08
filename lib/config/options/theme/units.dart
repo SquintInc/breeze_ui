@@ -34,6 +34,17 @@ class PxUnit implements TwUnit {
 
   @override
   String toString() => '$value (${type.name})';
+
+  @override
+  bool operator ==(final Object other) =>
+      identical(this, other) ||
+      other is PxUnit &&
+          runtimeType == other.runtimeType &&
+          value == other.value ||
+      other is TwUnit && other.value == 0 && value == 0;
+
+  @override
+  int get hashCode => value.hashCode;
 }
 
 /// Represents an em unit (e.g. 1.5em).
@@ -51,6 +62,17 @@ class EmUnit implements TwUnit {
 
   @override
   String toString() => '$value (${type.name})';
+
+  @override
+  bool operator ==(final Object other) =>
+      identical(this, other) ||
+      other is EmUnit &&
+          runtimeType == other.runtimeType &&
+          value == other.value ||
+      other is TwUnit && other.value == 0 && value == 0;
+
+  @override
+  int get hashCode => value.hashCode;
 }
 
 /// Represents a rem unit (e.g. 1.5rem).
@@ -68,6 +90,17 @@ class RemUnit implements TwUnit {
 
   @override
   String toString() => '$value (${type.name})';
+
+  @override
+  bool operator ==(final Object other) =>
+      identical(this, other) ||
+      other is RemUnit &&
+          runtimeType == other.runtimeType &&
+          value == other.value ||
+      other is TwUnit && other.value == 0 && value == 0;
+
+  @override
+  int get hashCode => value.hashCode;
 }
 
 /// Represents a percentage unit (e.g. 50%).
@@ -83,6 +116,17 @@ class PercentUnit implements TwUnit {
 
   @override
   String toString() => '$value (${type.name})';
+
+  @override
+  bool operator ==(final Object other) =>
+      identical(this, other) ||
+      other is PercentUnit &&
+          runtimeType == other.runtimeType &&
+          value == other.value ||
+      other is TwUnit && other.value == 0 && value == 0;
+
+  @override
+  int get hashCode => value.hashCode;
 }
 
 /// Represents a viewport unit (e.g. vh, vw).
@@ -98,6 +142,17 @@ class ViewportUnit implements TwUnit {
 
   @override
   String toString() => '$value (${type.name})';
+
+  @override
+  bool operator ==(final Object other) =>
+      identical(this, other) ||
+      other is ViewportUnit &&
+          runtimeType == other.runtimeType &&
+          value == other.value ||
+      other is TwUnit && other.value == 0 && value == 0;
+
+  @override
+  int get hashCode => value.hashCode;
 }
 
 /// Represents a small viewport unit (e.g. svh, svw).
@@ -113,6 +168,17 @@ class SmallViewportUnit implements TwUnit {
 
   @override
   String toString() => '$value (${type.name})';
+
+  @override
+  bool operator ==(final Object other) =>
+      identical(this, other) ||
+      other is SmallViewportUnit &&
+          runtimeType == other.runtimeType &&
+          value == other.value ||
+      other is TwUnit && other.value == 0 && value == 0;
+
+  @override
+  int get hashCode => value.hashCode;
 }
 
 /// Represents a large viewport unit (e.g. lvh, lvw).
@@ -128,6 +194,17 @@ class LargeViewportUnit implements TwUnit {
 
   @override
   String toString() => '$value (${type.name})';
+
+  @override
+  bool operator ==(final Object other) =>
+      identical(this, other) ||
+      other is LargeViewportUnit &&
+          runtimeType == other.runtimeType &&
+          value == other.value ||
+      other is TwUnit && other.value == 0 && value == 0;
+
+  @override
+  int get hashCode => value.hashCode;
 }
 
 /// Represents a dynamic viewport unit (e.g. dvh, dvw).
@@ -143,6 +220,17 @@ class DynamicViewportUnit implements TwUnit {
 
   @override
   String toString() => '$value (${type.name})';
+
+  @override
+  bool operator ==(final Object other) =>
+      identical(this, other) ||
+      other is DynamicViewportUnit &&
+          runtimeType == other.runtimeType &&
+          value == other.value ||
+      other is TwUnit && other.value == 0 && value == 0;
+
+  @override
+  int get hashCode => value.hashCode;
 }
 
 /// Represents a CSS unit that is not supported by tailwind_elements.
@@ -160,6 +248,16 @@ class IgnoreUnit implements TwUnit {
 
   @override
   String toString() => '$rawType (${type.name})';
+
+  @override
+  bool operator ==(final Object other) =>
+      identical(this, other) ||
+      other is IgnoreUnit &&
+          runtimeType == other.runtimeType &&
+          rawType == other.rawType;
+
+  @override
+  int get hashCode => rawType.hashCode;
 }
 
 /// Parses a CSS unit value from a string representation into one of the many

@@ -6,14 +6,14 @@ import 'package:build/build.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 import 'package:source_gen/source_gen.dart';
-import 'package:tailwind_elements/config/builder/tailwind_config/tailwind_config.dart';
+import 'package:tailwind_elements/config/builder/tailwind_config.dart';
 
 const String configFullJsUrl =
     'https://raw.githubusercontent.com/tailwindlabs/tailwindcss/master/stubs/config.full.js';
 const String configColorsJsUrl =
     'https://raw.githubusercontent.com/tailwindlabs/tailwindcss/master/src/public/colors.js';
 const additionalFunctionsPackage =
-    'package:tailwind_elements/config/builder/tailwind_config/config_functions.template.dart';
+    'package:tailwind_elements/config/builder/config_functions.template.dart';
 const templateRemovePriorIdentifier =
     '/* WARNING: build_runner will remove everything before this line */';
 
@@ -149,7 +149,7 @@ class TailwindConfigBuilder extends Generator {
     final buffer = StringBuffer()
       ..writeln("import 'dart:convert';\n")
       ..writeln(
-        "import 'package:tailwind_elements/config/builder/tailwind_config/tailwind_config.dart';\n",
+        "import 'package:tailwind_elements/config/builder/tailwind_config.dart';\n",
       )
       ..writeln(
         'typedef $themeValueGetterTypeName = $themeValueGetterTypeDef;\n',
