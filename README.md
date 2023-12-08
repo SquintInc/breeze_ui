@@ -18,172 +18,244 @@ know whether this package might be useful for them.
 
 ### List of supported TailwindCSS options
 
-The following table lists all the TailwindCSS options (from the sidebar
+The following tables lists all the TailwindCSS options (from the sidebar
 on https://tailwindcss.com/docs/configuration) and whether they have an equivalent representation in
 Flutter via `tailwind_elements`.
 
-| Category                | Option                      |     Supported      |
-|-------------------------|-----------------------------|:------------------:|
-| Layout                  | Aspect Ratio                |                    |
-| Layout                  | Container                   |                    |
-| Layout                  | Columns                     |                    |
-| Layout                  | Break After                 |                    |
-| Layout                  | Break Before                |                    |
-| Layout                  | Break Inside                |                    |
-| Layout                  | Box Decoration Break        |                    |
-| Layout                  | Box Sizing                  |                    |
-| Layout                  | Display                     |                    |
-| Layout                  | Floats                      |                    |
-| Layout                  | Clear                       |                    |
-| Layout                  | Isolation                   |                    |
-| Layout                  | Object Fit                  |                    |
-| Layout                  | Object Position             |                    |
-| Layout                  | Overflow                    |                    |
-| Layout                  | Overscroll Behavior         |                    |
-| Layout                  | Position                    |                    |
-| Layout                  | Top / Right / Bottom / Left |                    |
-| Layout                  | Visibility                  |                    |
-| Layout                  | Z-Index                     |                    |
-| Flexbox & Grid          | Flex Basis                  |                    |
-| Flexbox & Grid          | Flex Direction              |                    |
-| Flexbox & Grid          | Flex Wrap                   |                    |
-| Flexbox & Grid          | Flex                        |                    |
-| Flexbox & Grid          | Flex Grow                   |                    |
-| Flexbox & Grid          | Flex Shrink                 |                    |
-| Flexbox & Grid          | Order                       |                    |
-| Flexbox & Grid          | Grid Template Columns       |                    |
-| Flexbox & Grid          | Grid Column Start / End     |                    |
-| Flexbox & Grid          | Grid Template Rows          |                    |
-| Flexbox & Grid          | Grid Row Start / End        |                    |
-| Flexbox & Grid          | Grid Auto Flow              |                    |
-| Flexbox & Grid          | Grid Auto Columns           |                    |
-| Flexbox & Grid          | Grid Auto Rows              |                    |
-| Flexbox & Grid          | Gap                         |                    |
-| Flexbox & Grid          | Justify Content             |                    |
-| Flexbox & Grid          | Justify Items               |                    |
-| Flexbox & Grid          | Justify Self                |                    |
-| Flexbox & Grid          | Align Content               |                    |
-| Flexbox & Grid          | Align Items                 |                    |
-| Flexbox & Grid          | Align Self                  |                    |
-| Flexbox & Grid          | Place Content               |                    |
-| Flexbox & Grid          | Place Items                 |                    |
-| Flexbox & Grid          | Place Self                  |                    |
-| Spacing                 | Padding                     | :white_check_mark: |
-| Spacing                 | Margin                      | :white_check_mark: |
-| Spacing                 | Space Between               |                    |
-| Sizing                  | Width                       | :white_check_mark: |
-| Sizing                  | Min-Width                   |                    |
-| Sizing                  | Max-Width                   |                    |
-| Sizing                  | Height                      | :white_check_mark: |
-| Sizing                  | Min-Height                  |                    |
-| Sizing                  | Max-Height                  |                    |
-| Typography              | Font Family                 |                    |
-| Typography              | Font Size                   |                    |
-| Typography              | Font Smoothing              |                    |
-| Typography              | Font Style                  |                    |
-| Typography              | Font Weight                 |                    |
-| Typography              | Font Variant Numeric        |                    |
-| Typography              | Letter Spacing              |                    |
-| Typography              | Line Clamp                  |                    |
-| Typography              | Line Height                 |                    |
-| Typography              | List Style Image            |                    |
-| Typography              | List Style Position         |                    |
-| Typography              | List Style Type             |                    |
-| Typography              | Text Align                  |                    |
-| Typography              | Text Color                  |                    |
-| Typography              | Text Decoration             |                    |
-| Typography              | Text Decoration Color       |                    |
-| Typography              | Text Decoration Style       |                    |
-| Typography              | Text Decoration Thickness   |                    |
-| Typography              | Text Underline Offset       |                    |
-| Typography              | Text Transform              |                    |
-| Typography              | Text Overflow               |                    |
-| Typography              | Text Indent                 |                    |
-| Typography              | Vertical Align              |                    |
-| Typography              | Whitespace                  |                    |
-| Typography              | Word Break                  |                    |
-| Typography              | Hyphens                     |                    |
-| Typography              | Content                     |                    |
-| Backgrounds             | Background Attachment       |                    |
-| Backgrounds             | Background Clip             |                    |
-| Backgrounds             | Background Color            |                    |
-| Backgrounds             | Background Origin           |                    |
-| Backgrounds             | Background Position         |                    |
-| Backgrounds             | Background Repeat           |                    |
-| Backgrounds             | Background Size             |                    |
-| Backgrounds             | Background Image            |                    |
-| Backgrounds             | Gradient Color Stops        |                    |
-| Borders                 | Border Radius               |                    |
-| Borders                 | Border Width                |                    |
-| Borders                 | Border Color                |                    |
-| Borders                 | Border Style                |                    |
-| Borders                 | Divide Width                |                    |
-| Borders                 | Divide Color                |                    |
-| Borders                 | Divide Style                |                    |
-| Borders                 | Outline Width               |                    |
-| Borders                 | Outline Color               |                    |
-| Borders                 | Outline Style               |                    |
-| Borders                 | Outline Offset              |                    |
-| Borders                 | Ring Width                  |                    |
-| Borders                 | Ring Color                  |                    |
-| Borders                 | Ring Offset Width           |                    |
-| Borders                 | Ring Offset Color           |                    |
-| Effects                 | Box Shadow                  |                    |
-| Effects                 | Box Shadow Color            |                    |
-| Effects                 | Opacity                     |                    |
-| Effects                 | Mix Blend Mode              |                    |
-| Effects                 | Background Blend Mode       |                    |
-| Filters                 | Blur                        |                    |
-| Filters                 | Brightness                  |                    |
-| Filters                 | Contrast                    |                    |
-| Filters                 | Drop Shadow                 |                    |
-| Filters                 | Grayscale                   |                    |
-| Filters                 | Hue Rotate                  |                    |
-| Filters                 | Invert                      |                    |
-| Filters                 | Saturate                    |                    |
-| Filters                 | Sepia                       |                    |
-| Filters                 | Backdrop Blur               |                    |
-| Filters                 | Backdrop Brightness         |                    |
-| Filters                 | Backdrop Contrast           |                    |
-| Filters                 | Backdrop Grayscale          |                    |
-| Filters                 | Backdrop Hue Rotate         |                    |
-| Filters                 | Backdrop Invert             |                    |
-| Filters                 | Backdrop Opacity            |                    |
-| Filters                 | Backdrop Saturate           |                    |
-| Filters                 | Backdrop Sepia              |                    |
-| Tables                  | Border Collapse             |                    |
-| Tables                  | Border Spacing              |                    |
-| Tables                  | Table Layout                |                    |
-| Tables                  | Caption Side                |                    |
-| Transitions & Animation | Transition Property         |                    |
-| Transitions & Animation | Transition Duration         |                    |
-| Transitions & Animation | Transition Timing Function  |                    |
-| Transitions & Animation | Transition Delay            |                    |
-| Transitions & Animation | Animation                   |                    |
-| Transforms              | Scale                       |                    |
-| Transforms              | Rotate                      |                    |
-| Transforms              | Translate                   |                    |
-| Transforms              | Skew                        |                    |
-| Transforms              | Transform Origin            |                    |
-| Interactivity           | Accent Color                |                    |
-| Interactivity           | Appearance                  |                    |
-| Interactivity           | Cursor                      |                    |
-| Interactivity           | Caret Color                 |                    |
-| Interactivity           | Pointer Events              |                    |
-| Interactivity           | Resize                      |                    |
-| Interactivity           | Scroll Behavior             |                    |
-| Interactivity           | Scroll Margin               |                    |
-| Interactivity           | Scroll Padding              |                    |
-| Interactivity           | Scroll Snap Align           |                    |
-| Interactivity           | Scroll Snap Stop            |                    |
-| Interactivity           | Scroll Snap Type            |                    |
-| Interactivity           | Touch Action                |                    |
-| Interactivity           | User Select                 |                    |
-| Interactivity           | Will Change                 |                    |
-| SVG                     | Fill                        |                    |
-| SVG                     | Stroke                      |                    |
-| SVG                     | Stroke Width                |                    |
-| Accessibility           | Screen Readers              |                    |
+#### Layout
+
+| Option                      | Supported |
+|-----------------------------|:---------:|
+| Aspect Ratio                |           |
+| Container                   |           |
+| Columns                     |           |
+| Break After                 |           |
+| Break Before                |           |
+| Break Inside                |           |
+| Box Decoration Break        |           |
+| Box Sizing                  |           |
+| Display                     |           |
+| Floats                      |           |
+| Clear                       |           |
+| Isolation                   |           |
+| Object Fit                  |           |
+| Object Position             |           |
+| Overflow                    |           |
+| Overscroll Behavior         |           |
+| Position                    |           |
+| Top / Right / Bottom / Left |           |
+| Visibility                  |           |
+| Z-Index                     |           |
+
+#### Flexbox & Grid
+
+| Option                  | Supported |
+|-------------------------|:---------:|
+| Flex Basis              |           |
+| Flex Direction          |           |
+| Flex Wrap               |           |
+| Flex                    |           |
+| Flex Grow               |           |
+| Flex Shrink             |           |
+| Order                   |           |
+| Grid Template Columns   |           |
+| Grid Column Start / End |           |
+| Grid Template Rows      |           |
+| Grid Row Start / End    |           |
+| Grid Auto Flow          |           |
+| Grid Auto Columns       |           |
+| Grid Auto Rows          |           |
+| Gap                     |           |
+| Justify Content         |           |
+| Justify Items           |           |
+| Justify Self            |           |
+| Align Content           |           |
+| Align Items             |           |
+| Align Self              |           |
+| Place Content           |           |
+| Place Items             |           |
+| Place Self              |           |
+
+#### Spacing
+
+| Option        |     Supported      |
+|---------------|:------------------:|
+| Padding       | :white_check_mark: |
+| Margin        | :white_check_mark: |
+| Space Between |                    |
+
+#### Sizing
+
+| Option     |     Supported      |
+|------------|:------------------:|
+| Width      | :white_check_mark: |
+| Min-Width  |                    |
+| Max-Width  |                    |
+| Height     | :white_check_mark: |
+| Min-Height |                    |
+| Max-Height |                    |
+
+#### Typography
+
+| Option                    | Supported |
+|---------------------------|:---------:|
+| Font Family               |           |
+| Font Size                 |           |
+| Font Smoothing            |           |
+| Font Style                |           |
+| Font Weight               |           |
+| Font Variant Numeric      |           |
+| Letter Spacing            |           |
+| Line Clamp                |           |
+| Line Height               |           |
+| List Style Image          |           |
+| List Style Position       |           |
+| List Style Type           |           |
+| Text Align                |           |
+| Text Color                |           |
+| Text Decoration           |           |
+| Text Decoration Color     |           |
+| Text Decoration Style     |           |
+| Text Decoration Thickness |           |
+| Text Underline Offset     |           |
+| Text Transform            |           |
+| Text Overflow             |           |
+| Text Indent               |           |
+| Vertical Align            |           |
+| Whitespace                |           |
+| Word Break                |           |
+| Hyphens                   |           |
+| Content                   |           |
+
+#### Backgrounds
+
+| Option                | Supported |
+|-----------------------|:---------:|
+| Background Attachment |           |
+| Background Clip       |           |
+| Background Color      |           |
+| Background Origin     |           |
+| Background Position   |           |
+| Background Repeat     |           |
+| Background Size       |           |
+| Background Image      |           |
+| Gradient Color Stops  |           |
+
+#### Borders
+
+| Option            | Supported |
+|-------------------|:---------:|
+| Border Radius     |           |
+| Border Width      |           |
+| Border Color      |           |
+| Border Style      |           |
+| Divide Width      |           |
+| Divide Color      |           |
+| Divide Style      |           |
+| Outline Width     |           |
+| Outline Color     |           |
+| Outline Style     |           |
+| Outline Offset    |           |
+| Ring Width        |           |
+| Ring Color        |           |
+| Ring Offset Width |           |
+| Ring Offset Color |           |
+
+#### Effects
+
+| Option                | Supported |
+|-----------------------|:---------:|
+| Box Shadow            |           |
+| Box Shadow Color      |           |
+| Opacity               |           |
+| Mix Blend Mode        |           |
+| Background Blend Mode |           |
+
+#### Filters
+
+| Option              | Supported |
+|---------------------|:---------:|
+| Blur                |           |
+| Brightness          |           |
+| Contrast            |           |
+| Drop Shadow         |           |
+| Grayscale           |           |
+| Hue Rotate          |           |
+| Invert              |           |
+| Saturate            |           |
+| Sepia               |           |
+| Backdrop Blur       |           |
+| Backdrop Brightness |           |
+| Backdrop Contrast   |           |
+| Backdrop Grayscale  |           |
+| Backdrop Hue Rotate |           |
+| Backdrop Invert     |           |
+| Backdrop Opacity    |           |
+| Backdrop Saturate   |           |
+| Backdrop Sepia      |           |
+
+#### Tables
+
+| Option          | Supported |
+|-----------------|:---------:|
+| Border Collapse |           |
+| Border Spacing  |           |
+| Table Layout    |           |
+| Caption Side    |           |
+
+#### Transitions & Animation
+
+| Option                     | Supported |
+|----------------------------|:---------:|
+| Transition Property        |           |
+| Transition Duration        |           |
+| Transition Timing Function |           |
+| Transition Delay           |           |
+| Animation                  |           |
+
+#### Transforms
+
+| Option           | Supported |
+|------------------|:---------:|
+| Scale            |           |
+| Rotate           |           |
+| Translate        |           |
+| Skew             |           |
+| Transform Origin |           |
+
+#### Interactivity
+
+| Option            | Supported |
+|-------------------|:---------:|
+| Accent Color      |           |
+| Appearance        |           |
+| Cursor            |           |
+| Caret Color       |           |
+| Pointer Events    |           |
+| Resize            |           |
+| Scroll Behavior   |           |
+| Scroll Margin     |           |
+| Scroll Padding    |           |
+| Scroll Snap Align |           |
+| Scroll Snap Stop  |           |
+| Scroll Snap Type  |           |
+| Touch Action      |           |
+| User Select       |           |
+| Will Change       |           |
+
+#### SVG
+
+| Option       | Supported |
+|--------------|:---------:|
+| Fill         |           |
+| Stroke       |           |
+| Stroke Width |           |
+
+#### Accessibility
+
+| Option         | Supported |
+|----------------|:---------:|
+| Screen Readers |           |
 
 ## Getting started
 
