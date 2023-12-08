@@ -125,11 +125,9 @@ class TailwindConfigBuilder extends Generator {
       );
     }
 
-    // Clean path on Windows if it starts with a leading slash '/'
-    final packageUriPath = Platform.isWindows && packageUri.path.startsWith('/')
-        ? packageUri.path.substring(1)
-        : packageUri.path;
-    final srcFile = File(packageUriPath);
+    final templateSrcFilePath =
+        packageUri.toFilePath(windows: Platform.isWindows);
+    final srcFile = File(templateSrcFilePath);
     if (!(await srcFile.exists())) {
       throw Exception('Failed to read ${packageUri.path}');
     }
