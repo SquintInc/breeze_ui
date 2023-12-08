@@ -22,8 +22,8 @@ The following table lists all the TailwindCSS options (from the sidebar
 on https://tailwindcss.com/docs/configuration) and whether they have an equivalent representation in
 Flutter via `tailwind_elements`.
 
-| Category                | Option                      | Supported          |
-|-------------------------|-----------------------------|--------------------|
+| Category                | Option                      |     Supported      |
+|-------------------------|-----------------------------|:------------------:|
 | Layout                  | Aspect Ratio                |                    |
 | Layout                  | Container                   |                    |
 | Layout                  | Columns                     |                    |
