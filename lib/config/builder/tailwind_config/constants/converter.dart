@@ -18,7 +18,10 @@ extension TwUnitExt on TwUnit {
 
 String getDartIdentifierSuffix(final String key, final TwUnit unit) {
   final identifier = switch (unit.type) {
-    UnitType.px || UnitType.em || UnitType.rem => key.toSnakeCase(),
+    UnitType.px ||
+    UnitType.em ||
+    UnitType.rem =>
+      key == 'DEFAULT' ? '' : key.toSnakeCase(),
     UnitType.percent => 'frac_${key.toSnakeCase()}',
     UnitType.viewport => key.toSnakeCase(),
     UnitType.smallViewport => key.toSnakeCase(),
