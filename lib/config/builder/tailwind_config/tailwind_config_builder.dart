@@ -197,6 +197,6 @@ void main(_, final SendPort port) {
 
     config.setTheme(themeConfigMapping);
 
-    return '// TailwindConfigBuilder ran successfully (${DateTime.now().toUtc().toIso8601String()})';
+    return '// TailwindConfigBuilder ran successfully. Constants are outputted below this.';
   }
 }
