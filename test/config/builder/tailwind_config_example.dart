@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:tailwind_elements/base.dart';
 
 part 'tailwind_config_example.g.dart';

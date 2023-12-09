@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:tailwind_elements/config/builder/unit_parser.dart';
 import 'package:tailwind_elements/config/options/theme/units.dart';
 
 /// TailwindCSS config representation in Dart. This class is used by the
@@ -10,6 +11,10 @@ import 'package:tailwind_elements/config/options/theme/units.dart';
 @immutable
 class TailwindConfig {
   final Map<String, dynamic> theme = {};
+  static const Set<String> ignoredColorKeys = {
+    'inherit',
+    'current',
+  };
 
   /// Returns an empty [TailwindConfig] instance.
   TailwindConfig.empty();
@@ -31,5 +36,28 @@ class TailwindConfig {
             .where((final entry) => entry.value.type != UnitType.ignored),
       ),
     );
+  }
+
+  Map<String, String> getColors(final String key) {
+    final Map<String, String> flatListColors = {};
+    final Map<String, dynamic> colors = {...theme['colors']};
+    for (final entry in colors.entries) {
+      if (ignoredColorKeys.contains(entry.key)) {
+        continue;
+      }
+      if (entry.value is String) {
+        final color = parseColor(entry.value);
+        flatListColors[entry.key] = color;
+      } else {
+        final Map<String, dynamic> colorShades = {...entry.value};
+        for (final colorShadeEntry in colorShades.entries) {
+          if (colorShadeEntry.value is String) {
+            final color = parseColor(colorShadeEntry.value);
+            flatListColors['${entry.key}-${colorShadeEntry.key}'] = color;
+          }
+        }
+      }
+    }
+    return Map.unmodifiable(flatListColors);
   }
 }

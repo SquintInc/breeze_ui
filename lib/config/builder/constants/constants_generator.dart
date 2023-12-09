@@ -14,17 +14,16 @@ extension StringExt on String {
 }
 
 extension TwUnitExt on TwUnit {
-  String toDartConstructor(final String wrappedClassName) =>
-      wrappedClassName.isNotEmpty
-          ? '$wrappedClassName($runtimeType($value))'
-          : '$runtimeType($value)';
-
-  String toDartConstructor2() => '$runtimeType($value)';
+  String toDartConstructor() => '$runtimeType($value)';
 }
 
 String _variableName(
-        final String variablePrefix, final String variableSuffix) =>
-    '${variablePrefix}_$variableSuffix';
+  final String variablePrefix,
+  final String variableSuffix,
+) =>
+    variablePrefix.isEmpty
+        ? variableSuffix.toSnakeCase()
+        : '${variablePrefix}_$variableSuffix'.toSnakeCase();
 
 String _percentageVarNameSuffix(final String key, final double value) {
   // If the key contains a slash, then it's a fraction. For ease of use, we
@@ -70,8 +69,8 @@ String _getDartLineDeclaration({
     UnitType.largeViewport ||
     UnitType.dynamicViewport =>
       valueClassName.isEmpty
-          ? unit.toDartConstructor2()
-          : '$valueClassName(${unit.toDartConstructor2()})',
+          ? unit.toDartConstructor()
+          : '$valueClassName(${unit.toDartConstructor()})',
     _ => throw Exception(
         'Invalid unit type for converting unit to a Dart declaration: ${unit.type}',
       ),
@@ -123,6 +122,42 @@ abstract class ConstantsGenerator extends Generator {
         return lineDeclaration;
       });
       return prefixDeclarations.join('\n');
+    });
+    return allDeclarations.join('\n');
+  }
+}
+
+/// A [Generator] used to generate color-related Tailwind constants to the
+/// .g.dart part file.
+@immutable
+abstract class ColorConstantsGenerator extends Generator {
+  final BuilderOptions options;
+  final TailwindConfig config;
+
+  /// The Tailwind config key to use for fetching the key : unit mappings.
+  String get themeConfigKey;
+
+  /// The prefix to use for the generated variable names
+  String get variablePrefix;
+
+  /// The name of the Color wrapper value class (the wrapper class must take in
+  /// a [Color] in its constructor).
+  String get colorValueClassName;
+
+  const ColorConstantsGenerator(this.options, this.config);
+
+  @override
+  Future<String> generate(
+    final LibraryReader library,
+    final BuildStep buildStep,
+  ) async {
+    final Map<String, String> colors = config.getColors(themeConfigKey);
+    final allDeclarations = colors.entries.map((final color) {
+      final String varName =
+          _variableName(variablePrefix, color.key);
+      final String lineDeclaration =
+          'const $varName = $colorValueClassName(Color(${color.value}));';
+      return lineDeclaration;
     });
     return allDeclarations.join('\n');
   }

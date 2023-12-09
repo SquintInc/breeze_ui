@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tailwind_elements/base.dart';
+import 'package:tailwind_elements/config/builder/unit_parser.dart';
 
 void main() {
   test('tailwind units use value equality', () {
@@ -54,5 +55,12 @@ void main() {
           units[6] == units[7],
       isFalse,
     );
+  });
+
+  test('tailwind hex string color parser parses to a hex int', () {
+    expect(parseColor('#FFF'), equals('0xFFFFFFFF'));
+    expect(parseColor('#000'), equals('0xFF000000'));
+    expect(parseColor('#FFFFFF'), equals('0xFFFFFFFF'));
+    expect(parseColor('#0080FF80'), equals('0x800080FF'));
   });
 }
