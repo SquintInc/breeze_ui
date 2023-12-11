@@ -956,6 +956,85 @@ const rounded_bl_3xl = TwBorderRadiusBottomLeft(RemUnit(1.5));
 const rounded_bl_full = TwBorderRadiusBottomLeft(PxUnit(9999.0));
 
 // **************************************************************************
+// Generator: BoxShadowBuilder
+// **************************************************************************
+
+const shadow_sm = [
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0xD000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(1.0),
+      blurRadius: PxUnit(2.0),
+      spreadRadius: PxUnit(0.0)),
+];
+const shadow = [
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x1A000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(1.0),
+      blurRadius: PxUnit(3.0),
+      spreadRadius: PxUnit(0.0)),
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x1A000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(1.0),
+      blurRadius: PxUnit(2.0),
+      spreadRadius: PxUnit(-1.0)),
+];
+const shadow_md = [
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x1A000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(4.0),
+      blurRadius: PxUnit(6.0),
+      spreadRadius: PxUnit(-1.0)),
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x1A000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(2.0),
+      blurRadius: PxUnit(4.0),
+      spreadRadius: PxUnit(-2.0)),
+];
+const shadow_lg = [
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x1A000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(10.0),
+      blurRadius: PxUnit(15.0),
+      spreadRadius: PxUnit(-3.0)),
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x1A000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(4.0),
+      blurRadius: PxUnit(6.0),
+      spreadRadius: PxUnit(-4.0)),
+];
+const shadow_xl = [
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x1A000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(20.0),
+      blurRadius: PxUnit(25.0),
+      spreadRadius: PxUnit(-5.0)),
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x1A000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(8.0),
+      blurRadius: PxUnit(10.0),
+      spreadRadius: PxUnit(-6.0)),
+];
+const shadow_2xl = [
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x40000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(25.0),
+      blurRadius: PxUnit(50.0),
+      spreadRadius: PxUnit(-12.0)),
+];
+const shadow_inner = <TwBoxShadow>[];
+const shadow_none = <TwBoxShadow>[];
+
+// **************************************************************************
 // Generator: BackgroundColorBuilder
 // **************************************************************************
 

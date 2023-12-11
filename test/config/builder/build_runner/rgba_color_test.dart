@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors
-import 'dart:math';
-
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tailwind_elements/config/options/colors/rgba_color.dart';
+import 'package:tailwind_elements/config/builder/build_runner/rgba_color.dart';
 
 void main() {
   test('RgbaColor constructor takes in individual r, g, b, a components', () {
@@ -114,6 +112,10 @@ void main() {
   test('RgbaColor.fromCssRgba constructor takes in a CSS rgba string', () {
     expect(
       RgbaColor.fromCssRgba('rgba(55, 110, 220, 0.75)'),
+      equals(RgbaColor(55, 110, 220, 191)),
+    );
+    expect(
+      RgbaColor.fromCssRgba('rgb(55 110 220 / 0.75)'),
       equals(RgbaColor(55, 110, 220, 191)),
     );
     expect(

@@ -1,11 +1,15 @@
 import 'package:meta/meta.dart';
 
 const String _transparentHexCode = '0x00000000';
-final _whitespaceRegex = RegExp(r'\s');
-final _hexRgbColorRegex =
+final hexRgbColorRegex =
     RegExp('#*([0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3})');
-final _rgbaColorRegex = RegExp(r'rgba\(([0-9]+),([0-9]+),([0-9]+),([0-9.]+)\)');
-final _rgbColorRegex = RegExp(r'rgb\(([0-9]+),([0-9]+),([0-9]+)\)');
+final rgbaColorRegex = RegExp(
+  r'rgba\(\s*([0-9]+)\s*,\s*([0-9]+)\s*,\s*([0-9]+)\s*,\s*([0-9.]+)\s*\)',
+);
+final rgbColorRegex =
+    RegExp(r'rgb\(\s*([0-9]+)\s*,\s*([0-9]+)\s*,\s*([0-9]+)\s*\)');
+final rgbOpacityColorRegex =
+    RegExp(r'rgb\(\s*([0-9]+)\s+([0-9]+)\s+([0-9]+)\s+/\s+([0-9.]+)\s*\)');
 
 @immutable
 class RgbaColor {
@@ -39,7 +43,7 @@ class RgbaColor {
   /// Creates an [RgbaColor] from a CSS hex string. The string can be in the
   /// form of '#RGB', '#RRGGBB', or '#RRGGBBAA'.
   factory RgbaColor.fromCssHex(final String value) {
-    final match = _hexRgbColorRegex.firstMatch(value);
+    final match = hexRgbColorRegex.firstMatch(value);
     if (match == null) return transparent;
     final hex = match.group(1);
     if (hex == null) return transparent;
@@ -76,17 +80,16 @@ class RgbaColor {
         a = (alpha * maxValue).round();
 
   factory RgbaColor.fromCssRgba(final String rgba) {
-    final String rgbaTrimmed =
-        rgba.trim().replaceAllMapped(_whitespaceRegex, (final match) => '');
-    final rgbMatch = _rgbColorRegex.firstMatch(rgbaTrimmed);
-    final rgbaMatch = _rgbaColorRegex.firstMatch(rgbaTrimmed);
+    final rgbMatch = rgbColorRegex.firstMatch(rgba);
+    final rgbaMatch = rgbaColorRegex.firstMatch(rgba);
+    final rgbOpacityMatch = rgbOpacityColorRegex.firstMatch(rgba);
     if (rgbMatch != null) {
       final r = rgbMatch.group(1);
       final g = rgbMatch.group(2);
       final b = rgbMatch.group(3);
       if (r == null || g == null || b == null) {
         throw FormatException(
-          'Invalid CSS rgb color string: $rgbaTrimmed',
+          'Invalid CSS rgb(r, g, b) color string: $rgba',
         );
       }
       return RgbaColor(
@@ -102,7 +105,24 @@ class RgbaColor {
       final a = rgbaMatch.group(4);
       if (r == null || g == null || b == null || a == null) {
         throw FormatException(
-          'Invalid CSS rgba color string: $rgbaTrimmed',
+          'Invalid CSS rgba(r, g, b, a) color string: $rgba',
+        );
+      }
+      return RgbaColor.rgbaOpacity(
+        int.tryParse(r) ?? 0,
+        int.tryParse(g) ?? 0,
+        int.tryParse(b) ?? 0,
+        double.tryParse(a) ?? 0,
+      );
+    }
+    if (rgbOpacityMatch != null) {
+      final r = rgbOpacityMatch.group(1);
+      final g = rgbOpacityMatch.group(2);
+      final b = rgbOpacityMatch.group(3);
+      final a = rgbOpacityMatch.group(4);
+      if (r == null || g == null || b == null || a == null) {
+        throw FormatException(
+          'Invalid CSS rgb(r g b / opacity) color string: $rgba',
         );
       }
       return RgbaColor.rgbaOpacity(
@@ -113,7 +133,7 @@ class RgbaColor {
       );
     }
     throw FormatException(
-      'Invalid CSS rgba color string: $rgbaTrimmed',
+      'Invalid CSS rgba color string: $rgba',
     );
   }
 

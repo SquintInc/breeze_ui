@@ -185,13 +185,13 @@ Flutter via `tailwind_elements`.
 <details open>
 <summary>Effects</summary>
 
-| Option                |     Supported      | Notes |
-|-----------------------|:------------------:|-------|
-| Box Shadow            |                    |       |
-| Box Shadow Color      | :white_check_mark: |       |
-| Opacity               |                    |       |
-| Mix Blend Mode        |                    |       |
-| Background Blend Mode |                    |       |
+| Option                |     Supported      | Notes                                                                               |
+|-----------------------|:------------------:|-------------------------------------------------------------------------------------|
+| Box Shadow            | :white_check_mark: | inner / `inset` box shadows are not supported and will be parsed as a `none` shadow |
+| Box Shadow Color      | :white_check_mark: |                                                                                     |
+| Opacity               |                    |                                                                                     |
+| Mix Blend Mode        |                    |                                                                                     |
+| Background Blend Mode |                    |                                                                                     |
 
 </details>
 

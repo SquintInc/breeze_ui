@@ -1,4 +1,4 @@
-import 'package:tailwind_elements/config/builder/constants/generators.dart';
+import 'package:tailwind_elements/config/builder/builders/generators.dart';
 import 'package:tailwind_elements/config/options/sizing/min_height.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'min-h' constants

@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:tailwind_elements/config/options/colors/rgba_color.dart';
+import 'package:tailwind_elements/config/builder/build_runner/rgba_color.dart';
 import 'package:tailwind_elements/config/options/theme/units.dart';
 
 /// TailwindCSS config representation in Dart. This class is used by the
@@ -24,6 +24,13 @@ class TailwindConfig {
     this.theme
       ..clear()
       ..addAll(theme);
+  }
+
+  Map<String, String> getRawValues(final String key) {
+    final Map<String, String> values = (theme[key] as Map<String, dynamic>).map(
+      (final key, final value) => MapEntry(key, value.toString()),
+    );
+    return Map.unmodifiable(values);
   }
 
   Map<String, TwUnit> getUsable(final String key) {

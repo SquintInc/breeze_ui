@@ -34,6 +34,8 @@ sealed class TwUnit {
   ///   - [LargeViewportUnit]
   ///   - [IgnoreUnit]
   static TwUnit parse(final String value) {
+    if (value == '0') return const PxUnit(0);
+
     if (value.endsWith('px')) {
       return PxUnit(double.parse(value.substring(0, value.length - 2)));
     } else if (value.endsWith('rem')) {

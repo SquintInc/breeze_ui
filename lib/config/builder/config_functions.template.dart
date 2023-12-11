@@ -87,7 +87,7 @@ class GeneratedTailwindConfig {
 
   /// Gets a mapping from the overall 'theme' object using the provided string
   /// key. Tries to return a mapping of key-value pairs, where the value is a
-  /// CSS unit ([TwUnit]) parsed via [parseUnit].
+  /// CSS unit ([TwUnit]).
   ///
   /// Returns null if the key is not found in the 'theme' object.
   ///

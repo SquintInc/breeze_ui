@@ -1,4 +1,4 @@
-import 'package:tailwind_elements/config/builder/constants/generators.dart';
+import 'package:tailwind_elements/config/builder/builders/generators.dart';
 
 /// A [ColorConstantsGenerator] used to generate Tailwind 'shadow-*' colors
 /// to the .g.dart part file.

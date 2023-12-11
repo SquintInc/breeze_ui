@@ -1,4 +1,4 @@
-import 'package:tailwind_elements/config/builder/constants/generators.dart';
+import 'package:tailwind_elements/config/builder/builders/generators.dart';
 import 'package:tailwind_elements/config/options/borders/border_radius.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'rounded' constants

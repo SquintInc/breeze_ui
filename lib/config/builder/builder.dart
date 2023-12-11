@@ -1,23 +1,23 @@
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
-
+import 'package:tailwind_elements/config/builder/builders/colors/background_color_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/colors/border_color_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/colors/box_shadow_color_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/colors/text_color_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/border_radius_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/border_width_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/box_shadow_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/height_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/margin_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/max_height_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/max_width_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/min_height_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/min_width_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/padding_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/width_builder.dart';
 // Explicitly import template files to help invalidate asset graph for build_runner
 // ignore: unused_import
 import 'package:tailwind_elements/config/builder/config_functions.template.dart';
-import 'package:tailwind_elements/config/builder/constants/border_radius_builder.dart';
-import 'package:tailwind_elements/config/builder/constants/border_width_builder.dart';
-import 'package:tailwind_elements/config/builder/constants/colors/background_color_builder.dart';
-import 'package:tailwind_elements/config/builder/constants/colors/border_color_builder.dart';
-import 'package:tailwind_elements/config/builder/constants/colors/box_shadow_color_builder.dart';
-import 'package:tailwind_elements/config/builder/constants/colors/text_color_builder.dart';
-import 'package:tailwind_elements/config/builder/constants/height_builder.dart';
-import 'package:tailwind_elements/config/builder/constants/margin_builder.dart';
-import 'package:tailwind_elements/config/builder/constants/max_height_builder.dart';
-import 'package:tailwind_elements/config/builder/constants/max_width_builder.dart';
-import 'package:tailwind_elements/config/builder/constants/min_height_builder.dart';
-import 'package:tailwind_elements/config/builder/constants/min_width_builder.dart';
-import 'package:tailwind_elements/config/builder/constants/padding_builder.dart';
-import 'package:tailwind_elements/config/builder/constants/width_builder.dart';
 import 'package:tailwind_elements/config/builder/tailwind_config.dart';
 import 'package:tailwind_elements/config/builder/tailwind_config_builder.dart';
 
@@ -40,6 +40,7 @@ Builder tailwindConfigBuilder(final BuilderOptions options) {
       PaddingBuilder(options, config),
       BorderWidthBuilder(options, config),
       BorderRadiusBuilder(options, config),
+      BoxShadowBuilder(options, config),
       // Generate colors
       BackgroundColorBuilder(options, config),
       BoxShadowColorBuilder(options, config),
