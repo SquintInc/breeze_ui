@@ -37,7 +37,8 @@ class BoxShadowBuilder extends ConstantsGenerator {
         final boxShadows = BoxShadowParser.parse(boxShadowEntry.value);
         final String lineDeclaration = CodeWriter.dartLineDeclaration(
           variableName: varName,
-          valueConstructor: boxShadows.toDartConstructor(),
+          valueConstructor:
+              boxShadows.toDartConstructor(wrapperClassName: 'TwBoxShadows'),
         );
         return lineDeclaration;
       });

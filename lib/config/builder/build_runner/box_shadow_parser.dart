@@ -91,18 +91,18 @@ class BoxShadowParser {
     );
   }
 
-  String toDartConstructor() {
+  String toDartConstructor({final String? wrapperClassName}) {
     if (boxShadows.isEmpty) {
-      return '<TwBoxShadow>[]';
+      return '${wrapperClassName != null ? "$wrapperClassName(" : ""}<TwBoxShadow>[]${wrapperClassName != null ? ")" : ""}';
     }
     final StringBuffer buffer = StringBuffer()
-      ..writeln('[')
+      ..writeln('${wrapperClassName != null ? "$wrapperClassName(" : ""}[')
       ..writeln(
         boxShadows
-            .map((final boxShadow) => '  ${boxShadow.toDartConstructor()}')
+            .map((final boxShadow) => boxShadow.toDartConstructor())
             .join('\n'),
       )
-      ..writeln(']');
+      ..writeln(']${wrapperClassName != null ? ")" : ""}');
     return buffer.toString();
   }
 }

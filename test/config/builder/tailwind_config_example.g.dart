@@ -959,15 +959,15 @@ const rounded_bl_full = TwBorderRadiusBottomLeft(PxUnit(9999.0));
 // Generator: BoxShadowBuilder
 // **************************************************************************
 
-const shadow_sm = [
+const shadow_sm = TwBoxShadows([
   TwBoxShadow(
       color: TwBoxShadowColor(Color(0xD000000)),
       offsetX: PxUnit(0.0),
       offsetY: PxUnit(1.0),
       blurRadius: PxUnit(2.0),
       spreadRadius: PxUnit(0.0)),
-];
-const shadow = [
+]);
+const shadow = TwBoxShadows([
   TwBoxShadow(
       color: TwBoxShadowColor(Color(0x1A000000)),
       offsetX: PxUnit(0.0),
@@ -980,8 +980,8 @@ const shadow = [
       offsetY: PxUnit(1.0),
       blurRadius: PxUnit(2.0),
       spreadRadius: PxUnit(-1.0)),
-];
-const shadow_md = [
+]);
+const shadow_md = TwBoxShadows([
   TwBoxShadow(
       color: TwBoxShadowColor(Color(0x1A000000)),
       offsetX: PxUnit(0.0),
@@ -994,8 +994,8 @@ const shadow_md = [
       offsetY: PxUnit(2.0),
       blurRadius: PxUnit(4.0),
       spreadRadius: PxUnit(-2.0)),
-];
-const shadow_lg = [
+]);
+const shadow_lg = TwBoxShadows([
   TwBoxShadow(
       color: TwBoxShadowColor(Color(0x1A000000)),
       offsetX: PxUnit(0.0),
@@ -1008,8 +1008,8 @@ const shadow_lg = [
       offsetY: PxUnit(4.0),
       blurRadius: PxUnit(6.0),
       spreadRadius: PxUnit(-4.0)),
-];
-const shadow_xl = [
+]);
+const shadow_xl = TwBoxShadows([
   TwBoxShadow(
       color: TwBoxShadowColor(Color(0x1A000000)),
       offsetX: PxUnit(0.0),
@@ -1022,17 +1022,17 @@ const shadow_xl = [
       offsetY: PxUnit(8.0),
       blurRadius: PxUnit(10.0),
       spreadRadius: PxUnit(-6.0)),
-];
-const shadow_2xl = [
+]);
+const shadow_2xl = TwBoxShadows([
   TwBoxShadow(
       color: TwBoxShadowColor(Color(0x40000000)),
       offsetX: PxUnit(0.0),
       offsetY: PxUnit(25.0),
       blurRadius: PxUnit(50.0),
       spreadRadius: PxUnit(-12.0)),
-];
-const shadow_inner = <TwBoxShadow>[];
-const shadow_none = <TwBoxShadow>[];
+]);
+const shadow_inner = TwBoxShadows(<TwBoxShadow>[]);
+const shadow_none = TwBoxShadows(<TwBoxShadow>[]);
 
 // **************************************************************************
 // Generator: BackgroundColorBuilder
