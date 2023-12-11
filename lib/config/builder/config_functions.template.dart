@@ -27,20 +27,38 @@ class GeneratedTailwindConfig {
     final Map<dynamic, dynamic> configThemeCopy =
         localConfig.isNotEmpty ? {...localConfig['theme']} : {};
     final Map<dynamic, dynamic>? extend = configThemeCopy.remove('extend');
+    final Map<dynamic, dynamic>? extendColors = extend?.remove('colors');
     final Map<dynamic, dynamic> combinedTheme = {
       ...fullConfig['theme'],
       ...configThemeCopy,
     };
+    final Map<dynamic, dynamic> combinedColors = {
+      ...colorsConfig,
+    };
+
     if (extend != null) {
       for (final entry in extend.entries) {
         final String key = entry.key;
-        final Map<String, dynamic> toAdd = entry.value;
-        (combinedTheme[key] as Map<String, dynamic>).addAll(toAdd);
+        final Map<dynamic, dynamic> toAdd = entry.value;
+        if (combinedTheme[key] == null) {
+          combinedTheme[key] = {};
+        }
+        (combinedTheme[key] as Map<dynamic, dynamic>).addAll(toAdd);
+      }
+    }
+    if (extendColors != null) {
+      for (final entry in extendColors.entries) {
+        final String key = entry.key;
+        final Map<dynamic, dynamic> toAdd = entry.value;
+        if (combinedColors[key] == null) {
+          combinedColors[key] = {};
+        }
+        (combinedColors[key] as Map<dynamic, dynamic>).addAll(toAdd);
       }
     }
     return GeneratedTailwindConfig._(
       Map.unmodifiable(combinedTheme),
-      colorsConfig,
+      Map.unmodifiable(combinedColors),
     );
   }
 

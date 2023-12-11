@@ -37,4 +37,12 @@ void main() {
       expect(border_white.color, equals(Colors.white));
     });
   });
+
+  group('local config colors', () {
+    test('are generated with wrapper value class dependent on dart:ui', () {
+      expect(bg_test_first.color, equals(Color(0xFFE5BE01)));
+      expect(bg_test_second.color, equals(Color(0xFFF44611)));
+      expect(bg_test_third.color, equals(Color(0xFF75151E)));
+    });
+  });
 }
