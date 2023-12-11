@@ -85,11 +85,11 @@ Flutter via `tailwind_elements`.
 <details open>
 <summary>Spacing</summary>
 
-| Option        |     Supported      | Notes |
-|---------------|:------------------:|-------|
-| Padding       | :white_check_mark: |       |
-| Margin        | :white_check_mark: |       |
-| Space Between |                    |       |
+| Option        |     Supported      | Notes                                                                                                                                                                                                                            |
+|---------------|:------------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Padding       | :white_check_mark: |                                                                                                                                                                                                                                  |
+| Margin        | :white_check_mark: |                                                                                                                                                                                                                                  |
+| Space Between |        :x:         | this option on the web is a shortcut for modifying all child margins ([see explanation](https://tailwindcss.com/docs/space#limitations)), hence this effect is not worth replicating in Flutter - it's best to use `Gap` instead |
 
 </details>
 
