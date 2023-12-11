@@ -96,14 +96,14 @@ Flutter via `tailwind_elements`.
 <details open>
 <summary>Sizing</summary>
 
-| Option     |     Supported      | Notes |
-|------------|:------------------:|-------|
-| Width      | :white_check_mark: |       |
-| Min-Width  |                    |       |
-| Max-Width  |                    |       |
-| Height     | :white_check_mark: |       |
-| Min-Height |                    |       |
-| Max-Height |                    |       |
+| Option     |     Supported      | Notes                                                         |
+|------------|:------------------:|---------------------------------------------------------------|
+| Width      | :white_check_mark: | `min-content`, `max-content`, and `fit-content` not supported |
+| Min-Width  | :white_check_mark: | `min-content`, `max-content`, and `fit-content` not supported |
+| Max-Width  | :white_check_mark: | `min-content`, `max-content`, and `fit-content` not supported |
+| Height     | :white_check_mark: | `min-content`, `max-content`, and `fit-content` not supported |
+| Min-Height | :white_check_mark: | `min-content`, `max-content`, and `fit-content` not supported |
+| Max-Height | :white_check_mark: | `min-content`, `max-content`, and `fit-content` not supported |
 
 </details>
 
@@ -145,53 +145,53 @@ Flutter via `tailwind_elements`.
 <details open>
 <summary>Backgrounds</summary>
 
-| Option                | Supported | Notes |
-|-----------------------|:---------:|-------|
-| Background Attachment |           |       |
-| Background Clip       |           |       |
-| Background Color      |           |       |
-| Background Origin     |           |       |
-| Background Position   |           |       |
-| Background Repeat     |           |       |
-| Background Size       |           |       |
-| Background Image      |           |       |
-| Gradient Color Stops  |           |       |
+| Option                |     Supported      | Notes |
+|-----------------------|:------------------:|-------|
+| Background Attachment |                    |       |
+| Background Clip       |                    |       |
+| Background Color      | :white_check_mark: |       |
+| Background Origin     |                    |       |
+| Background Position   |                    |       |
+| Background Repeat     |                    |       |
+| Background Size       |                    |       |
+| Background Image      |                    |       |
+| Gradient Color Stops  |                    |       |
 
 </details>
 
 <details open>
 <summary>Borders</summary>
 
-| Option            | Supported | Notes |
-|-------------------|:---------:|-------|
-| Border Radius     |           |       |
-| Border Width      |           |       |
-| Border Color      |           |       |
-| Border Style      |           |       |
-| Divide Width      |           |       |
-| Divide Color      |           |       |
-| Divide Style      |           |       |
-| Outline Width     |           |       |
-| Outline Color     |           |       |
-| Outline Style     |           |       |
-| Outline Offset    |           |       |
-| Ring Width        |           |       |
-| Ring Color        |           |       |
-| Ring Offset Width |           |       |
-| Ring Offset Color |           |       |
+| Option            |     Supported      | Notes |
+|-------------------|:------------------:|-------|
+| Border Radius     |                    |       |
+| Border Width      |                    |       |
+| Border Color      | :white_check_mark: |       |
+| Border Style      |                    |       |
+| Divide Width      |                    |       |
+| Divide Color      |                    |       |
+| Divide Style      |                    |       |
+| Outline Width     |                    |       |
+| Outline Color     |                    |       |
+| Outline Style     |                    |       |
+| Outline Offset    |                    |       |
+| Ring Width        |                    |       |
+| Ring Color        |                    |       |
+| Ring Offset Width |                    |       |
+| Ring Offset Color |                    |       |
 
 </details>
 
 <details open>
 <summary>Effects</summary>
 
-| Option                | Supported | Notes |
-|-----------------------|:---------:|-------|
-| Box Shadow            |           |       |
-| Box Shadow Color      |           |       |
-| Opacity               |           |       |
-| Mix Blend Mode        |           |       |
-| Background Blend Mode |           |       |
+| Option                |     Supported      | Notes |
+|-----------------------|:------------------:|-------|
+| Box Shadow            |                    |       |
+| Box Shadow Color      | :white_check_mark: |       |
+| Opacity               |                    |       |
+| Mix Blend Mode        |                    |       |
+| Background Blend Mode |                    |       |
 
 </details>
 
