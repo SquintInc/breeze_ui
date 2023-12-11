@@ -3,8 +3,6 @@ import 'package:tailwind_elements/config/options/sizing/max_width.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'max-h' constants
 /// to the .g.dart part file.
-///
-/// Generates [TwMaxWidth] constants.
 class MaxWidthBuilder extends ConstantsGenerator {
   const MaxWidthBuilder(super.options, super.config);
 

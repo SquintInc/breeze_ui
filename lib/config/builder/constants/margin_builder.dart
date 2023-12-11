@@ -3,8 +3,6 @@ import 'package:tailwind_elements/config/options/spacing/margin.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'margin' constants
 /// to the .g.dart part file.
-///
-/// Generates [TwMarginSize] constants.
 class MarginBuilder extends ConstantsGenerator {
   const MarginBuilder(super.options, super.config);
 

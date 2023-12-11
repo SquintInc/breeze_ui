@@ -3,8 +3,6 @@ import 'package:tailwind_elements/config/options/sizing/min_height.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'min-h' constants
 /// to the .g.dart part file.
-///
-/// Generates [TwMinHeight] constants.
 class MinHeightBuilder extends ConstantsGenerator {
   const MinHeightBuilder(super.options, super.config);
 

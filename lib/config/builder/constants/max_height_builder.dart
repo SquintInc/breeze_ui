@@ -3,8 +3,6 @@ import 'package:tailwind_elements/config/options/sizing/max_height.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'max-h' constants
 /// to the .g.dart part file.
-///
-/// Generates [TwMaxHeight] constants.
 class MaxHeightBuilder extends ConstantsGenerator {
   const MaxHeightBuilder(super.options, super.config);
 

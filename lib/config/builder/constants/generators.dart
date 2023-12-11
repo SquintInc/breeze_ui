@@ -24,7 +24,8 @@ String _variableName(
 ) =>
     variablePrefix.isEmpty
         ? variableSuffix.toSnakeCase()
-        : '${variablePrefix}_$variableSuffix'.toSnakeCase();
+        : '$variablePrefix${variableSuffix.isEmpty ? '' : "_$variableSuffix"}'
+            .toSnakeCase();
 
 String _percentageVarNameSuffix(final String key, final double value) {
   // If the key contains a slash, then it's a fraction. For ease of use, we

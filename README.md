@@ -165,9 +165,9 @@ Flutter via `tailwind_elements`.
 | Option            |     Supported      | Notes |
 |-------------------|:------------------:|-------|
 | Border Radius     |                    |       |
-| Border Width      |                    |       |
+| Border Width      | :white_check_mark: |       |
 | Border Color      | :white_check_mark: |       |
-| Border Style      |                    |       |
+| Border Style      |        :x:         |       |
 | Divide Width      |                    |       |
 | Divide Color      |                    |       |
 | Divide Style      |                    |       |

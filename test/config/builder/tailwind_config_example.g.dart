@@ -830,6 +830,46 @@ const pl_80 = TwPaddingLeft(RemUnit(20.0));
 const pl_96 = TwPaddingLeft(RemUnit(24.0));
 
 // **************************************************************************
+// Generator: BorderWidthBuilder
+// **************************************************************************
+
+const border = TwBorderAll(PxUnit(1.0));
+const border_0 = TwBorderAll(PxUnit(0.0));
+const border_2 = TwBorderAll(PxUnit(2.0));
+const border_4 = TwBorderAll(PxUnit(4.0));
+const border_8 = TwBorderAll(PxUnit(8.0));
+const border_x = TwBorderX(PxUnit(1.0));
+const border_x_0 = TwBorderX(PxUnit(0.0));
+const border_x_2 = TwBorderX(PxUnit(2.0));
+const border_x_4 = TwBorderX(PxUnit(4.0));
+const border_x_8 = TwBorderX(PxUnit(8.0));
+const border_y = TwBorderY(PxUnit(1.0));
+const border_y_0 = TwBorderY(PxUnit(0.0));
+const border_y_2 = TwBorderY(PxUnit(2.0));
+const border_y_4 = TwBorderY(PxUnit(4.0));
+const border_y_8 = TwBorderY(PxUnit(8.0));
+const border_t = TwBorderTop(PxUnit(1.0));
+const border_t_0 = TwBorderTop(PxUnit(0.0));
+const border_t_2 = TwBorderTop(PxUnit(2.0));
+const border_t_4 = TwBorderTop(PxUnit(4.0));
+const border_t_8 = TwBorderTop(PxUnit(8.0));
+const border_r = TwBorderRight(PxUnit(1.0));
+const border_r_0 = TwBorderRight(PxUnit(0.0));
+const border_r_2 = TwBorderRight(PxUnit(2.0));
+const border_r_4 = TwBorderRight(PxUnit(4.0));
+const border_r_8 = TwBorderRight(PxUnit(8.0));
+const border_b = TwBorderBottom(PxUnit(1.0));
+const border_b_0 = TwBorderBottom(PxUnit(0.0));
+const border_b_2 = TwBorderBottom(PxUnit(2.0));
+const border_b_4 = TwBorderBottom(PxUnit(4.0));
+const border_b_8 = TwBorderBottom(PxUnit(8.0));
+const border_l = TwBorderLeft(PxUnit(1.0));
+const border_l_0 = TwBorderLeft(PxUnit(0.0));
+const border_l_2 = TwBorderLeft(PxUnit(2.0));
+const border_l_4 = TwBorderLeft(PxUnit(4.0));
+const border_l_8 = TwBorderLeft(PxUnit(8.0));
+
+// **************************************************************************
 // Generator: BackgroundColorBuilder
 // **************************************************************************
 

@@ -3,8 +3,6 @@ import 'package:tailwind_elements/config/options/spacing/padding.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'padding' constants
 /// to the .g.dart part file.
-///
-/// Generates [TwPaddingSize] constants.
 class PaddingBuilder extends ConstantsGenerator {
   const PaddingBuilder(super.options, super.config);
 
