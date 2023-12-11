@@ -4,6 +4,7 @@ import 'package:source_gen/source_gen.dart';
 // Explicitly import template files to help invalidate asset graph for build_runner
 // ignore: unused_import
 import 'package:tailwind_elements/config/builder/config_functions.template.dart';
+import 'package:tailwind_elements/config/builder/constants/border_radius_builder.dart';
 import 'package:tailwind_elements/config/builder/constants/border_width_builder.dart';
 import 'package:tailwind_elements/config/builder/constants/colors/background_color_builder.dart';
 import 'package:tailwind_elements/config/builder/constants/colors/border_color_builder.dart';
@@ -38,6 +39,7 @@ Builder tailwindConfigBuilder(final BuilderOptions options) {
       MarginBuilder(options, config),
       PaddingBuilder(options, config),
       BorderWidthBuilder(options, config),
+      BorderRadiusBuilder(options, config),
       // Generate colors
       BackgroundColorBuilder(options, config),
       BoxShadowColorBuilder(options, config),

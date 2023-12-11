@@ -870,6 +870,92 @@ const border_l_4 = TwBorderLeft(PxUnit(4.0));
 const border_l_8 = TwBorderLeft(PxUnit(8.0));
 
 // **************************************************************************
+// Generator: BorderRadiusBuilder
+// **************************************************************************
+
+const rounded_none = TwBorderRadiusAll(PxUnit(0.0));
+const rounded_sm = TwBorderRadiusAll(RemUnit(0.125));
+const rounded = TwBorderRadiusAll(RemUnit(0.25));
+const rounded_md = TwBorderRadiusAll(RemUnit(0.375));
+const rounded_lg = TwBorderRadiusAll(RemUnit(0.5));
+const rounded_xl = TwBorderRadiusAll(RemUnit(0.75));
+const rounded_2xl = TwBorderRadiusAll(RemUnit(1.0));
+const rounded_3xl = TwBorderRadiusAll(RemUnit(1.5));
+const rounded_full = TwBorderRadiusAll(PxUnit(9999.0));
+const rounded_t_none = TwBorderRadiusTop(PxUnit(0.0));
+const rounded_t_sm = TwBorderRadiusTop(RemUnit(0.125));
+const rounded_t = TwBorderRadiusTop(RemUnit(0.25));
+const rounded_t_md = TwBorderRadiusTop(RemUnit(0.375));
+const rounded_t_lg = TwBorderRadiusTop(RemUnit(0.5));
+const rounded_t_xl = TwBorderRadiusTop(RemUnit(0.75));
+const rounded_t_2xl = TwBorderRadiusTop(RemUnit(1.0));
+const rounded_t_3xl = TwBorderRadiusTop(RemUnit(1.5));
+const rounded_t_full = TwBorderRadiusTop(PxUnit(9999.0));
+const rounded_r_none = TwBorderRadiusRight(PxUnit(0.0));
+const rounded_r_sm = TwBorderRadiusRight(RemUnit(0.125));
+const rounded_r = TwBorderRadiusRight(RemUnit(0.25));
+const rounded_r_md = TwBorderRadiusRight(RemUnit(0.375));
+const rounded_r_lg = TwBorderRadiusRight(RemUnit(0.5));
+const rounded_r_xl = TwBorderRadiusRight(RemUnit(0.75));
+const rounded_r_2xl = TwBorderRadiusRight(RemUnit(1.0));
+const rounded_r_3xl = TwBorderRadiusRight(RemUnit(1.5));
+const rounded_r_full = TwBorderRadiusRight(PxUnit(9999.0));
+const rounded_b_none = TwBorderRadiusBottom(PxUnit(0.0));
+const rounded_b_sm = TwBorderRadiusBottom(RemUnit(0.125));
+const rounded_b = TwBorderRadiusBottom(RemUnit(0.25));
+const rounded_b_md = TwBorderRadiusBottom(RemUnit(0.375));
+const rounded_b_lg = TwBorderRadiusBottom(RemUnit(0.5));
+const rounded_b_xl = TwBorderRadiusBottom(RemUnit(0.75));
+const rounded_b_2xl = TwBorderRadiusBottom(RemUnit(1.0));
+const rounded_b_3xl = TwBorderRadiusBottom(RemUnit(1.5));
+const rounded_b_full = TwBorderRadiusBottom(PxUnit(9999.0));
+const rounded_l_none = TwBorderRadiusLeft(PxUnit(0.0));
+const rounded_l_sm = TwBorderRadiusLeft(RemUnit(0.125));
+const rounded_l = TwBorderRadiusLeft(RemUnit(0.25));
+const rounded_l_md = TwBorderRadiusLeft(RemUnit(0.375));
+const rounded_l_lg = TwBorderRadiusLeft(RemUnit(0.5));
+const rounded_l_xl = TwBorderRadiusLeft(RemUnit(0.75));
+const rounded_l_2xl = TwBorderRadiusLeft(RemUnit(1.0));
+const rounded_l_3xl = TwBorderRadiusLeft(RemUnit(1.5));
+const rounded_l_full = TwBorderRadiusLeft(PxUnit(9999.0));
+const rounded_tl_none = TwBorderRadiusTopLeft(PxUnit(0.0));
+const rounded_tl_sm = TwBorderRadiusTopLeft(RemUnit(0.125));
+const rounded_tl = TwBorderRadiusTopLeft(RemUnit(0.25));
+const rounded_tl_md = TwBorderRadiusTopLeft(RemUnit(0.375));
+const rounded_tl_lg = TwBorderRadiusTopLeft(RemUnit(0.5));
+const rounded_tl_xl = TwBorderRadiusTopLeft(RemUnit(0.75));
+const rounded_tl_2xl = TwBorderRadiusTopLeft(RemUnit(1.0));
+const rounded_tl_3xl = TwBorderRadiusTopLeft(RemUnit(1.5));
+const rounded_tl_full = TwBorderRadiusTopLeft(PxUnit(9999.0));
+const rounded_tr_none = TwBorderRadiusTopRight(PxUnit(0.0));
+const rounded_tr_sm = TwBorderRadiusTopRight(RemUnit(0.125));
+const rounded_tr = TwBorderRadiusTopRight(RemUnit(0.25));
+const rounded_tr_md = TwBorderRadiusTopRight(RemUnit(0.375));
+const rounded_tr_lg = TwBorderRadiusTopRight(RemUnit(0.5));
+const rounded_tr_xl = TwBorderRadiusTopRight(RemUnit(0.75));
+const rounded_tr_2xl = TwBorderRadiusTopRight(RemUnit(1.0));
+const rounded_tr_3xl = TwBorderRadiusTopRight(RemUnit(1.5));
+const rounded_tr_full = TwBorderRadiusTopRight(PxUnit(9999.0));
+const rounded_br_none = TwBorderRadiusBottomRight(PxUnit(0.0));
+const rounded_br_sm = TwBorderRadiusBottomRight(RemUnit(0.125));
+const rounded_br = TwBorderRadiusBottomRight(RemUnit(0.25));
+const rounded_br_md = TwBorderRadiusBottomRight(RemUnit(0.375));
+const rounded_br_lg = TwBorderRadiusBottomRight(RemUnit(0.5));
+const rounded_br_xl = TwBorderRadiusBottomRight(RemUnit(0.75));
+const rounded_br_2xl = TwBorderRadiusBottomRight(RemUnit(1.0));
+const rounded_br_3xl = TwBorderRadiusBottomRight(RemUnit(1.5));
+const rounded_br_full = TwBorderRadiusBottomRight(PxUnit(9999.0));
+const rounded_bl_none = TwBorderRadiusBottomLeft(PxUnit(0.0));
+const rounded_bl_sm = TwBorderRadiusBottomLeft(RemUnit(0.125));
+const rounded_bl = TwBorderRadiusBottomLeft(RemUnit(0.25));
+const rounded_bl_md = TwBorderRadiusBottomLeft(RemUnit(0.375));
+const rounded_bl_lg = TwBorderRadiusBottomLeft(RemUnit(0.5));
+const rounded_bl_xl = TwBorderRadiusBottomLeft(RemUnit(0.75));
+const rounded_bl_2xl = TwBorderRadiusBottomLeft(RemUnit(1.0));
+const rounded_bl_3xl = TwBorderRadiusBottomLeft(RemUnit(1.5));
+const rounded_bl_full = TwBorderRadiusBottomLeft(PxUnit(9999.0));
+
+// **************************************************************************
 // Generator: BackgroundColorBuilder
 // **************************************************************************
 

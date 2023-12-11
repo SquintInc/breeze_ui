@@ -162,23 +162,23 @@ Flutter via `tailwind_elements`.
 <details open>
 <summary>Borders</summary>
 
-| Option            |     Supported      | Notes |
-|-------------------|:------------------:|-------|
-| Border Radius     |                    |       |
-| Border Width      | :white_check_mark: |       |
-| Border Color      | :white_check_mark: |       |
-| Border Style      |        :x:         |       |
-| Divide Width      |                    |       |
-| Divide Color      |                    |       |
-| Divide Style      |                    |       |
-| Outline Width     |                    |       |
-| Outline Color     |                    |       |
-| Outline Style     |                    |       |
-| Outline Offset    |                    |       |
-| Ring Width        |                    |       |
-| Ring Color        |                    |       |
-| Ring Offset Width |                    |       |
-| Ring Offset Color |                    |       |
+| Option            |     Supported      | Notes                                                                                 |
+|-------------------|:------------------:|---------------------------------------------------------------------------------------|
+| Border Radius     | :white_check_mark: | does not support `border-start-*` and `border-end-*` logical properties               |
+| Border Width      | :white_check_mark: | does not support `border-inline-start-*` and `border-inline-end-*` logical properties |
+| Border Color      | :white_check_mark: |                                                                                       |
+| Border Style      |        :x:         |                                                                                       |
+| Divide Width      |                    |                                                                                       |
+| Divide Color      |                    |                                                                                       |
+| Divide Style      |                    |                                                                                       |
+| Outline Width     |                    |                                                                                       |
+| Outline Color     |                    |                                                                                       |
+| Outline Style     |                    |                                                                                       |
+| Outline Offset    |                    |                                                                                       |
+| Ring Width        |                    |                                                                                       |
+| Ring Color        |                    |                                                                                       |
+| Ring Offset Width |                    |                                                                                       |
+| Ring Offset Color |                    |                                                                                       |
 
 </details>
 
