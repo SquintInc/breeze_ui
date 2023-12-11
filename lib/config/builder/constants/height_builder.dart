@@ -1,4 +1,4 @@
-import 'package:tailwind_elements/config/builder/constants/constants_generator.dart';
+import 'package:tailwind_elements/config/builder/constants/generators.dart';
 import 'package:tailwind_elements/config/options/sizing/height.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'height' constants

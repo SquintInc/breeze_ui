@@ -2,6 +2,7 @@ import 'package:build/build.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:tailwind_elements/config/builder/tailwind_config.dart';
+import 'package:tailwind_elements/config/options/colors/rgba_color.dart';
 import 'package:tailwind_elements/config/options/theme/units.dart';
 
 extension StringExt on String {
@@ -142,6 +143,9 @@ abstract class ColorConstantsGenerator extends Generator {
 
   /// The name of the Color wrapper value class (the wrapper class must take in
   /// a [Color] in its constructor).
+  ///
+  /// Usually a hard-coded string, since build_runner can't resolve 'dart:ui'
+  /// types when running the build.
   String get colorValueClassName;
 
   const ColorConstantsGenerator(this.options, this.config);
@@ -151,12 +155,11 @@ abstract class ColorConstantsGenerator extends Generator {
     final LibraryReader library,
     final BuildStep buildStep,
   ) async {
-    final Map<String, String> colors = config.getColors(themeConfigKey);
-    final allDeclarations = colors.entries.map((final color) {
-      final String varName =
-          _variableName(variablePrefix, color.key);
+    final Map<String, RgbaColor> colors = config.getColors(themeConfigKey);
+    final allDeclarations = colors.entries.map((final colorEntry) {
+      final String varName = _variableName(variablePrefix, colorEntry.key);
       final String lineDeclaration =
-          'const $varName = $colorValueClassName(Color(${color.value}));';
+          'const $varName = $colorValueClassName(Color(${colorEntry.value.toDartHexString()}));';
       return lineDeclaration;
     });
     return allDeclarations.join('\n');

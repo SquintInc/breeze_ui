@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:tailwind_elements/config/builder/unit_parser.dart';
+import 'package:tailwind_elements/config/options/colors/rgba_color.dart';
 import 'package:tailwind_elements/config/options/theme/units.dart';
 
 /// TailwindCSS config representation in Dart. This class is used by the
@@ -28,7 +28,7 @@ class TailwindConfig {
   Map<String, TwUnit> getUsable(final String key) {
     final Map<String, TwUnit> values =
         (theme['width'] as Map<String, dynamic>).map(
-      (final key, final value) => MapEntry(key, parseUnit(value)),
+      (final key, final value) => MapEntry(key, TwUnit.parse(value)),
     );
     return Map.unmodifiable(
       Map.fromEntries(
@@ -38,21 +38,21 @@ class TailwindConfig {
     );
   }
 
-  Map<String, String> getColors(final String key) {
-    final Map<String, String> flatListColors = {};
+  Map<String, RgbaColor> getColors(final String key) {
+    final Map<String, RgbaColor> flatListColors = {};
     final Map<String, dynamic> colors = {...theme['colors']};
     for (final entry in colors.entries) {
       if (ignoredColorKeys.contains(entry.key)) {
         continue;
       }
       if (entry.value is String) {
-        final color = parseColor(entry.value);
+        final color = RgbaColor.fromCssHex(entry.value);
         flatListColors[entry.key] = color;
       } else {
         final Map<String, dynamic> colorShades = {...entry.value};
         for (final colorShadeEntry in colorShades.entries) {
           if (colorShadeEntry.value is String) {
-            final color = parseColor(colorShadeEntry.value);
+            final color = RgbaColor.fromCssHex(colorShadeEntry.value);
             flatListColors['${entry.key}-${colorShadeEntry.key}'] = color;
           }
         }

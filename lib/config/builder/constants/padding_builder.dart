@@ -1,4 +1,4 @@
-import 'package:tailwind_elements/config/builder/constants/constants_generator.dart';
+import 'package:tailwind_elements/config/builder/constants/generators.dart';
 import 'package:tailwind_elements/config/options/spacing/padding.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'padding' constants

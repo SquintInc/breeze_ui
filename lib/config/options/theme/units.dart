@@ -19,6 +19,44 @@ sealed class TwUnit {
   UnitType get type;
 
   double get value;
+
+  /// Parses a CSS unit value from a string representation into one of the many
+  /// possible sealed [TwUnit] representations.
+  ///
+  /// See also:
+  ///   - [PxUnit]
+  ///   - [PercentUnit]
+  ///   - [EmUnit]
+  ///   - [RemUnit]
+  ///   - [ViewportUnit]
+  ///   - [SmallViewportUnit]
+  ///   - [DynamicViewportUnit]
+  ///   - [LargeViewportUnit]
+  ///   - [IgnoreUnit]
+  static TwUnit parse(final String value) {
+    if (value.endsWith('px')) {
+      return PxUnit(double.parse(value.substring(0, value.length - 2)));
+    } else if (value.endsWith('rem')) {
+      return RemUnit(double.parse(value.substring(0, value.length - 3)));
+    } else if (value.endsWith('%')) {
+      return PercentUnit(double.parse(value.substring(0, value.length - 1)));
+    } else if (value.endsWith('svh') || value.endsWith('svw')) {
+      return SmallViewportUnit(
+        double.parse(value.substring(0, value.length - 3)),
+      );
+    } else if (value.endsWith('dvh') || value.endsWith('dvw')) {
+      return DynamicViewportUnit(
+        double.parse(value.substring(0, value.length - 3)),
+      );
+    } else if (value.endsWith('lvh') || value.endsWith('lvw')) {
+      return LargeViewportUnit(
+        double.parse(value.substring(0, value.length - 3)),
+      );
+    } else if (value.endsWith('vh') || value.endsWith('vw')) {
+      return ViewportUnit(double.parse(value.substring(0, value.length - 2)));
+    }
+    return IgnoreUnit(value);
+  }
 }
 
 /// Represents a pixel unit (e.g. 50px).

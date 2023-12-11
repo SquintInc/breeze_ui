@@ -110,35 +110,35 @@ Flutter via `tailwind_elements`.
 <details open>
 <summary>Typography</summary>
 
-| Option                    | Supported | Notes |
-|---------------------------|:---------:|-------|
-| Font Family               |           |       |
-| Font Size                 |           |       |
-| Font Smoothing            |           |       |
-| Font Style                |           |       |
-| Font Weight               |           |       |
-| Font Variant Numeric      |           |       |
-| Letter Spacing            |           |       |
-| Line Clamp                |           |       |
-| Line Height               |           |       |
-| List Style Image          |           |       |
-| List Style Position       |           |       |
-| List Style Type           |           |       |
-| Text Align                |           |       |
-| Text Color                |           |       |
-| Text Decoration           |           |       |
-| Text Decoration Color     |           |       |
-| Text Decoration Style     |           |       |
-| Text Decoration Thickness |           |       |
-| Text Underline Offset     |           |       |
-| Text Transform            |           |       |
-| Text Overflow             |           |       |
-| Text Indent               |           |       |
-| Vertical Align            |           |       |
-| Whitespace                |           |       |
-| Word Break                |           |       |
-| Hyphens                   |           |       |
-| Content                   |           |       |
+| Option                    |     Supported      | Notes |
+|---------------------------|:------------------:|-------|
+| Font Family               |                    |       |
+| Font Size                 |                    |       |
+| Font Smoothing            |                    |       |
+| Font Style                |                    |       |
+| Font Weight               |                    |       |
+| Font Variant Numeric      |                    |       |
+| Letter Spacing            |                    |       |
+| Line Clamp                |                    |       |
+| Line Height               |                    |       |
+| List Style Image          |                    |       |
+| List Style Position       |                    |       |
+| List Style Type           |                    |       |
+| Text Align                |                    |       |
+| Text Color                | :white_check_mark: |       |
+| Text Decoration           |                    |       |
+| Text Decoration Color     |                    |       |
+| Text Decoration Style     |                    |       |
+| Text Decoration Thickness |                    |       |
+| Text Underline Offset     |                    |       |
+| Text Transform            |                    |       |
+| Text Overflow             |                    |       |
+| Text Indent               |                    |       |
+| Vertical Align            |                    |       |
+| Whitespace                |                    |       |
+| Word Break                |                    |       |
+| Hyphens                   |                    |       |
+| Content                   |                    |       |
 
 </details>
 
