@@ -6,7 +6,7 @@ class BorderColorBuilder extends ColorConstantsGenerator {
   const BorderColorBuilder(super.options, super.config);
 
   @override
-  String get themeConfigKey => 'borderColors';
+  String get themeConfigKey => 'borderColor';
 
   @override
   String get variablePrefix => 'border';

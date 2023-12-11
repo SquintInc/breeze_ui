@@ -12,6 +12,7 @@ import 'package:tailwind_elements/config/options/theme/units.dart';
 class TailwindConfig {
   final Map<String, dynamic> theme = {};
   static const Set<String> ignoredColorKeys = {
+    'DEFAULT',
     'inherit',
     'current',
   };
@@ -26,8 +27,7 @@ class TailwindConfig {
   }
 
   Map<String, TwUnit> getUsable(final String key) {
-    final Map<String, TwUnit> values =
-        (theme['width'] as Map<String, dynamic>).map(
+    final Map<String, TwUnit> values = (theme[key] as Map<String, dynamic>).map(
       (final key, final value) => MapEntry(key, TwUnit.parse(value)),
     );
     return Map.unmodifiable(
@@ -40,7 +40,7 @@ class TailwindConfig {
 
   Map<String, RgbaColor> getColors(final String key) {
     final Map<String, RgbaColor> flatListColors = {};
-    final Map<String, dynamic> colors = {...theme['colors']};
+    final Map<String, dynamic> colors = {...theme[key]};
     for (final entry in colors.entries) {
       if (ignoredColorKeys.contains(entry.key)) {
         continue;
