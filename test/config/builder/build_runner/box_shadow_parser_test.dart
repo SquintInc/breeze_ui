@@ -31,8 +31,8 @@ void main() {
     expect(
       BoxShadowParser.parse(boxShadowCssString).toDartConstructor(),
       equals('''[
-  TwBoxShadow(color: TwBoxShadowColor(Color(0x1A000000)), offsetX: PxUnit(0.0), offsetY: PxUnit(1.0), blurRadius: PxUnit(3.0), spreadRadius: PxUnit(0.0)),
-  TwBoxShadow(color: TwBoxShadowColor(Color(0x1A000000)), offsetX: PxUnit(0.0), offsetY: PxUnit(1.0), blurRadius: PxUnit(2.0), spreadRadius: PxUnit(-1.0)),
+TwBoxShadow(color: TwBoxShadowColor(Color(0x1A000000)), offsetX: PxUnit(0.0), offsetY: PxUnit(1.0), blurRadius: PxUnit(3.0), spreadRadius: PxUnit(0.0)),
+TwBoxShadow(color: TwBoxShadowColor(Color(0x1A000000)), offsetX: PxUnit(0.0), offsetY: PxUnit(1.0), blurRadius: PxUnit(2.0), spreadRadius: PxUnit(-1.0)),
 ]
 '''),
     );
