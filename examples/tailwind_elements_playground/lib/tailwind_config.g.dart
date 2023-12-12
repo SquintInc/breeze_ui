@@ -1035,6 +1035,52 @@ const shadow_inner = TwBoxShadows(<TwBoxShadow>[]);
 const shadow_none = TwBoxShadows(<TwBoxShadow>[]);
 
 // **************************************************************************
+// Generator: FontSizeBuilder
+// **************************************************************************
+
+const font_xs = TwFontSize(RemUnit(0.75), TwLineHeight(RemUnit(1.0)));
+const font_sm = TwFontSize(RemUnit(0.875), TwLineHeight(RemUnit(1.25)));
+const font_base = TwFontSize(RemUnit(1.0), TwLineHeight(RemUnit(1.5)));
+const font_lg = TwFontSize(RemUnit(1.125), TwLineHeight(RemUnit(1.75)));
+const font_xl = TwFontSize(RemUnit(1.25), TwLineHeight(RemUnit(1.75)));
+const font_2xl = TwFontSize(RemUnit(1.5), TwLineHeight(RemUnit(2.0)));
+const font_3xl = TwFontSize(RemUnit(1.875), TwLineHeight(RemUnit(2.25)));
+const font_4xl = TwFontSize(RemUnit(2.25), TwLineHeight(RemUnit(2.5)));
+const font_5xl = TwFontSize(RemUnit(3.0), TwLineHeight(PercentUnit(100.0)));
+const font_6xl = TwFontSize(RemUnit(3.75), TwLineHeight(PercentUnit(100.0)));
+const font_7xl = TwFontSize(RemUnit(4.5), TwLineHeight(PercentUnit(100.0)));
+const font_8xl = TwFontSize(RemUnit(6.0), TwLineHeight(PercentUnit(100.0)));
+const font_9xl = TwFontSize(RemUnit(8.0), TwLineHeight(PercentUnit(100.0)));
+
+// **************************************************************************
+// Generator: FontWeightBuilder
+// **************************************************************************
+
+const font_thin = TwFontWeight(100);
+const font_extralight = TwFontWeight(200);
+const font_light = TwFontWeight(300);
+const font_normal = TwFontWeight(400);
+const font_medium = TwFontWeight(500);
+const font_semibold = TwFontWeight(600);
+const font_bold = TwFontWeight(700);
+const font_extrabold = TwFontWeight(800);
+const font_black = TwFontWeight(900);
+
+// **************************************************************************
+// Generator: LineHeightBuilder
+// **************************************************************************
+
+const leading_none = TwLineHeight(PercentUnit(100.0));
+const leading_3 = TwLineHeight(RemUnit(0.75));
+const leading_4 = TwLineHeight(RemUnit(1.0));
+const leading_5 = TwLineHeight(RemUnit(1.25));
+const leading_6 = TwLineHeight(RemUnit(1.5));
+const leading_7 = TwLineHeight(RemUnit(1.75));
+const leading_8 = TwLineHeight(RemUnit(2.0));
+const leading_9 = TwLineHeight(RemUnit(2.25));
+const leading_10 = TwLineHeight(RemUnit(2.5));
+
+// **************************************************************************
 // Generator: BackgroundColorBuilder
 // **************************************************************************
 

@@ -48,7 +48,13 @@ SelectableState getSelectableState(final Set<MaterialState> states) {
   return SelectableState.normal;
 }
 
-/// Flattened style data class for all Tailwind CSS properties.
+/// Flattened style data class for Tailwind CSS properties pertaining to text
+/// styling
+@immutable
+class TwTextStyle {}
+
+/// Flattened style data class for Tailwind CSS properties that represent a
+/// 'container' and wraps any arbitrary child widget.
 @immutable
 class TwStyle {
   // Background styling

@@ -26,10 +26,8 @@ class TailwindConfig {
       ..addAll(theme);
   }
 
-  Map<String, String> getRawValues(final String key) {
-    final Map<String, String> values = (theme[key] as Map<String, dynamic>).map(
-      (final key, final value) => MapEntry(key, value.toString()),
-    );
+  Map<String, dynamic> getRawValues(final String key) {
+    final Map<String, dynamic> values = theme[key] as Map<String, dynamic>;
     return Map.unmodifiable(values);
   }
 

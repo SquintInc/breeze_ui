@@ -1,8 +1,8 @@
 import 'package:tailwind_elements/config/builder/builders/generators.dart';
 import 'package:tailwind_elements/config/options/borders/border_radius.dart';
 
-/// A [ConstantsGenerator] used to generate Tailwind 'rounded' constants
-/// to the .g.dart part file.
+/// A [ConstantsGenerator] used to generate Tailwind 'rounded-*' border radius
+/// constants to the .g.dart part file.
 class BorderRadiusBuilder extends ConstantsGenerator {
   const BorderRadiusBuilder(super.options, super.config);
 

@@ -1,8 +1,8 @@
 import 'package:tailwind_elements/config/builder/builders/generators.dart';
 import 'package:tailwind_elements/config/options/borders/border_width.dart';
 
-/// A [ConstantsGenerator] used to generate Tailwind 'margin' constants
-/// to the .g.dart part file.
+/// A [ConstantsGenerator] used to generate Tailwind 'border-*' border width
+/// constants to the .g.dart part file.
 class BorderWidthBuilder extends ConstantsGenerator {
   const BorderWidthBuilder(super.options, super.config);
 

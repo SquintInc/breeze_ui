@@ -42,6 +42,7 @@ sealed class TwUnit {
   ///   - [IgnoreUnit]
   static TwUnit parse(final String value) {
     if (value == '0') return const PxUnit(0);
+    if (value == '1') return const PercentUnit(100);
 
     if (value.endsWith('px')) {
       return PxUnit(double.parse(value.substring(0, value.length - 2)));
@@ -167,7 +168,7 @@ class PercentUnit implements TwUnit {
   @override
   final double value;
 
-  const PercentUnit(this.value);
+  const PercentUnit(this.value) : assert(value >= 0 && value <= 100);
 
   @override
   UnitType get type => UnitType.percent;

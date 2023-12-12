@@ -10,5 +10,8 @@ export 'config/options/sizing/min_width.dart';
 export 'config/options/sizing/width.dart';
 export 'config/options/spacing/margin.dart';
 export 'config/options/spacing/padding.dart';
+export 'config/options/typography/font_size.dart';
+export 'config/options/typography/font_weight.dart';
+export 'config/options/typography/line_height.dart';
 export 'config/options/units.dart';
 export 'widgets/style.dart';

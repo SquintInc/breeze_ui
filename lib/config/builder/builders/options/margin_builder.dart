@@ -1,7 +1,7 @@
 import 'package:tailwind_elements/config/builder/builders/generators.dart';
 import 'package:tailwind_elements/config/options/spacing/margin.dart';
 
-/// A [ConstantsGenerator] used to generate Tailwind 'margin' constants
+/// A [ConstantsGenerator] used to generate Tailwind 'm-*' margin constants
 /// to the .g.dart part file.
 class MarginBuilder extends ConstantsGenerator {
   const MarginBuilder(super.options, super.config);

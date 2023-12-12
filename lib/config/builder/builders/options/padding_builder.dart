@@ -1,7 +1,7 @@
 import 'package:tailwind_elements/config/builder/builders/generators.dart';
 import 'package:tailwind_elements/config/options/spacing/padding.dart';
 
-/// A [ConstantsGenerator] used to generate Tailwind 'padding' constants
+/// A [ConstantsGenerator] used to generate Tailwind 'p-*' padding constants
 /// to the .g.dart part file.
 class PaddingBuilder extends ConstantsGenerator {
   const PaddingBuilder(super.options, super.config);

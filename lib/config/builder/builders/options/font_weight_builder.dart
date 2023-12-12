@@ -1,19 +1,19 @@
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:tailwind_elements/config/builder/build_runner/box_shadow_parser.dart';
 import 'package:tailwind_elements/config/builder/builders/generators.dart';
+import 'package:tailwind_elements/config/options/typography/font_weight.dart';
 
-/// A [ConstantsGenerator] used to generate Tailwind 'shadow-*' box shadow
+/// A [ConstantsGenerator] used to generate Tailwind 'font-*' font weight
 /// constants to the .g.dart part file.
-class BoxShadowBuilder extends ConstantsGenerator {
-  const BoxShadowBuilder(super.options, super.config);
+class FontWeightBuilder extends ConstantsGenerator {
+  const FontWeightBuilder(super.options, super.config);
 
   @override
-  String get themeConfigKey => 'boxShadow';
+  String get themeConfigKey => 'fontWeight';
 
   @override
   Map<String, String> get variablePrefixToValueClassName => {
-        'shadow': 'TwBoxShadow',
+        'font': (TwFontWeight).toString(),
       };
 
   @override
@@ -21,31 +21,24 @@ class BoxShadowBuilder extends ConstantsGenerator {
     final LibraryReader library,
     final BuildStep buildStep,
   ) async {
-    final Map<String, String> boxShadowsMap = config
+    final Map<String, String> themeValues = config
         .getRawValues(themeConfigKey)
         .map((final key, final value) => MapEntry(key, value.toString()));
     final allDeclarations = variablePrefixToValueClassName.entries.map((
       final prefix,
     ) {
-      final prefixDeclarations =
-          boxShadowsMap.entries.map((final boxShadowEntry) {
+      final prefixDeclarations = themeValues.entries.map((final themeValue) {
         final String varName = CodeWriter.variableName(
           prefix.key,
-          boxShadowEntry.key == 'DEFAULT'
-              ? ''
-              : boxShadowEntry.key.toSnakeCase(),
+          themeValue.key == 'DEFAULT' ? '' : themeValue.key.toSnakeCase(),
         );
-        final boxShadows = BoxShadowParser.parse(boxShadowEntry.value);
         final String lineDeclaration = CodeWriter.dartLineDeclaration(
           variableName: varName,
-          valueConstructor:
-              boxShadows.toDartConstructor(wrapperClassName: 'TwBoxShadows'),
+          valueConstructor: '${prefix.value}(${themeValue.value})',
         );
         return lineDeclaration;
       });
-      return prefixDeclarations
-          .where((final declaration) => declaration.isNotEmpty)
-          .join('\n');
+      return prefixDeclarations.join('\n');
     });
     return allDeclarations.join('\n');
   }
