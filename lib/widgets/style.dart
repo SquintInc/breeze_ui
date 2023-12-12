@@ -123,7 +123,7 @@ class TwStyle {
   // Border styling
   final TwBorder? border;
   final TwBorderColor? borderColor;
-  final TwBorderRadius? borderRadius;
+  final TwBorderRadius borderRadius;
   final double? borderStrokeAlign;
 
   // Sizing styling
@@ -154,7 +154,8 @@ class TwStyle {
     // Border styling
     this.border,
     this.borderColor,
-    this.borderRadius,
+    this.borderRadius =
+        const TwBorderRadius.all(TwBorderRadiusAll(PxUnit(0.0))),
     this.borderStrokeAlign,
 
     // Sizing styling
