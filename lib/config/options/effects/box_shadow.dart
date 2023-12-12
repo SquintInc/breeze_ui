@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
-import 'package:tailwind_elements/config/options/theme/colors.dart';
-import 'package:tailwind_elements/config/options/theme/units.dart';
+import 'package:tailwind_elements/config/options/colors.dart';
+import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwBoxShadow {

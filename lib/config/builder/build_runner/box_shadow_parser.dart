@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:tailwind_elements/config/builder/build_runner/rgba_color.dart';
-import 'package:tailwind_elements/config/options/theme/units.dart';
+import 'package:tailwind_elements/config/options/units.dart';
 
 const String numValuePattern = '[0-9]+(?:[a-zA-Z%]{0,4})';
 const String boxShadowPattern =

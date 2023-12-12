@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:tailwind_elements/config/builder/build_runner/rgba_color.dart';
-import 'package:tailwind_elements/config/options/theme/units.dart';
+import 'package:tailwind_elements/config/options/units.dart';
 
 /// TailwindCSS config representation in Dart. This class is used by the
 /// [TailwindConfigBuilder] to aid in generating Tailwind constants.

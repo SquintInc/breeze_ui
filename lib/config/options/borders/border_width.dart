@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:tailwind_elements/config/options/box_types.dart';
-import 'package:tailwind_elements/config/options/theme/units.dart';
+import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwBorderTop {
@@ -72,30 +72,19 @@ class TwBorderLeft {
 
 @immutable
 class TwBorderAll {
-  final TwUnit top;
-  final TwUnit right;
-  final TwUnit bottom;
-  final TwUnit left;
+  final TwUnit value;
 
-  const TwBorderAll(final TwUnit all)
-      : top = all,
-        right = all,
-        bottom = all,
-        left = all;
+  const TwBorderAll(this.value);
 
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
       other is TwBorderAll &&
           runtimeType == other.runtimeType &&
-          top == other.top &&
-          right == other.right &&
-          bottom == other.bottom &&
-          left == other.left;
+          value == other.value;
 
   @override
-  int get hashCode =>
-      top.hashCode ^ right.hashCode ^ bottom.hashCode ^ left.hashCode;
+  int get hashCode => value.hashCode;
 }
 
 @immutable
@@ -190,6 +179,17 @@ class TwBorder {
         y = const TwBorderY(PxUnit(0)),
         all = const TwBorderAll(PxUnit(0)),
         type = BoxSideType.trbl;
+
+  bool get isEmpty => switch (type) {
+        BoxSideType.all => all.value.value == 0,
+        BoxSideType.trbl => top.value.value == 0 &&
+            right.value.value == 0 &&
+            bottom.value.value == 0 &&
+            left.value.value == 0,
+        BoxSideType.x => x.value.value == 0,
+        BoxSideType.y => y.value.value == 0,
+        BoxSideType.xy => x.value.value == 0 && y.value.value == 0,
+      };
 
   @override
   bool operator ==(final Object other) =>

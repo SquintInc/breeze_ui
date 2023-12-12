@@ -10,8 +10,15 @@ enum UnitType {
   smallViewport,
   largeViewport,
   dynamicViewport,
-  ignored
+  ignored,
 }
+
+double _getLogicalPixels(final UnitType type, final double value) =>
+    switch (type) {
+      UnitType.px => value,
+      UnitType.rem || UnitType.em => value * 16,
+      _ => 0,
+    };
 
 /// Represents a CSS unit using a sealed class.
 @immutable
@@ -61,6 +68,19 @@ sealed class TwUnit {
   }
 }
 
+extension TwUnitExtension on TwUnit {
+  /// Returns the value of this unit in logical pixels, for [PxUnit], [RemUnit],
+  /// and [EmUnit] units only. Will return 0 for all other unit types.
+  double get logicalPixels => _getLogicalPixels(type, value);
+
+  bool get isPercentageBased =>
+      type == UnitType.percent ||
+      type == UnitType.viewport ||
+      type == UnitType.smallViewport ||
+      type == UnitType.largeViewport ||
+      type == UnitType.dynamicViewport;
+}
+
 /// Represents a pixel unit (e.g. 50px).
 @immutable
 class PxUnit implements TwUnit {
@@ -98,8 +118,6 @@ class EmUnit implements TwUnit {
   @override
   UnitType get type => UnitType.em;
 
-  double toPx(final double rootFontSize) => value * rootFontSize;
-
   @override
   String toString() => '$value (${type.name})';
 
@@ -125,8 +143,6 @@ class RemUnit implements TwUnit {
 
   @override
   UnitType get type => UnitType.rem;
-
-  double toPx(final double rootFontSize) => value * rootFontSize;
 
   @override
   String toString() => '$value (${type.name})';

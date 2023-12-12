@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:tailwind_elements/config/builder/build_runner/rgba_color.dart';
 import 'package:tailwind_elements/config/builder/tailwind_config.dart';
-import 'package:tailwind_elements/config/options/theme/units.dart';
+import 'package:tailwind_elements/config/options/units.dart';
 
 extension StringExt on String {
   String toSnakeCase() {

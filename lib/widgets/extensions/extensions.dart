@@ -1,0 +1,157 @@
+import 'dart:math';
+
+import 'package:flutter/widgets.dart';
+import 'package:tailwind_elements/config/options/borders/border_radius.dart';
+import 'package:tailwind_elements/config/options/borders/border_width.dart';
+import 'package:tailwind_elements/config/options/box_types.dart';
+import 'package:tailwind_elements/config/options/colors.dart';
+import 'package:tailwind_elements/config/options/effects/box_shadow.dart';
+import 'package:tailwind_elements/config/options/spacing/margin.dart';
+import 'package:tailwind_elements/config/options/spacing/padding.dart';
+import 'package:tailwind_elements/config/options/units.dart';
+
+extension MarginExtension on TwMargin {
+  EdgeInsetsGeometry toEdgeInsets() => switch (type) {
+        BoxSideType.all => EdgeInsets.all(all.value.logicalPixels),
+        BoxSideType.trbl => EdgeInsets.only(
+            top: top.value.logicalPixels,
+            right: right.value.logicalPixels,
+            bottom: bottom.value.logicalPixels,
+            left: left.value.logicalPixels,
+          ),
+        BoxSideType.x ||
+        BoxSideType.y ||
+        BoxSideType.xy =>
+          EdgeInsets.symmetric(
+            horizontal: x.value.logicalPixels,
+            vertical: y.value.logicalPixels,
+          ),
+      };
+}
+
+extension PaddingExtension on TwPadding {
+  EdgeInsetsGeometry toEdgeInsets() => switch (type) {
+        BoxSideType.all => EdgeInsets.all(all.value.logicalPixels),
+        BoxSideType.trbl => EdgeInsets.only(
+            top: top.value.logicalPixels,
+            right: right.value.logicalPixels,
+            bottom: bottom.value.logicalPixels,
+            left: left.value.logicalPixels,
+          ),
+        BoxSideType.x ||
+        BoxSideType.y ||
+        BoxSideType.xy =>
+          EdgeInsets.symmetric(
+            horizontal: x.value.logicalPixels,
+            vertical: y.value.logicalPixels,
+          ),
+      };
+}
+
+extension BorderRadiusExtension on TwBorderRadius {
+  BorderRadius toBorderRadius() => switch (type) {
+        BoxCornerType.all => BorderRadius.circular(all.value.logicalPixels),
+        BoxCornerType.tltrbrbl => BorderRadius.only(
+            topLeft: topLeft.value.logicalPixels > 0
+                ? Radius.circular(topLeft.value.logicalPixels)
+                : Radius.zero,
+            topRight: topRight.value.logicalPixels > 0
+                ? Radius.circular(topRight.value.logicalPixels)
+                : Radius.zero,
+            bottomRight: bottomRight.value.logicalPixels > 0
+                ? Radius.circular(bottomRight.value.logicalPixels)
+                : Radius.zero,
+            bottomLeft: bottomLeft.value.logicalPixels > 0
+                ? Radius.circular(bottomLeft.value.logicalPixels)
+                : Radius.zero,
+          ),
+        BoxCornerType.trbl => BorderRadius.only(
+            topLeft: Radius.circular(
+              max(top.value.logicalPixels, left.value.logicalPixels),
+            ),
+            topRight: Radius.circular(
+              max(top.value.logicalPixels, right.value.logicalPixels),
+            ),
+            bottomRight: Radius.circular(
+              max(bottom.value.logicalPixels, right.value.logicalPixels),
+            ),
+            bottomLeft: Radius.circular(
+              max(bottom.value.logicalPixels, left.value.logicalPixels),
+            ),
+          )
+      };
+}
+
+extension BorderWidthExtension on TwBorder {
+  Border? toBorder(
+    final TwBorderColor? borderColor,
+    final double? borderStrokeAlign,
+  ) {
+    if (isEmpty) return null;
+
+    return switch (type) {
+      BoxSideType.all => Border.all(
+          color: borderColor?.color ?? const Color(0xFF000000),
+          width: all.value.logicalPixels,
+          strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
+        ),
+      BoxSideType.trbl => Border(
+          top: BorderSide(
+            color: borderColor?.color ?? const Color(0xFF000000),
+            width: top.value.logicalPixels,
+            strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
+          ),
+          right: BorderSide(
+            color: borderColor?.color ?? const Color(0xFF000000),
+            width: right.value.logicalPixels,
+            strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
+          ),
+          bottom: BorderSide(
+            color: borderColor?.color ?? const Color(0xFF000000),
+            width: bottom.value.logicalPixels,
+            strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
+          ),
+          left: BorderSide(
+            color: borderColor?.color ?? const Color(0xFF000000),
+            width: left.value.logicalPixels,
+            strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
+          ),
+        ),
+      BoxSideType.x || BoxSideType.y || BoxSideType.xy => Border.symmetric(
+          horizontal: x.value.value > 0
+              ? BorderSide(
+                  color: borderColor?.color ?? const Color(0xFF000000),
+                  width: x.value.logicalPixels,
+                  strokeAlign:
+                      borderStrokeAlign ?? BorderSide.strokeAlignInside,
+                )
+              : BorderSide.none,
+          vertical: y.value.value > 0
+              ? BorderSide(
+                  color: borderColor?.color ?? const Color(0xFF000000),
+                  width: y.value.logicalPixels,
+                  strokeAlign:
+                      borderStrokeAlign ?? BorderSide.strokeAlignInside,
+                )
+              : BorderSide.none,
+        ),
+    };
+  }
+}
+
+extension BoxShadowExtension on TwBoxShadows {
+  List<BoxShadow> toBoxShadows(final TwBoxShadowColor? boxShadowColor) =>
+      boxShadows
+          .map(
+            (final boxShadow) => BoxShadow(
+              color: boxShadowColor?.color ?? boxShadow.color.color,
+              offset: Offset(
+                boxShadow.offsetX.logicalPixels,
+                boxShadow.offsetY.logicalPixels,
+              ),
+              blurRadius: boxShadow.blurRadius.logicalPixels,
+              spreadRadius: boxShadow.spreadRadius.logicalPixels,
+            ),
+          )
+          .toList();
+}

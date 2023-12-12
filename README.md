@@ -166,7 +166,7 @@ Flutter via `tailwind_elements`.
 |-------------------|:------------------:|---------------------------------------------------------------------------------------|
 | Border Radius     | :white_check_mark: | does not support `border-start-*` and `border-end-*` logical properties               |
 | Border Width      | :white_check_mark: | does not support `border-inline-start-*` and `border-inline-end-*` logical properties |
-| Border Color      | :white_check_mark: |                                                                                       |
+| Border Color      | :white_check_mark: | currently does not support setting individual border side colors                      |
 | Border Style      |        :x:         |                                                                                       |
 | Divide Width      |                    |                                                                                       |
 | Divide Color      |                    |                                                                                       |

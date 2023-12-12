@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:tailwind_elements/config/options/box_types.dart';
-import 'package:tailwind_elements/config/options/theme/units.dart';
+import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwBorderRadiusTopLeft {
@@ -140,33 +140,19 @@ class TwBorderRadiusLeft {
 
 @immutable
 class TwBorderRadiusAll {
-  final TwUnit topLeft;
-  final TwUnit topRight;
-  final TwUnit bottomRight;
-  final TwUnit bottomLeft;
+  final TwUnit value;
 
-  const TwBorderRadiusAll(final TwUnit all)
-      : topLeft = all,
-        topRight = all,
-        bottomRight = all,
-        bottomLeft = all;
+  const TwBorderRadiusAll(this.value);
 
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
       other is TwBorderRadiusAll &&
           runtimeType == other.runtimeType &&
-          topLeft == other.topLeft &&
-          topRight == other.topRight &&
-          bottomRight == other.bottomRight &&
-          bottomLeft == other.bottomLeft;
+          value == other.value;
 
   @override
-  int get hashCode =>
-      topLeft.hashCode ^
-      topRight.hashCode ^
-      bottomRight.hashCode ^
-      bottomLeft.hashCode;
+  int get hashCode => value.hashCode;
 }
 
 @immutable
