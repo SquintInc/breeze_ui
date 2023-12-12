@@ -79,6 +79,8 @@ extension TwUnitExtension on TwUnit {
       type == UnitType.smallViewport ||
       type == UnitType.largeViewport ||
       type == UnitType.dynamicViewport;
+
+  double get percentage => isPercentageBased ? value / 100 : 1;
 }
 
 /// Represents a pixel unit (e.g. 50px).

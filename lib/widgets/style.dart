@@ -1,6 +1,5 @@
 // ignore_for_file: always_put_required_named_parameters_first
-import 'package:flutter/foundation.dart';
-import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
 import 'package:tailwind_elements/config/options/borders/border_radius.dart';
 import 'package:tailwind_elements/config/options/borders/border_width.dart';
 import 'package:tailwind_elements/config/options/colors.dart';
@@ -14,6 +13,7 @@ import 'package:tailwind_elements/config/options/sizing/width.dart';
 import 'package:tailwind_elements/config/options/spacing/margin.dart';
 import 'package:tailwind_elements/config/options/spacing/padding.dart';
 import 'package:tailwind_elements/config/options/units.dart';
+import 'package:tailwind_elements/widgets/extensions/extensions.dart';
 
 export 'package:tailwind_elements/config/options/units.dart';
 export 'package:tailwind_elements/widgets/extensions/extensions.dart';
@@ -109,4 +109,66 @@ class TwStyle {
 
   bool get hasDecorations =>
       hasBackgroundDecoration || hasBorderDecoration || hasBoxShadowDecoration;
+
+  Decoration? get boxDecoration {
+    if (!hasDecorations) {
+      return null;
+    }
+    return BoxDecoration(
+      color: backgroundColor?.color,
+      image: backgroundImage,
+      gradient: backgroundGradient,
+      border: border?.toBorder(borderColor, borderStrokeAlign),
+      borderRadius: borderRadius?.toBorderRadius(),
+      boxShadow: boxShadow?.toBoxShadows(boxShadowColor),
+    );
+  }
+
+  BoxConstraints getPercentageBoxConstraints(
+    final double parentWidth,
+    final double parentHeight,
+  ) {
+    final minWidth = this.minWidth;
+    final maxWidth = this.maxWidth;
+    final minHeight = this.minHeight;
+    final maxHeight = this.maxHeight;
+
+    final minWidthPx = minWidth != null
+        ? (minWidth.value.isPercentageBased
+            ? parentWidth * minWidth.value.percentage
+            : minWidth.value.logicalPixels)
+        : 0.0;
+    final minHeightPx = minHeight != null
+        ? (minHeight.value.isPercentageBased
+            ? parentHeight * minHeight.value.percentage
+            : minHeight.value.logicalPixels)
+        : 0.0;
+    final maxWidthPx = maxWidth != null
+        ? (maxWidth.value.isPercentageBased
+            ? parentWidth * maxWidth.value.percentage
+            : maxWidth.value.logicalPixels)
+        : double.infinity;
+    final maxHeightPx = maxHeight != null
+        ? (maxHeight.value.isPercentageBased
+            ? parentHeight * maxHeight.value.percentage
+            : maxHeight.value.logicalPixels)
+        : double.infinity;
+
+    return BoxConstraints(
+      minWidth: minWidthPx,
+      maxWidth: maxWidthPx,
+      minHeight: minHeightPx,
+      maxHeight: maxHeightPx,
+    );
+  }
+
+  BoxConstraints? getSimpleConstraints() {
+    if (!hasConstraints) return null;
+    return BoxConstraints(
+      minWidth: minWidth?.value.logicalPixels ?? 0.0,
+      maxWidth: maxWidth?.value.logicalPixels ?? double.infinity,
+      minHeight: minHeight?.value.logicalPixels ?? 0.0,
+      maxHeight: maxHeight?.value.logicalPixels ?? double.infinity,
+    );
+  }
 }

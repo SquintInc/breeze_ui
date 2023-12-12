@@ -31,6 +31,7 @@ class TailwindElementsPlayground extends StatelessWidget {
                 padding: TwPadding.all(p_4),
                 borderRadius: TwBorderRadius.all(rounded_md),
               ),
+              alignment: Alignment.center,
               child: Text('Flutter Demo'),
             ),
             TwSizedBox(
@@ -41,6 +42,20 @@ class TailwindElementsPlayground extends StatelessWidget {
                 width: w_56,
                 height: h_56,
                 backgroundColor: bg_green_500,
+              ),
+            ),
+            TwDiv(
+              style: TwStyle(
+                width: w_frac_1_12,
+                height: h_24,
+                backgroundColor: bg_pink_500,
+              ),
+            ),
+            TwDiv(
+              style: TwStyle(
+                width: w_full,
+                height: h_24,
+                backgroundColor: bg_purple_500,
               ),
             ),
           ],
