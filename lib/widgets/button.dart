@@ -59,7 +59,7 @@ class TwButton extends StatelessWidget {
   final AlignmentGeometry? alignment;
 
   const TwButton({
-    required this.style,
+    this.style = const TwStyle(),
     this.disabled,
     this.focused,
     this.pressed,

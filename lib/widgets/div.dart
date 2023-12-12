@@ -14,7 +14,7 @@ class TwDiv extends StatelessWidget {
   final AlignmentGeometry? transformAlignment;
 
   const TwDiv({
-    required this.style,
+    this.style = const TwStyle(),
     this.child,
     this.alignment,
     this.clipBehavior = Clip.none,
