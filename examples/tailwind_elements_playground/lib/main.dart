@@ -62,7 +62,14 @@ class TailwindElementsPlayground extends StatelessWidget {
                 border: TwBorder.all(border_4),
                 borderColor: border_black,
               ),
-              child: const Text('Hello World!'),
+              child: const TwText(
+                'Hello World 123!',
+                style: TwTextStyle(
+                  textColor: text_white,
+                  fontSize: text_2xl,
+                  fontWeight: font_normal,
+                ),
+              ),
             ),
             const TwSizedBox(
               height: h_12,

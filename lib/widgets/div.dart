@@ -3,7 +3,7 @@ import 'package:tailwind_elements/widgets/style.dart';
 
 /// A [Container] widget wrapper with support for Tailwind styled properties.
 class TwDiv extends StatelessWidget {
-  // Tailwind style properties
+  /// Tailwind style properties
   final TwStyle style;
 
   // Passthrough [Container] properties

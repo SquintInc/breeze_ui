@@ -110,35 +110,35 @@ Flutter via `tailwind_elements`.
 <details open>
 <summary>Typography</summary>
 
-| Option                    |      Supported       | Notes                                                                                 |
-|---------------------------|:--------------------:|---------------------------------------------------------------------------------------|
-| Font Family               |                      |                                                                                       |
-| Font Size                 |  :white_check_mark:  |                                                                                       |
-| Font Smoothing            |                      |                                                                                       |
-| Font Style                | :information_source: | use `dart:ui`'s [`FontStyle`](https://api.flutter.dev/flutter/dart-ui/FontStyle.html) |
-| Font Weight               |  :white_check_mark:  |                                                                                       |
-| Font Variant Numeric      |                      |                                                                                       |
-| Letter Spacing            |                      |                                                                                       |
-| Line Clamp                |                      |                                                                                       |
-| Line Height               |  :white_check_mark:  |                                                                                       |
-| List Style Image          |                      |                                                                                       |
-| List Style Position       |                      |                                                                                       |
-| List Style Type           |                      |                                                                                       |
-| Text Align                |                      |                                                                                       |
-| Text Color                |  :white_check_mark:  |                                                                                       |
-| Text Decoration           |                      |                                                                                       |
-| Text Decoration Color     |                      |                                                                                       |
-| Text Decoration Style     |                      |                                                                                       |
-| Text Decoration Thickness |                      |                                                                                       |
-| Text Underline Offset     |                      |                                                                                       |
-| Text Transform            |                      |                                                                                       |
-| Text Overflow             |                      |                                                                                       |
-| Text Indent               |                      |                                                                                       |
-| Vertical Align            |                      |                                                                                       |
-| Whitespace                |                      |                                                                                       |
-| Word Break                |                      |                                                                                       |
-| Hyphens                   |                      |                                                                                       |
-| Content                   |                      |                                                                                       |
+| Option                    |                Supported                | Notes                                                                                                     |
+|---------------------------|:---------------------------------------:|-----------------------------------------------------------------------------------------------------------|
+| Font Family               |                                         |                                                                                                           |
+| Font Size                 |           :white_check_mark:            |                                                                                                           |
+| Font Smoothing            |                                         |                                                                                                           |
+| Font Style                | :white_check_mark: :information_source: | use `dart:ui`'s [`FontStyle`](https://api.flutter.dev/flutter/dart-ui/FontStyle.html)                     |
+| Font Weight               |           :white_check_mark:            |                                                                                                           |
+| Font Variant Numeric      |                                         |                                                                                                           |
+| Letter Spacing            |           :white_check_mark:            |                                                                                                           |
+| Line Clamp                | :white_check_mark: :information_source: | use `maxLines` property where applicable in Flutter                                                       |
+| Line Height               |           :white_check_mark:            |                                                                                                           |
+| List Style Image          |                                         |                                                                                                           |
+| List Style Position       |                                         |                                                                                                           |
+| List Style Type           |                                         |                                                                                                           |
+| Text Align                | :white_check_mark: :information_source: | use `dart:ui`'s [`TextAlign`](https://api.flutter.dev/flutter/dart-ui/TextAlign.html)                     |
+| Text Color                |           :white_check_mark:            |                                                                                                           |
+| Text Decoration           | :white_check_mark: :information_source: | use `dart:ui`'s [`TextDecoration`](https://api.flutter.dev/flutter/dart-ui/TextDecoration-class.html)     |
+| Text Decoration Color     |           :white_check_mark:            |                                                                                                           |
+| Text Decoration Style     | :white_check_mark: :information_source: | use `dart:ui`'s [`TextDecorationStyle`](https://api.flutter.dev/flutter/dart-ui/TextDecorationStyle.html) |
+| Text Decoration Thickness |           :white_check_mark:            |                                                                                                           |
+| Text Underline Offset     |                   :x:                   |                                                                                                           |
+| Text Transform            |                                         |                                                                                                           |
+| Text Overflow             |                                         |                                                                                                           |
+| Text Indent               |                                         |                                                                                                           |
+| Vertical Align            |                                         |                                                                                                           |
+| Whitespace                |                                         |                                                                                                           |
+| Word Break                |                                         |                                                                                                           |
+| Hyphens                   |                                         |                                                                                                           |
+| Content                   |                                         |                                                                                                           |
 
 </details>
 

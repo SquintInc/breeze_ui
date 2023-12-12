@@ -4,8 +4,8 @@ import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwFontSize {
-  final TwUnit fontSize;
+  final TwUnit value;
   final TwLineHeight lineHeight;
 
-  const TwFontSize(this.fontSize, this.lineHeight);
+  const TwFontSize(this.value, this.lineHeight);
 }

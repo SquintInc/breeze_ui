@@ -42,12 +42,13 @@ sealed class TwUnit {
   ///   - [IgnoreUnit]
   static TwUnit parse(final String value) {
     if (value == '0') return const PxUnit(0);
-    if (value == '1') return const PercentUnit(100);
 
     if (value.endsWith('px')) {
       return PxUnit(double.parse(value.substring(0, value.length - 2)));
     } else if (value.endsWith('rem')) {
       return RemUnit(double.parse(value.substring(0, value.length - 3)));
+    } else if (value.endsWith('em')) {
+      return EmUnit(double.parse(value.substring(0, value.length - 2)));
     } else if (value.endsWith('%')) {
       return PercentUnit(double.parse(value.substring(0, value.length - 1)));
     } else if (value.endsWith('svh') || value.endsWith('svw')) {
@@ -65,6 +66,12 @@ sealed class TwUnit {
     } else if (value.endsWith('vh') || value.endsWith('vw')) {
       return ViewportUnit(double.parse(value.substring(0, value.length - 2)));
     }
+
+    final double? tryPercentage = double.tryParse(value);
+    if (tryPercentage != null) {
+      return PercentUnit(tryPercentage * 100);
+    }
+
     return IgnoreUnit(value);
   }
 }
@@ -74,14 +81,23 @@ extension TwUnitExtension on TwUnit {
   /// and [EmUnit] units only. Will return 0 for all other unit types.
   double get logicalPixels => _getLogicalPixels(type, value);
 
+  /// Returns the value of this unit in logical pixels for [EmUnit], and
+  /// defaults to the [logicalPixels] value if the unit is not an [EmUnit]
+  double emPixels(final double fontSize) =>
+      type == UnitType.em ? value * fontSize : logicalPixels;
+
+  /// Returns the value of this unit as a percentage between 0.0 and 1.0
+  /// inclusive, for [PercentUnit], [ViewportUnit], [SmallViewportUnit],
+  /// [DynamicViewportUnit], and [LargeViewportUnit] units. Will return 0.0 (0%)
+  /// for all other unit types.
+  double get percentage => isPercentageBased ? value / 100 : 0;
+
   bool get isPercentageBased =>
       type == UnitType.percent ||
       type == UnitType.viewport ||
       type == UnitType.smallViewport ||
       type == UnitType.largeViewport ||
       type == UnitType.dynamicViewport;
-
-  double get percentage => isPercentageBased ? value / 100 : 1;
 }
 
 /// Represents a pixel unit (e.g. 50px).
@@ -168,7 +184,7 @@ class PercentUnit implements TwUnit {
   @override
   final double value;
 
-  const PercentUnit(this.value) : assert(value >= 0 && value <= 100);
+  const PercentUnit(this.value);
 
   @override
   UnitType get type => UnitType.percent;

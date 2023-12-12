@@ -12,6 +12,11 @@ import 'package:tailwind_elements/config/options/sizing/min_width.dart';
 import 'package:tailwind_elements/config/options/sizing/width.dart';
 import 'package:tailwind_elements/config/options/spacing/margin.dart';
 import 'package:tailwind_elements/config/options/spacing/padding.dart';
+import 'package:tailwind_elements/config/options/typography/font_size.dart';
+import 'package:tailwind_elements/config/options/typography/font_weight.dart';
+import 'package:tailwind_elements/config/options/typography/letter_spacing.dart';
+import 'package:tailwind_elements/config/options/typography/line_height.dart';
+import 'package:tailwind_elements/config/options/typography/text_decoration_thickness.dart';
 import 'package:tailwind_elements/config/options/units.dart';
 import 'package:tailwind_elements/widgets/extensions/extensions.dart';
 
@@ -51,7 +56,53 @@ SelectableState getSelectableState(final Set<MaterialState> states) {
 /// Flattened style data class for Tailwind CSS properties pertaining to text
 /// styling
 @immutable
-class TwTextStyle {}
+class TwTextStyle {
+  final TwFontSize fontSize;
+  final TwFontWeight fontWeight;
+  final TwLineHeight? lineHeight;
+  final TwTextColor? textColor;
+  final FontStyle fontStyle;
+  final TextDecoration? textDecoration;
+  final TwTextDecorationColor? textDecorationColor;
+  final TextDecorationStyle? textDecorationStyle;
+  final TextLeadingDistribution leadingDistribution;
+  final TwTextDecorationThickness? textDecorationThickness;
+  final double? wordSpacing;
+  final TwLetterSpacing? letterSpacing;
+
+  const TwTextStyle({
+    this.fontSize = const TwFontSize(RemUnit(1.0), TwLineHeight(RemUnit(1.5))),
+    this.fontWeight = const TwFontWeight(400),
+    this.fontStyle = FontStyle.normal,
+    this.lineHeight,
+    this.textColor,
+    this.textDecoration,
+    this.textDecorationColor,
+    this.textDecorationStyle,
+    this.textDecorationThickness,
+    this.leadingDistribution = TextLeadingDistribution.even,
+    this.wordSpacing,
+    this.letterSpacing,
+  });
+
+  TextStyle toTextStyle() {
+    return TextStyle(
+      fontSize: fontSize.value.logicalPixels,
+      fontWeight: fontWeight.fontWeight,
+      height: fontSize.getLineHeight(lineHeight),
+      fontStyle: fontStyle,
+      color: textColor?.color,
+      leadingDistribution: leadingDistribution,
+      decoration: textDecoration,
+      decorationColor: textDecorationColor?.color,
+      decorationStyle: textDecorationStyle,
+      decorationThickness: textDecorationThickness?.value.logicalPixels,
+      wordSpacing: wordSpacing,
+      letterSpacing:
+          letterSpacing?.value.emPixels(fontSize.value.logicalPixels),
+    );
+  }
+}
 
 /// Flattened style data class for Tailwind CSS properties that represent a
 /// 'container' and wraps any arbitrary child widget.

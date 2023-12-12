@@ -8,7 +8,48 @@ import 'package:tailwind_elements/config/options/colors.dart';
 import 'package:tailwind_elements/config/options/effects/box_shadow.dart';
 import 'package:tailwind_elements/config/options/spacing/margin.dart';
 import 'package:tailwind_elements/config/options/spacing/padding.dart';
+import 'package:tailwind_elements/config/options/typography/font_size.dart';
+import 'package:tailwind_elements/config/options/typography/font_weight.dart';
+import 'package:tailwind_elements/config/options/typography/line_height.dart';
 import 'package:tailwind_elements/config/options/units.dart';
+
+extension FontWeightExtension on TwFontWeight {
+  FontWeight get fontWeight {
+    if (weight == 100) {
+      return FontWeight.w100;
+    } else if (weight == 200) {
+      return FontWeight.w200;
+    } else if (weight == 300) {
+      return FontWeight.w300;
+    } else if (weight == 400) {
+      return FontWeight.w400;
+    } else if (weight == 500) {
+      return FontWeight.w500;
+    } else if (weight == 600) {
+      return FontWeight.w600;
+    } else if (weight == 700) {
+      return FontWeight.w700;
+    } else if (weight == 800) {
+      return FontWeight.w800;
+    } else if (weight == 900) {
+      return FontWeight.w900;
+    }
+    return FontWeight.w400;
+  }
+}
+
+extension FontSizeExtension on TwFontSize {
+  double getLineHeight(final TwLineHeight? height) {
+    if (height != null) {
+      return height.value.isPercentageBased
+          ? height.value.percentage
+          : (height.value.logicalPixels / value.logicalPixels);
+    }
+    return lineHeight.value.isPercentageBased
+        ? lineHeight.value.percentage
+        : (lineHeight.value.logicalPixels / value.logicalPixels);
+  }
+}
 
 extension MarginExtension on TwMargin {
   EdgeInsetsGeometry toEdgeInsets() => switch (type) {

@@ -46,3 +46,10 @@ class TwBorderColor extends TwColor {
 class TwTextColor extends TwColor {
   const TwTextColor(super.color);
 }
+
+/// A color that is used for the text decoration of an element.
+/// https://tailwindcss.com/docs/text-decoration
+@immutable
+class TwTextDecorationColor extends TwColor {
+  const TwTextDecorationColor(super.color);
+}

@@ -4,8 +4,8 @@ import 'package:tailwind_elements/config/builder/builders/generators.dart';
 import 'package:tailwind_elements/config/options/typography/font_size.dart';
 import 'package:tailwind_elements/config/options/units.dart';
 
-/// A [ConstantsGenerator] used to generate Tailwind 'font-*' font size constants
-/// to the .g.dart part file.
+/// A [ConstantsGenerator] used to generate Tailwind 'text-*' font size
+/// constants to the .g.dart part file.
 class FontSizeBuilder extends ConstantsGenerator {
   const FontSizeBuilder(super.options, super.config);
 
@@ -14,7 +14,7 @@ class FontSizeBuilder extends ConstantsGenerator {
 
   @override
   Map<String, String> get variablePrefixToValueClassName => {
-        'font': (TwFontSize).toString(),
+        'text': (TwFontSize).toString(),
       };
 
   @override

@@ -55,4 +55,22 @@ void main() {
       isFalse,
     );
   });
+
+  test('TwUnit.parse() parses successfully for "rem" units', () {
+    expect(TwUnit.parse('-0.05rem'), equals(RemUnit(-0.05)));
+    expect(TwUnit.parse('-0.025rem'), equals(RemUnit(-0.025)));
+    expect(TwUnit.parse('0rem'), equals(RemUnit(0)));
+    expect(TwUnit.parse('0.025rem'), equals(RemUnit(0.025)));
+    expect(TwUnit.parse('0.05rem'), equals(RemUnit(0.05)));
+    expect(TwUnit.parse('0.1rem'), equals(RemUnit(0.1)));
+  });
+
+  test('TwUnit.parse() parses successfully for "em" units', () {
+    expect(TwUnit.parse('-0.05em'), equals(EmUnit(-0.05)));
+    expect(TwUnit.parse('-0.025em'), equals(EmUnit(-0.025)));
+    expect(TwUnit.parse('0em'), equals(EmUnit(0)));
+    expect(TwUnit.parse('0.025em'), equals(EmUnit(0.025)));
+    expect(TwUnit.parse('0.05em'), equals(EmUnit(0.05)));
+    expect(TwUnit.parse('0.1em'), equals(EmUnit(0.1)));
+  });
 }
