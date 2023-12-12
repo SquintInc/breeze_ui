@@ -36,17 +36,14 @@ class TailwindElementsPlayground extends StatelessWidget {
             ),
             TwButton(
               onPressed: () {},
-              alignment: Alignment.centerLeft,
               animationDuration: const Duration(milliseconds: 100),
               style: const TwStyle(
                 backgroundColor: bg_blue_500,
-                width: w_32,
-                height: h_16,
                 margin: TwMargin.all(m_4),
-                padding: TwPadding.x(px_1),
-                borderRadius: TwBorderRadius.all(rounded_full),
                 border: TwBorder.all(border_2),
                 borderColor: border_neutral_500,
+                padding: TwPadding.all(p_4),
+                borderRadius: TwBorderRadius.all(rounded_md),
               ),
               hovered: const TwStyle(
                 backgroundColor: bg_red_700,
@@ -63,16 +60,30 @@ class TailwindElementsPlayground extends StatelessWidget {
                 borderColor: border_black,
               ),
               child: const TwText(
-                'Hello World 123!',
+                'Hello World!',
                 style: TwTextStyle(
                   textColor: text_white,
-                  fontSize: text_2xl,
+                  fontSize: text_sm,
                   fontWeight: font_normal,
                 ),
               ),
             ),
             const TwSizedBox(
               height: h_12,
+            ),
+            const TwDiv(
+              style: TwStyle(
+                padding: TwPadding.all(p_4),
+                backgroundColor: bg_blue_700,
+              ),
+              child: TwText(
+                'Hello World!',
+                style: TwTextStyle(
+                  textColor: text_white,
+                  fontSize: text_sm,
+                  fontWeight: font_normal,
+                ),
+              ),
             ),
             const TwDiv(
               style: TwStyle(

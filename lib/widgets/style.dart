@@ -123,15 +123,15 @@ class TwStyle {
   // Border styling
   final TwBorder? border;
   final TwBorderColor? borderColor;
-  final TwBorderRadius borderRadius;
+  final TwBorderRadius? borderRadius;
   final double? borderStrokeAlign;
 
   // Sizing styling
   final TwMinWidth? minWidth;
-  final TwWidth width;
+  final TwWidth? width;
   final TwMaxWidth? maxWidth;
   final TwMinHeight? minHeight;
-  final TwHeight height;
+  final TwHeight? height;
   final TwMaxHeight? maxHeight;
 
   // Spacing styling
@@ -154,16 +154,15 @@ class TwStyle {
     // Border styling
     this.border,
     this.borderColor,
-    this.borderRadius =
-        const TwBorderRadius.all(TwBorderRadiusAll(PxUnit(0.0))),
+    this.borderRadius,
     this.borderStrokeAlign,
 
     // Sizing styling
     this.minWidth,
-    this.width = const TwWidth(PxUnit(0)),
+    this.width,
     this.maxWidth,
     this.minHeight,
-    this.height = const TwHeight(PxUnit(0)),
+    this.height,
     this.maxHeight,
 
     // Spacing styling
@@ -184,7 +183,8 @@ class TwStyle {
       (maxHeight?.value.isPercentageBased ?? false);
 
   bool get hasPercentageSize =>
-      width.value.isPercentageBased || height.value.isPercentageBased;
+      (width?.value.isPercentageBased ?? false) ||
+      (height?.value.isPercentageBased ?? false);
 
   /// Returns true if any background styling property is set, and only if
   /// [backgroundColor] is not the sole non-null property set.
@@ -203,6 +203,24 @@ class TwStyle {
 
   bool get hasDecorations =>
       hasBackgroundDecoration || hasBorderDecoration || hasBoxShadowDecoration;
+
+  double widthPx(final double parentWidth) {
+    final width = this.width;
+    if (width == null) return double.infinity;
+
+    return width.value.isPercentageBased
+        ? parentWidth * width.value.percentage
+        : width.value.logicalPixels;
+  }
+
+  double heightPx(final double parentHeight) {
+    final height = this.height;
+    if (height == null) return double.infinity;
+
+    return height.value.isPercentageBased
+        ? parentHeight * height.value.percentage
+        : height.value.logicalPixels;
+  }
 
   Decoration? get boxDecoration {
     if (!hasDecorations) {

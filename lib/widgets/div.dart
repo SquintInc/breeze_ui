@@ -33,12 +33,8 @@ class TwDiv extends StatelessWidget {
         ) {
           final parentWidth = parentConstraints.maxWidth;
           final parentHeight = parentConstraints.maxHeight;
-          final widthPx = style.width.value.isPercentageBased
-              ? parentWidth * style.width.value.percentage
-              : style.width.value.logicalPixels;
-          final heightPx = style.height.value.isPercentageBased
-              ? parentHeight * style.height.value.percentage
-              : style.height.value.logicalPixels;
+          final widthPx = style.widthPx(parentWidth);
+          final heightPx = style.heightPx(parentHeight);
           final constraints = style.hasConstraints
               ? style.getPercentageBoxConstraints(parentWidth, parentHeight)
               : null;
@@ -70,8 +66,8 @@ class TwDiv extends StatelessWidget {
       color: !style.hasDecorations ? style.backgroundColor?.color : null,
       decoration: style.boxDecoration,
       foregroundDecoration: null,
-      width: style.width.value.logicalPixels,
-      height: style.height.value.logicalPixels,
+      width: style.width?.value.logicalPixels,
+      height: style.height?.value.logicalPixels,
       constraints: style.getSimpleConstraints(),
       margin: style.margin?.toEdgeInsets(),
       transform: transform,

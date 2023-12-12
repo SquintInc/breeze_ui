@@ -80,9 +80,19 @@ class TwButton extends StatelessWidget {
     super.key,
   });
 
+  Size _buttonSize({
+    required final double? widthPx,
+    required final double? heightPx,
+  }) {
+    if (widthPx != null && heightPx != null) return Size(widthPx, heightPx);
+    if (widthPx != null) return Size.fromWidth(widthPx);
+    if (heightPx != null) return Size.fromHeight(heightPx);
+    return Size.infinite;
+  }
+
   ButtonStyle _buttonStyle({
-    required final double widthPx,
-    required final double heightPx,
+    required final double? widthPx,
+    required final double? heightPx,
   }) {
     return ButtonStyle(
       foregroundColor: MaterialStateProperty.resolveWith<Color>(
@@ -122,14 +132,11 @@ class TwButton extends StatelessWidget {
               Colors.transparent,
         },
       ),
-      minimumSize: MaterialStateProperty.all<Size>(
-        Size(widthPx, heightPx),
-      ),
       fixedSize: MaterialStateProperty.all<Size>(
-        Size(widthPx, heightPx),
-      ),
-      maximumSize: MaterialStateProperty.all<Size>(
-        Size(widthPx, heightPx),
+        _buttonSize(
+          widthPx: widthPx,
+          heightPx: heightPx,
+        ),
       ),
       padding: MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
         (final states) => switch (getSelectableState(states)) {
@@ -173,7 +180,9 @@ class TwButton extends StatelessWidget {
                 },
               ),
             )
-          : null,
+          : MaterialStateProperty.all<OutlinedBorder?>(
+              const RoundedRectangleBorder(),
+            ),
       side: style.hasBorderDecoration
           ? MaterialStateProperty.resolveWith<BorderSide?>(
               (final states) => switch (getSelectableState(states)) {
@@ -213,8 +222,8 @@ class TwButton extends StatelessWidget {
       (hovered?.requiresDivWrapper ?? false);
 
   TextButton _textButton({
-    required final double widthPx,
-    required final double heightPx,
+    required final double? widthPx,
+    required final double? heightPx,
   }) =>
       TextButton(
         key: key,
@@ -260,12 +269,8 @@ class TwButton extends StatelessWidget {
                 ) {
                   final parentWidth = parentConstraints.maxWidth;
                   final parentHeight = parentConstraints.maxHeight;
-                  final widthPx = style.width.value.isPercentageBased
-                      ? parentWidth * style.width.value.percentage
-                      : style.width.value.logicalPixels;
-                  final heightPx = style.height.value.isPercentageBased
-                      ? parentHeight * style.height.value.percentage
-                      : style.height.value.logicalPixels;
+                  final widthPx = style.widthPx(parentWidth);
+                  final heightPx = style.heightPx(parentHeight);
 
                   return _textButton(
                     widthPx: widthPx,
@@ -274,15 +279,15 @@ class TwButton extends StatelessWidget {
                 },
               )
             : _textButton(
-                widthPx: style.width.value.logicalPixels,
-                heightPx: style.height.value.logicalPixels,
+                widthPx: style.width?.value.logicalPixels,
+                heightPx: style.height?.value.logicalPixels,
               ),
       );
     }
 
     return _textButton(
-      widthPx: style.width.value.logicalPixels,
-      heightPx: style.height.value.logicalPixels,
+      widthPx: style.width?.value.logicalPixels,
+      heightPx: style.height?.value.logicalPixels,
     );
   }
 }
