@@ -1,5 +1,5 @@
 // ignore_for_file: always_put_required_named_parameters_first
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:tailwind_elements/config/options/borders/border_radius.dart';
 import 'package:tailwind_elements/config/options/borders/border_width.dart';
 import 'package:tailwind_elements/config/options/colors.dart';
@@ -18,6 +18,36 @@ import 'package:tailwind_elements/widgets/extensions/extensions.dart';
 export 'package:tailwind_elements/config/options/units.dart';
 export 'package:tailwind_elements/widgets/extensions/extensions.dart';
 
+/// Simplified wrapper for [MaterialState] values to provide exhaustive switch
+/// cases. This does not account for combinations of [MaterialState] values and
+/// simply assumes that each selectable state is mutually exclusive.
+enum SelectableState {
+  normal,
+  disabled,
+  hovered,
+  focused,
+  pressed,
+  dragged,
+  selected,
+}
+
+SelectableState getSelectableState(final Set<MaterialState> states) {
+  if (states.contains(MaterialState.disabled)) {
+    return SelectableState.disabled;
+  } else if (states.contains(MaterialState.dragged)) {
+    return SelectableState.dragged;
+  } else if (states.contains(MaterialState.selected)) {
+    return SelectableState.selected;
+  } else if (states.contains(MaterialState.pressed)) {
+    return SelectableState.pressed;
+  } else if (states.contains(MaterialState.hovered)) {
+    return SelectableState.hovered;
+  } else if (states.contains(MaterialState.focused)) {
+    return SelectableState.focused;
+  }
+  return SelectableState.normal;
+}
+
 /// Flattened style data class for all Tailwind CSS properties.
 @immutable
 class TwStyle {
@@ -25,6 +55,9 @@ class TwStyle {
   final TwBackgroundColor? backgroundColor;
   final DecorationImage? backgroundImage;
   final Gradient? backgroundGradient;
+
+  // Foreground styling (if applicable)
+  final TwTextColor? textColor;
 
   // Effect styling
   final TwBoxShadows? boxShadow;
@@ -54,6 +87,9 @@ class TwStyle {
     this.backgroundImage,
     this.backgroundGradient,
 
+    // Foreground
+    this.textColor,
+
     // Effect styling
     this.boxShadow,
     this.boxShadowColor,
@@ -66,10 +102,10 @@ class TwStyle {
 
     // Sizing styling
     this.minWidth,
-    required this.width,
+    this.width = const TwWidth(PxUnit(0)),
     this.maxWidth,
     this.minHeight,
-    required this.height,
+    this.height = const TwHeight(PxUnit(0)),
     this.maxHeight,
 
     // Spacing styling

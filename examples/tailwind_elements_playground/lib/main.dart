@@ -18,11 +18,11 @@ class TailwindElementsPlayground extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: bg_blue_500.color),
         useMaterial3: true,
       ),
-      home: const Material(
+      home: Material(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TwDiv(
+            const TwDiv(
               style: TwStyle(
                 backgroundColor: bg_yellow_500,
                 width: w_24,
@@ -34,24 +34,55 @@ class TailwindElementsPlayground extends StatelessWidget {
               alignment: Alignment.center,
               child: Text('Flutter Demo'),
             ),
-            TwSizedBox(
+            TwButton(
+              onPressed: () {},
+              alignment: Alignment.centerLeft,
+              animationDuration: const Duration(milliseconds: 100),
+              style: const TwStyle(
+                backgroundColor: bg_blue_500,
+                width: w_32,
+                height: h_16,
+                margin: TwMargin.all(m_4),
+                padding: TwPadding.x(px_1),
+                borderRadius: TwBorderRadius.all(rounded_full),
+                border: TwBorder.all(border_2),
+                borderColor: border_neutral_500,
+              ),
+              hovered: const TwStyle(
+                backgroundColor: bg_red_700,
+                textColor: text_white,
+                borderRadius: TwBorderRadius.all(rounded_full),
+                border: TwBorder.all(border_8),
+                borderColor: border_neutral_500,
+              ),
+              pressed: const TwStyle(
+                backgroundColor: bg_green_700,
+                textColor: text_green_500,
+                borderRadius: TwBorderRadius.all(rounded_md),
+                border: TwBorder.all(border_4),
+                borderColor: border_black,
+              ),
+              child: const Text('Hello World!'),
+            ),
+            const TwSizedBox(
               height: h_12,
             ),
-            TwDiv(
+            const TwDiv(
               style: TwStyle(
                 width: w_56,
-                height: h_56,
+                height: h_6,
+                margin: TwMargin.all(m_4),
                 backgroundColor: bg_green_500,
               ),
             ),
-            TwDiv(
+            const TwDiv(
               style: TwStyle(
                 width: w_frac_1_12,
                 height: h_24,
                 backgroundColor: bg_pink_500,
               ),
             ),
-            TwDiv(
+            const TwDiv(
               style: TwStyle(
                 width: w_full,
                 height: h_24,
