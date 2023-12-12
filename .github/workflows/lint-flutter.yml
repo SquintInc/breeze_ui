@@ -1,0 +1,48 @@
+# Checks formatting + linting for Flutter code
+name: Lint Flutter
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    paths:
+      - "lib/**"
+      - "test/**"
+      - "examples/tailwind_elements_playground/lib/**"
+      - "examples/tailwind_elements_playground/test/**"
+
+jobs:
+  build:
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ ubuntu-latest ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Print Flutter version
+        run: flutter --version
+
+      - name: Get Flutter Dependencies
+        run: flutter pub get
+
+      - name: Get examples Flutter Dependencies
+        run: flutter pub get
+        working-directory: examples/tailwind_elements_playground
+
+      - name: Run Dart analysis
+        run: dart analyze
+
+      - name: Run Dart formatting check
+        run: |
+          dart format -o none --set-exit-if-changed $(find . -name '*.dart' -not -name '*.g.dart')
