@@ -267,7 +267,8 @@ class TwButton extends StatelessWidget {
                   final BuildContext context,
                   final BoxConstraints parentConstraints,
                 ) {
-                  final parentWidth = parentConstraints.maxWidth;
+                  final parentWidth =
+                      parentConstraints.limitedMaxWidth(context);
                   final parentHeight = parentConstraints.maxHeight;
                   final widthPx = style.widthPx(parentWidth);
                   final heightPx = style.heightPx(parentHeight);

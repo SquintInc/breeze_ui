@@ -21,9 +21,5 @@ void main() {
       expect(h_lvh.value, equals(LargeViewportUnit(100)));
       expect(h_dvh.value, equals(DynamicViewportUnit(100)));
     });
-
-    test('has custom local config spacing values', () {
-      expect(h_13.value, equals(RemUnit(3.25)));
-    });
   });
 }

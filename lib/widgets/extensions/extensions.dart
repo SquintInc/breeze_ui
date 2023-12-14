@@ -13,6 +13,16 @@ import 'package:tailwind_elements/config/options/typography/font_weight.dart';
 import 'package:tailwind_elements/config/options/typography/line_height.dart';
 import 'package:tailwind_elements/config/options/units.dart';
 
+Iterable<T> zip<T>(final Iterable<T> a, final Iterable<T> b) sync* {
+  final iterA = a.iterator;
+  final iterB = b.iterator;
+  bool hasA, hasB;
+  while ((hasA = iterA.moveNext()) | (hasB = iterB.moveNext())) {
+    if (hasA) yield iterA.current;
+    if (hasB) yield iterB.current;
+  }
+}
+
 extension FontWeightExtension on TwFontWeight {
   FontWeight get fontWeight {
     if (weight == 100) {
@@ -195,4 +205,10 @@ extension BoxShadowExtension on TwBoxShadows {
             ),
           )
           .toList();
+}
+
+extension BoxConstraintsExtension on BoxConstraints {
+  double limitedMaxWidth(final BuildContext context) {
+    return (maxWidth.isInfinite) ? MediaQuery.of(context).size.width : maxWidth;
+  }
 }

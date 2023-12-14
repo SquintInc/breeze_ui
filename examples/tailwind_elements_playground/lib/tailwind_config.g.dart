@@ -1187,6 +1187,89 @@ const tracking_wider = TwLetterSpacing(EmUnit(0.05));
 const tracking_widest = TwLetterSpacing(EmUnit(0.1));
 
 // **************************************************************************
+// Generator: GapBuilder
+// **************************************************************************
+
+const gap_x_px = TwGapX(PxUnit(1.0));
+const gap_x_0 = TwGapX(PxUnit(0.0));
+const gap_x_0_5 = TwGapX(RemUnit(0.125));
+const gap_x_1 = TwGapX(RemUnit(0.25));
+const gap_x_1_5 = TwGapX(RemUnit(0.375));
+const gap_x_2 = TwGapX(RemUnit(0.5));
+const gap_x_2_5 = TwGapX(RemUnit(0.625));
+const gap_x_3 = TwGapX(RemUnit(0.75));
+const gap_x_3_5 = TwGapX(RemUnit(0.875));
+const gap_x_4 = TwGapX(RemUnit(1.0));
+const gap_x_5 = TwGapX(RemUnit(1.25));
+const gap_x_6 = TwGapX(RemUnit(1.5));
+const gap_x_7 = TwGapX(RemUnit(1.75));
+const gap_x_8 = TwGapX(RemUnit(2.0));
+const gap_x_9 = TwGapX(RemUnit(2.25));
+const gap_x_10 = TwGapX(RemUnit(2.5));
+const gap_x_11 = TwGapX(RemUnit(2.75));
+const gap_x_12 = TwGapX(RemUnit(3.0));
+const gap_x_14 = TwGapX(RemUnit(3.5));
+const gap_x_16 = TwGapX(RemUnit(4.0));
+const gap_x_20 = TwGapX(RemUnit(5.0));
+const gap_x_24 = TwGapX(RemUnit(6.0));
+const gap_x_28 = TwGapX(RemUnit(7.0));
+const gap_x_32 = TwGapX(RemUnit(8.0));
+const gap_x_36 = TwGapX(RemUnit(9.0));
+const gap_x_40 = TwGapX(RemUnit(10.0));
+const gap_x_44 = TwGapX(RemUnit(11.0));
+const gap_x_48 = TwGapX(RemUnit(12.0));
+const gap_x_52 = TwGapX(RemUnit(13.0));
+const gap_x_56 = TwGapX(RemUnit(14.0));
+const gap_x_60 = TwGapX(RemUnit(15.0));
+const gap_x_64 = TwGapX(RemUnit(16.0));
+const gap_x_72 = TwGapX(RemUnit(18.0));
+const gap_x_80 = TwGapX(RemUnit(20.0));
+const gap_x_96 = TwGapX(RemUnit(24.0));
+const gap_x_13 = TwGapX(RemUnit(3.25));
+const gap_x_15 = TwGapX(RemUnit(3.75));
+const gap_x_128 = TwGapX(RemUnit(32.0));
+const gap_x_144 = TwGapX(RemUnit(36.0));
+const gap_y_px = TwGapY(PxUnit(1.0));
+const gap_y_0 = TwGapY(PxUnit(0.0));
+const gap_y_0_5 = TwGapY(RemUnit(0.125));
+const gap_y_1 = TwGapY(RemUnit(0.25));
+const gap_y_1_5 = TwGapY(RemUnit(0.375));
+const gap_y_2 = TwGapY(RemUnit(0.5));
+const gap_y_2_5 = TwGapY(RemUnit(0.625));
+const gap_y_3 = TwGapY(RemUnit(0.75));
+const gap_y_3_5 = TwGapY(RemUnit(0.875));
+const gap_y_4 = TwGapY(RemUnit(1.0));
+const gap_y_5 = TwGapY(RemUnit(1.25));
+const gap_y_6 = TwGapY(RemUnit(1.5));
+const gap_y_7 = TwGapY(RemUnit(1.75));
+const gap_y_8 = TwGapY(RemUnit(2.0));
+const gap_y_9 = TwGapY(RemUnit(2.25));
+const gap_y_10 = TwGapY(RemUnit(2.5));
+const gap_y_11 = TwGapY(RemUnit(2.75));
+const gap_y_12 = TwGapY(RemUnit(3.0));
+const gap_y_14 = TwGapY(RemUnit(3.5));
+const gap_y_16 = TwGapY(RemUnit(4.0));
+const gap_y_20 = TwGapY(RemUnit(5.0));
+const gap_y_24 = TwGapY(RemUnit(6.0));
+const gap_y_28 = TwGapY(RemUnit(7.0));
+const gap_y_32 = TwGapY(RemUnit(8.0));
+const gap_y_36 = TwGapY(RemUnit(9.0));
+const gap_y_40 = TwGapY(RemUnit(10.0));
+const gap_y_44 = TwGapY(RemUnit(11.0));
+const gap_y_48 = TwGapY(RemUnit(12.0));
+const gap_y_52 = TwGapY(RemUnit(13.0));
+const gap_y_56 = TwGapY(RemUnit(14.0));
+const gap_y_60 = TwGapY(RemUnit(15.0));
+const gap_y_64 = TwGapY(RemUnit(16.0));
+const gap_y_72 = TwGapY(RemUnit(18.0));
+const gap_y_80 = TwGapY(RemUnit(20.0));
+const gap_y_96 = TwGapY(RemUnit(24.0));
+const gap_y_13 = TwGapY(RemUnit(3.25));
+const gap_y_15 = TwGapY(RemUnit(3.75));
+const gap_y_128 = TwGapY(RemUnit(32.0));
+const gap_y_144 = TwGapY(RemUnit(36.0));
+
+// **************************************************************************
 // Generator: BackgroundColorBuilder
 // **************************************************************************
 

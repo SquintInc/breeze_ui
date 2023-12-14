@@ -22,6 +22,46 @@ class TailwindElementsPlayground extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const TwRow(
+              mainAxisAlignment: MainAxisAlignment.center,
+              gap: gap_x_24,
+              children: [
+                TwDiv(
+                  style: TwStyle(
+                    backgroundColor: bg_blue_500,
+                    width: w_frac_1_12,
+                    height: h_24,
+                  ),
+                ),
+                TwDiv(
+                  style: TwStyle(
+                    backgroundColor: bg_blue_500,
+                    width: w_frac_1_12,
+                    height: h_24,
+                  ),
+                ),
+              ],
+            ),
+            const TwColumn(
+              mainAxisAlignment: MainAxisAlignment.center,
+              gap: gap_y_4,
+              children: [
+                TwDiv(
+                  style: TwStyle(
+                    backgroundColor: bg_orange_500,
+                    width: w_frac_1_12,
+                    height: h_24,
+                  ),
+                ),
+                TwDiv(
+                  style: TwStyle(
+                    backgroundColor: bg_yellow_500,
+                    width: w_frac_1_12,
+                    height: h_24,
+                  ),
+                ),
+              ],
+            ),
             const TwDiv(
               style: TwStyle(
                 backgroundColor: bg_yellow_500,

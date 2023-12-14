@@ -10,6 +10,7 @@ import 'package:tailwind_elements/config/builder/builders/options/border_width_b
 import 'package:tailwind_elements/config/builder/builders/options/box_shadow_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/options/font_size_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/options/font_weight_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/gap_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/options/height_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/options/letter_spacing_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/options/line_height_builder.dart';
@@ -51,6 +52,7 @@ Builder tailwindConfigBuilder(final BuilderOptions options) {
       LineHeightBuilder(options, config),
       TextDecorationThicknessBuilder(options, config),
       LetterSpacingBuilder(options, config),
+      GapBuilder(options, config),
       // Generate colors
       BackgroundColorBuilder(options, config),
       BoxShadowColorBuilder(options, config),

@@ -2,6 +2,7 @@ export 'package:tailwind_elements/config/options/borders/border_radius.dart';
 export 'package:tailwind_elements/config/options/borders/border_width.dart';
 export 'package:tailwind_elements/config/options/colors.dart';
 export 'package:tailwind_elements/config/options/effects/box_shadow.dart';
+export 'package:tailwind_elements/config/options/sizing/gap.dart';
 export 'package:tailwind_elements/config/options/sizing/height.dart';
 export 'package:tailwind_elements/config/options/sizing/max_height.dart';
 export 'package:tailwind_elements/config/options/sizing/max_width.dart';
