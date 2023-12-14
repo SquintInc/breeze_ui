@@ -12,6 +12,8 @@ class TwDiv extends StatelessWidget {
   final Clip clipBehavior;
   final Matrix4? transform;
   final AlignmentGeometry? transformAlignment;
+  final bool scrollableChild;
+  final Axis scrollDirection;
 
   const TwDiv({
     this.style = const TwStyle(),
@@ -20,8 +22,37 @@ class TwDiv extends StatelessWidget {
     this.clipBehavior = Clip.none,
     this.transform,
     this.transformAlignment,
+    this.scrollableChild = false,
+    this.scrollDirection = Axis.vertical,
     super.key,
   });
+
+  Container _createContainer({
+    required final double? width,
+    required final double? height,
+    required final BoxConstraints? constraints,
+  }) =>
+      Container(
+        key: key,
+        alignment: alignment,
+        padding: style.padding?.toEdgeInsets(),
+        color: !style.hasDecorations ? style.backgroundColor?.color : null,
+        decoration: style.boxDecoration,
+        foregroundDecoration: null,
+        width: style.width?.value.logicalPixels,
+        height: style.height?.value.logicalPixels,
+        constraints: style.getSimpleConstraints(),
+        margin: style.margin?.toEdgeInsets(),
+        transform: transform,
+        transformAlignment: transformAlignment,
+        clipBehavior: clipBehavior,
+        child: scrollableChild
+            ? SingleChildScrollView(
+                scrollDirection: scrollDirection,
+                child: child,
+              )
+            : child,
+      );
 
   @override
   Widget build(final BuildContext context) {
@@ -39,41 +70,19 @@ class TwDiv extends StatelessWidget {
               ? style.getPercentageBoxConstraints(parentWidth, parentHeight)
               : null;
 
-          return Container(
-            key: key,
-            alignment: alignment,
-            padding: style.padding?.toEdgeInsets(),
-            color: !style.hasDecorations ? style.backgroundColor?.color : null,
-            decoration: style.boxDecoration,
-            foregroundDecoration: null,
+          return _createContainer(
             width: widthPx,
             height: heightPx,
             constraints: constraints,
-            margin: style.margin?.toEdgeInsets(),
-            transform: transform,
-            transformAlignment: transformAlignment,
-            clipBehavior: clipBehavior,
-            child: child,
           );
         },
       );
     }
 
-    return Container(
-      key: key,
-      alignment: alignment,
-      padding: style.padding?.toEdgeInsets(),
-      color: !style.hasDecorations ? style.backgroundColor?.color : null,
-      decoration: style.boxDecoration,
-      foregroundDecoration: null,
+    return _createContainer(
       width: style.width?.value.logicalPixels,
       height: style.height?.value.logicalPixels,
       constraints: style.getSimpleConstraints(),
-      margin: style.margin?.toEdgeInsets(),
-      transform: transform,
-      transformAlignment: transformAlignment,
-      clipBehavior: clipBehavior,
-      child: child,
     );
   }
 }
