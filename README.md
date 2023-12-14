@@ -53,32 +53,32 @@ Flutter via `tailwind_elements`.
 <details open>
 <summary>Flexbox & Grid</summary>
 
-| Option                  | Supported | Notes |
-|-------------------------|:---------:|-------|
-| Flex Basis              |           |       |
-| Flex Direction          |           |       |
-| Flex Wrap               |           |       |
-| Flex                    |           |       |
-| Flex Grow               |           |       |
-| Flex Shrink             |           |       |
-| Order                   |           |       |
-| Grid Template Columns   |           |       |
-| Grid Column Start / End |           |       |
-| Grid Template Rows      |           |       |
-| Grid Row Start / End    |           |       |
-| Grid Auto Flow          |           |       |
-| Grid Auto Columns       |           |       |
-| Grid Auto Rows          |           |       |
-| Gap                     |           |       |
-| Justify Content         |           |       |
-| Justify Items           |           |       |
-| Justify Self            |           |       |
-| Align Content           |           |       |
-| Align Items             |           |       |
-| Align Self              |           |       |
-| Place Content           |           |       |
-| Place Items             |           |       |
-| Place Self              |           |       |
+| Option                  |     Supported      | Notes                               |
+|-------------------------|:------------------:|-------------------------------------|
+| Flex Basis              |                    |                                     |
+| Flex Direction          |                    |                                     |
+| Flex Wrap               |                    |                                     |
+| Flex                    |                    |                                     |
+| Flex Grow               |                    |                                     |
+| Flex Shrink             |                    |                                     |
+| Order                   |                    |                                     |
+| Grid Template Columns   |                    |                                     |
+| Grid Column Start / End |                    |                                     |
+| Grid Template Rows      |                    |                                     |
+| Grid Row Start / End    |                    |                                     |
+| Grid Auto Flow          |                    |                                     |
+| Grid Auto Columns       |                    |                                     |
+| Grid Auto Rows          |                    |                                     |
+| Gap                     | :white_check_mark: | supported by `TwRow` and `TwColumn` |
+| Justify Content         |                    |                                     |
+| Justify Items           |                    |                                     |
+| Justify Self            |                    |                                     |
+| Align Content           |                    |                                     |
+| Align Items             |                    |                                     |
+| Align Self              |                    |                                     |
+| Place Content           |                    |                                     |
+| Place Items             |                    |                                     |
+| Place Self              |                    |                                     |
 
 </details>
 
