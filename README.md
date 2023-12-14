@@ -25,28 +25,28 @@ Flutter via `tailwind_elements`.
 <details open>
 <summary>Layout</summary>
 
-| Option                      | Supported | Notes |
-|-----------------------------|:---------:|-------|
-| Aspect Ratio                |           |       |
-| Container                   |           |       |
-| Columns                     |           |       |
-| Break After                 |           |       |
-| Break Before                |           |       |
-| Break Inside                |           |       |
-| Box Decoration Break        |           |       |
-| Box Sizing                  |           |       |
-| Display                     |           |       |
-| Floats                      |           |       |
-| Clear                       |           |       |
-| Isolation                   |           |       |
-| Object Fit                  |           |       |
-| Object Position             |           |       |
-| Overflow                    |           |       |
-| Overscroll Behavior         |           |       |
-| Position                    |           |       |
-| Top / Right / Bottom / Left |           |       |
-| Visibility                  |           |       |
-| Z-Index                     |           |       |
+| Option                      |                Supported                | Notes                                                                                                                                                                        |
+|-----------------------------|:---------------------------------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Aspect Ratio                |                                         |                                                                                                                                                                              |
+| Container                   |                                         |                                                                                                                                                                              |
+| Columns                     |                                         |                                                                                                                                                                              |
+| Break After                 |                                         |                                                                                                                                                                              |
+| Break Before                |                                         |                                                                                                                                                                              |
+| Break Inside                |                                         |                                                                                                                                                                              |
+| Box Decoration Break        |                                         |                                                                                                                                                                              |
+| Box Sizing                  |                                         |                                                                                                                                                                              |
+| Display                     |                                         |                                                                                                                                                                              |
+| Floats                      |                                         |                                                                                                                                                                              |
+| Clear                       |                                         |                                                                                                                                                                              |
+| Isolation                   |                                         |                                                                                                                                                                              |
+| Object Fit                  |                                         |                                                                                                                                                                              |
+| Object Position             |                                         |                                                                                                                                                                              |
+| Overflow                    | :white_check_mark: :information_source: | Some `Tw` widgets support a `scrollable` boolean flag which allows its child contents to be scrollable. This is similar to `overflow-auto` for a specific axis when enabled. |
+| Overscroll Behavior         |                   :x:                   |                                                                                                                                                                              |
+| Position                    |                                         |                                                                                                                                                                              |
+| Top / Right / Bottom / Left |                                         |                                                                                                                                                                              |
+| Visibility                  |                                         |                                                                                                                                                                              |
+| Z-Index                     |                                         |                                                                                                                                                                              |
 
 </details>
 
