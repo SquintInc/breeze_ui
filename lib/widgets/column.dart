@@ -7,6 +7,7 @@ import 'package:tailwind_elements/widgets.dart';
 class TwColumn extends StatelessWidget {
   final TwGapY? gap;
   final List<Widget> children;
+  final bool scrollable;
 
   // Passthrough [Row] properties
   final MainAxisAlignment mainAxisAlignment;
@@ -25,6 +26,7 @@ class TwColumn extends StatelessWidget {
     this.textDirection,
     this.verticalDirection = VerticalDirection.down,
     this.textBaseline,
+    this.scrollable = false,
     super.key,
   });
 
@@ -43,7 +45,7 @@ class TwColumn extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    return Column(
+    final column = Column(
       key: key,
       mainAxisAlignment: mainAxisAlignment,
       mainAxisSize: mainAxisSize,
@@ -53,5 +55,12 @@ class TwColumn extends StatelessWidget {
       textBaseline: textBaseline,
       children: gappedChildren(),
     );
+
+    return scrollable
+        ? SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: column,
+          )
+        : column;
   }
 }

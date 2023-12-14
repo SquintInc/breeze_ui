@@ -221,7 +221,7 @@ class TwButton extends StatelessWidget {
       (pressed?.requiresDivWrapper ?? false) ||
       (hovered?.requiresDivWrapper ?? false);
 
-  TextButton _textButton({
+  TextButton _createTextButton({
     required final double? widthPx,
     required final double? heightPx,
   }) =>
@@ -273,20 +273,20 @@ class TwButton extends StatelessWidget {
                   final widthPx = style.widthPx(parentWidth);
                   final heightPx = style.heightPx(parentHeight);
 
-                  return _textButton(
+                  return _createTextButton(
                     widthPx: widthPx,
                     heightPx: heightPx,
                   );
                 },
               )
-            : _textButton(
+            : _createTextButton(
                 widthPx: style.width?.value.logicalPixels,
                 heightPx: style.height?.value.logicalPixels,
               ),
       );
     }
 
-    return _textButton(
+    return _createTextButton(
       widthPx: style.width?.value.logicalPixels,
       heightPx: style.height?.value.logicalPixels,
     );

@@ -12,7 +12,7 @@ class TwDiv extends StatelessWidget {
   final Clip clipBehavior;
   final Matrix4? transform;
   final AlignmentGeometry? transformAlignment;
-  final bool scrollableChild;
+  final bool scrollable;
   final Axis scrollDirection;
 
   const TwDiv({
@@ -22,7 +22,7 @@ class TwDiv extends StatelessWidget {
     this.clipBehavior = Clip.none,
     this.transform,
     this.transformAlignment,
-    this.scrollableChild = false,
+    this.scrollable = false,
     this.scrollDirection = Axis.vertical,
     super.key,
   });
@@ -46,7 +46,7 @@ class TwDiv extends StatelessWidget {
         transform: transform,
         transformAlignment: transformAlignment,
         clipBehavior: clipBehavior,
-        child: scrollableChild
+        child: scrollable
             ? SingleChildScrollView(
                 scrollDirection: scrollDirection,
                 child: child,
