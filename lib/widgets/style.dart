@@ -1,4 +1,3 @@
-// ignore_for_file: always_put_required_named_parameters_first
 import 'package:flutter/material.dart';
 import 'package:tailwind_elements/config/options/borders/border_radius.dart';
 import 'package:tailwind_elements/config/options/borders/border_width.dart';
@@ -23,35 +22,32 @@ import 'package:tailwind_elements/widgets/extensions/extensions.dart';
 export 'package:tailwind_elements/config/options/units.dart';
 export 'package:tailwind_elements/widgets/extensions/extensions.dart';
 
-/// Simplified wrapper for [MaterialState] values to provide exhaustive switch
-/// cases. This does not account for combinations of [MaterialState] values and
-/// simply assumes that each selectable state is mutually exclusive.
-enum SelectableState {
-  normal,
+enum TwWidgetStatus {
   disabled,
-  hovered,
-  focused,
-  pressed,
   dragged,
+  error,
+  focused,
   selected,
+  pressed,
+  hovered,
+  normal,
 }
 
-SelectableState getSelectableState(final Set<MaterialState> states) {
-  if (states.contains(MaterialState.disabled)) {
-    return SelectableState.disabled;
-  } else if (states.contains(MaterialState.dragged)) {
-    return SelectableState.dragged;
-  } else if (states.contains(MaterialState.selected)) {
-    return SelectableState.selected;
-  } else if (states.contains(MaterialState.pressed)) {
-    return SelectableState.pressed;
-  } else if (states.contains(MaterialState.hovered)) {
-    return SelectableState.hovered;
-  } else if (states.contains(MaterialState.focused)) {
-    return SelectableState.focused;
-  }
-  return SelectableState.normal;
+typedef StyleValueResolver<T> = T? Function(TwStyle? statusStyle);
+
+TwWidgetStatus getWidgetStatus(final Set<MaterialState> states) {
+  if (states.contains(MaterialState.disabled)) return TwWidgetStatus.disabled;
+  if (states.contains(MaterialState.dragged)) return TwWidgetStatus.dragged;
+  if (states.contains(MaterialState.error)) return TwWidgetStatus.error;
+  if (states.contains(MaterialState.focused)) return TwWidgetStatus.focused;
+  if (states.contains(MaterialState.selected)) return TwWidgetStatus.selected;
+  if (states.contains(MaterialState.pressed)) return TwWidgetStatus.pressed;
+  if (states.contains(MaterialState.hovered)) return TwWidgetStatus.hovered;
+  return TwWidgetStatus.normal;
 }
+
+MaterialStateProperty<T> always<T>(final T value) =>
+    MaterialStatePropertyAll<T>(value);
 
 /// Flattened style data class for Tailwind CSS properties pertaining to text
 /// styling
@@ -102,6 +98,156 @@ class TwTextStyle {
           letterSpacing?.value.emPixels(fontSize.value.logicalPixels),
     );
   }
+
+  static MaterialStateTextStyle toMaterialTextStyle(
+    final TwTextStyle normal, {
+    required final TwTextStyle? disabled,
+    required final TwTextStyle? dragged,
+    required final TwTextStyle? error,
+    required final TwTextStyle? focused,
+    required final TwTextStyle? selected,
+    required final TwTextStyle? pressed,
+    required final TwTextStyle? hovered,
+  }) {
+    return MaterialStateTextStyle.resolveWith(
+        (final Set<MaterialState> states) {
+      final TwTextStyle? statusStyle = switch (getWidgetStatus(states)) {
+        TwWidgetStatus.disabled => disabled,
+        TwWidgetStatus.dragged => dragged,
+        TwWidgetStatus.error => error,
+        TwWidgetStatus.focused => focused,
+        TwWidgetStatus.selected => selected,
+        TwWidgetStatus.pressed => pressed,
+        TwWidgetStatus.hovered => hovered,
+        _ => normal,
+      };
+      return TextStyle(
+        fontSize: statusStyle?.fontSize.value.logicalPixels ??
+            normal.fontSize.value.logicalPixels,
+        fontWeight:
+            statusStyle?.fontWeight.fontWeight ?? normal.fontWeight.fontWeight,
+        height: statusStyle?.fontSize.getLineHeight(statusStyle.lineHeight) ??
+            normal.fontSize.getLineHeight(normal.lineHeight),
+        fontStyle: statusStyle?.fontStyle ?? normal.fontStyle,
+        color: statusStyle?.textColor?.color ?? normal.textColor?.color,
+        leadingDistribution:
+            statusStyle?.leadingDistribution ?? normal.leadingDistribution,
+        decoration: statusStyle?.textDecoration ?? normal.textDecoration,
+        decorationColor: statusStyle?.textDecorationColor?.color ??
+            normal.textDecorationColor?.color,
+        decorationStyle:
+            statusStyle?.textDecorationStyle ?? normal.textDecorationStyle,
+        decorationThickness:
+            statusStyle?.textDecorationThickness?.value.logicalPixels ??
+                normal.textDecorationThickness?.value.logicalPixels,
+        wordSpacing: statusStyle?.wordSpacing ?? normal.wordSpacing,
+        letterSpacing: statusStyle?.letterSpacing?.value
+                .emPixels(statusStyle.fontSize.value.logicalPixels) ??
+            normal.letterSpacing?.value
+                .emPixels(normal.fontSize.value.logicalPixels),
+      );
+    });
+  }
+}
+
+@immutable
+class TwTextInputStyle extends TwTextStyle {
+  // Background styling
+  final TwBackgroundColor? backgroundColor;
+
+  // Effect styling
+  final TwBoxShadows? boxShadow;
+  final TwBoxShadowColor? boxShadowColor;
+
+  // Border styling
+  final TwBorder? border;
+  final TwBorderColor? borderColor;
+  final TwBorderRadius? borderRadius;
+  final double? borderStrokeAlign;
+
+  // Sizing styling
+  final TwWidth? width;
+  final TwHeight? height;
+
+  // Spacing styling
+  final TwPadding? padding;
+
+  const TwTextInputStyle({
+    // Typography styling
+    super.fontSize = const TwFontSize(RemUnit(1.0), TwLineHeight(RemUnit(1.5))),
+    super.fontWeight = const TwFontWeight(400),
+    super.fontStyle = FontStyle.normal,
+    super.lineHeight,
+    super.textColor,
+    super.textDecoration,
+    super.textDecorationColor,
+    super.textDecorationStyle,
+    super.textDecorationThickness,
+    super.leadingDistribution = TextLeadingDistribution.even,
+    super.wordSpacing,
+    super.letterSpacing,
+    this.backgroundColor,
+    this.boxShadow,
+    this.boxShadowColor,
+    this.border,
+    this.borderColor,
+    this.borderRadius,
+    this.borderStrokeAlign,
+    this.width,
+    this.height,
+    this.padding,
+  });
+
+  static InputBorder? toMaterialInputBorder(
+    final TwTextInputStyle normal, {
+    required final TwTextInputStyle? disabled,
+    required final TwTextInputStyle? dragged,
+    required final TwTextInputStyle? error,
+    required final TwTextInputStyle? focused,
+    required final TwTextInputStyle? selected,
+    required final TwTextInputStyle? pressed,
+    required final TwTextInputStyle? hovered,
+  }) =>
+      MaterialStateOutlineInputBorder.resolveWith(
+          (final Set<MaterialState> states) {
+        final TwTextInputStyle? statusStyle = switch (getWidgetStatus(states)) {
+          TwWidgetStatus.disabled => disabled,
+          TwWidgetStatus.dragged => dragged,
+          TwWidgetStatus.error => error,
+          TwWidgetStatus.focused => focused,
+          TwWidgetStatus.selected => selected,
+          TwWidgetStatus.pressed => pressed,
+          TwWidgetStatus.hovered => hovered,
+          _ => normal,
+        };
+        return statusStyle?.toBorder() ?? normal.toBorder() ?? InputBorder.none;
+      });
+
+  bool get hasBorderDecoration =>
+      (border != null && !(border?.isEmpty ?? true)) || borderRadius != null;
+
+  BoxConstraints? getBoxConstraints() {
+    if (width == null && height == null) return null;
+    return BoxConstraints(
+      minWidth: width?.value.logicalPixels ?? 0.0,
+      maxWidth: width?.value.logicalPixels ?? double.infinity,
+      minHeight: height?.value.logicalPixels ?? 0.0,
+      maxHeight: height?.value.logicalPixels ?? double.infinity,
+    );
+  }
+
+  InputBorder? toBorder() => hasBorderDecoration
+      ? OutlineInputBorder(
+          borderRadius: borderRadius?.toBorderRadius() ?? BorderRadius.zero,
+          borderSide: BorderSide(
+            color: hasBorderDecoration
+                ? borderColor?.color ?? Colors.transparent
+                : Colors.transparent,
+            width: border?.all.value.logicalPixels ?? 0.0,
+            strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
+          ),
+        )
+      : InputBorder.none;
 }
 
 /// Flattened style data class for Tailwind CSS properties that represent a
@@ -169,6 +315,38 @@ class TwStyle {
     this.padding,
     this.margin,
   });
+
+  static MaterialStateProperty<T> resolveStatus<T>(
+    final TwStyle normal,
+    final StyleValueResolver resolver, {
+    required final T defaultValue,
+    required final TwStyle? disabled,
+    required final TwStyle? dragged,
+    required final TwStyle? error,
+    required final TwStyle? focused,
+    required final TwStyle? selected,
+    required final TwStyle? pressed,
+    required final TwStyle? hovered,
+  }) =>
+      MaterialStateProperty.resolveWith<T>(
+        (final Set<MaterialState> states) => switch (getWidgetStatus(states)) {
+          TwWidgetStatus.disabled =>
+            resolver(disabled) ?? resolver(normal) ?? defaultValue,
+          TwWidgetStatus.dragged =>
+            resolver(dragged) ?? resolver(normal) ?? defaultValue,
+          TwWidgetStatus.error =>
+            resolver(error) ?? resolver(normal) ?? defaultValue,
+          TwWidgetStatus.focused =>
+            resolver(focused) ?? resolver(normal) ?? defaultValue,
+          TwWidgetStatus.selected =>
+            resolver(selected) ?? resolver(normal) ?? defaultValue,
+          TwWidgetStatus.pressed =>
+            resolver(pressed) ?? resolver(normal) ?? defaultValue,
+          TwWidgetStatus.hovered =>
+            resolver(hovered) ?? resolver(normal) ?? defaultValue,
+          TwWidgetStatus.normal => resolver(normal) ?? defaultValue,
+        },
+      );
 
   bool get hasConstraints =>
       minWidth != null ||
@@ -283,4 +461,15 @@ class TwStyle {
       maxHeight: maxHeight?.value.logicalPixels ?? double.infinity,
     );
   }
+
+  /// Gets the [BorderSide] from a [TwStyle], which includes the border color
+  /// and width. Note that Material buttons only support a single border width
+  /// via TwBorder.all(...)
+  BorderSide toBorderSide() => BorderSide(
+        color: hasBorderDecoration
+            ? borderColor?.color ?? Colors.transparent
+            : Colors.transparent,
+        width: border?.all.value.logicalPixels ?? 0.0,
+        strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
+      );
 }

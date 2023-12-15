@@ -18,136 +18,47 @@ class TailwindElementsPlayground extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: bg_blue_500.color),
         useMaterial3: true,
       ),
-      home: Material(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const TwRow(
-              mainAxisAlignment: MainAxisAlignment.center,
-              gap: gap_x_24,
-              children: [
-                TwDiv(
-                  style: TwStyle(
-                    backgroundColor: bg_blue_500,
-                    width: w_frac_1_12,
-                    height: h_24,
-                  ),
+      home: const Material(
+        child: TwDiv(
+          style: TwStyle(
+            height: h_96,
+            backgroundColor: bg_blue_200,
+          ),
+          child: TwColumn(
+            gap: gap_y_4,
+            children: [
+              TwButton(
+                style: TwStyle(
+                  width: w_frac_1_3,
+                  height: h_20,
+                  backgroundColor: bg_green_400,
                 ),
-                TwDiv(
-                  style: TwStyle(
-                    backgroundColor: bg_blue_500,
-                    width: w_frac_1_12,
-                    height: h_24,
-                  ),
+                child: TwText('Top Button'),
+              ),
+              TwButton(
+                style: TwStyle(
+                  width: w_frac_1_3,
+                  height: h_9,
+                  backgroundColor: bg_green_400,
                 ),
-              ],
-            ),
-            const TwColumn(
-              mainAxisAlignment: MainAxisAlignment.center,
-              gap: gap_y_4,
-              children: [
-                TwDiv(
-                  style: TwStyle(
-                    backgroundColor: bg_orange_500,
-                    width: w_frac_1_12,
-                    height: h_24,
-                  ),
+                child: TwText('Bottom Button'),
+              ),
+              TwTextField(
+                style: TwTextInputStyle(
+                  border: TwBorder.all(border_8),
+                  borderRadius: TwBorderRadius.all(rounded_full),
+                  borderColor: border_green_400,
+                  padding: TwPadding.all(p_6),
                 ),
-                TwDiv(
-                  style: TwStyle(
-                    backgroundColor: bg_yellow_500,
-                    width: w_frac_1_12,
-                    height: h_24,
-                  ),
-                ),
-              ],
-            ),
-            const TwDiv(
-              style: TwStyle(
-                backgroundColor: bg_yellow_500,
-                width: w_24,
-                height: h_24,
-                margin: TwMargin.all(m_4),
-                padding: TwPadding.all(p_4),
-                borderRadius: TwBorderRadius.all(rounded_md),
-              ),
-              alignment: Alignment.center,
-              child: Text('Flutter Demo'),
-            ),
-            TwButton(
-              onPressed: () {},
-              animationDuration: const Duration(milliseconds: 100),
-              style: const TwStyle(
-                backgroundColor: bg_blue_500,
-                margin: TwMargin.all(m_4),
-                border: TwBorder.all(border_2),
-                borderColor: border_neutral_500,
-                padding: TwPadding.all(p_4),
-                borderRadius: TwBorderRadius.all(rounded_md),
-              ),
-              hovered: const TwStyle(
-                backgroundColor: bg_red_700,
-                textColor: text_white,
-                borderRadius: TwBorderRadius.all(rounded_full),
-                border: TwBorder.all(border_8),
-                borderColor: border_neutral_500,
-              ),
-              pressed: const TwStyle(
-                backgroundColor: bg_green_700,
-                textColor: text_green_500,
-                borderRadius: TwBorderRadius.all(rounded_md),
-                border: TwBorder.all(border_4),
-                borderColor: border_black,
-              ),
-              child: const TwText(
-                'Hello World!',
-                style: TwTextStyle(
-                  textColor: text_white,
-                  fontSize: text_sm,
-                  fontWeight: font_normal,
+                hovered: TwTextInputStyle(
+                  border: TwBorder.all(border_2),
+                  borderRadius: TwBorderRadius.all(rounded_full),
+                  borderColor: border_blue_400,
+                  padding: TwPadding.all(p_0),
                 ),
               ),
-            ),
-            const TwSizedBox(
-              height: h_12,
-            ),
-            const TwDiv(
-              style: TwStyle(
-                padding: TwPadding.all(p_4),
-                backgroundColor: bg_blue_700,
-              ),
-              child: TwText(
-                'Hello World!',
-                style: TwTextStyle(
-                  textColor: text_white,
-                  fontSize: text_sm,
-                  fontWeight: font_normal,
-                ),
-              ),
-            ),
-            const TwDiv(
-              style: TwStyle(
-                width: w_56,
-                height: h_6,
-                margin: TwMargin.all(m_4),
-                backgroundColor: bg_green_500,
-              ),
-            ),
-            const TwDiv(
-              style: TwStyle(
-                width: w_frac_1_12,
-                height: h_24,
-                backgroundColor: bg_pink_500,
-              ),
-            ),
-            const TwDiv(
-              style: TwStyle(
-                width: w_full,
-                height: h_24,
-                backgroundColor: bg_purple_500,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

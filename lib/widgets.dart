@@ -5,4 +5,5 @@ export 'package:tailwind_elements/widgets/row.dart';
 export 'package:tailwind_elements/widgets/sized_box.dart';
 export 'package:tailwind_elements/widgets/style.dart';
 export 'package:tailwind_elements/widgets/text.dart';
+export 'package:tailwind_elements/widgets/text_field.dart';
 export 'package:tailwind_elements/widgets/text_span.dart';

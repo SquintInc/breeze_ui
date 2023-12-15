@@ -4,17 +4,6 @@ import 'package:tailwind_elements/widgets/div.dart';
 import 'package:tailwind_elements/widgets/style.dart';
 
 extension TwStyleButtonExtension on TwStyle {
-  /// Gets the [BorderSide] from a [TwStyle], which includes the border color
-  /// and width. Note that Material buttons only support a single border width
-  /// via TwBorder.all(...)
-  BorderSide toBorderSide() => BorderSide(
-        color: hasBorderDecoration
-            ? borderColor?.color ?? Colors.transparent
-            : Colors.transparent,
-        width: border?.all.value.logicalPixels ?? 0.0,
-        strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
-      );
-
   bool get requiresDivWrapper =>
       boxShadow != null ||
       margin != null ||
@@ -90,129 +79,77 @@ class TwButton extends StatelessWidget {
     return Size.infinite;
   }
 
+  MaterialStateProperty<T> whenStyleStatus<T>(
+    final StyleValueResolver resolver, {
+    required final T defaultValue,
+  }) =>
+      TwStyle.resolveStatus(
+        style,
+        resolver,
+        defaultValue: defaultValue,
+        disabled: disabled,
+        dragged: null,
+        error: null,
+        focused: focused,
+        selected: null,
+        pressed: pressed,
+        hovered: hovered,
+      );
+
   ButtonStyle _buttonStyle({
     required final double? widthPx,
     required final double? heightPx,
-  }) {
-    return ButtonStyle(
-      foregroundColor: MaterialStateProperty.resolveWith<Color>(
-        (final states) => switch (getSelectableState(states)) {
-          SelectableState.normal ||
-          SelectableState.dragged ||
-          SelectableState.selected =>
-            style.textColor?.color ?? Colors.black,
-          SelectableState.disabled => disabled?.textColor?.color ??
-              style.textColor?.color ??
-              Colors.black,
-          SelectableState.hovered =>
-            hovered?.textColor?.color ?? style.textColor?.color ?? Colors.black,
-          SelectableState.focused =>
-            focused?.textColor?.color ?? style.textColor?.color ?? Colors.black,
-          SelectableState.pressed =>
-            pressed?.textColor?.color ?? style.textColor?.color ?? Colors.black,
-        },
-      ),
-      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-        (final states) => switch (getSelectableState(states)) {
-          SelectableState.normal ||
-          SelectableState.dragged ||
-          SelectableState.selected =>
-            style.backgroundColor?.color ?? Colors.transparent,
-          SelectableState.disabled => disabled?.backgroundColor?.color ??
-              style.backgroundColor?.color ??
-              Colors.transparent,
-          SelectableState.hovered => hovered?.backgroundColor?.color ??
-              style.backgroundColor?.color ??
-              Colors.transparent,
-          SelectableState.focused => focused?.backgroundColor?.color ??
-              style.backgroundColor?.color ??
-              Colors.transparent,
-          SelectableState.pressed => pressed?.backgroundColor?.color ??
-              style.backgroundColor?.color ??
-              Colors.transparent,
-        },
-      ),
-      fixedSize: MaterialStateProperty.all<Size>(
-        _buttonSize(
-          widthPx: widthPx,
-          heightPx: heightPx,
+  }) =>
+      ButtonStyle(
+        foregroundColor: whenStyleStatus(
+          (final statusStyle) => statusStyle?.textColor?.color,
+          defaultValue: Colors.black,
         ),
-      ),
-      padding: MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
-        (final states) => switch (getSelectableState(states)) {
-          SelectableState.normal ||
-          SelectableState.dragged ||
-          SelectableState.selected =>
-            style.padding?.toEdgeInsets() ?? EdgeInsets.zero,
-          SelectableState.disabled => disabled?.padding?.toEdgeInsets() ??
-              style.padding?.toEdgeInsets() ??
-              EdgeInsets.zero,
-          SelectableState.hovered => hovered?.padding?.toEdgeInsets() ??
-              style.padding?.toEdgeInsets() ??
-              EdgeInsets.zero,
-          SelectableState.focused => focused?.padding?.toEdgeInsets() ??
-              style.padding?.toEdgeInsets() ??
-              EdgeInsets.zero,
-          SelectableState.pressed => pressed?.padding?.toEdgeInsets() ??
-              style.padding?.toEdgeInsets() ??
-              EdgeInsets.zero,
-        },
-      ),
-      shape: style.hasBorderDecoration
-          ? MaterialStateProperty.resolveWith<OutlinedBorder?>(
-              (final states) => RoundedRectangleBorder(
-                borderRadius: style.borderRadius?.type == BoxCornerType.all
-                    ? style.borderRadius?.toBorderRadius() ?? BorderRadius.zero
-                    : BorderRadius.zero,
-                side: switch (getSelectableState(states)) {
-                  SelectableState.normal ||
-                  SelectableState.dragged ||
-                  SelectableState.selected =>
-                    style.toBorderSide(),
-                  SelectableState.disabled =>
-                    disabled?.toBorderSide() ?? style.toBorderSide(),
-                  SelectableState.hovered =>
-                    hovered?.toBorderSide() ?? style.toBorderSide(),
-                  SelectableState.focused =>
-                    focused?.toBorderSide() ?? style.toBorderSide(),
-                  SelectableState.pressed =>
-                    pressed?.toBorderSide() ?? style.toBorderSide(),
-                },
-              ),
-            )
-          : MaterialStateProperty.all<OutlinedBorder?>(
-              const RoundedRectangleBorder(),
-            ),
-      side: style.hasBorderDecoration
-          ? MaterialStateProperty.resolveWith<BorderSide?>(
-              (final states) => switch (getSelectableState(states)) {
-                SelectableState.normal ||
-                SelectableState.dragged ||
-                SelectableState.selected =>
-                  style.toBorderSide(),
-                SelectableState.disabled =>
-                  disabled?.toBorderSide() ?? style.toBorderSide(),
-                SelectableState.hovered =>
-                  hovered?.toBorderSide() ?? style.toBorderSide(),
-                SelectableState.focused =>
-                  focused?.toBorderSide() ?? style.toBorderSide(),
-                SelectableState.pressed =>
-                  pressed?.toBorderSide() ?? style.toBorderSide(),
-              },
-            )
-          : null,
-      // Currently no support for overlay color
-      overlayColor: MaterialStateProperty.all<Color>(
-        Colors.transparent,
-      ),
-      // Currently no support for elevation color
-      elevation: MaterialStateProperty.all<double>(0),
-      shadowColor: null,
-      animationDuration: animationDuration,
-      tapTargetSize: tapTargetSize,
-      alignment: alignment,
-    );
-  }
+        backgroundColor: whenStyleStatus(
+          (final statusStyle) => statusStyle?.backgroundColor?.color,
+          defaultValue: Colors.transparent,
+        ),
+        fixedSize: always(
+          _buttonSize(
+            widthPx: widthPx,
+            heightPx: heightPx,
+          ),
+        ),
+        padding: whenStyleStatus(
+          (final statusStyle) => statusStyle?.padding?.toEdgeInsets(),
+          defaultValue: EdgeInsets.zero,
+        ),
+        shape: style.hasBorderDecoration
+            ? whenStyleStatus(
+                (final statusStyle) => RoundedRectangleBorder(
+                  borderRadius:
+                      statusStyle?.borderRadius?.type == BoxCornerType.all
+                          ? style.borderRadius?.toBorderRadius() ??
+                              BorderRadius.zero
+                          : BorderRadius.zero,
+                  side: statusStyle?.toBorderSide() ?? style.toBorderSide(),
+                ),
+                defaultValue: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.zero,
+                  side: style.toBorderSide(),
+                ),
+              )
+            : always(const RoundedRectangleBorder()),
+        side: style.hasBorderDecoration
+            ? whenStyleStatus(
+                (final statusStyle) => statusStyle?.toBorderSide(),
+                defaultValue: style.toBorderSide(),
+              )
+            : null,
+        // Currently no support for overlay color
+        overlayColor: always(Colors.transparent),
+        // Currently no support for elevation color
+        elevation: always(0),
+        shadowColor: null,
+        animationDuration: animationDuration,
+        tapTargetSize: tapTargetSize,
+        alignment: alignment,
+      );
 
   bool get requiresDivWrapper =>
       style.requiresDivWrapper ||
