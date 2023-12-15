@@ -158,7 +158,47 @@ class TwError {
     this.maxLines,
   }) : assert(
           !(text != null && widget != null),
-          'Cannot provide both text and widget to an error subcomponent',
+          'Cannot provide both text and widget to an error label subcomponent',
+        );
+
+  MaterialStateTextStyle toMaterialTextStyle(
+    final TwTextStyle defaultTextStyle,
+  ) =>
+      TwTextStyle.toMaterialTextStyle(
+        style ?? defaultTextStyle,
+        disabled: disabled,
+        dragged: null,
+        error: error,
+        focused: focused,
+        selected: null,
+        pressed: null,
+        hovered: hovered,
+      );
+}
+
+@immutable
+class TwCounter {
+  final String? text;
+  final Widget? widget;
+  final TwTextStyle? style;
+  final TwTextStyle? disabled;
+  final TwTextStyle? error;
+  final TwTextStyle? focused;
+  final TwTextStyle? hovered;
+  final String? semanticText;
+
+  const TwCounter({
+    this.text,
+    this.widget,
+    this.style,
+    this.disabled,
+    this.error,
+    this.focused,
+    this.hovered,
+    this.semanticText,
+  }) : assert(
+          !(text != null && widget != null),
+          'Cannot provide both text and widget to a counter subcomponent',
         );
 
   MaterialStateTextStyle toMaterialTextStyle(
@@ -211,6 +251,9 @@ class TwTextField extends TextField {
   /// TextField error label sub-component
   final TwError? errorLabel;
 
+  /// TextField counter sub-component
+  final TwCounter? counter;
+
   /// Copied directly from [TextField._defaultContextMenuBuilder]
   static Widget _defaultContextMenuBuilder(
     final BuildContext context,
@@ -233,6 +276,7 @@ class TwTextField extends TextField {
     this.subtext,
     this.placeholder,
     this.errorLabel,
+    this.counter,
     // Passthrough properties
     super.controller,
     super.focusNode,
@@ -357,6 +401,12 @@ class TwTextField extends TextField {
       errorStyle: errorLabel?.toMaterialTextStyle(textInputStyle),
       errorMaxLines: errorLabel?.maxLines,
 
+      // Counter sub-component
+      counter: counter?.widget,
+      counterText: counter?.text,
+      counterStyle: counter?.toMaterialTextStyle(textInputStyle),
+      semanticCounterText: counter?.semanticText,
+
       // TextField container
       constraints: textInputStyle.getBoxConstraints(),
       contentPadding: textInputStyle.padding?.toEdgeInsets(),
@@ -364,6 +414,8 @@ class TwTextField extends TextField {
       // disabledBorder, nor enabledBorder, since we are using material state
       // resolver for the border
       border: _getMaterialInputBorder(),
+      filled: textInputStyle.backgroundColor != null,
+      fillColor: textInputStyle.backgroundColor?.color,
     );
   }
 }

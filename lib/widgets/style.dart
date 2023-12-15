@@ -155,10 +155,6 @@ class TwTextInputStyle extends TwTextStyle {
   // Background styling
   final TwBackgroundColor? backgroundColor;
 
-  // Effect styling
-  final TwBoxShadows? boxShadow;
-  final TwBoxShadowColor? boxShadowColor;
-
   // Border styling
   final TwBorder? border;
   final TwBorderColor? borderColor;
@@ -187,8 +183,6 @@ class TwTextInputStyle extends TwTextStyle {
     super.wordSpacing,
     super.letterSpacing,
     this.backgroundColor,
-    this.boxShadow,
-    this.boxShadowColor,
     this.border,
     this.borderColor,
     this.borderRadius,
