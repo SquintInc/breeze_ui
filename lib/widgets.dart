@@ -1,3 +1,4 @@
+export 'package:tailwind_elements/widgets/avatar.dart';
 export 'package:tailwind_elements/widgets/button.dart';
 export 'package:tailwind_elements/widgets/column.dart';
 export 'package:tailwind_elements/widgets/div.dart';
