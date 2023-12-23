@@ -7,7 +7,11 @@ import 'package:tailwind_elements/config/options/units.dart';
 /// A [ConstantsGenerator] used to generate Tailwind 'text-*' font size
 /// constants to the .g.dart part file.
 class FontSizeBuilder extends ConstantsGenerator {
-  const FontSizeBuilder(super.options, super.config);
+  const FontSizeBuilder(
+    super.options,
+    super.config, {
+    super.generatorType = GeneratorType.rawValues,
+  });
 
   @override
   String get themeConfigKey => 'fontSize';
@@ -22,8 +26,7 @@ class FontSizeBuilder extends ConstantsGenerator {
     final LibraryReader library,
     final BuildStep buildStep,
   ) async {
-    final Map<String, dynamic> themeValues =
-        config.getRawValues(themeConfigKey);
+    final Map<String, dynamic> themeValues = getThemeValues();
     final allDeclarations = variablePrefixToValueClassName.entries.map((
       final prefix,
     ) {

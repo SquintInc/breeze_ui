@@ -6,4 +6,14 @@ class TwLetterSpacing {
   final TwUnit value;
 
   const TwLetterSpacing(this.value);
+
+  @override
+  bool operator ==(final Object other) =>
+      identical(this, other) ||
+      other is TwLetterSpacing &&
+          runtimeType == other.runtimeType &&
+          value == other.value;
+
+  @override
+  int get hashCode => value.hashCode;
 }

@@ -6,7 +6,11 @@ import 'package:tailwind_elements/config/builder/builders/generators.dart';
 /// A [ConstantsGenerator] used to generate Tailwind 'shadow-*' box shadow
 /// constants to the .g.dart part file.
 class BoxShadowBuilder extends ConstantsGenerator {
-  const BoxShadowBuilder(super.options, super.config);
+  const BoxShadowBuilder(
+    super.options,
+    super.config, {
+    super.generatorType = GeneratorType.rawValues,
+  });
 
   @override
   String get themeConfigKey => 'boxShadow';
@@ -21,8 +25,7 @@ class BoxShadowBuilder extends ConstantsGenerator {
     final LibraryReader library,
     final BuildStep buildStep,
   ) async {
-    final Map<String, String> boxShadowsMap = config
-        .getRawValues(themeConfigKey)
+    final Map<String, String> boxShadowsMap = getThemeValues()
         .map((final key, final value) => MapEntry(key, value.toString()));
     final allDeclarations = variablePrefixToValueClassName.entries.map((
       final prefix,

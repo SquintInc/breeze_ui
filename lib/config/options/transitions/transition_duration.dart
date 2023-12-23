@@ -2,18 +2,18 @@ import 'package:meta/meta.dart';
 import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
-class TwTextDecorationThickness {
-  final TwUnit value;
+class TwTransitionDuration {
+  final TwTimeUnit duration;
 
-  const TwTextDecorationThickness(this.value);
+  const TwTransitionDuration(this.duration);
 
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
-      other is TwTextDecorationThickness &&
+      other is TwTransitionDuration &&
           runtimeType == other.runtimeType &&
-          value == other.value;
+          duration == other.duration;
 
   @override
-  int get hashCode => value.hashCode;
+  int get hashCode => duration.hashCode;
 }

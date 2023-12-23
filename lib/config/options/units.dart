@@ -1,6 +1,12 @@
 import 'package:meta/meta.dart';
 
-/// Represents a CSS unit type.
+/// Represents a CSS time unit type.
+enum TimeUnitType {
+  ms,
+  s,
+}
+
+/// Represents a CSS measurement unit type.
 enum UnitType {
   px,
   em,
@@ -20,7 +26,35 @@ double _getLogicalPixels(final UnitType type, final double value) =>
       _ => 0,
     };
 
-/// Represents a CSS unit using a sealed class.
+/// Represents a CSS time unit using a sealed class.
+@immutable
+sealed class TwTimeUnit {
+  TimeUnitType get type;
+
+  Duration get value;
+
+  static TwTimeUnit parse(final String value) {
+    if (value == '0') {
+      return const MillisecondsTimeUnit(Duration(microseconds: 0));
+    }
+    if (value.endsWith('ms')) {
+      final ms = double.parse(value.substring(0, value.length - 2));
+      return MillisecondsTimeUnit(
+        Duration(
+          microseconds: (ms * Duration.microsecondsPerMillisecond).toInt(),
+        ),
+      );
+    } else if (value.endsWith('s')) {
+      final s = double.parse(value.substring(0, value.length - 1));
+      return SecondsTimeUnit(
+        Duration(milliseconds: (s * Duration.millisecondsPerSecond).toInt()),
+      );
+    }
+    throw UnsupportedError('Unsupported CSS time unit type: $value');
+  }
+}
+
+/// Represents a CSS measurement unit using a sealed class.
 @immutable
 sealed class TwUnit {
   UnitType get type;
@@ -98,6 +132,67 @@ extension TwUnitExtension on TwUnit {
       type == UnitType.smallViewport ||
       type == UnitType.largeViewport ||
       type == UnitType.dynamicViewport;
+
+  String toDartConstructor() => '$runtimeType($value)';
+}
+
+extension TwTimeUnitExtension on TwTimeUnit {
+  String toDartConstructor() {
+    return switch (type) {
+      TimeUnitType.ms =>
+        '$runtimeType(Duration(microseconds: ${value.inMicroseconds}))',
+      TimeUnitType.s =>
+        '$runtimeType(Duration(milliseconds: ${value.inMilliseconds}))',
+    };
+  }
+}
+
+@immutable
+class MillisecondsTimeUnit implements TwTimeUnit {
+  @override
+  final Duration value;
+
+  const MillisecondsTimeUnit(this.value);
+
+  @override
+  TimeUnitType get type => TimeUnitType.ms;
+
+  @override
+  String toString() => '$value (${type.name})';
+
+  @override
+  bool operator ==(final Object other) =>
+      identical(this, other) ||
+      other is MillisecondsTimeUnit &&
+          runtimeType == other.runtimeType &&
+          value == other.value;
+
+  @override
+  int get hashCode => value.hashCode;
+}
+
+@immutable
+class SecondsTimeUnit implements TwTimeUnit {
+  @override
+  final Duration value;
+
+  const SecondsTimeUnit(this.value);
+
+  @override
+  TimeUnitType get type => TimeUnitType.s;
+
+  @override
+  String toString() => '$value (${type.name})';
+
+  @override
+  bool operator ==(final Object other) =>
+      identical(this, other) ||
+      other is SecondsTimeUnit &&
+          runtimeType == other.runtimeType &&
+          value == other.value;
+
+  @override
+  int get hashCode => value.hashCode;
 }
 
 /// Represents a pixel unit (e.g. 50px).

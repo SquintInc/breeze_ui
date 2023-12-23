@@ -14,10 +14,6 @@ extension StringExt on String {
   }
 }
 
-extension TwUnitExt on TwUnit {
-  String toDartConstructor() => '$runtimeType($value)';
-}
-
 class CodeWriter {
   static String variableName(
     final String variablePrefix,
@@ -39,45 +35,66 @@ class CodeWriter {
     return key.toSnakeCase();
   }
 
-  static String variableNameSuffix(final String key, final TwUnit unit) {
-    final identifier = switch (unit.type) {
-      UnitType.px ||
-      UnitType.em ||
-      UnitType.rem =>
-        key == 'DEFAULT' ? '' : key.toSnakeCase(),
-      UnitType.percent => percentageVarNameSuffix(key, unit.value),
-      UnitType.viewport => key.toSnakeCase(),
-      UnitType.smallViewport => key.toSnakeCase(),
-      UnitType.largeViewport => key.toSnakeCase(),
-      UnitType.dynamicViewport => key.toSnakeCase(),
-      _ => throw Exception(
-          'Invalid unit type for conversion to identifier: ${unit.type}',
-        ),
-    };
-    return identifier;
+  static String variableNameSuffix(final String key, final dynamic unit) {
+    if (unit is TwUnit) {
+      return switch (unit.type) {
+        UnitType.px ||
+        UnitType.em ||
+        UnitType.rem =>
+          key == 'DEFAULT' ? '' : key.toSnakeCase(),
+        UnitType.percent => percentageVarNameSuffix(key, unit.value),
+        UnitType.viewport => key.toSnakeCase(),
+        UnitType.smallViewport => key.toSnakeCase(),
+        UnitType.largeViewport => key.toSnakeCase(),
+        UnitType.dynamicViewport => key.toSnakeCase(),
+        _ => throw Exception(
+            'Invalid unit type for conversion to identifier: ${unit.type}',
+          ),
+      };
+    } else if (unit is TwTimeUnit) {
+      return switch (unit.type) {
+        TimeUnitType.ms ||
+        TimeUnitType.s =>
+          key == 'DEFAULT' ? '' : key.toSnakeCase(),
+      };
+    }
+    throw Exception(
+      'Invalid unit type for conversion to identifier: ${unit.runtimeType}',
+    );
   }
 
   static String dartLineUnitDeclaration({
     required final String variableName,
     required final String valueClassName,
-    required final TwUnit unit,
+    required final dynamic unit,
   }) {
-    final valueConstructor = switch (unit.type) {
-      UnitType.px ||
-      UnitType.em ||
-      UnitType.rem ||
-      UnitType.percent ||
-      UnitType.viewport ||
-      UnitType.smallViewport ||
-      UnitType.largeViewport ||
-      UnitType.dynamicViewport =>
-        valueClassName.isEmpty
+    var valueConstructor = '';
+    if (unit is TwUnit) {
+      valueConstructor = switch (unit.type) {
+        UnitType.px ||
+        UnitType.em ||
+        UnitType.rem ||
+        UnitType.percent ||
+        UnitType.viewport ||
+        UnitType.smallViewport ||
+        UnitType.largeViewport ||
+        UnitType.dynamicViewport =>
+          valueClassName.isEmpty
+              ? unit.toDartConstructor()
+              : '$valueClassName(${unit.toDartConstructor()})',
+        _ => throw Exception(
+            'Invalid unit type for converting unit to a Dart declaration: ${unit.type}',
+          ),
+      };
+    } else if (unit is TwTimeUnit) {
+      valueConstructor = switch (unit.type) {
+        TimeUnitType.ms => '$valueClassName(${unit.toDartConstructor()})',
+        TimeUnitType.s => valueClassName.isEmpty
             ? unit.toDartConstructor()
             : '$valueClassName(${unit.toDartConstructor()})',
-      _ => throw Exception(
-          'Invalid unit type for converting unit to a Dart declaration: ${unit.type}',
-        ),
-    };
+      };
+    }
+
     return dartLineDeclaration(
       variableName: variableName,
       valueConstructor: valueConstructor,
@@ -92,11 +109,24 @@ class CodeWriter {
   }
 }
 
+enum GeneratorType {
+  distanceUnits,
+  timeUnits,
+  rawValues,
+}
+
 /// A [Generator] used to generate Tailwind constants to the .g.dart part file.
 @immutable
 abstract class ConstantsGenerator extends Generator {
   final BuilderOptions options;
   final TailwindConfig config;
+  final GeneratorType generatorType;
+
+  Map<String, dynamic> getThemeValues() => switch (generatorType) {
+        GeneratorType.distanceUnits => config.getUnits(themeConfigKey),
+        GeneratorType.timeUnits => config.getTimeUnits(themeConfigKey),
+        GeneratorType.rawValues => config.getRawValues(themeConfigKey),
+      };
 
   /// The Tailwind config key to use for fetching the key : unit mappings.
   String get themeConfigKey;
@@ -112,14 +142,18 @@ abstract class ConstantsGenerator extends Generator {
   /// }
   Map<String, String> get variablePrefixToValueClassName;
 
-  const ConstantsGenerator(this.options, this.config);
+  const ConstantsGenerator(
+    this.options,
+    this.config, {
+    this.generatorType = GeneratorType.distanceUnits,
+  });
 
   @override
   Future<String> generate(
     final LibraryReader library,
     final BuildStep buildStep,
   ) async {
-    final Map<String, TwUnit> themeValues = config.getUsable(themeConfigKey);
+    final Map<String, dynamic> themeValues = getThemeValues();
     final allDeclarations = variablePrefixToValueClassName.entries.map((
       final prefix,
     ) {

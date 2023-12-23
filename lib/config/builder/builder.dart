@@ -21,6 +21,10 @@ import 'package:tailwind_elements/config/builder/builders/options/min_height_bui
 import 'package:tailwind_elements/config/builder/builders/options/min_width_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/options/padding_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/options/text_decoration_thickness_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/transition_delay_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/transition_duration_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/transition_property_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/transition_timing_function_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/options/width_builder.dart'; // Explicitly import template files to help invalidate asset graph for build_runner
 // ignore: unused_import
 import 'package:tailwind_elements/config/builder/config_functions.template.dart';
@@ -35,24 +39,33 @@ Builder tailwindConfigBuilder(final BuilderOptions options) {
     [
       // Generate main config in-memory first
       TailwindConfigBuilder(options, config),
-      // Generate constants
+      // Generate border constants
+      BorderWidthBuilder(options, config),
+      BorderRadiusBuilder(options, config),
+      // Generate effect constants
+      BoxShadowBuilder(options, config),
+      // Generate sizing constants
+      GapBuilder(options, config),
       WidthBuilder(options, config),
       MinWidthBuilder(options, config),
       MaxWidthBuilder(options, config),
       HeightBuilder(options, config),
       MinHeightBuilder(options, config),
       MaxHeightBuilder(options, config),
+      // Generate spacing constants
       MarginBuilder(options, config),
       PaddingBuilder(options, config),
-      BorderWidthBuilder(options, config),
-      BorderRadiusBuilder(options, config),
-      BoxShadowBuilder(options, config),
+      // Generate transition constants
+      TransitionPropertyBuilder(options, config),
+      TransitionDurationBuilder(options, config),
+      TransitionDelayBuilder(options, config),
+      TransitionTimingFunctionBuilder(options, config),
+      // Generate typography constants
       FontSizeBuilder(options, config),
       FontWeightBuilder(options, config),
       LineHeightBuilder(options, config),
       TextDecorationThicknessBuilder(options, config),
       LetterSpacingBuilder(options, config),
-      GapBuilder(options, config),
       // Generate colors
       BackgroundColorBuilder(options, config),
       BoxShadowColorBuilder(options, config),

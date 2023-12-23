@@ -1,3 +1,4 @@
+export 'package:flutter/animation.dart';
 export 'package:tailwind_elements/config/options/borders/border_radius.dart';
 export 'package:tailwind_elements/config/options/borders/border_width.dart';
 export 'package:tailwind_elements/config/options/colors.dart';
@@ -11,6 +12,10 @@ export 'package:tailwind_elements/config/options/sizing/min_width.dart';
 export 'package:tailwind_elements/config/options/sizing/width.dart';
 export 'package:tailwind_elements/config/options/spacing/margin.dart';
 export 'package:tailwind_elements/config/options/spacing/padding.dart';
+export 'package:tailwind_elements/config/options/transitions/transition_delay.dart';
+export 'package:tailwind_elements/config/options/transitions/transition_duration.dart';
+export 'package:tailwind_elements/config/options/transitions/transition_property.dart';
+export 'package:tailwind_elements/config/options/transitions/transition_timing_function.dart';
 export 'package:tailwind_elements/config/options/typography/font_size.dart';
 export 'package:tailwind_elements/config/options/typography/font_weight.dart';
 export 'package:tailwind_elements/config/options/typography/letter_spacing.dart';

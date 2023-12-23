@@ -11,6 +11,286 @@ part of 'tailwind_config_example.dart';
 // TailwindConfigBuilder ran successfully. Constants are outputted below this.
 
 // **************************************************************************
+// Generator: BorderWidthBuilder
+// **************************************************************************
+
+const border = TwBorderAll(PxUnit(1.0));
+const border_0 = TwBorderAll(PxUnit(0.0));
+const border_2 = TwBorderAll(PxUnit(2.0));
+const border_4 = TwBorderAll(PxUnit(4.0));
+const border_8 = TwBorderAll(PxUnit(8.0));
+const border_x = TwBorderX(PxUnit(1.0));
+const border_x_0 = TwBorderX(PxUnit(0.0));
+const border_x_2 = TwBorderX(PxUnit(2.0));
+const border_x_4 = TwBorderX(PxUnit(4.0));
+const border_x_8 = TwBorderX(PxUnit(8.0));
+const border_y = TwBorderY(PxUnit(1.0));
+const border_y_0 = TwBorderY(PxUnit(0.0));
+const border_y_2 = TwBorderY(PxUnit(2.0));
+const border_y_4 = TwBorderY(PxUnit(4.0));
+const border_y_8 = TwBorderY(PxUnit(8.0));
+const border_t = TwBorderTop(PxUnit(1.0));
+const border_t_0 = TwBorderTop(PxUnit(0.0));
+const border_t_2 = TwBorderTop(PxUnit(2.0));
+const border_t_4 = TwBorderTop(PxUnit(4.0));
+const border_t_8 = TwBorderTop(PxUnit(8.0));
+const border_r = TwBorderRight(PxUnit(1.0));
+const border_r_0 = TwBorderRight(PxUnit(0.0));
+const border_r_2 = TwBorderRight(PxUnit(2.0));
+const border_r_4 = TwBorderRight(PxUnit(4.0));
+const border_r_8 = TwBorderRight(PxUnit(8.0));
+const border_b = TwBorderBottom(PxUnit(1.0));
+const border_b_0 = TwBorderBottom(PxUnit(0.0));
+const border_b_2 = TwBorderBottom(PxUnit(2.0));
+const border_b_4 = TwBorderBottom(PxUnit(4.0));
+const border_b_8 = TwBorderBottom(PxUnit(8.0));
+const border_l = TwBorderLeft(PxUnit(1.0));
+const border_l_0 = TwBorderLeft(PxUnit(0.0));
+const border_l_2 = TwBorderLeft(PxUnit(2.0));
+const border_l_4 = TwBorderLeft(PxUnit(4.0));
+const border_l_8 = TwBorderLeft(PxUnit(8.0));
+
+// **************************************************************************
+// Generator: BorderRadiusBuilder
+// **************************************************************************
+
+const rounded_none = TwBorderRadiusAll(PxUnit(0.0));
+const rounded_sm = TwBorderRadiusAll(RemUnit(0.125));
+const rounded = TwBorderRadiusAll(RemUnit(0.25));
+const rounded_md = TwBorderRadiusAll(RemUnit(0.375));
+const rounded_lg = TwBorderRadiusAll(RemUnit(0.5));
+const rounded_xl = TwBorderRadiusAll(RemUnit(0.75));
+const rounded_2xl = TwBorderRadiusAll(RemUnit(1.0));
+const rounded_3xl = TwBorderRadiusAll(RemUnit(1.5));
+const rounded_full = TwBorderRadiusAll(PxUnit(9999.0));
+const rounded_t_none = TwBorderRadiusTop(PxUnit(0.0));
+const rounded_t_sm = TwBorderRadiusTop(RemUnit(0.125));
+const rounded_t = TwBorderRadiusTop(RemUnit(0.25));
+const rounded_t_md = TwBorderRadiusTop(RemUnit(0.375));
+const rounded_t_lg = TwBorderRadiusTop(RemUnit(0.5));
+const rounded_t_xl = TwBorderRadiusTop(RemUnit(0.75));
+const rounded_t_2xl = TwBorderRadiusTop(RemUnit(1.0));
+const rounded_t_3xl = TwBorderRadiusTop(RemUnit(1.5));
+const rounded_t_full = TwBorderRadiusTop(PxUnit(9999.0));
+const rounded_r_none = TwBorderRadiusRight(PxUnit(0.0));
+const rounded_r_sm = TwBorderRadiusRight(RemUnit(0.125));
+const rounded_r = TwBorderRadiusRight(RemUnit(0.25));
+const rounded_r_md = TwBorderRadiusRight(RemUnit(0.375));
+const rounded_r_lg = TwBorderRadiusRight(RemUnit(0.5));
+const rounded_r_xl = TwBorderRadiusRight(RemUnit(0.75));
+const rounded_r_2xl = TwBorderRadiusRight(RemUnit(1.0));
+const rounded_r_3xl = TwBorderRadiusRight(RemUnit(1.5));
+const rounded_r_full = TwBorderRadiusRight(PxUnit(9999.0));
+const rounded_b_none = TwBorderRadiusBottom(PxUnit(0.0));
+const rounded_b_sm = TwBorderRadiusBottom(RemUnit(0.125));
+const rounded_b = TwBorderRadiusBottom(RemUnit(0.25));
+const rounded_b_md = TwBorderRadiusBottom(RemUnit(0.375));
+const rounded_b_lg = TwBorderRadiusBottom(RemUnit(0.5));
+const rounded_b_xl = TwBorderRadiusBottom(RemUnit(0.75));
+const rounded_b_2xl = TwBorderRadiusBottom(RemUnit(1.0));
+const rounded_b_3xl = TwBorderRadiusBottom(RemUnit(1.5));
+const rounded_b_full = TwBorderRadiusBottom(PxUnit(9999.0));
+const rounded_l_none = TwBorderRadiusLeft(PxUnit(0.0));
+const rounded_l_sm = TwBorderRadiusLeft(RemUnit(0.125));
+const rounded_l = TwBorderRadiusLeft(RemUnit(0.25));
+const rounded_l_md = TwBorderRadiusLeft(RemUnit(0.375));
+const rounded_l_lg = TwBorderRadiusLeft(RemUnit(0.5));
+const rounded_l_xl = TwBorderRadiusLeft(RemUnit(0.75));
+const rounded_l_2xl = TwBorderRadiusLeft(RemUnit(1.0));
+const rounded_l_3xl = TwBorderRadiusLeft(RemUnit(1.5));
+const rounded_l_full = TwBorderRadiusLeft(PxUnit(9999.0));
+const rounded_tl_none = TwBorderRadiusTopLeft(PxUnit(0.0));
+const rounded_tl_sm = TwBorderRadiusTopLeft(RemUnit(0.125));
+const rounded_tl = TwBorderRadiusTopLeft(RemUnit(0.25));
+const rounded_tl_md = TwBorderRadiusTopLeft(RemUnit(0.375));
+const rounded_tl_lg = TwBorderRadiusTopLeft(RemUnit(0.5));
+const rounded_tl_xl = TwBorderRadiusTopLeft(RemUnit(0.75));
+const rounded_tl_2xl = TwBorderRadiusTopLeft(RemUnit(1.0));
+const rounded_tl_3xl = TwBorderRadiusTopLeft(RemUnit(1.5));
+const rounded_tl_full = TwBorderRadiusTopLeft(PxUnit(9999.0));
+const rounded_tr_none = TwBorderRadiusTopRight(PxUnit(0.0));
+const rounded_tr_sm = TwBorderRadiusTopRight(RemUnit(0.125));
+const rounded_tr = TwBorderRadiusTopRight(RemUnit(0.25));
+const rounded_tr_md = TwBorderRadiusTopRight(RemUnit(0.375));
+const rounded_tr_lg = TwBorderRadiusTopRight(RemUnit(0.5));
+const rounded_tr_xl = TwBorderRadiusTopRight(RemUnit(0.75));
+const rounded_tr_2xl = TwBorderRadiusTopRight(RemUnit(1.0));
+const rounded_tr_3xl = TwBorderRadiusTopRight(RemUnit(1.5));
+const rounded_tr_full = TwBorderRadiusTopRight(PxUnit(9999.0));
+const rounded_br_none = TwBorderRadiusBottomRight(PxUnit(0.0));
+const rounded_br_sm = TwBorderRadiusBottomRight(RemUnit(0.125));
+const rounded_br = TwBorderRadiusBottomRight(RemUnit(0.25));
+const rounded_br_md = TwBorderRadiusBottomRight(RemUnit(0.375));
+const rounded_br_lg = TwBorderRadiusBottomRight(RemUnit(0.5));
+const rounded_br_xl = TwBorderRadiusBottomRight(RemUnit(0.75));
+const rounded_br_2xl = TwBorderRadiusBottomRight(RemUnit(1.0));
+const rounded_br_3xl = TwBorderRadiusBottomRight(RemUnit(1.5));
+const rounded_br_full = TwBorderRadiusBottomRight(PxUnit(9999.0));
+const rounded_bl_none = TwBorderRadiusBottomLeft(PxUnit(0.0));
+const rounded_bl_sm = TwBorderRadiusBottomLeft(RemUnit(0.125));
+const rounded_bl = TwBorderRadiusBottomLeft(RemUnit(0.25));
+const rounded_bl_md = TwBorderRadiusBottomLeft(RemUnit(0.375));
+const rounded_bl_lg = TwBorderRadiusBottomLeft(RemUnit(0.5));
+const rounded_bl_xl = TwBorderRadiusBottomLeft(RemUnit(0.75));
+const rounded_bl_2xl = TwBorderRadiusBottomLeft(RemUnit(1.0));
+const rounded_bl_3xl = TwBorderRadiusBottomLeft(RemUnit(1.5));
+const rounded_bl_full = TwBorderRadiusBottomLeft(PxUnit(9999.0));
+
+// **************************************************************************
+// Generator: BoxShadowBuilder
+// **************************************************************************
+
+const shadow_sm = TwBoxShadows([
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0xD000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(1.0),
+      blurRadius: PxUnit(2.0),
+      spreadRadius: PxUnit(0.0)),
+]);
+const shadow = TwBoxShadows([
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x1A000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(1.0),
+      blurRadius: PxUnit(3.0),
+      spreadRadius: PxUnit(0.0)),
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x1A000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(1.0),
+      blurRadius: PxUnit(2.0),
+      spreadRadius: PxUnit(-1.0)),
+]);
+const shadow_md = TwBoxShadows([
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x1A000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(4.0),
+      blurRadius: PxUnit(6.0),
+      spreadRadius: PxUnit(-1.0)),
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x1A000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(2.0),
+      blurRadius: PxUnit(4.0),
+      spreadRadius: PxUnit(-2.0)),
+]);
+const shadow_lg = TwBoxShadows([
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x1A000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(10.0),
+      blurRadius: PxUnit(15.0),
+      spreadRadius: PxUnit(-3.0)),
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x1A000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(4.0),
+      blurRadius: PxUnit(6.0),
+      spreadRadius: PxUnit(-4.0)),
+]);
+const shadow_xl = TwBoxShadows([
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x1A000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(20.0),
+      blurRadius: PxUnit(25.0),
+      spreadRadius: PxUnit(-5.0)),
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x1A000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(8.0),
+      blurRadius: PxUnit(10.0),
+      spreadRadius: PxUnit(-6.0)),
+]);
+const shadow_2xl = TwBoxShadows([
+  TwBoxShadow(
+      color: TwBoxShadowColor(Color(0x40000000)),
+      offsetX: PxUnit(0.0),
+      offsetY: PxUnit(25.0),
+      blurRadius: PxUnit(50.0),
+      spreadRadius: PxUnit(-12.0)),
+]);
+const shadow_inner = TwBoxShadows(<TwBoxShadow>[]);
+const shadow_none = TwBoxShadows(<TwBoxShadow>[]);
+
+// **************************************************************************
+// Generator: GapBuilder
+// **************************************************************************
+
+const gap_x_px = TwGapX(PxUnit(1.0));
+const gap_x_0 = TwGapX(PxUnit(0.0));
+const gap_x_0_5 = TwGapX(RemUnit(0.125));
+const gap_x_1 = TwGapX(RemUnit(0.25));
+const gap_x_1_5 = TwGapX(RemUnit(0.375));
+const gap_x_2 = TwGapX(RemUnit(0.5));
+const gap_x_2_5 = TwGapX(RemUnit(0.625));
+const gap_x_3 = TwGapX(RemUnit(0.75));
+const gap_x_3_5 = TwGapX(RemUnit(0.875));
+const gap_x_4 = TwGapX(RemUnit(1.0));
+const gap_x_5 = TwGapX(RemUnit(1.25));
+const gap_x_6 = TwGapX(RemUnit(1.5));
+const gap_x_7 = TwGapX(RemUnit(1.75));
+const gap_x_8 = TwGapX(RemUnit(2.0));
+const gap_x_9 = TwGapX(RemUnit(2.25));
+const gap_x_10 = TwGapX(RemUnit(2.5));
+const gap_x_11 = TwGapX(RemUnit(2.75));
+const gap_x_12 = TwGapX(RemUnit(3.0));
+const gap_x_14 = TwGapX(RemUnit(3.5));
+const gap_x_16 = TwGapX(RemUnit(4.0));
+const gap_x_20 = TwGapX(RemUnit(5.0));
+const gap_x_24 = TwGapX(RemUnit(6.0));
+const gap_x_28 = TwGapX(RemUnit(7.0));
+const gap_x_32 = TwGapX(RemUnit(8.0));
+const gap_x_36 = TwGapX(RemUnit(9.0));
+const gap_x_40 = TwGapX(RemUnit(10.0));
+const gap_x_44 = TwGapX(RemUnit(11.0));
+const gap_x_48 = TwGapX(RemUnit(12.0));
+const gap_x_52 = TwGapX(RemUnit(13.0));
+const gap_x_56 = TwGapX(RemUnit(14.0));
+const gap_x_60 = TwGapX(RemUnit(15.0));
+const gap_x_64 = TwGapX(RemUnit(16.0));
+const gap_x_72 = TwGapX(RemUnit(18.0));
+const gap_x_80 = TwGapX(RemUnit(20.0));
+const gap_x_96 = TwGapX(RemUnit(24.0));
+const gap_y_px = TwGapY(PxUnit(1.0));
+const gap_y_0 = TwGapY(PxUnit(0.0));
+const gap_y_0_5 = TwGapY(RemUnit(0.125));
+const gap_y_1 = TwGapY(RemUnit(0.25));
+const gap_y_1_5 = TwGapY(RemUnit(0.375));
+const gap_y_2 = TwGapY(RemUnit(0.5));
+const gap_y_2_5 = TwGapY(RemUnit(0.625));
+const gap_y_3 = TwGapY(RemUnit(0.75));
+const gap_y_3_5 = TwGapY(RemUnit(0.875));
+const gap_y_4 = TwGapY(RemUnit(1.0));
+const gap_y_5 = TwGapY(RemUnit(1.25));
+const gap_y_6 = TwGapY(RemUnit(1.5));
+const gap_y_7 = TwGapY(RemUnit(1.75));
+const gap_y_8 = TwGapY(RemUnit(2.0));
+const gap_y_9 = TwGapY(RemUnit(2.25));
+const gap_y_10 = TwGapY(RemUnit(2.5));
+const gap_y_11 = TwGapY(RemUnit(2.75));
+const gap_y_12 = TwGapY(RemUnit(3.0));
+const gap_y_14 = TwGapY(RemUnit(3.5));
+const gap_y_16 = TwGapY(RemUnit(4.0));
+const gap_y_20 = TwGapY(RemUnit(5.0));
+const gap_y_24 = TwGapY(RemUnit(6.0));
+const gap_y_28 = TwGapY(RemUnit(7.0));
+const gap_y_32 = TwGapY(RemUnit(8.0));
+const gap_y_36 = TwGapY(RemUnit(9.0));
+const gap_y_40 = TwGapY(RemUnit(10.0));
+const gap_y_44 = TwGapY(RemUnit(11.0));
+const gap_y_48 = TwGapY(RemUnit(12.0));
+const gap_y_52 = TwGapY(RemUnit(13.0));
+const gap_y_56 = TwGapY(RemUnit(14.0));
+const gap_y_60 = TwGapY(RemUnit(15.0));
+const gap_y_64 = TwGapY(RemUnit(16.0));
+const gap_y_72 = TwGapY(RemUnit(18.0));
+const gap_y_80 = TwGapY(RemUnit(20.0));
+const gap_y_96 = TwGapY(RemUnit(24.0));
+
+// **************************************************************************
 // Generator: WidthBuilder
 // **************************************************************************
 
@@ -830,209 +1110,93 @@ const pl_80 = TwPaddingLeft(RemUnit(20.0));
 const pl_96 = TwPaddingLeft(RemUnit(24.0));
 
 // **************************************************************************
-// Generator: BorderWidthBuilder
+// Generator: TransitionPropertyBuilder
 // **************************************************************************
 
-const border = TwBorderAll(PxUnit(1.0));
-const border_0 = TwBorderAll(PxUnit(0.0));
-const border_2 = TwBorderAll(PxUnit(2.0));
-const border_4 = TwBorderAll(PxUnit(4.0));
-const border_8 = TwBorderAll(PxUnit(8.0));
-const border_x = TwBorderX(PxUnit(1.0));
-const border_x_0 = TwBorderX(PxUnit(0.0));
-const border_x_2 = TwBorderX(PxUnit(2.0));
-const border_x_4 = TwBorderX(PxUnit(4.0));
-const border_x_8 = TwBorderX(PxUnit(8.0));
-const border_y = TwBorderY(PxUnit(1.0));
-const border_y_0 = TwBorderY(PxUnit(0.0));
-const border_y_2 = TwBorderY(PxUnit(2.0));
-const border_y_4 = TwBorderY(PxUnit(4.0));
-const border_y_8 = TwBorderY(PxUnit(8.0));
-const border_t = TwBorderTop(PxUnit(1.0));
-const border_t_0 = TwBorderTop(PxUnit(0.0));
-const border_t_2 = TwBorderTop(PxUnit(2.0));
-const border_t_4 = TwBorderTop(PxUnit(4.0));
-const border_t_8 = TwBorderTop(PxUnit(8.0));
-const border_r = TwBorderRight(PxUnit(1.0));
-const border_r_0 = TwBorderRight(PxUnit(0.0));
-const border_r_2 = TwBorderRight(PxUnit(2.0));
-const border_r_4 = TwBorderRight(PxUnit(4.0));
-const border_r_8 = TwBorderRight(PxUnit(8.0));
-const border_b = TwBorderBottom(PxUnit(1.0));
-const border_b_0 = TwBorderBottom(PxUnit(0.0));
-const border_b_2 = TwBorderBottom(PxUnit(2.0));
-const border_b_4 = TwBorderBottom(PxUnit(4.0));
-const border_b_8 = TwBorderBottom(PxUnit(8.0));
-const border_l = TwBorderLeft(PxUnit(1.0));
-const border_l_0 = TwBorderLeft(PxUnit(0.0));
-const border_l_2 = TwBorderLeft(PxUnit(2.0));
-const border_l_4 = TwBorderLeft(PxUnit(4.0));
-const border_l_8 = TwBorderLeft(PxUnit(8.0));
+const transition_none = TwTransitionProperty({TransitionProperty.none});
+const transition_all = TwTransitionProperty({TransitionProperty.all});
+const transition = TwTransitionProperty({
+  TransitionProperty.color,
+  TransitionProperty.backgroundColor,
+  TransitionProperty.borderColor,
+  TransitionProperty.textDecorationColor,
+  TransitionProperty.fill,
+  TransitionProperty.stroke,
+  TransitionProperty.opacity,
+  TransitionProperty.boxShadow,
+  TransitionProperty.transform,
+  TransitionProperty.filter,
+  TransitionProperty.backdropFilter
+});
+const transition_colors = TwTransitionProperty({
+  TransitionProperty.color,
+  TransitionProperty.backgroundColor,
+  TransitionProperty.borderColor,
+  TransitionProperty.textDecorationColor,
+  TransitionProperty.fill,
+  TransitionProperty.stroke
+});
+const transition_opacity = TwTransitionProperty({TransitionProperty.opacity});
+const transition_shadow = TwTransitionProperty({TransitionProperty.boxShadow});
+const transition_transform =
+    TwTransitionProperty({TransitionProperty.transform});
 
 // **************************************************************************
-// Generator: BorderRadiusBuilder
+// Generator: TransitionDurationBuilder
 // **************************************************************************
 
-const rounded_none = TwBorderRadiusAll(PxUnit(0.0));
-const rounded_sm = TwBorderRadiusAll(RemUnit(0.125));
-const rounded = TwBorderRadiusAll(RemUnit(0.25));
-const rounded_md = TwBorderRadiusAll(RemUnit(0.375));
-const rounded_lg = TwBorderRadiusAll(RemUnit(0.5));
-const rounded_xl = TwBorderRadiusAll(RemUnit(0.75));
-const rounded_2xl = TwBorderRadiusAll(RemUnit(1.0));
-const rounded_3xl = TwBorderRadiusAll(RemUnit(1.5));
-const rounded_full = TwBorderRadiusAll(PxUnit(9999.0));
-const rounded_t_none = TwBorderRadiusTop(PxUnit(0.0));
-const rounded_t_sm = TwBorderRadiusTop(RemUnit(0.125));
-const rounded_t = TwBorderRadiusTop(RemUnit(0.25));
-const rounded_t_md = TwBorderRadiusTop(RemUnit(0.375));
-const rounded_t_lg = TwBorderRadiusTop(RemUnit(0.5));
-const rounded_t_xl = TwBorderRadiusTop(RemUnit(0.75));
-const rounded_t_2xl = TwBorderRadiusTop(RemUnit(1.0));
-const rounded_t_3xl = TwBorderRadiusTop(RemUnit(1.5));
-const rounded_t_full = TwBorderRadiusTop(PxUnit(9999.0));
-const rounded_r_none = TwBorderRadiusRight(PxUnit(0.0));
-const rounded_r_sm = TwBorderRadiusRight(RemUnit(0.125));
-const rounded_r = TwBorderRadiusRight(RemUnit(0.25));
-const rounded_r_md = TwBorderRadiusRight(RemUnit(0.375));
-const rounded_r_lg = TwBorderRadiusRight(RemUnit(0.5));
-const rounded_r_xl = TwBorderRadiusRight(RemUnit(0.75));
-const rounded_r_2xl = TwBorderRadiusRight(RemUnit(1.0));
-const rounded_r_3xl = TwBorderRadiusRight(RemUnit(1.5));
-const rounded_r_full = TwBorderRadiusRight(PxUnit(9999.0));
-const rounded_b_none = TwBorderRadiusBottom(PxUnit(0.0));
-const rounded_b_sm = TwBorderRadiusBottom(RemUnit(0.125));
-const rounded_b = TwBorderRadiusBottom(RemUnit(0.25));
-const rounded_b_md = TwBorderRadiusBottom(RemUnit(0.375));
-const rounded_b_lg = TwBorderRadiusBottom(RemUnit(0.5));
-const rounded_b_xl = TwBorderRadiusBottom(RemUnit(0.75));
-const rounded_b_2xl = TwBorderRadiusBottom(RemUnit(1.0));
-const rounded_b_3xl = TwBorderRadiusBottom(RemUnit(1.5));
-const rounded_b_full = TwBorderRadiusBottom(PxUnit(9999.0));
-const rounded_l_none = TwBorderRadiusLeft(PxUnit(0.0));
-const rounded_l_sm = TwBorderRadiusLeft(RemUnit(0.125));
-const rounded_l = TwBorderRadiusLeft(RemUnit(0.25));
-const rounded_l_md = TwBorderRadiusLeft(RemUnit(0.375));
-const rounded_l_lg = TwBorderRadiusLeft(RemUnit(0.5));
-const rounded_l_xl = TwBorderRadiusLeft(RemUnit(0.75));
-const rounded_l_2xl = TwBorderRadiusLeft(RemUnit(1.0));
-const rounded_l_3xl = TwBorderRadiusLeft(RemUnit(1.5));
-const rounded_l_full = TwBorderRadiusLeft(PxUnit(9999.0));
-const rounded_tl_none = TwBorderRadiusTopLeft(PxUnit(0.0));
-const rounded_tl_sm = TwBorderRadiusTopLeft(RemUnit(0.125));
-const rounded_tl = TwBorderRadiusTopLeft(RemUnit(0.25));
-const rounded_tl_md = TwBorderRadiusTopLeft(RemUnit(0.375));
-const rounded_tl_lg = TwBorderRadiusTopLeft(RemUnit(0.5));
-const rounded_tl_xl = TwBorderRadiusTopLeft(RemUnit(0.75));
-const rounded_tl_2xl = TwBorderRadiusTopLeft(RemUnit(1.0));
-const rounded_tl_3xl = TwBorderRadiusTopLeft(RemUnit(1.5));
-const rounded_tl_full = TwBorderRadiusTopLeft(PxUnit(9999.0));
-const rounded_tr_none = TwBorderRadiusTopRight(PxUnit(0.0));
-const rounded_tr_sm = TwBorderRadiusTopRight(RemUnit(0.125));
-const rounded_tr = TwBorderRadiusTopRight(RemUnit(0.25));
-const rounded_tr_md = TwBorderRadiusTopRight(RemUnit(0.375));
-const rounded_tr_lg = TwBorderRadiusTopRight(RemUnit(0.5));
-const rounded_tr_xl = TwBorderRadiusTopRight(RemUnit(0.75));
-const rounded_tr_2xl = TwBorderRadiusTopRight(RemUnit(1.0));
-const rounded_tr_3xl = TwBorderRadiusTopRight(RemUnit(1.5));
-const rounded_tr_full = TwBorderRadiusTopRight(PxUnit(9999.0));
-const rounded_br_none = TwBorderRadiusBottomRight(PxUnit(0.0));
-const rounded_br_sm = TwBorderRadiusBottomRight(RemUnit(0.125));
-const rounded_br = TwBorderRadiusBottomRight(RemUnit(0.25));
-const rounded_br_md = TwBorderRadiusBottomRight(RemUnit(0.375));
-const rounded_br_lg = TwBorderRadiusBottomRight(RemUnit(0.5));
-const rounded_br_xl = TwBorderRadiusBottomRight(RemUnit(0.75));
-const rounded_br_2xl = TwBorderRadiusBottomRight(RemUnit(1.0));
-const rounded_br_3xl = TwBorderRadiusBottomRight(RemUnit(1.5));
-const rounded_br_full = TwBorderRadiusBottomRight(PxUnit(9999.0));
-const rounded_bl_none = TwBorderRadiusBottomLeft(PxUnit(0.0));
-const rounded_bl_sm = TwBorderRadiusBottomLeft(RemUnit(0.125));
-const rounded_bl = TwBorderRadiusBottomLeft(RemUnit(0.25));
-const rounded_bl_md = TwBorderRadiusBottomLeft(RemUnit(0.375));
-const rounded_bl_lg = TwBorderRadiusBottomLeft(RemUnit(0.5));
-const rounded_bl_xl = TwBorderRadiusBottomLeft(RemUnit(0.75));
-const rounded_bl_2xl = TwBorderRadiusBottomLeft(RemUnit(1.0));
-const rounded_bl_3xl = TwBorderRadiusBottomLeft(RemUnit(1.5));
-const rounded_bl_full = TwBorderRadiusBottomLeft(PxUnit(9999.0));
+const duration =
+    TwTransitionDuration(MillisecondsTimeUnit(Duration(microseconds: 150000)));
+const duration_0 =
+    TwTransitionDuration(SecondsTimeUnit(Duration(milliseconds: 0)));
+const duration_75 =
+    TwTransitionDuration(MillisecondsTimeUnit(Duration(microseconds: 75000)));
+const duration_100 =
+    TwTransitionDuration(MillisecondsTimeUnit(Duration(microseconds: 100000)));
+const duration_150 =
+    TwTransitionDuration(MillisecondsTimeUnit(Duration(microseconds: 150000)));
+const duration_200 =
+    TwTransitionDuration(MillisecondsTimeUnit(Duration(microseconds: 200000)));
+const duration_300 =
+    TwTransitionDuration(MillisecondsTimeUnit(Duration(microseconds: 300000)));
+const duration_500 =
+    TwTransitionDuration(MillisecondsTimeUnit(Duration(microseconds: 500000)));
+const duration_700 =
+    TwTransitionDuration(MillisecondsTimeUnit(Duration(microseconds: 700000)));
+const duration_1000 =
+    TwTransitionDuration(MillisecondsTimeUnit(Duration(microseconds: 1000000)));
 
 // **************************************************************************
-// Generator: BoxShadowBuilder
+// Generator: TransitionDelayBuilder
 // **************************************************************************
 
-const shadow_sm = TwBoxShadows([
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0xD000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(1.0),
-      blurRadius: PxUnit(2.0),
-      spreadRadius: PxUnit(0.0)),
-]);
-const shadow = TwBoxShadows([
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x1A000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(1.0),
-      blurRadius: PxUnit(3.0),
-      spreadRadius: PxUnit(0.0)),
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x1A000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(1.0),
-      blurRadius: PxUnit(2.0),
-      spreadRadius: PxUnit(-1.0)),
-]);
-const shadow_md = TwBoxShadows([
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x1A000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(4.0),
-      blurRadius: PxUnit(6.0),
-      spreadRadius: PxUnit(-1.0)),
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x1A000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(2.0),
-      blurRadius: PxUnit(4.0),
-      spreadRadius: PxUnit(-2.0)),
-]);
-const shadow_lg = TwBoxShadows([
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x1A000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(10.0),
-      blurRadius: PxUnit(15.0),
-      spreadRadius: PxUnit(-3.0)),
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x1A000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(4.0),
-      blurRadius: PxUnit(6.0),
-      spreadRadius: PxUnit(-4.0)),
-]);
-const shadow_xl = TwBoxShadows([
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x1A000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(20.0),
-      blurRadius: PxUnit(25.0),
-      spreadRadius: PxUnit(-5.0)),
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x1A000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(8.0),
-      blurRadius: PxUnit(10.0),
-      spreadRadius: PxUnit(-6.0)),
-]);
-const shadow_2xl = TwBoxShadows([
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x40000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(25.0),
-      blurRadius: PxUnit(50.0),
-      spreadRadius: PxUnit(-12.0)),
-]);
-const shadow_inner = TwBoxShadows(<TwBoxShadow>[]);
-const shadow_none = TwBoxShadows(<TwBoxShadow>[]);
+const delay_0 = TwTransitionDelay(SecondsTimeUnit(Duration(milliseconds: 0)));
+const delay_75 =
+    TwTransitionDelay(MillisecondsTimeUnit(Duration(microseconds: 75000)));
+const delay_100 =
+    TwTransitionDelay(MillisecondsTimeUnit(Duration(microseconds: 100000)));
+const delay_150 =
+    TwTransitionDelay(MillisecondsTimeUnit(Duration(microseconds: 150000)));
+const delay_200 =
+    TwTransitionDelay(MillisecondsTimeUnit(Duration(microseconds: 200000)));
+const delay_300 =
+    TwTransitionDelay(MillisecondsTimeUnit(Duration(microseconds: 300000)));
+const delay_500 =
+    TwTransitionDelay(MillisecondsTimeUnit(Duration(microseconds: 500000)));
+const delay_700 =
+    TwTransitionDelay(MillisecondsTimeUnit(Duration(microseconds: 700000)));
+const delay_1000 =
+    TwTransitionDelay(MillisecondsTimeUnit(Duration(microseconds: 1000000)));
+
+// **************************************************************************
+// Generator: TransitionTimingFunctionBuilder
+// **************************************************************************
+
+const ease = TwTransitionTimingFunction(Cubic(0.4, 0, 0.2, 1));
+const ease_linear = TwTransitionTimingFunction(Curves.linear);
+const ease_in = TwTransitionTimingFunction(Cubic(0.4, 0, 1, 1));
+const ease_out = TwTransitionTimingFunction(Cubic(0, 0, 0.2, 1));
+const ease_in_out = TwTransitionTimingFunction(Cubic(0.4, 0, 0.2, 1));
 
 // **************************************************************************
 // Generator: FontSizeBuilder
@@ -1105,81 +1269,6 @@ const tracking_normal = TwLetterSpacing(EmUnit(0.0));
 const tracking_wide = TwLetterSpacing(EmUnit(0.025));
 const tracking_wider = TwLetterSpacing(EmUnit(0.05));
 const tracking_widest = TwLetterSpacing(EmUnit(0.1));
-
-// **************************************************************************
-// Generator: GapBuilder
-// **************************************************************************
-
-const gap_x_px = TwGapX(PxUnit(1.0));
-const gap_x_0 = TwGapX(PxUnit(0.0));
-const gap_x_0_5 = TwGapX(RemUnit(0.125));
-const gap_x_1 = TwGapX(RemUnit(0.25));
-const gap_x_1_5 = TwGapX(RemUnit(0.375));
-const gap_x_2 = TwGapX(RemUnit(0.5));
-const gap_x_2_5 = TwGapX(RemUnit(0.625));
-const gap_x_3 = TwGapX(RemUnit(0.75));
-const gap_x_3_5 = TwGapX(RemUnit(0.875));
-const gap_x_4 = TwGapX(RemUnit(1.0));
-const gap_x_5 = TwGapX(RemUnit(1.25));
-const gap_x_6 = TwGapX(RemUnit(1.5));
-const gap_x_7 = TwGapX(RemUnit(1.75));
-const gap_x_8 = TwGapX(RemUnit(2.0));
-const gap_x_9 = TwGapX(RemUnit(2.25));
-const gap_x_10 = TwGapX(RemUnit(2.5));
-const gap_x_11 = TwGapX(RemUnit(2.75));
-const gap_x_12 = TwGapX(RemUnit(3.0));
-const gap_x_14 = TwGapX(RemUnit(3.5));
-const gap_x_16 = TwGapX(RemUnit(4.0));
-const gap_x_20 = TwGapX(RemUnit(5.0));
-const gap_x_24 = TwGapX(RemUnit(6.0));
-const gap_x_28 = TwGapX(RemUnit(7.0));
-const gap_x_32 = TwGapX(RemUnit(8.0));
-const gap_x_36 = TwGapX(RemUnit(9.0));
-const gap_x_40 = TwGapX(RemUnit(10.0));
-const gap_x_44 = TwGapX(RemUnit(11.0));
-const gap_x_48 = TwGapX(RemUnit(12.0));
-const gap_x_52 = TwGapX(RemUnit(13.0));
-const gap_x_56 = TwGapX(RemUnit(14.0));
-const gap_x_60 = TwGapX(RemUnit(15.0));
-const gap_x_64 = TwGapX(RemUnit(16.0));
-const gap_x_72 = TwGapX(RemUnit(18.0));
-const gap_x_80 = TwGapX(RemUnit(20.0));
-const gap_x_96 = TwGapX(RemUnit(24.0));
-const gap_y_px = TwGapY(PxUnit(1.0));
-const gap_y_0 = TwGapY(PxUnit(0.0));
-const gap_y_0_5 = TwGapY(RemUnit(0.125));
-const gap_y_1 = TwGapY(RemUnit(0.25));
-const gap_y_1_5 = TwGapY(RemUnit(0.375));
-const gap_y_2 = TwGapY(RemUnit(0.5));
-const gap_y_2_5 = TwGapY(RemUnit(0.625));
-const gap_y_3 = TwGapY(RemUnit(0.75));
-const gap_y_3_5 = TwGapY(RemUnit(0.875));
-const gap_y_4 = TwGapY(RemUnit(1.0));
-const gap_y_5 = TwGapY(RemUnit(1.25));
-const gap_y_6 = TwGapY(RemUnit(1.5));
-const gap_y_7 = TwGapY(RemUnit(1.75));
-const gap_y_8 = TwGapY(RemUnit(2.0));
-const gap_y_9 = TwGapY(RemUnit(2.25));
-const gap_y_10 = TwGapY(RemUnit(2.5));
-const gap_y_11 = TwGapY(RemUnit(2.75));
-const gap_y_12 = TwGapY(RemUnit(3.0));
-const gap_y_14 = TwGapY(RemUnit(3.5));
-const gap_y_16 = TwGapY(RemUnit(4.0));
-const gap_y_20 = TwGapY(RemUnit(5.0));
-const gap_y_24 = TwGapY(RemUnit(6.0));
-const gap_y_28 = TwGapY(RemUnit(7.0));
-const gap_y_32 = TwGapY(RemUnit(8.0));
-const gap_y_36 = TwGapY(RemUnit(9.0));
-const gap_y_40 = TwGapY(RemUnit(10.0));
-const gap_y_44 = TwGapY(RemUnit(11.0));
-const gap_y_48 = TwGapY(RemUnit(12.0));
-const gap_y_52 = TwGapY(RemUnit(13.0));
-const gap_y_56 = TwGapY(RemUnit(14.0));
-const gap_y_60 = TwGapY(RemUnit(15.0));
-const gap_y_64 = TwGapY(RemUnit(16.0));
-const gap_y_72 = TwGapY(RemUnit(18.0));
-const gap_y_80 = TwGapY(RemUnit(20.0));
-const gap_y_96 = TwGapY(RemUnit(24.0));
 
 // **************************************************************************
 // Generator: BackgroundColorBuilder

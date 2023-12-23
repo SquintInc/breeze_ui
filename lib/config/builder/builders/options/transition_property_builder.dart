@@ -1,23 +1,23 @@
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:tailwind_elements/config/builder/builders/generators.dart';
-import 'package:tailwind_elements/config/options/typography/font_weight.dart';
+import 'package:tailwind_elements/config/options/transitions/transition_property.dart';
 
-/// A [ConstantsGenerator] used to generate Tailwind 'font-*' font weight
-/// constants to the .g.dart part file.
-class FontWeightBuilder extends ConstantsGenerator {
-  const FontWeightBuilder(
+/// A [ConstantsGenerator] used to generate Tailwind 'transition-*' constants to
+/// the .g.dart part file.
+class TransitionPropertyBuilder extends ConstantsGenerator {
+  const TransitionPropertyBuilder(
     super.options,
     super.config, {
     super.generatorType = GeneratorType.rawValues,
   });
 
   @override
-  String get themeConfigKey => 'fontWeight';
+  String get themeConfigKey => 'transitionProperty';
 
   @override
   Map<String, String> get variablePrefixToValueClassName => {
-        'font': (TwFontWeight).toString(),
+        'transition': (TwTransitionProperty).toString(),
       };
 
   @override
@@ -35,9 +35,19 @@ class FontWeightBuilder extends ConstantsGenerator {
           prefix.key,
           themeValue.key == 'DEFAULT' ? '' : themeValue.key.toSnakeCase(),
         );
+
+        // Process transition property string value
+        final transitionProperties = themeValue.value
+            .split(',')
+            .map((final tp) => tp.trim())
+            .map((final tp) => TransitionProperty.fromCss(tp))
+            .toSet()
+            .map((final tp) => '${tp.runtimeType}.${tp.name}')
+            .join(', ');
+
         final String lineDeclaration = CodeWriter.dartLineDeclaration(
           variableName: varName,
-          valueConstructor: '${prefix.value}(${themeValue.value})',
+          valueConstructor: '${prefix.value}({$transitionProperties})',
         );
         return lineDeclaration;
       });

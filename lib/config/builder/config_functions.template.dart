@@ -111,7 +111,7 @@ class GeneratedTailwindConfig {
   ///
   /// Note that this method will return all key-value pairs, including CSS units
   /// that are not usable by tailwind_elements. To get only usable CSS units,
-  /// use [getUsable].
+  /// use [getUnits].
   Map<dynamic, dynamic>? get(final String key) {
     dynamic entriesOrFunc = _theme[key];
     if (entriesOrFunc == null) return null;

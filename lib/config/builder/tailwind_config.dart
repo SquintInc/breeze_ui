@@ -31,7 +31,7 @@ class TailwindConfig {
     return Map.unmodifiable(values);
   }
 
-  Map<String, TwUnit> getUsable(final String key) {
+  Map<String, TwUnit> getUnits(final String key) {
     final Map<String, TwUnit> values = (theme[key] as Map<String, dynamic>).map(
       (final key, final value) => MapEntry(key, TwUnit.parse(value)),
     );
@@ -41,6 +41,14 @@ class TailwindConfig {
             .where((final entry) => entry.value.type != UnitType.ignored),
       ),
     );
+  }
+
+  Map<String, TwTimeUnit> getTimeUnits(final String key) {
+    final Map<String, TwTimeUnit> values =
+        (theme[key] as Map<String, dynamic>).map(
+      (final key, final value) => MapEntry(key, TwTimeUnit.parse(value)),
+    );
+    return Map.unmodifiable(values);
   }
 
   Map<String, RgbaColor> getColors(final String key) {

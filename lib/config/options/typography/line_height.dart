@@ -6,4 +6,14 @@ class TwLineHeight {
   final TwUnit value;
 
   const TwLineHeight(this.value);
+
+  @override
+  bool operator ==(final Object other) =>
+      identical(this, other) ||
+      other is TwLineHeight &&
+          runtimeType == other.runtimeType &&
+          value == other.value;
+
+  @override
+  int get hashCode => value.hashCode;
 }
