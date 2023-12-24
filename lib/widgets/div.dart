@@ -17,13 +17,13 @@ class TwDiv extends StatelessWidget {
 
   const TwDiv({
     this.style = const TwStyle(),
-    this.child,
     this.alignment,
     this.clipBehavior = Clip.none,
     this.transform,
     this.transformAlignment,
     this.scrollable = false,
     this.scrollDirection = Axis.vertical,
+    this.child,
     super.key,
   });
 

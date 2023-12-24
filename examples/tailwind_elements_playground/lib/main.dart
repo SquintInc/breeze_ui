@@ -57,6 +57,35 @@ class TailwindElementsPlayground extends StatelessWidget {
                   padding: TwPadding.all(p_0),
                 ),
               ),
+              TwAnimatedDiv(
+                style: TwStyle(
+                  // width: w_frac_1_3,
+                  width: w_96,
+                  height: h_96,
+                  backgroundColor: bg_green_500,
+                  transition: transition_all,
+                  transitionDuration: duration_150,
+                  transitionTimingFn: ease_in_out,
+                ),
+                // hovered: TwStyle(
+                //   backgroundColor: bg_blue_500,
+                // ),
+                hovered: TwStyle(
+                  width: w_frac_8_12,
+                  maxWidth: max_w_screen_2xl,
+                  backgroundColor: bg_yellow_500,
+                ),
+                pressed: TwStyle(
+                  backgroundColor: bg_red_500,
+                  width: w_144,
+                ),
+                disabled: TwStyle(
+                  backgroundColor: bg_gray_500,
+                ),
+                dragged: TwStyle(
+                  backgroundColor: bg_purple_500,
+                ),
+              ),
             ],
           ),
         ),

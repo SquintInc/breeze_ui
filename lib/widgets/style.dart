@@ -11,6 +11,10 @@ import 'package:tailwind_elements/config/options/sizing/min_width.dart';
 import 'package:tailwind_elements/config/options/sizing/width.dart';
 import 'package:tailwind_elements/config/options/spacing/margin.dart';
 import 'package:tailwind_elements/config/options/spacing/padding.dart';
+import 'package:tailwind_elements/config/options/transitions/transition_delay.dart';
+import 'package:tailwind_elements/config/options/transitions/transition_duration.dart';
+import 'package:tailwind_elements/config/options/transitions/transition_property.dart';
+import 'package:tailwind_elements/config/options/transitions/transition_timing_function.dart';
 import 'package:tailwind_elements/config/options/typography/font_size.dart';
 import 'package:tailwind_elements/config/options/typography/font_weight.dart';
 import 'package:tailwind_elements/config/options/typography/letter_spacing.dart';
@@ -18,33 +22,12 @@ import 'package:tailwind_elements/config/options/typography/line_height.dart';
 import 'package:tailwind_elements/config/options/typography/text_decoration_thickness.dart';
 import 'package:tailwind_elements/config/options/units.dart';
 import 'package:tailwind_elements/widgets/extensions/extensions.dart';
+import 'package:tailwind_elements/widgets/state.dart';
 
 export 'package:tailwind_elements/config/options/units.dart';
 export 'package:tailwind_elements/widgets/extensions/extensions.dart';
 
-enum TwWidgetStatus {
-  disabled,
-  dragged,
-  error,
-  focused,
-  selected,
-  pressed,
-  hovered,
-  normal,
-}
-
 typedef StyleValueResolver<T> = T? Function(TwStyle? statusStyle);
-
-TwWidgetStatus getWidgetStatus(final Set<MaterialState> states) {
-  if (states.contains(MaterialState.disabled)) return TwWidgetStatus.disabled;
-  if (states.contains(MaterialState.dragged)) return TwWidgetStatus.dragged;
-  if (states.contains(MaterialState.error)) return TwWidgetStatus.error;
-  if (states.contains(MaterialState.focused)) return TwWidgetStatus.focused;
-  if (states.contains(MaterialState.selected)) return TwWidgetStatus.selected;
-  if (states.contains(MaterialState.pressed)) return TwWidgetStatus.pressed;
-  if (states.contains(MaterialState.hovered)) return TwWidgetStatus.hovered;
-  return TwWidgetStatus.normal;
-}
 
 MaterialStateProperty<T> always<T>(final T value) =>
     MaterialStatePropertyAll<T>(value);
@@ -111,14 +94,14 @@ class TwTextStyle {
   }) {
     return MaterialStateTextStyle.resolveWith(
         (final Set<MaterialState> states) {
-      final TwTextStyle? statusStyle = switch (getWidgetStatus(states)) {
-        TwWidgetStatus.disabled => disabled,
-        TwWidgetStatus.dragged => dragged,
-        TwWidgetStatus.error => error,
-        TwWidgetStatus.focused => focused,
-        TwWidgetStatus.selected => selected,
-        TwWidgetStatus.pressed => pressed,
-        TwWidgetStatus.hovered => hovered,
+      final TwTextStyle? statusStyle = switch (getWidgetState(states)) {
+        TwWidgetState.disabled => disabled,
+        TwWidgetState.dragged => dragged,
+        TwWidgetState.error => error,
+        TwWidgetState.focused => focused,
+        TwWidgetState.selected => selected,
+        TwWidgetState.pressed => pressed,
+        TwWidgetState.hovered => hovered,
         _ => normal,
       };
       return TextStyle(
@@ -204,14 +187,14 @@ class TwTextInputStyle extends TwTextStyle {
   }) =>
       MaterialStateOutlineInputBorder.resolveWith(
           (final Set<MaterialState> states) {
-        final TwTextInputStyle? statusStyle = switch (getWidgetStatus(states)) {
-          TwWidgetStatus.disabled => disabled,
-          TwWidgetStatus.dragged => dragged,
-          TwWidgetStatus.error => error,
-          TwWidgetStatus.focused => focused,
-          TwWidgetStatus.selected => selected,
-          TwWidgetStatus.pressed => pressed,
-          TwWidgetStatus.hovered => hovered,
+        final TwTextInputStyle? statusStyle = switch (getWidgetState(states)) {
+          TwWidgetState.disabled => disabled,
+          TwWidgetState.dragged => dragged,
+          TwWidgetState.error => error,
+          TwWidgetState.focused => focused,
+          TwWidgetState.selected => selected,
+          TwWidgetState.pressed => pressed,
+          TwWidgetState.hovered => hovered,
           _ => normal,
         };
         return statusStyle?.toBorder() ?? normal.toBorder() ?? InputBorder.none;
@@ -278,6 +261,12 @@ class TwStyle {
   final TwPadding? padding;
   final TwMargin? margin;
 
+  // Transition styling
+  final TwTransitionProperty? transition;
+  final TwTransitionDuration? transitionDuration;
+  final TwTransitionTimingFunction? transitionTimingFn;
+  final TwTransitionDelay? transitionDelay;
+
   const TwStyle({
     // Background
     this.backgroundColor,
@@ -308,6 +297,12 @@ class TwStyle {
     // Spacing styling
     this.padding,
     this.margin,
+
+    // Transition styling
+    this.transition,
+    this.transitionDuration,
+    this.transitionTimingFn,
+    this.transitionDelay,
   });
 
   static MaterialStateProperty<T> resolveStatus<T>(
@@ -323,22 +318,22 @@ class TwStyle {
     required final TwStyle? hovered,
   }) =>
       MaterialStateProperty.resolveWith<T>(
-        (final Set<MaterialState> states) => switch (getWidgetStatus(states)) {
-          TwWidgetStatus.disabled =>
+        (final Set<MaterialState> states) => switch (getWidgetState(states)) {
+          TwWidgetState.disabled =>
             resolver(disabled) ?? resolver(normal) ?? defaultValue,
-          TwWidgetStatus.dragged =>
+          TwWidgetState.dragged =>
             resolver(dragged) ?? resolver(normal) ?? defaultValue,
-          TwWidgetStatus.error =>
+          TwWidgetState.error =>
             resolver(error) ?? resolver(normal) ?? defaultValue,
-          TwWidgetStatus.focused =>
+          TwWidgetState.focused =>
             resolver(focused) ?? resolver(normal) ?? defaultValue,
-          TwWidgetStatus.selected =>
+          TwWidgetState.selected =>
             resolver(selected) ?? resolver(normal) ?? defaultValue,
-          TwWidgetStatus.pressed =>
+          TwWidgetState.pressed =>
             resolver(pressed) ?? resolver(normal) ?? defaultValue,
-          TwWidgetStatus.hovered =>
+          TwWidgetState.hovered =>
             resolver(hovered) ?? resolver(normal) ?? defaultValue,
-          TwWidgetStatus.normal => resolver(normal) ?? defaultValue,
+          TwWidgetState.normal => resolver(normal) ?? defaultValue,
         },
       );
 
@@ -347,6 +342,18 @@ class TwStyle {
       maxWidth != null ||
       minHeight != null ||
       maxHeight != null;
+
+  bool get hasSizing => width != null || height != null || hasConstraints;
+
+  bool get hasTightWidth =>
+      minWidth != null &&
+      maxWidth != null &&
+      minWidth!.value == maxWidth!.value;
+
+  bool get hasTightHeight =>
+      minHeight != null &&
+      maxHeight != null &&
+      minHeight!.value == maxHeight!.value;
 
   bool get hasPercentageConstraints =>
       (minWidth?.value.isPercentageBased ?? false) ||

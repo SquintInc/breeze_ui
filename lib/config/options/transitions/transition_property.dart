@@ -51,4 +51,6 @@ class TwTransitionProperty {
 
   @override
   int get hashCode => properties.hashCode;
+
+  bool get isNone => properties.contains(TransitionProperty.none);
 }
