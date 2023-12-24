@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_elements/widgets.dart';
 import 'package:tailwind_elements/widgets/state.dart';
@@ -36,43 +35,8 @@ class TwAnimatedDiv extends TwStatefulWidget {
   State createState() => _DivState();
 }
 
-class _DivState extends TwState<TwAnimatedDiv>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController controller = AnimationController(
-    duration: widget.style.transitionDuration?.duration.value ??
-        const Duration(milliseconds: 150),
-    debugLabel: kDebugMode ? widget.toStringShort() : null,
-    vsync: this,
-  );
-
-  late final CurvedAnimation animation = _createCurve(widget.style);
-
-  // Temporary variables to track the current and previous width/height values
-  BoxConstraints? _prevConstraints;
-  BoxConstraints? _currConstraints;
-  BoxConstraintsTween? _boxConstraintsTween;
-  Animation<BoxConstraints>? _boxConstraintsAnimation;
-
-  void _initTransitions() {
-    _boxConstraintsTween = BoxConstraintsTween(
-      begin: _currConstraints ?? BoxConstraints.tight(Size.zero),
-      end: _currConstraints ?? BoxConstraints.tight(Size.zero),
-    );
-  }
-
-  void _animateTransitions() {
-    _boxConstraintsAnimation = _boxConstraintsTween?.animate(animation);
-  }
-
-  void _updateTransitions() {
-    _boxConstraintsTween?.begin = _boxConstraintsTween?.evaluate(controller);
-    _boxConstraintsTween?.end = _currConstraints;
-  }
-
-  void _redraw() {
-    setState(() {});
-  }
-
+class _DivState extends TwAnimatedState<TwAnimatedDiv> {
+  @override
   void animationListener(final AnimationStatus status) {
     switch (status) {
       case AnimationStatus.completed:
@@ -80,50 +44,6 @@ class _DivState extends TwState<TwAnimatedDiv>
       case AnimationStatus.forward:
       case AnimationStatus.reverse:
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.hasTransitions) {
-      // Run once after the first frame is displayed to ensure that the initial
-      // constraints are set correctly.
-      WidgetsBinding.instance.addPostFrameCallback((final timestamp) {
-        _initTransitions();
-        _animateTransitions();
-        controller
-          ..addListener(_redraw)
-          ..addStatusListener(animationListener);
-      });
-    }
-  }
-
-  @override
-  void didWidgetStateChange() {
-    // Update transitions and tweens
-    if (widget.hasTransitions) {
-      _updateTransitions();
-      _animateTransitions();
-      controller
-        ..value = 0.0
-        ..forward();
-    }
-  }
-
-  CurvedAnimation _createCurve(final TwStyle style) {
-    return CurvedAnimation(
-      parent: controller,
-      curve: style.transitionTimingFn?.curve ?? const Cubic(0.4, 0, 0.2, 1),
-    );
-  }
-
-  @override
-  void dispose() {
-    controller
-      ..removeListener(_redraw)
-      ..removeStatusListener(animationListener)
-      ..dispose();
-    super.dispose();
   }
 
   EdgeInsetsGeometry? _paddingIncludingDecoration(final TwStyle style) {
@@ -177,7 +97,10 @@ class _DivState extends TwState<TwAnimatedDiv>
     // and no other decoration settings.
     final backgroundColor = style.backgroundColor;
     if (!style.hasBackgroundDecoration && backgroundColor != null) {
-      current = ColoredBox(color: backgroundColor.color, child: current);
+      current = ColoredBox(
+        color: animationController?.backgroundColor ?? backgroundColor.color,
+        child: current,
+      );
     }
 
     // Render [ClipPath]
@@ -251,7 +174,7 @@ class _DivState extends TwState<TwAnimatedDiv>
     final MaterialStatesController controller,
     final TwWidgetState state,
   ) {
-    final style = currentStyle;
+    final style = getStyle(widgetState);
     final bool defaultStyleUsesLayoutBuilder =
         widget.style.hasPercentageSize || widget.style.hasPercentageConstraints;
     final bool currentStyleUsesLayoutBuilder =
@@ -286,9 +209,11 @@ class _DivState extends TwState<TwAnimatedDiv>
                         ),
                 )
               : null;
-          _updateConstraints(constraints);
+          _updateConstraintsAnimation(constraints);
           return _buildDiv(
-              currentStyle, _boxConstraintsAnimation?.value ?? constraints);
+            style,
+            animationController?.boxConstraints ?? constraints,
+          );
         },
       );
     }
@@ -302,20 +227,25 @@ class _DivState extends TwState<TwAnimatedDiv>
       heightPx,
       style.getSimpleConstraints() ?? widget.style.getSimpleConstraints(),
     );
-    _updateConstraints(simpleConstraints);
+    _updateConstraintsAnimation(simpleConstraints);
     return _buildDiv(
-      currentStyle,
-      _boxConstraintsAnimation?.value ?? simpleConstraints,
+      style,
+      animationController?.boxConstraints ?? simpleConstraints,
     );
   }
 
-  void _updateConstraints(final BoxConstraints? constraints) {
-    // setState(() {
-    if (_currConstraints != constraints) {
-      _prevConstraints = _currConstraints;
-      _currConstraints = constraints;
+  /// Updates the constraints tween to use the current calculated constraints
+  /// on build time. This is necessary because the constraints are calculated
+  /// in the build method and may additionally use a [LayoutBuilder] to
+  /// calculate percentage constraints.
+  void _updateConstraintsAnimation(
+    final BoxConstraints? constraints,
+  ) {
+    if (widget.hasTransitions &&
+        animationController?.trackedConstraints != constraints &&
+        (animationController?.canAnimate ?? false)) {
+      animationController?.updateTrackedConstraints(constraints);
     }
-    // });
   }
 }
 
