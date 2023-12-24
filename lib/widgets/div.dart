@@ -65,7 +65,11 @@ class _DivState extends TwAnimatedState<TwDiv> {
   /// choose to explicitly not support 'foregroundDecoration'.
   /// Note that [style] is the style for the current state of the widget.
   Widget _buildDiv(final TwStyle style, final BoxConstraints? constraints) {
-    _updateConstraintsAnimation(constraints);
+    _trackConstraintsForAnimation(
+      constraints: constraints,
+      defaultStyle: widget.style,
+      currentStyle: style,
+    );
 
     final Widget? child = widget.child;
     final AlignmentGeometry? alignment = widget.alignment;
@@ -112,8 +116,11 @@ class _DivState extends TwAnimatedState<TwDiv> {
     }
 
     // Render [ClipPath]
-    final Decoration? decoration = animationController?.boxDecoration ??
-        style.getBoxDecoration(widget.style);
+    final Decoration? decoration = animationController?.getBoxDecoration(
+          defaultStyle: widget.style,
+          currentStyle: style,
+        ) ??
+        style.getBoxDecoration(widget.style, constraints);
     if (clipBehavior != Clip.none) {
       assert(decoration != null);
       current = ClipPath(
@@ -246,7 +253,6 @@ class _DivState extends TwAnimatedState<TwDiv> {
       heightPx,
       style.getSimpleConstraints() ?? widget.style.getSimpleConstraints(),
     );
-    _updateConstraintsAnimation(simpleConstraints);
     return _buildDiv(
       style,
       simpleConstraints,
@@ -257,13 +263,19 @@ class _DivState extends TwAnimatedState<TwDiv> {
   /// on build time. This is necessary because the constraints are calculated
   /// in the build method and may additionally use a [LayoutBuilder] to
   /// calculate percentage constraints.
-  void _updateConstraintsAnimation(
-    final BoxConstraints? constraints,
-  ) {
+  void _trackConstraintsForAnimation({
+    required final BoxConstraints? constraints,
+    required final TwStyle currentStyle,
+    required final TwStyle defaultStyle,
+  }) {
     if (widget.hasTransitions &&
         animationController?.trackedConstraints != constraints &&
         (animationController?.canAnimate ?? false)) {
-      animationController?.updateTrackedConstraints(constraints);
+      animationController?.updateTrackedConstraints(
+        constraints: constraints,
+        currentStyle: currentStyle,
+        defaultStyle: defaultStyle,
+      );
     }
   }
 }

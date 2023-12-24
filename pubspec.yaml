@@ -15,7 +15,7 @@ dependencies:
   http: ^1.1.2
   meta: ^1.10.0
   path: ^1.8.3
-  source_gen: ^1.4.0
+  source_gen: ^1.5.0
 
 dev_dependencies:
   flutter_test:

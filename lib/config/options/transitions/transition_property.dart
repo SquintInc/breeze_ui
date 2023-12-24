@@ -4,8 +4,7 @@ enum TransitionProperty {
   none,
   all,
 
-  /// This usually refers to text color
-  color,
+  textColor,
   backgroundColor,
   borderColor,
   textDecorationColor,
@@ -19,12 +18,13 @@ enum TransitionProperty {
 
   // other common CSS properties not set by Tailwind defaults
   width,
-  height;
+  height,
+  borderRadius;
 
   static TransitionProperty fromCss(final String cssType) {
     return switch (cssType) {
       'all' => TransitionProperty.all,
-      'color' => TransitionProperty.color,
+      'color' => TransitionProperty.textColor,
       'background-color' => TransitionProperty.backgroundColor,
       'border-color' => TransitionProperty.borderColor,
       'text-decoration-color' => TransitionProperty.textDecorationColor,
@@ -35,6 +35,9 @@ enum TransitionProperty {
       'transform' => TransitionProperty.transform,
       'filter' => TransitionProperty.filter,
       'backdrop-filter' => TransitionProperty.backdropFilter,
+      'width' => TransitionProperty.width,
+      'height' => TransitionProperty.height,
+      'border-radius' => TransitionProperty.borderRadius,
       _ => TransitionProperty.none,
     };
   }

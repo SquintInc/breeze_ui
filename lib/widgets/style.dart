@@ -388,9 +388,6 @@ class TwStyle {
       backgroundImage == null &&
       backgroundGradient == null;
 
-  bool hasTransition(final TransitionProperty property) =>
-      transition?.has(property) ?? false;
-
   double widthPx(final double parentWidth) {
     final width = this.width;
     if (width == null) return double.infinity;
@@ -409,7 +406,10 @@ class TwStyle {
         : height.value.logicalPixels;
   }
 
-  Decoration? getBoxDecoration(final TwStyle defaultStyle) {
+  Decoration? getBoxDecoration(
+    final TwStyle defaultStyle,
+    final BoxConstraints? constraints,
+  ) {
     if (!hasDecorations && !defaultStyle.hasDecorations) {
       return null;
     }
@@ -420,16 +420,15 @@ class TwStyle {
     final borderStrokeAlign =
         this.borderStrokeAlign ?? defaultStyle.borderStrokeAlign;
     return BoxDecoration(
-      shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
       color: backgroundColor?.color ?? defaultStyle.backgroundColor?.color,
       image: backgroundImage ?? defaultStyle.backgroundImage,
       gradient: backgroundGradient ?? defaultStyle.backgroundGradient,
       border: border?.toBorder(borderColor, borderStrokeAlign) ??
           defaultStyle.border?.toBorder(borderColor, borderStrokeAlign),
-      borderRadius: !isCircle
-          ? borderRadius?.toBorderRadius() ??
-              defaultStyle.borderRadius?.toBorderRadius()
-          : null,
+      borderRadius: isCircle
+          ? BorderRadius.circular(constraints?.circleRadius ?? 9999)
+          : borderRadius?.toBorderRadius() ??
+              defaultStyle.borderRadius?.toBorderRadius(),
       boxShadow: boxShadow?.toBoxShadows(boxShadowColor) ??
           defaultStyle.boxShadow?.toBoxShadows(boxShadowColor),
     );

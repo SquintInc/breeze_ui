@@ -75,13 +75,16 @@ class TailwindElementsPlayground extends StatelessWidget {
                   maxWidth: max_w_screen_2xl,
                   backgroundColor: bg_blue_500,
                   borderRadius: TwBorderRadius.all(rounded_full),
-                  opacity: opacity_50,
+                  borderColor: border_blue_600,
+                  // opacity: opacity_50,
                   boxShadow: shadow_2xl,
                   boxShadowColor: shadow_black,
                 ),
                 pressed: TwStyle(
                   backgroundColor: bg_red_500,
-                  width: w_144,
+                  border: TwBorder.all(border_2),
+                  borderRadius: TwBorderRadius.all(rounded_full),
+                  width: w_frac_3_4,
                 ),
                 disabled: TwStyle(
                   backgroundColor: bg_gray_500,

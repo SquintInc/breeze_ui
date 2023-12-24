@@ -1142,7 +1142,7 @@ const pl_96 = TwPaddingLeft(RemUnit(24.0));
 const transition_none = TwTransitionProperty({TransitionProperty.none});
 const transition_all = TwTransitionProperty({TransitionProperty.all});
 const transition = TwTransitionProperty({
-  TransitionProperty.color,
+  TransitionProperty.textColor,
   TransitionProperty.backgroundColor,
   TransitionProperty.borderColor,
   TransitionProperty.textDecorationColor,
@@ -1155,7 +1155,7 @@ const transition = TwTransitionProperty({
   TransitionProperty.backdropFilter
 });
 const transition_colors = TwTransitionProperty({
-  TransitionProperty.color,
+  TransitionProperty.textColor,
   TransitionProperty.backgroundColor,
   TransitionProperty.borderColor,
   TransitionProperty.textDecorationColor,

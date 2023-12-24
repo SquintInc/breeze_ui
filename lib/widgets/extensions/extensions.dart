@@ -99,6 +99,10 @@ extension PaddingExtension on TwPadding {
       };
 }
 
+extension RadiusExt on BoxConstraints {
+  double get circleRadius => (min(minWidth, minHeight) / 2).ceilToDouble();
+}
+
 extension BorderRadiusExtension on TwBorderRadius {
   BorderRadius toBorderRadius() => switch (type) {
         BoxCornerType.all => BorderRadius.circular(all.value.logicalPixels),

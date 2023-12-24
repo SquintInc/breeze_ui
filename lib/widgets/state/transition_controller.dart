@@ -1,8 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_elements/config/options/transitions/transition_property.dart';
+import 'package:tailwind_elements/widgets/state/animations/box_shadows_tween.dart';
 import 'package:tailwind_elements/widgets/style.dart';
 
 /// Controller class that contains all the tracked variables and tween values
@@ -20,8 +19,9 @@ class TwTransitionController {
   ColorTween? _backgroundColor;
   ColorTween? _borderColor;
   ColorTween? _textDecorationColor;
-  DecorationTween? _boxDecoration;
+  BorderRadiusTween? _borderRadius;
   BoxConstraintsTween? _boxConstraints;
+  BoxShadowsTween? _boxShadow;
   Tween<double>? _opacity;
 
   /// Temporary box constraint value tracked for transitions, necessary due to
@@ -87,26 +87,22 @@ class TwTransitionController {
   }
 
   void initTweens(final TwStyle defaultStyle) {
-    if (defaultStyle.hasTransition(TransitionProperty.color)) {
-      _textColor = ColorTween(
-        begin: defaultStyle.textColor?.color,
-        end: defaultStyle.textColor?.color,
-      );
-    }
-    if (defaultStyle.hasTransition(TransitionProperty.backgroundColor)) {
-      _backgroundColor = ColorTween(
-        begin: defaultStyle.backgroundColor?.color,
-        end: defaultStyle.backgroundColor?.color,
-      );
-    }
-
-    if (defaultStyle.hasTransition(TransitionProperty.borderColor)) {
-      _borderColor = ColorTween(
-        begin: defaultStyle.borderColor?.color,
-        end: defaultStyle.borderColor?.color,
-      );
-    }
-
+    _textColor = ColorTween(
+      begin: defaultStyle.textColor?.color,
+      end: defaultStyle.textColor?.color,
+    );
+    _backgroundColor = ColorTween(
+      begin: defaultStyle.backgroundColor?.color,
+      end: defaultStyle.backgroundColor?.color,
+    );
+    _borderColor = ColorTween(
+      begin: defaultStyle.borderColor?.color,
+      end: defaultStyle.borderColor?.color,
+    );
+    _borderRadius = BorderRadiusTween(
+      begin: defaultStyle.borderRadius?.toBorderRadius() ?? BorderRadius.zero,
+      end: defaultStyle.borderRadius?.toBorderRadius() ?? BorderRadius.zero,
+    );
     // TODO: text decoration color
     // if (defaultStyle.hasTransition(TransitionProperty.textDecorationColor) ??
     //     false) {
@@ -115,64 +111,104 @@ class TwTransitionController {
     //     end: defaultStyle.textDecorationColor?.color,
     //   );
     // }
-
-    if (defaultStyle.hasTransition(TransitionProperty.boxShadow)) {
-      _boxDecoration = DecorationTween(
-        begin: defaultStyle.getBoxDecoration(defaultStyle),
-        end: defaultStyle.getBoxDecoration(defaultStyle),
-      );
-    }
-
-    if (defaultStyle.hasTransition(TransitionProperty.width) ||
-        defaultStyle.hasTransition(TransitionProperty.height)) {
-      _boxConstraints = BoxConstraintsTween(
-        begin: _trackedConstraints ?? BoxConstraints.tight(Size.zero),
-        end: _trackedConstraints ?? BoxConstraints.tight(Size.zero),
-      );
-    }
-
-    if (defaultStyle.hasTransition(TransitionProperty.opacity)) {
-      _opacity = Tween<double>(
-        begin: defaultStyle.opacity?.value ?? 1,
-        end: defaultStyle.opacity?.value ?? 1,
-      );
-    }
+    _boxShadow = BoxShadowsTween(
+      begin: defaultStyle.boxShadow?.toBoxShadows(defaultStyle.boxShadowColor),
+      end: defaultStyle.boxShadow?.toBoxShadows(defaultStyle.boxShadowColor),
+    );
+    _boxConstraints = BoxConstraintsTween(
+      begin: _trackedConstraints ?? BoxConstraints.tight(Size.zero),
+      end: _trackedConstraints ?? BoxConstraints.tight(Size.zero),
+    );
+    _opacity = Tween<double>(
+      begin: defaultStyle.opacity?.value ?? 1,
+      end: defaultStyle.opacity?.value ?? 1,
+    );
   }
 
   void _updateTween<T>({
     required final Tween<T>? tween,
     required final T targetValue,
+    required final bool shouldAnimate,
   }) {
     if (tween == null) return;
     final animation = _animationCurve;
     if (animation == null) return;
     tween
-      ..begin = tween.evaluate(animation)
+      ..begin = shouldAnimate ? tween.evaluate(animation) : targetValue
       ..end = targetValue;
+  }
+
+  BorderRadius? _computeBorderRadius({
+    required final TwStyle currentStyle,
+    required final TwStyle defaultStyle,
+  }) {
+    final trackedConstraints = _trackedConstraints;
+    if (trackedConstraints == null) {
+      return currentStyle.borderRadius?.toBorderRadius() ??
+          defaultStyle.borderRadius?.toBorderRadius();
+    }
+
+    if (currentStyle.borderRadius != null) {
+      final bool isCircle = currentStyle.borderRadius!.isCircle;
+      return isCircle
+          ? BorderRadius.circular(trackedConstraints.circleRadius)
+          : currentStyle.borderRadius!.toBorderRadius();
+    }
+    final bool isCircle = defaultStyle.borderRadius?.isCircle ?? false;
+    return isCircle
+        ? BorderRadius.circular(trackedConstraints.circleRadius)
+        : defaultStyle.borderRadius?.toBorderRadius();
   }
 
   /// Updates the tweens for the current transition.
   void updateTweens(final TwStyle defaultStyle, final TwStyle nextStyle) {
     _updateTween(
       tween: _textColor,
-      targetValue: nextStyle.textColor?.color == Colors.transparent
-          ? null
-          : nextStyle.textColor?.color,
+      targetValue: (nextStyle.textColor != null)
+          ? nextStyle.textColor!.tweenColor
+          : defaultStyle.textColor?.tweenColor,
+      shouldAnimate: canAnimateProperty(
+        property: TransitionProperty.textColor,
+        defaultStyle: defaultStyle,
+        currentStyle: nextStyle,
+      ),
     );
-    _updateTween(
+    _updateTween<Color?>(
       tween: _backgroundColor,
       // If the next style has a transparent background, set the target value to
       // null so that the background color does not transition from black.
       // See [ColorTween] for more details.
-      targetValue: nextStyle.backgroundColor?.color == Colors.transparent
-          ? null
-          : nextStyle.backgroundColor?.color,
+      targetValue: (nextStyle.backgroundColor != null)
+          ? nextStyle.backgroundColor!.tweenColor
+          : defaultStyle.backgroundColor?.tweenColor,
+      shouldAnimate: canAnimateProperty(
+        property: TransitionProperty.backgroundColor,
+        defaultStyle: defaultStyle,
+        currentStyle: nextStyle,
+      ),
     );
-    _updateTween(
+    _updateTween<Color?>(
       tween: _borderColor,
-      targetValue: nextStyle.borderColor?.color == Colors.transparent
-          ? null
-          : nextStyle.borderColor?.color,
+      targetValue: (nextStyle.borderColor != null)
+          ? nextStyle.borderColor!.tweenColor
+          : defaultStyle.borderColor?.tweenColor,
+      shouldAnimate: canAnimateProperty(
+        property: TransitionProperty.borderColor,
+        defaultStyle: defaultStyle,
+        currentStyle: nextStyle,
+      ),
+    );
+    _updateTween<BorderRadius?>(
+      tween: _borderRadius,
+      targetValue: _computeBorderRadius(
+        currentStyle: nextStyle,
+        defaultStyle: defaultStyle,
+      ),
+      shouldAnimate: canAnimateProperty(
+        property: TransitionProperty.borderRadius,
+        defaultStyle: defaultStyle,
+        currentStyle: nextStyle,
+      ),
     );
     // TODO: update tween for text decoration color
     // _updateTween(
@@ -181,20 +217,42 @@ class TwTransitionController {
     //       ? null
     //       : nextStyle.textDecorationColor?.color,
     // );
-    _updateTween(
-      tween: _boxDecoration,
-      targetValue: _computeBoxDecoration(
-        defaultStyle,
-        nextStyle,
+    _updateTween<List<BoxShadow>?>(
+      tween: _boxShadow,
+      targetValue: nextStyle.boxShadow?.toBoxShadows(
+            nextStyle.boxShadowColor ?? defaultStyle.boxShadowColor,
+          ) ??
+          defaultStyle.boxShadow?.toBoxShadows(
+            nextStyle.boxShadowColor ?? defaultStyle.boxShadowColor,
+          ),
+      shouldAnimate: canAnimateProperty(
+        property: TransitionProperty.boxShadow,
+        defaultStyle: defaultStyle,
+        currentStyle: nextStyle,
       ),
     );
-    _updateTween(
+    _updateTween<BoxConstraints>(
       tween: _boxConstraints,
       targetValue: _trackedConstraints ?? BoxConstraints.tight(Size.zero),
+      shouldAnimate: canAnimateProperty(
+            property: TransitionProperty.width,
+            defaultStyle: defaultStyle,
+            currentStyle: nextStyle,
+          ) ||
+          canAnimateProperty(
+            property: TransitionProperty.height,
+            defaultStyle: defaultStyle,
+            currentStyle: nextStyle,
+          ),
     );
-    _updateTween(
+    _updateTween<double>(
       tween: _opacity,
       targetValue: nextStyle.opacity?.value ?? 1,
+      shouldAnimate: canAnimateProperty(
+        property: TransitionProperty.opacity,
+        defaultStyle: defaultStyle,
+        currentStyle: nextStyle,
+      ),
     );
   }
 
@@ -212,8 +270,25 @@ class TwTransitionController {
   /// Updates the tracked constraints and the tween value for the constraints.
   /// This may be called by the widget in the build method when using a
   /// [LayoutBuilder] to calculate the constraints.
-  void updateTrackedConstraints(final BoxConstraints? constraints) {
-    _updateTween(tween: _boxConstraints, targetValue: constraints);
+  void updateTrackedConstraints({
+    required final BoxConstraints? constraints,
+    required final TwStyle currentStyle,
+    required final TwStyle defaultStyle,
+  }) {
+    _updateTween(
+      tween: _boxConstraints,
+      targetValue: constraints,
+      shouldAnimate: canAnimateProperty(
+            property: TransitionProperty.width,
+            defaultStyle: defaultStyle,
+            currentStyle: currentStyle,
+          ) ||
+          canAnimateProperty(
+            property: TransitionProperty.height,
+            defaultStyle: defaultStyle,
+            currentStyle: currentStyle,
+          ),
+    );
     _trackedConstraints = constraints;
   }
 
@@ -227,42 +302,80 @@ class TwTransitionController {
     }
   }
 
-  Decoration? _computeBoxDecoration(
-    final TwStyle defaultStyle,
-    final TwStyle currentStyle,
-  ) {
+  Decoration? getBoxDecoration({
+    required final TwStyle defaultStyle,
+    required final TwStyle currentStyle,
+  }) {
     if (!canAnimate) return null;
-    final bool isCircle = currentStyle.borderRadius?.isCircle ??
-        defaultStyle.borderRadius?.isCircle ??
-        false;
-    final backgroundColor = currentStyle.backgroundColor?.color ??
+    // Static background color
+    final staticBackgroundColor = currentStyle.backgroundColor?.color ??
         defaultStyle.backgroundColor?.color;
-    final twBorder = currentStyle.border ?? defaultStyle.border;
-    final targetBorderColor =
+
+    // Static border color
+    final staticBorderColor =
         currentStyle.borderColor?.color ?? defaultStyle.borderColor?.color;
-    final border = twBorder?.toBorder(
-      targetBorderColor,
-      currentStyle.borderStrokeAlign ?? defaultStyle.borderStrokeAlign,
+
+    // Static border radius
+    final staticBorderRadius = _computeBorderRadius(
+      currentStyle: currentStyle,
+      defaultStyle: defaultStyle,
     );
-    final trackedConstraints = _trackedConstraints;
-    final borderRadius = isCircle && trackedConstraints != null
-        ? BorderRadius.circular(
-            max(trackedConstraints.minWidth, trackedConstraints.minHeight),
-          )
-        : currentStyle.borderRadius?.toBorderRadius() ??
-            defaultStyle.borderRadius?.toBorderRadius();
+
+    // Static box shadows
+    final staticBoxShadows = currentStyle.boxShadow?.toBoxShadows(
+          currentStyle.boxShadowColor,
+        ) ??
+        defaultStyle.boxShadow?.toBoxShadows(defaultStyle.boxShadowColor);
+
+    final targetBorder = currentStyle.border ?? defaultStyle.border;
+
     return BoxDecoration(
-      shape: BoxShape.rectangle,
-      color: backgroundColor,
+      color: canAnimateProperty(
+        property: TransitionProperty.backgroundColor,
+        defaultStyle: defaultStyle,
+        currentStyle: currentStyle,
+      )
+          ? backgroundColor ?? staticBackgroundColor
+          : staticBackgroundColor,
       image: currentStyle.backgroundImage ?? defaultStyle.backgroundImage,
       gradient:
           currentStyle.backgroundGradient ?? defaultStyle.backgroundGradient,
-      border: border,
-      borderRadius: borderRadius,
-      boxShadow:
-          currentStyle.boxShadow?.toBoxShadows(currentStyle.boxShadowColor) ??
-              defaultStyle.boxShadow?.toBoxShadows(defaultStyle.boxShadowColor),
+      // TODO: animate border thickness
+      border: targetBorder?.toBorder(
+        canAnimateProperty(
+          property: TransitionProperty.borderColor,
+          defaultStyle: defaultStyle,
+          currentStyle: currentStyle,
+        )
+            ? borderColor ?? staticBorderColor
+            : staticBorderColor,
+        currentStyle.borderStrokeAlign ?? defaultStyle.borderStrokeAlign,
+      ),
+      borderRadius: canAnimateProperty(
+        property: TransitionProperty.borderRadius,
+        defaultStyle: defaultStyle,
+        currentStyle: currentStyle,
+      )
+          ? borderRadius ?? staticBorderRadius
+          : staticBorderRadius,
+      boxShadow: canAnimateProperty(
+        property: TransitionProperty.boxShadow,
+        defaultStyle: defaultStyle,
+        currentStyle: currentStyle,
+      )
+          ? boxShadow ?? staticBoxShadows
+          : staticBoxShadows,
     );
+  }
+
+  bool canAnimateProperty({
+    required final TransitionProperty property,
+    required final TwStyle defaultStyle,
+    required final TwStyle currentStyle,
+  }) {
+    if (!canAnimate) return false;
+    return (currentStyle.transition?.has(property) ?? false) ||
+        (defaultStyle.transition?.has(property) ?? false);
   }
 
   BoxConstraints? get trackedConstraints => _trackedConstraints;
@@ -279,8 +392,11 @@ class TwTransitionController {
   Color? get textDecorationColor =>
       canAnimate ? _textDecorationColor?.evaluate(_animationCurve!) : null;
 
-  Decoration? get boxDecoration =>
-      canAnimate ? _boxDecoration?.evaluate(_animationCurve!) : null;
+  BorderRadius? get borderRadius =>
+      canAnimate ? _borderRadius?.evaluate(_animationCurve!) : null;
+
+  List<BoxShadow>? get boxShadow =>
+      canAnimate ? _boxShadow?.evaluate(_animationCurve!) : null;
 
   BoxConstraints? get boxConstraints =>
       canAnimate ? _boxConstraints?.evaluate(_animationCurve!) : null;
