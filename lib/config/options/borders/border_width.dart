@@ -4,7 +4,7 @@ import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwBorderTop {
-  final TwUnit value;
+  final PxUnit value;
 
   const TwBorderTop(this.value);
 
@@ -21,7 +21,7 @@ class TwBorderTop {
 
 @immutable
 class TwBorderRight {
-  final TwUnit value;
+  final PxUnit value;
 
   const TwBorderRight(this.value);
 
@@ -38,7 +38,7 @@ class TwBorderRight {
 
 @immutable
 class TwBorderBottom {
-  final TwUnit value;
+  final PxUnit value;
 
   const TwBorderBottom(this.value);
 
@@ -55,7 +55,7 @@ class TwBorderBottom {
 
 @immutable
 class TwBorderLeft {
-  final TwUnit value;
+  final PxUnit value;
 
   const TwBorderLeft(this.value);
 
@@ -72,7 +72,7 @@ class TwBorderLeft {
 
 @immutable
 class TwBorderAll {
-  final TwUnit value;
+  final PxUnit value;
 
   const TwBorderAll(this.value);
 
@@ -89,7 +89,7 @@ class TwBorderAll {
 
 @immutable
 class TwBorderX {
-  final TwUnit value;
+  final PxUnit value;
 
   const TwBorderX(this.value);
 
@@ -106,7 +106,7 @@ class TwBorderX {
 
 @immutable
 class TwBorderY {
-  final TwUnit value;
+  final PxUnit value;
 
   const TwBorderY(this.value);
 
