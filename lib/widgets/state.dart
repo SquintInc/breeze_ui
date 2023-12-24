@@ -115,7 +115,7 @@ class TwAnimationController {
   TwAnimationController({
     required final Widget widget,
     required final TickerProvider vsync,
-    required final Duration duration,
+    required final Duration? duration,
     required final Curve curve,
     required this.redrawAnimationFn,
     required this.animationStatusListener,
@@ -233,6 +233,14 @@ class TwAnimationController {
 
 abstract class TwAnimatedState<T extends TwStatefulWidget> extends TwState<T>
     with SingleTickerProviderStateMixin {
+  /// Default transition property duration, taken from
+  /// https://tailwindcss.com/docs/transition-property
+  static const defaultDuration = Duration(milliseconds: 150);
+
+  /// Default transition timing function, taken from
+  /// https://tailwindcss.com/docs/transition-property
+  static const defaultCurve = Cubic(0.4, 0, 0.2, 1);
+
   TwAnimationController? _animationController;
 
   @protected
@@ -246,10 +254,9 @@ abstract class TwAnimatedState<T extends TwStatefulWidget> extends TwState<T>
       _animationController = TwAnimationController(
         widget: widget,
         vsync: this,
-        duration: widget.style.transitionDuration?.duration.value ??
-            const Duration(milliseconds: 150),
-        curve: widget.style.transitionTimingFn?.curve ??
-            const Cubic(0.4, 0, 0.2, 1),
+        duration:
+            widget.style.transitionDuration?.duration.value ?? defaultDuration,
+        curve: widget.style.transitionTimingFn?.curve ?? defaultCurve,
         redrawAnimationFn: _redrawAnimation,
         animationStatusListener: animationListener,
       );
