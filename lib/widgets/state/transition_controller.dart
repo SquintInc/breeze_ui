@@ -20,6 +20,10 @@ class TwTransitionController {
   ColorTween? _borderColor;
   ColorTween? _textDecorationColor;
   BorderRadiusTween? _borderRadius;
+  Tween<double>? _borderTopPx;
+  Tween<double>? _borderRightPx;
+  Tween<double>? _borderBottomPx;
+  Tween<double>? _borderLeftPx;
   BoxConstraintsTween? _boxConstraints;
   BoxShadowsTween? _boxShadow;
   Tween<double>? _opacity;
@@ -111,6 +115,22 @@ class TwTransitionController {
     //     end: defaultStyle.textDecorationColor?.color,
     //   );
     // }
+    _borderTopPx = Tween<double>(
+      begin: defaultStyle.border?.topPx ?? 0,
+      end: defaultStyle.border?.topPx ?? 0,
+    );
+    _borderRightPx = Tween<double>(
+      begin: defaultStyle.border?.rightPx ?? 0,
+      end: defaultStyle.border?.rightPx ?? 0,
+    );
+    _borderBottomPx = Tween<double>(
+      begin: defaultStyle.border?.bottomPx ?? 0,
+      end: defaultStyle.border?.bottomPx ?? 0,
+    );
+    _borderLeftPx = Tween<double>(
+      begin: defaultStyle.border?.leftPx ?? 0,
+      end: defaultStyle.border?.leftPx ?? 0,
+    );
     _boxShadow = BoxShadowsTween(
       begin: defaultStyle.boxShadow?.toBoxShadows(defaultStyle.boxShadowColor),
       end: defaultStyle.boxShadow?.toBoxShadows(defaultStyle.boxShadowColor),
@@ -206,6 +226,44 @@ class TwTransitionController {
       ),
       shouldAnimate: canAnimateProperty(
         property: TransitionProperty.borderRadius,
+        defaultStyle: defaultStyle,
+        currentStyle: nextStyle,
+      ),
+    );
+    _updateTween<double>(
+      tween: _borderTopPx,
+      targetValue: nextStyle.border?.topPx ?? defaultStyle.border?.topPx ?? 0,
+      shouldAnimate: canAnimateProperty(
+        property: TransitionProperty.borderWidth,
+        defaultStyle: defaultStyle,
+        currentStyle: nextStyle,
+      ),
+    );
+    _updateTween<double>(
+      tween: _borderRightPx,
+      targetValue:
+          nextStyle.border?.rightPx ?? defaultStyle.border?.rightPx ?? 0,
+      shouldAnimate: canAnimateProperty(
+        property: TransitionProperty.borderWidth,
+        defaultStyle: defaultStyle,
+        currentStyle: nextStyle,
+      ),
+    );
+    _updateTween<double>(
+      tween: _borderBottomPx,
+      targetValue:
+          nextStyle.border?.bottomPx ?? defaultStyle.border?.bottomPx ?? 0,
+      shouldAnimate: canAnimateProperty(
+        property: TransitionProperty.borderWidth,
+        defaultStyle: defaultStyle,
+        currentStyle: nextStyle,
+      ),
+    );
+    _updateTween<double>(
+      tween: _borderLeftPx,
+      targetValue: nextStyle.border?.leftPx ?? defaultStyle.border?.leftPx ?? 0,
+      shouldAnimate: canAnimateProperty(
+        property: TransitionProperty.borderWidth,
         defaultStyle: defaultStyle,
         currentStyle: nextStyle,
       ),
@@ -327,7 +385,56 @@ class TwTransitionController {
         ) ??
         defaultStyle.boxShadow?.toBoxShadows(defaultStyle.boxShadowColor);
 
-    final targetBorder = currentStyle.border ?? defaultStyle.border;
+    // Static border
+    final double strokeAlign = currentStyle.borderStrokeAlign ??
+        defaultStyle.borderStrokeAlign ??
+        BorderSide.strokeAlignInside;
+    final staticBorder = (currentStyle.border ?? defaultStyle.border)
+        ?.toBorder(staticBorderColor, strokeAlign);
+
+    final bool canAnimateBorderWidth = canAnimateProperty(
+      property: TransitionProperty.borderWidth,
+      defaultStyle: defaultStyle,
+      currentStyle: currentStyle,
+    );
+    final bool canAnimateBorderColor = canAnimateProperty(
+      property: TransitionProperty.borderColor,
+      defaultStyle: defaultStyle,
+      currentStyle: currentStyle,
+    );
+    final bool shouldUseTweenedBoxBorder =
+        canAnimateBorderWidth || canAnimateBorderColor;
+
+    final Color? tweenedBorderColor =
+        canAnimateBorderColor ? borderColor : null;
+    final Border? tweenedBorder = shouldUseTweenedBoxBorder
+        ? Border(
+            top: BorderSide(
+              color:
+                  tweenedBorderColor ?? staticBorderColor ?? Colors.transparent,
+              width: borderTopPx ?? staticBorder?.top.width ?? 0,
+              strokeAlign: strokeAlign,
+            ),
+            right: BorderSide(
+              color:
+                  tweenedBorderColor ?? staticBorderColor ?? Colors.transparent,
+              width: borderRightPx ?? staticBorder?.right.width ?? 0,
+              strokeAlign: strokeAlign,
+            ),
+            bottom: BorderSide(
+              color:
+                  tweenedBorderColor ?? staticBorderColor ?? Colors.transparent,
+              width: borderBottomPx ?? staticBorder?.bottom.width ?? 0,
+              strokeAlign: strokeAlign,
+            ),
+            left: BorderSide(
+              color:
+                  tweenedBorderColor ?? staticBorderColor ?? Colors.transparent,
+              width: borderLeftPx ?? staticBorder?.left.width ?? 0,
+              strokeAlign: strokeAlign,
+            ),
+          )
+        : null;
 
     return BoxDecoration(
       color: canAnimateProperty(
@@ -340,17 +447,7 @@ class TwTransitionController {
       image: currentStyle.backgroundImage ?? defaultStyle.backgroundImage,
       gradient:
           currentStyle.backgroundGradient ?? defaultStyle.backgroundGradient,
-      // TODO: animate border thickness
-      border: targetBorder?.toBorder(
-        canAnimateProperty(
-          property: TransitionProperty.borderColor,
-          defaultStyle: defaultStyle,
-          currentStyle: currentStyle,
-        )
-            ? borderColor ?? staticBorderColor
-            : staticBorderColor,
-        currentStyle.borderStrokeAlign ?? defaultStyle.borderStrokeAlign,
-      ),
+      border: tweenedBorder ?? staticBorder,
       borderRadius: canAnimateProperty(
         property: TransitionProperty.borderRadius,
         defaultStyle: defaultStyle,
@@ -394,6 +491,18 @@ class TwTransitionController {
 
   BorderRadius? get borderRadius =>
       canAnimate ? _borderRadius?.evaluate(_animationCurve!) : null;
+
+  double? get borderTopPx =>
+      canAnimate ? _borderTopPx?.evaluate(_animationCurve!) : null;
+
+  double? get borderRightPx =>
+      canAnimate ? _borderRightPx?.evaluate(_animationCurve!) : null;
+
+  double? get borderBottomPx =>
+      canAnimate ? _borderBottomPx?.evaluate(_animationCurve!) : null;
+
+  double? get borderLeftPx =>
+      canAnimate ? _borderLeftPx?.evaluate(_animationCurve!) : null;
 
   List<BoxShadow>? get boxShadow =>
       canAnimate ? _boxShadow?.evaluate(_animationCurve!) : null;

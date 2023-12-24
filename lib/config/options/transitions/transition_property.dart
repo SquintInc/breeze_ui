@@ -3,7 +3,6 @@ import 'package:meta/meta.dart';
 enum TransitionProperty {
   none,
   all,
-
   textColor,
   backgroundColor,
   borderColor,
@@ -17,9 +16,11 @@ enum TransitionProperty {
   backdropFilter,
 
   // other common CSS properties not set by Tailwind defaults
+  borderWidth,
   width,
   height,
-  borderRadius;
+  borderRadius,
+  border;
 
   static TransitionProperty fromCss(final String cssType) {
     return switch (cssType) {
@@ -38,9 +39,17 @@ enum TransitionProperty {
       'width' => TransitionProperty.width,
       'height' => TransitionProperty.height,
       'border-radius' => TransitionProperty.borderRadius,
+      'border-width' => TransitionProperty.borderWidth,
+      'border' => TransitionProperty.border,
       _ => TransitionProperty.none,
     };
   }
+
+  bool get isBorderProperty =>
+      this == TransitionProperty.border ||
+      this == TransitionProperty.borderWidth ||
+      this == TransitionProperty.borderColor ||
+      this == TransitionProperty.borderRadius;
 }
 
 @immutable
@@ -62,6 +71,10 @@ class TwTransitionProperty {
   bool get isNone => properties.contains(TransitionProperty.none);
 
   bool has(final TransitionProperty property) =>
-      properties.contains(TransitionProperty.all) ||
-      properties.contains(property);
+      properties.contains(property) ||
+      // Check for border property 'group'
+      (property.isBorderProperty &&
+          properties.contains(TransitionProperty.border)) ||
+      // check for all properties 'group'
+      properties.contains(TransitionProperty.all);
 }

@@ -4,121 +4,121 @@ import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwBorderTop {
-  final PxUnit value;
+  final PxUnit pixels;
 
-  const TwBorderTop(this.value);
+  const TwBorderTop(this.pixels);
 
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
       other is TwBorderTop &&
           runtimeType == other.runtimeType &&
-          value == other.value;
+          pixels == other.pixels;
 
   @override
-  int get hashCode => value.hashCode;
+  int get hashCode => pixels.hashCode;
 }
 
 @immutable
 class TwBorderRight {
-  final PxUnit value;
+  final PxUnit pixels;
 
-  const TwBorderRight(this.value);
+  const TwBorderRight(this.pixels);
 
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
       other is TwBorderRight &&
           runtimeType == other.runtimeType &&
-          value == other.value;
+          pixels == other.pixels;
 
   @override
-  int get hashCode => value.hashCode;
+  int get hashCode => pixels.hashCode;
 }
 
 @immutable
 class TwBorderBottom {
-  final PxUnit value;
+  final PxUnit pixels;
 
-  const TwBorderBottom(this.value);
+  const TwBorderBottom(this.pixels);
 
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
       other is TwBorderBottom &&
           runtimeType == other.runtimeType &&
-          value == other.value;
+          pixels == other.pixels;
 
   @override
-  int get hashCode => value.hashCode;
+  int get hashCode => pixels.hashCode;
 }
 
 @immutable
 class TwBorderLeft {
-  final PxUnit value;
+  final PxUnit pixels;
 
-  const TwBorderLeft(this.value);
+  const TwBorderLeft(this.pixels);
 
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
       other is TwBorderLeft &&
           runtimeType == other.runtimeType &&
-          value == other.value;
+          pixels == other.pixels;
 
   @override
-  int get hashCode => value.hashCode;
+  int get hashCode => pixels.hashCode;
 }
 
 @immutable
 class TwBorderAll {
-  final PxUnit value;
+  final PxUnit pixels;
 
-  const TwBorderAll(this.value);
+  const TwBorderAll(this.pixels);
 
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
       other is TwBorderAll &&
           runtimeType == other.runtimeType &&
-          value == other.value;
+          pixels == other.pixels;
 
   @override
-  int get hashCode => value.hashCode;
+  int get hashCode => pixels.hashCode;
 }
 
 @immutable
 class TwBorderX {
-  final PxUnit value;
+  final PxUnit pixels;
 
-  const TwBorderX(this.value);
+  const TwBorderX(this.pixels);
 
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
       other is TwBorderX &&
           runtimeType == other.runtimeType &&
-          value == other.value;
+          pixels == other.pixels;
 
   @override
-  int get hashCode => value.hashCode;
+  int get hashCode => pixels.hashCode;
 }
 
 @immutable
 class TwBorderY {
-  final PxUnit value;
+  final PxUnit pixels;
 
-  const TwBorderY(this.value);
+  const TwBorderY(this.pixels);
 
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
       other is TwBorderY &&
           runtimeType == other.runtimeType &&
-          value == other.value;
+          pixels == other.pixels;
 
   @override
-  int get hashCode => value.hashCode;
+  int get hashCode => pixels.hashCode;
 }
 
 @immutable
@@ -181,14 +181,14 @@ class TwBorder {
         type = BoxSideType.trbl;
 
   bool get isEmpty => switch (type) {
-        BoxSideType.all => all.value.value == 0,
-        BoxSideType.trbl => top.value.value == 0 &&
-            right.value.value == 0 &&
-            bottom.value.value == 0 &&
-            left.value.value == 0,
-        BoxSideType.x => x.value.value == 0,
-        BoxSideType.y => y.value.value == 0,
-        BoxSideType.xy => x.value.value == 0 && y.value.value == 0,
+        BoxSideType.all => all.pixels.value == 0,
+        BoxSideType.trbl => top.pixels.value == 0 &&
+            right.pixels.value == 0 &&
+            bottom.pixels.value == 0 &&
+            left.pixels.value == 0,
+        BoxSideType.x => x.pixels.value == 0,
+        BoxSideType.y => y.pixels.value == 0,
+        BoxSideType.xy => x.pixels.value == 0 && y.pixels.value == 0,
       };
 
   @override
@@ -215,4 +215,32 @@ class TwBorder {
       x.hashCode ^
       y.hashCode ^
       type.hashCode;
+
+  double get topPx => switch (type) {
+        BoxSideType.all => all.pixels.value,
+        BoxSideType.trbl => top.pixels.value,
+        BoxSideType.y || BoxSideType.xy => y.pixels.value,
+        _ => 0,
+      };
+
+  double get bottomPx => switch (type) {
+        BoxSideType.all => all.pixels.value,
+        BoxSideType.trbl => bottom.pixels.value,
+        BoxSideType.y || BoxSideType.xy => y.pixels.value,
+        _ => 0,
+      };
+
+  double get leftPx => switch (type) {
+        BoxSideType.all => all.pixels.value,
+        BoxSideType.trbl => left.pixels.value,
+        BoxSideType.x || BoxSideType.xy => x.pixels.value,
+        _ => 0,
+      };
+
+  double get rightPx => switch (type) {
+        BoxSideType.all => all.pixels.value,
+        BoxSideType.trbl => right.pixels.value,
+        BoxSideType.x || BoxSideType.xy => x.pixels.value,
+        _ => 0,
+      };
 }

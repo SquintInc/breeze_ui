@@ -221,7 +221,7 @@ class TwTextInputStyle extends TwTextStyle {
             color: hasBorderDecoration
                 ? borderColor?.color ?? Colors.transparent
                 : Colors.transparent,
-            width: border?.all.value.logicalPixels ?? 0.0,
+            width: border?.all.pixels.logicalPixels ?? 0.0,
             strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
           ),
         )
@@ -489,7 +489,7 @@ class TwStyle {
         color: hasBorderDecoration
             ? borderColor?.color ?? Colors.transparent
             : Colors.transparent,
-        width: border?.all.value.logicalPixels ?? 0.0,
+        width: border?.all.pixels.logicalPixels ?? 0.0,
         strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
       );
 }

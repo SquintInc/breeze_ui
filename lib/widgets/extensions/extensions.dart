@@ -147,44 +147,44 @@ extension BorderWidthExtension on TwBorder {
     return switch (type) {
       BoxSideType.all => Border.all(
           color: borderColor ?? const Color(0xFF000000),
-          width: all.value.logicalPixels,
+          width: all.pixels.value,
           strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
         ),
       BoxSideType.trbl => Border(
           top: BorderSide(
             color: borderColor ?? const Color(0xFF000000),
-            width: top.value.logicalPixels,
+            width: top.pixels.value,
             strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
           ),
           right: BorderSide(
             color: borderColor ?? const Color(0xFF000000),
-            width: right.value.logicalPixels,
+            width: right.pixels.value,
             strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
           ),
           bottom: BorderSide(
             color: borderColor ?? const Color(0xFF000000),
-            width: bottom.value.logicalPixels,
+            width: bottom.pixels.value,
             strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
           ),
           left: BorderSide(
             color: borderColor ?? const Color(0xFF000000),
-            width: left.value.logicalPixels,
+            width: left.pixels.value,
             strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
           ),
         ),
       BoxSideType.x || BoxSideType.y || BoxSideType.xy => Border.symmetric(
-          horizontal: x.value.value > 0
+          horizontal: x.pixels.value > 0
               ? BorderSide(
                   color: borderColor ?? const Color(0xFF000000),
-                  width: x.value.logicalPixels,
+                  width: x.pixels.value,
                   strokeAlign:
                       borderStrokeAlign ?? BorderSide.strokeAlignInside,
                 )
               : BorderSide.none,
-          vertical: y.value.value > 0
+          vertical: y.pixels.value > 0
               ? BorderSide(
                   color: borderColor ?? const Color(0xFF000000),
-                  width: y.value.logicalPixels,
+                  width: y.pixels.value,
                   strokeAlign:
                       borderStrokeAlign ?? BorderSide.strokeAlignInside,
                 )
