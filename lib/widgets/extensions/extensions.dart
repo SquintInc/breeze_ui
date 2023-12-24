@@ -135,35 +135,35 @@ extension BorderRadiusExtension on TwBorderRadius {
 
 extension BorderWidthExtension on TwBorder {
   Border? toBorder(
-    final TwBorderColor? borderColor,
+    final Color? borderColor,
     final double? borderStrokeAlign,
   ) {
     if (isEmpty) return null;
 
     return switch (type) {
       BoxSideType.all => Border.all(
-          color: borderColor?.color ?? const Color(0xFF000000),
+          color: borderColor ?? const Color(0xFF000000),
           width: all.value.logicalPixels,
           strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
         ),
       BoxSideType.trbl => Border(
           top: BorderSide(
-            color: borderColor?.color ?? const Color(0xFF000000),
+            color: borderColor ?? const Color(0xFF000000),
             width: top.value.logicalPixels,
             strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
           ),
           right: BorderSide(
-            color: borderColor?.color ?? const Color(0xFF000000),
+            color: borderColor ?? const Color(0xFF000000),
             width: right.value.logicalPixels,
             strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
           ),
           bottom: BorderSide(
-            color: borderColor?.color ?? const Color(0xFF000000),
+            color: borderColor ?? const Color(0xFF000000),
             width: bottom.value.logicalPixels,
             strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
           ),
           left: BorderSide(
-            color: borderColor?.color ?? const Color(0xFF000000),
+            color: borderColor ?? const Color(0xFF000000),
             width: left.value.logicalPixels,
             strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
           ),
@@ -171,7 +171,7 @@ extension BorderWidthExtension on TwBorder {
       BoxSideType.x || BoxSideType.y || BoxSideType.xy => Border.symmetric(
           horizontal: x.value.value > 0
               ? BorderSide(
-                  color: borderColor?.color ?? const Color(0xFF000000),
+                  color: borderColor ?? const Color(0xFF000000),
                   width: x.value.logicalPixels,
                   strokeAlign:
                       borderStrokeAlign ?? BorderSide.strokeAlignInside,
@@ -179,7 +179,7 @@ extension BorderWidthExtension on TwBorder {
               : BorderSide.none,
           vertical: y.value.value > 0
               ? BorderSide(
-                  color: borderColor?.color ?? const Color(0xFF000000),
+                  color: borderColor ?? const Color(0xFF000000),
                   width: y.value.logicalPixels,
                   strokeAlign:
                       borderStrokeAlign ?? BorderSide.strokeAlignInside,

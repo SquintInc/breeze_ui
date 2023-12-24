@@ -2,7 +2,6 @@ export 'package:tailwind_elements/widgets/avatar.dart';
 export 'package:tailwind_elements/widgets/button.dart';
 export 'package:tailwind_elements/widgets/column.dart';
 export 'package:tailwind_elements/widgets/div.dart';
-export 'package:tailwind_elements/widgets/div_animated.dart';
 export 'package:tailwind_elements/widgets/row.dart';
 export 'package:tailwind_elements/widgets/sized_box.dart';
 export 'package:tailwind_elements/widgets/style.dart';

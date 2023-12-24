@@ -216,6 +216,32 @@ const shadow_inner = TwBoxShadows(<TwBoxShadow>[]);
 const shadow_none = TwBoxShadows(<TwBoxShadow>[]);
 
 // **************************************************************************
+// Generator: OpacityBuilder
+// **************************************************************************
+
+const opacity_0 = TwOpacity(0);
+const opacity_5 = TwOpacity(0.05);
+const opacity_10 = TwOpacity(0.1);
+const opacity_15 = TwOpacity(0.15);
+const opacity_20 = TwOpacity(0.2);
+const opacity_25 = TwOpacity(0.25);
+const opacity_30 = TwOpacity(0.3);
+const opacity_35 = TwOpacity(0.35);
+const opacity_40 = TwOpacity(0.4);
+const opacity_45 = TwOpacity(0.45);
+const opacity_50 = TwOpacity(0.5);
+const opacity_55 = TwOpacity(0.55);
+const opacity_60 = TwOpacity(0.6);
+const opacity_65 = TwOpacity(0.65);
+const opacity_70 = TwOpacity(0.7);
+const opacity_75 = TwOpacity(0.75);
+const opacity_80 = TwOpacity(0.8);
+const opacity_85 = TwOpacity(0.85);
+const opacity_90 = TwOpacity(0.9);
+const opacity_95 = TwOpacity(0.95);
+const opacity_100 = TwOpacity(1);
+
+// **************************************************************************
 // Generator: GapBuilder
 // **************************************************************************
 

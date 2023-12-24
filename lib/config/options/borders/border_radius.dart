@@ -238,4 +238,18 @@ class TwBorderRadius {
       left.hashCode ^
       all.hashCode ^
       type.hashCode;
+
+  static const PxUnit fullRadius = PxUnit(9999.0);
+
+  bool get isCircle => switch (type) {
+        BoxCornerType.all => all.value == fullRadius,
+        BoxCornerType.trbl => top.value == right.value &&
+            top.value == bottom.value &&
+            top.value == left.value &&
+            top.value == fullRadius,
+        BoxCornerType.tltrbrbl => topLeft.value == topRight.value &&
+            topLeft.value == bottomRight.value &&
+            topLeft.value == bottomLeft.value &&
+            topLeft.value == fullRadius,
+      };
 }

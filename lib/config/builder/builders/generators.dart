@@ -57,6 +57,8 @@ class CodeWriter {
         TimeUnitType.s =>
           key == 'DEFAULT' ? '' : key.toSnakeCase(),
       };
+    } else if (unit is double || unit is int || unit is String) {
+      return key == 'DEFAULT' ? '' : key.toSnakeCase();
     }
     throw Exception(
       'Invalid unit type for conversion to identifier: ${unit.runtimeType}',
@@ -93,6 +95,12 @@ class CodeWriter {
             ? unit.toDartConstructor()
             : '$valueClassName(${unit.toDartConstructor()})',
       };
+    } else if (unit is double || unit is int || unit is String) {
+      valueConstructor = '$valueClassName($unit)';
+    } else {
+      throw Exception(
+        'Invalid unit type for converting unit to a Dart declaration: ${unit.runtimeType}',
+      );
     }
 
     return dartLineDeclaration(

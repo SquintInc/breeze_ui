@@ -22,7 +22,7 @@ class TailwindElementsPlayground extends StatelessWidget {
         child: TwDiv(
           style: TwStyle(
             height: h_96,
-            backgroundColor: bg_blue_200,
+            backgroundColor: bg_white,
           ),
           child: TwColumn(
             gap: gap_y_4,
@@ -57,23 +57,27 @@ class TailwindElementsPlayground extends StatelessWidget {
                   padding: TwPadding.all(p_0),
                 ),
               ),
-              TwAnimatedDiv(
+              TwDiv(
                 style: TwStyle(
-                  // width: w_frac_1_3,
                   width: w_96,
                   height: h_96,
+                  border: TwBorder.all(border_8),
+                  borderRadius: TwBorderRadius.all(rounded_3xl),
+                  borderColor: border_green_600,
                   backgroundColor: bg_green_500,
+                  boxShadow: shadow_lg,
                   transition: transition_all,
                   transitionDuration: duration_150,
                   transitionTimingFn: ease_in_out,
                 ),
-                // hovered: TwStyle(
-                //   backgroundColor: bg_blue_500,
-                // ),
                 hovered: TwStyle(
-                  width: w_frac_8_12,
+                  width: w_96,
                   maxWidth: max_w_screen_2xl,
-                  backgroundColor: bg_yellow_500,
+                  backgroundColor: bg_blue_500,
+                  borderRadius: TwBorderRadius.all(rounded_full),
+                  opacity: opacity_50,
+                  boxShadow: shadow_2xl,
+                  boxShadowColor: shadow_black,
                 ),
                 pressed: TwStyle(
                   backgroundColor: bg_red_500,

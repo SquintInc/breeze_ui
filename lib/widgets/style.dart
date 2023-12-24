@@ -3,6 +3,7 @@ import 'package:tailwind_elements/config/options/borders/border_radius.dart';
 import 'package:tailwind_elements/config/options/borders/border_width.dart';
 import 'package:tailwind_elements/config/options/colors.dart';
 import 'package:tailwind_elements/config/options/effects/box_shadow.dart';
+import 'package:tailwind_elements/config/options/effects/opacity.dart';
 import 'package:tailwind_elements/config/options/sizing/height.dart';
 import 'package:tailwind_elements/config/options/sizing/max_height.dart';
 import 'package:tailwind_elements/config/options/sizing/max_width.dart';
@@ -22,7 +23,7 @@ import 'package:tailwind_elements/config/options/typography/line_height.dart';
 import 'package:tailwind_elements/config/options/typography/text_decoration_thickness.dart';
 import 'package:tailwind_elements/config/options/units.dart';
 import 'package:tailwind_elements/widgets/extensions/extensions.dart';
-import 'package:tailwind_elements/widgets/state.dart';
+import 'package:tailwind_elements/widgets/state/widget_state.dart';
 
 export 'package:tailwind_elements/config/options/units.dart';
 export 'package:tailwind_elements/widgets/extensions/extensions.dart';
@@ -242,6 +243,7 @@ class TwStyle {
   // Effect styling
   final TwBoxShadows? boxShadow;
   final TwBoxShadowColor? boxShadowColor;
+  final TwOpacity? opacity;
 
   // Border styling
   final TwBorder? border;
@@ -279,6 +281,7 @@ class TwStyle {
     // Effect styling
     this.boxShadow,
     this.boxShadowColor,
+    this.opacity,
 
     // Border styling
     this.border,
@@ -365,15 +368,10 @@ class TwStyle {
       (width?.value.isPercentageBased ?? false) ||
       (height?.value.isPercentageBased ?? false);
 
-  /// Returns true if any background styling property is set, and only if
-  /// [backgroundColor] is not the sole non-null property set.
   bool get hasBackgroundDecoration =>
-      (backgroundColor != null ||
-          backgroundImage != null ||
-          backgroundGradient != null) &&
-      !(backgroundColor != null &&
-          backgroundImage == null &&
-          backgroundGradient == null);
+      backgroundColor != null ||
+      backgroundImage != null ||
+      backgroundGradient != null;
 
   bool get hasBorderDecoration =>
       (border != null && !(border?.isEmpty ?? true)) || borderRadius != null;
@@ -382,6 +380,16 @@ class TwStyle {
 
   bool get hasDecorations =>
       hasBackgroundDecoration || hasBorderDecoration || hasBoxShadowDecoration;
+
+  bool get hasOnlyBackgroundColorDecoration =>
+      hasBackgroundDecoration &&
+      !hasBorderDecoration &&
+      !hasBoxShadowDecoration &&
+      backgroundImage == null &&
+      backgroundGradient == null;
+
+  bool hasTransition(final TransitionProperty property) =>
+      transition?.has(property) ?? false;
 
   double widthPx(final double parentWidth) {
     final width = this.width;
@@ -401,17 +409,29 @@ class TwStyle {
         : height.value.logicalPixels;
   }
 
-  Decoration? get boxDecoration {
-    if (!hasDecorations) {
+  Decoration? getBoxDecoration(final TwStyle defaultStyle) {
+    if (!hasDecorations && !defaultStyle.hasDecorations) {
       return null;
     }
+    final bool isCircle =
+        borderRadius?.isCircle ?? defaultStyle.borderRadius?.isCircle ?? false;
+    final borderColor =
+        this.borderColor?.color ?? defaultStyle.borderColor?.color;
+    final borderStrokeAlign =
+        this.borderStrokeAlign ?? defaultStyle.borderStrokeAlign;
     return BoxDecoration(
-      color: backgroundColor?.color,
-      image: backgroundImage,
-      gradient: backgroundGradient,
-      border: border?.toBorder(borderColor, borderStrokeAlign),
-      borderRadius: borderRadius?.toBorderRadius(),
-      boxShadow: boxShadow?.toBoxShadows(boxShadowColor),
+      shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
+      color: backgroundColor?.color ?? defaultStyle.backgroundColor?.color,
+      image: backgroundImage ?? defaultStyle.backgroundImage,
+      gradient: backgroundGradient ?? defaultStyle.backgroundGradient,
+      border: border?.toBorder(borderColor, borderStrokeAlign) ??
+          defaultStyle.border?.toBorder(borderColor, borderStrokeAlign),
+      borderRadius: !isCircle
+          ? borderRadius?.toBorderRadius() ??
+              defaultStyle.borderRadius?.toBorderRadius()
+          : null,
+      boxShadow: boxShadow?.toBoxShadows(boxShadowColor) ??
+          defaultStyle.boxShadow?.toBoxShadows(boxShadowColor),
     );
   }
 

@@ -15,7 +15,11 @@ enum TransitionProperty {
   boxShadow,
   transform,
   filter,
-  backdropFilter;
+  backdropFilter,
+
+  // other common CSS properties not set by Tailwind defaults
+  width,
+  height;
 
   static TransitionProperty fromCss(final String cssType) {
     return switch (cssType) {
@@ -53,4 +57,8 @@ class TwTransitionProperty {
   int get hashCode => properties.hashCode;
 
   bool get isNone => properties.contains(TransitionProperty.none);
+
+  bool has(final TransitionProperty property) =>
+      properties.contains(TransitionProperty.all) ||
+      properties.contains(property);
 }
