@@ -33,212 +33,20 @@ typedef StyleValueResolver<T> = T? Function(TwStyle? statusStyle);
 MaterialStateProperty<T> always<T>(final T value) =>
     MaterialStatePropertyAll<T>(value);
 
-/// Flattened style data class for Tailwind CSS properties pertaining to text
-/// styling
-@immutable
-class TwTextStyle {
-  final TwFontSize fontSize;
-  final TwFontWeight fontWeight;
-  final TwLineHeight? lineHeight;
-  final TwTextColor? textColor;
-  final FontStyle fontStyle;
-  final TextDecoration? textDecoration;
-  final TwTextDecorationColor? textDecorationColor;
-  final TextDecorationStyle? textDecorationStyle;
-  final TextLeadingDistribution leadingDistribution;
-  final TwTextDecorationThickness? textDecorationThickness;
-  final double? wordSpacing;
-  final TwLetterSpacing? letterSpacing;
-
-  const TwTextStyle({
-    this.fontSize = const TwFontSize(RemUnit(1.0), TwLineHeight(RemUnit(1.5))),
-    this.fontWeight = const TwFontWeight(400),
-    this.fontStyle = FontStyle.normal,
-    this.lineHeight,
-    this.textColor,
-    this.textDecoration,
-    this.textDecorationColor,
-    this.textDecorationStyle,
-    this.textDecorationThickness,
-    this.leadingDistribution = TextLeadingDistribution.even,
-    this.wordSpacing,
-    this.letterSpacing,
-  });
-
-  TextStyle toTextStyle() {
-    return TextStyle(
-      fontSize: fontSize.value.logicalPixels,
-      fontWeight: fontWeight.fontWeight,
-      height: fontSize.getLineHeight(lineHeight),
-      fontStyle: fontStyle,
-      color: textColor?.color,
-      leadingDistribution: leadingDistribution,
-      decoration: textDecoration,
-      decorationColor: textDecorationColor?.color,
-      decorationStyle: textDecorationStyle,
-      decorationThickness: textDecorationThickness?.value.logicalPixels,
-      wordSpacing: wordSpacing,
-      letterSpacing:
-          letterSpacing?.value.emPixels(fontSize.value.logicalPixels),
-    );
-  }
-
-  static MaterialStateTextStyle toMaterialTextStyle(
-    final TwTextStyle normal, {
-    required final TwTextStyle? disabled,
-    required final TwTextStyle? dragged,
-    required final TwTextStyle? error,
-    required final TwTextStyle? focused,
-    required final TwTextStyle? selected,
-    required final TwTextStyle? pressed,
-    required final TwTextStyle? hovered,
-  }) {
-    return MaterialStateTextStyle.resolveWith(
-        (final Set<MaterialState> states) {
-      final TwTextStyle? statusStyle = switch (getWidgetState(states)) {
-        TwWidgetState.disabled => disabled,
-        TwWidgetState.dragged => dragged,
-        TwWidgetState.error => error,
-        TwWidgetState.focused => focused,
-        TwWidgetState.selected => selected,
-        TwWidgetState.pressed => pressed,
-        TwWidgetState.hovered => hovered,
-        _ => normal,
-      };
-      return TextStyle(
-        fontSize: statusStyle?.fontSize.value.logicalPixels ??
-            normal.fontSize.value.logicalPixels,
-        fontWeight:
-            statusStyle?.fontWeight.fontWeight ?? normal.fontWeight.fontWeight,
-        height: statusStyle?.fontSize.getLineHeight(statusStyle.lineHeight) ??
-            normal.fontSize.getLineHeight(normal.lineHeight),
-        fontStyle: statusStyle?.fontStyle ?? normal.fontStyle,
-        color: statusStyle?.textColor?.color ?? normal.textColor?.color,
-        leadingDistribution:
-            statusStyle?.leadingDistribution ?? normal.leadingDistribution,
-        decoration: statusStyle?.textDecoration ?? normal.textDecoration,
-        decorationColor: statusStyle?.textDecorationColor?.color ??
-            normal.textDecorationColor?.color,
-        decorationStyle:
-            statusStyle?.textDecorationStyle ?? normal.textDecorationStyle,
-        decorationThickness:
-            statusStyle?.textDecorationThickness?.value.logicalPixels ??
-                normal.textDecorationThickness?.value.logicalPixels,
-        wordSpacing: statusStyle?.wordSpacing ?? normal.wordSpacing,
-        letterSpacing: statusStyle?.letterSpacing?.value
-                .emPixels(statusStyle.fontSize.value.logicalPixels) ??
-            normal.letterSpacing?.value
-                .emPixels(normal.fontSize.value.logicalPixels),
-      );
-    });
-  }
-}
-
-@immutable
-class TwTextInputStyle extends TwTextStyle {
-  // Background styling
-  final TwBackgroundColor? backgroundColor;
-
-  // Border styling
-  final TwBorder? border;
-  final TwBorderColor? borderColor;
-  final TwBorderRadius? borderRadius;
-  final double? borderStrokeAlign;
-
-  // Sizing styling
-  final TwWidth? width;
-  final TwHeight? height;
-
-  // Spacing styling
-  final TwPadding? padding;
-
-  const TwTextInputStyle({
-    // Typography styling
-    super.fontSize = const TwFontSize(RemUnit(1.0), TwLineHeight(RemUnit(1.5))),
-    super.fontWeight = const TwFontWeight(400),
-    super.fontStyle = FontStyle.normal,
-    super.lineHeight,
-    super.textColor,
-    super.textDecoration,
-    super.textDecorationColor,
-    super.textDecorationStyle,
-    super.textDecorationThickness,
-    super.leadingDistribution = TextLeadingDistribution.even,
-    super.wordSpacing,
-    super.letterSpacing,
-    this.backgroundColor,
-    this.border,
-    this.borderColor,
-    this.borderRadius,
-    this.borderStrokeAlign,
-    this.width,
-    this.height,
-    this.padding,
-  });
-
-  static InputBorder? toMaterialInputBorder(
-    final TwTextInputStyle normal, {
-    required final TwTextInputStyle? disabled,
-    required final TwTextInputStyle? dragged,
-    required final TwTextInputStyle? error,
-    required final TwTextInputStyle? focused,
-    required final TwTextInputStyle? selected,
-    required final TwTextInputStyle? pressed,
-    required final TwTextInputStyle? hovered,
-  }) =>
-      MaterialStateOutlineInputBorder.resolveWith(
-          (final Set<MaterialState> states) {
-        final TwTextInputStyle? statusStyle = switch (getWidgetState(states)) {
-          TwWidgetState.disabled => disabled,
-          TwWidgetState.dragged => dragged,
-          TwWidgetState.error => error,
-          TwWidgetState.focused => focused,
-          TwWidgetState.selected => selected,
-          TwWidgetState.pressed => pressed,
-          TwWidgetState.hovered => hovered,
-          _ => normal,
-        };
-        return statusStyle?.toBorder() ?? normal.toBorder() ?? InputBorder.none;
-      });
-
-  bool get hasBorderDecoration =>
-      (border != null && !(border?.isEmpty ?? true)) || borderRadius != null;
-
-  BoxConstraints? getBoxConstraints() {
-    if (width == null && height == null) return null;
-    return BoxConstraints(
-      minWidth: width?.value.logicalPixels ?? 0.0,
-      maxWidth: width?.value.logicalPixels ?? double.infinity,
-      minHeight: height?.value.logicalPixels ?? 0.0,
-      maxHeight: height?.value.logicalPixels ?? double.infinity,
-    );
-  }
-
-  InputBorder? toBorder() => hasBorderDecoration
-      ? OutlineInputBorder(
-          borderRadius: borderRadius?.toBorderRadius() ?? BorderRadius.zero,
-          borderSide: BorderSide(
-            color: hasBorderDecoration
-                ? borderColor?.color ?? Colors.transparent
-                : Colors.transparent,
-            width: border?.all.pixels.logicalPixels ?? 0.0,
-            strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
-          ),
-        )
-      : InputBorder.none;
-}
-
-/// Flattened style data class for Tailwind CSS properties that represent a
-/// 'container' and wraps any arbitrary child widget.
+/// Flattened style data class for Tailwind CSS properties.
+/// Some properties may not be applicable to certain widgets (e.g. typography
+/// properties won't be applicable to widgets that are not meant to render text
+/// at their level).
 @immutable
 class TwStyle {
+  static const defaultFontSize =
+      TwFontSize(RemUnit(1.0), TwLineHeight(RemUnit(1.5)));
+  static const defaultFontWeight = TwFontWeight(400);
+
   // Background styling
   final TwBackgroundColor? backgroundColor;
   final DecorationImage? backgroundImage;
   final Gradient? backgroundGradient;
-
-  // Foreground styling (if applicable)
-  final TwTextColor? textColor;
 
   // Effect styling
   final TwBoxShadows? boxShadow;
@@ -269,14 +77,25 @@ class TwStyle {
   final TwTransitionTimingFunction? transitionTimingFn;
   final TwTransitionDelay? transitionDelay;
 
+  // Typography styling (not applicable to widgets without text)
+  final TwFontSize fontSize;
+  final FontStyle fontStyle;
+  final TwFontWeight fontWeight;
+  final TwLetterSpacing? letterSpacing;
+  final TwLineHeight? lineHeight;
+  final TwTextColor? textColor;
+  final TextDecoration? textDecoration;
+  final TwTextDecorationColor? textDecorationColor;
+  final TextDecorationStyle? textDecorationStyle;
+  final TwTextDecorationThickness? textDecorationThickness;
+  final TextLeadingDistribution leadingDistribution;
+  final double? wordSpacing;
+
   const TwStyle({
     // Background
     this.backgroundColor,
     this.backgroundImage,
     this.backgroundGradient,
-
-    // Foreground
-    this.textColor,
 
     // Effect styling
     this.boxShadow,
@@ -306,39 +125,21 @@ class TwStyle {
     this.transitionDuration,
     this.transitionTimingFn,
     this.transitionDelay,
-  });
 
-  static MaterialStateProperty<T> resolveStatus<T>(
-    final TwStyle normal,
-    final StyleValueResolver resolver, {
-    required final T defaultValue,
-    required final TwStyle? disabled,
-    required final TwStyle? dragged,
-    required final TwStyle? error,
-    required final TwStyle? focused,
-    required final TwStyle? selected,
-    required final TwStyle? pressed,
-    required final TwStyle? hovered,
-  }) =>
-      MaterialStateProperty.resolveWith<T>(
-        (final Set<MaterialState> states) => switch (getWidgetState(states)) {
-          TwWidgetState.disabled =>
-            resolver(disabled) ?? resolver(normal) ?? defaultValue,
-          TwWidgetState.dragged =>
-            resolver(dragged) ?? resolver(normal) ?? defaultValue,
-          TwWidgetState.error =>
-            resolver(error) ?? resolver(normal) ?? defaultValue,
-          TwWidgetState.focused =>
-            resolver(focused) ?? resolver(normal) ?? defaultValue,
-          TwWidgetState.selected =>
-            resolver(selected) ?? resolver(normal) ?? defaultValue,
-          TwWidgetState.pressed =>
-            resolver(pressed) ?? resolver(normal) ?? defaultValue,
-          TwWidgetState.hovered =>
-            resolver(hovered) ?? resolver(normal) ?? defaultValue,
-          TwWidgetState.normal => resolver(normal) ?? defaultValue,
-        },
-      );
+    // Typography styling
+    this.fontSize = defaultFontSize,
+    this.fontStyle = FontStyle.normal,
+    this.fontWeight = defaultFontWeight,
+    this.letterSpacing,
+    this.lineHeight,
+    this.textColor,
+    this.textDecoration,
+    this.textDecorationColor,
+    this.textDecorationStyle,
+    this.textDecorationThickness,
+    this.leadingDistribution = TextLeadingDistribution.even,
+    this.wordSpacing,
+  });
 
   bool get hasConstraints =>
       minWidth != null ||
@@ -492,6 +293,145 @@ class TwStyle {
         width: border?.all.pixels.logicalPixels ?? 0.0,
         strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
       );
+
+  static MaterialStateProperty<T> resolveStatus<T>(
+    final TwStyle normal,
+    final StyleValueResolver resolver, {
+    required final T defaultValue,
+    required final TwStyle? disabled,
+    required final TwStyle? dragged,
+    required final TwStyle? error,
+    required final TwStyle? focused,
+    required final TwStyle? selected,
+    required final TwStyle? pressed,
+    required final TwStyle? hovered,
+  }) =>
+      MaterialStateProperty.resolveWith<T>(
+        (final Set<MaterialState> states) =>
+            switch (getPrimaryWidgetState(states)) {
+          TwWidgetState.disabled =>
+            resolver(disabled) ?? resolver(normal) ?? defaultValue,
+          TwWidgetState.dragged =>
+            resolver(dragged) ?? resolver(normal) ?? defaultValue,
+          TwWidgetState.error =>
+            resolver(error) ?? resolver(normal) ?? defaultValue,
+          TwWidgetState.focused =>
+            resolver(focused) ?? resolver(normal) ?? defaultValue,
+          TwWidgetState.selected =>
+            resolver(selected) ?? resolver(normal) ?? defaultValue,
+          TwWidgetState.pressed =>
+            resolver(pressed) ?? resolver(normal) ?? defaultValue,
+          TwWidgetState.hovered =>
+            resolver(hovered) ?? resolver(normal) ?? defaultValue,
+          TwWidgetState.normal => resolver(normal) ?? defaultValue,
+        },
+      );
+
+  TextStyle toTextStyle() {
+    return TextStyle(
+      fontSize: fontSize.value.logicalPixels,
+      fontWeight: fontWeight.fontWeight,
+      height: fontSize.getLineHeight(lineHeight),
+      fontStyle: fontStyle,
+      color: textColor?.color,
+      leadingDistribution: leadingDistribution,
+      decoration: textDecoration,
+      decorationColor: textDecorationColor?.color,
+      decorationStyle: textDecorationStyle,
+      decorationThickness: textDecorationThickness?.value.logicalPixels,
+      wordSpacing: wordSpacing,
+      letterSpacing:
+          letterSpacing?.value.emPixels(fontSize.value.logicalPixels),
+    );
+  }
+
+  InputBorder? toBorder() => hasBorderDecoration
+      ? OutlineInputBorder(
+          borderRadius: borderRadius?.toBorderRadius() ?? BorderRadius.zero,
+          borderSide: BorderSide(
+            color: hasBorderDecoration
+                ? borderColor?.color ?? Colors.transparent
+                : Colors.transparent,
+            width: border?.all.pixels.logicalPixels ?? 0.0,
+            strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
+          ),
+        )
+      : InputBorder.none;
+
+  static InputBorder? toMaterialInputBorder(
+    final TwStyle normal, {
+    required final TwStyle? disabled,
+    required final TwStyle? dragged,
+    required final TwStyle? error,
+    required final TwStyle? focused,
+    required final TwStyle? selected,
+    required final TwStyle? pressed,
+    required final TwStyle? hovered,
+  }) =>
+      MaterialStateOutlineInputBorder.resolveWith(
+          (final Set<MaterialState> states) {
+        final TwStyle? statusStyle = switch (getPrimaryWidgetState(states)) {
+          TwWidgetState.disabled => disabled,
+          TwWidgetState.dragged => dragged,
+          TwWidgetState.error => error,
+          TwWidgetState.focused => focused,
+          TwWidgetState.selected => selected,
+          TwWidgetState.pressed => pressed,
+          TwWidgetState.hovered => hovered,
+          _ => normal,
+        };
+        return statusStyle?.toBorder() ?? normal.toBorder() ?? InputBorder.none;
+      });
+
+  static MaterialStateTextStyle toMaterialTextStyle(
+    final TwStyle normal, {
+    required final TwStyle? disabled,
+    required final TwStyle? dragged,
+    required final TwStyle? error,
+    required final TwStyle? focused,
+    required final TwStyle? selected,
+    required final TwStyle? pressed,
+    required final TwStyle? hovered,
+  }) {
+    return MaterialStateTextStyle.resolveWith(
+        (final Set<MaterialState> states) {
+      final TwStyle? statusStyle = switch (getPrimaryWidgetState(states)) {
+        TwWidgetState.disabled => disabled,
+        TwWidgetState.dragged => dragged,
+        TwWidgetState.error => error,
+        TwWidgetState.focused => focused,
+        TwWidgetState.selected => selected,
+        TwWidgetState.pressed => pressed,
+        TwWidgetState.hovered => hovered,
+        _ => normal,
+      };
+      return TextStyle(
+        fontSize: statusStyle?.fontSize.value.logicalPixels ??
+            normal.fontSize.value.logicalPixels,
+        fontWeight:
+            statusStyle?.fontWeight.fontWeight ?? normal.fontWeight.fontWeight,
+        height: statusStyle?.fontSize.getLineHeight(statusStyle.lineHeight) ??
+            normal.fontSize.getLineHeight(normal.lineHeight),
+        fontStyle: statusStyle?.fontStyle ?? normal.fontStyle,
+        color: statusStyle?.textColor?.color ?? normal.textColor?.color,
+        leadingDistribution:
+            statusStyle?.leadingDistribution ?? normal.leadingDistribution,
+        decoration: statusStyle?.textDecoration ?? normal.textDecoration,
+        decorationColor: statusStyle?.textDecorationColor?.color ??
+            normal.textDecorationColor?.color,
+        decorationStyle:
+            statusStyle?.textDecorationStyle ?? normal.textDecorationStyle,
+        decorationThickness:
+            statusStyle?.textDecorationThickness?.value.logicalPixels ??
+                normal.textDecorationThickness?.value.logicalPixels,
+        wordSpacing: statusStyle?.wordSpacing ?? normal.wordSpacing,
+        letterSpacing: statusStyle?.letterSpacing?.value
+                .emPixels(statusStyle.fontSize.value.logicalPixels) ??
+            normal.letterSpacing?.value
+                .emPixels(normal.fontSize.value.logicalPixels),
+      );
+    });
+  }
 
   @override
   String toString() {

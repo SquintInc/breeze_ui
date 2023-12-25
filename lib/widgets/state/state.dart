@@ -129,7 +129,7 @@ abstract class TwState<T extends TwStatefulWidget> extends State<T> {
 
   /// Rebuilds the widget when the material states controller changes.
   void onWidgetStateChange() {
-    final newWidgetState = getWidgetState(statesController.value);
+    final newWidgetState = getPrimaryWidgetState(statesController.value);
     if (newWidgetState != _widgetState) {
       // Rebuild widget and update previous and current state
       final prevWidgetState = _widgetState;

@@ -33,7 +33,14 @@ class TailwindElementsPlayground extends StatelessWidget {
                   height: h_20,
                   backgroundColor: bg_green_400,
                 ),
-                child: TwText('Top Button'),
+                child: TwText(
+                  'Top Button',
+                  style: TwStyle(
+                    fontSize: text_2xl,
+                    fontWeight: font_bold,
+                    textColor: text_white,
+                  ),
+                ),
               ),
               TwButton(
                 style: TwStyle(
@@ -44,13 +51,13 @@ class TailwindElementsPlayground extends StatelessWidget {
                 child: TwText('Bottom Button'),
               ),
               TwTextField(
-                style: TwTextInputStyle(
+                style: TwStyle(
                   border: TwBorder.all(border_8),
                   borderRadius: TwBorderRadius.all(rounded_full),
                   borderColor: border_green_400,
                   padding: TwPadding.all(p_6),
                 ),
-                hovered: TwTextInputStyle(
+                hovered: TwStyle(
                   border: TwBorder.all(border_2),
                   borderRadius: TwBorderRadius.all(rounded_full),
                   borderColor: border_blue_400,
@@ -58,7 +65,6 @@ class TailwindElementsPlayground extends StatelessWidget {
                 ),
               ),
               TwDiv(
-                isSelectable: true,
                 selected: TwStyle(
                   backgroundColor: bg_cyan_700,
                 ),

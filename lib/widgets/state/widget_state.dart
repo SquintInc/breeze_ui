@@ -11,7 +11,9 @@ enum TwWidgetState {
   normal,
 }
 
-TwWidgetState getWidgetState(final Set<MaterialState> states) {
+/// Returns the 'most important' state of the widget from the current set of
+/// material states, to specify which style should be used.
+TwWidgetState getPrimaryWidgetState(final Set<MaterialState> states) {
   if (states.contains(MaterialState.disabled)) return TwWidgetState.disabled;
   if (states.contains(MaterialState.dragged)) return TwWidgetState.dragged;
   if (states.contains(MaterialState.error)) return TwWidgetState.error;

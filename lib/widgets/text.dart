@@ -5,14 +5,14 @@ import 'package:tailwind_elements/widgets/style.dart';
 @immutable
 class TwText extends Text {
   /// Tailwind text style properties
-  final TwTextStyle? textStyle;
+  final TwStyle? textStyle;
 
   /// Takes in a Flutter [TextStyle] to merge and override the Tailwind styles
   final TextStyle? overrideStyle;
 
   const TwText(
     super.data, {
-    final TwTextStyle? style,
+    final TwStyle? style,
     this.overrideStyle,
     super.strutStyle,
     super.textAlign,
@@ -32,7 +32,7 @@ class TwText extends Text {
 
   const TwText.rich(
     super.textSpan, {
-    final TwTextStyle? style,
+    final TwStyle? style,
     this.overrideStyle,
     super.strutStyle,
     super.textAlign,
