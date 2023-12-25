@@ -1,3 +1,4 @@
+import 'package:flutter/painting.dart';
 import 'package:meta/meta.dart';
 import 'package:tailwind_elements/config/options/box_types.dart';
 import 'package:tailwind_elements/config/options/units.dart';
@@ -179,6 +180,61 @@ class TwBorder {
         y = const TwBorderY(PxUnit(0)),
         all = const TwBorderAll(PxUnit(0)),
         type = BoxSideType.trbl;
+
+  Border? toBorder(
+    final Color? borderColor,
+    final double? borderStrokeAlign,
+  ) {
+    if (isEmpty) return null;
+
+    return switch (type) {
+      BoxSideType.all => Border.all(
+          color: borderColor ?? const Color(0xFF000000),
+          width: all.pixels.value,
+          strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
+        ),
+      BoxSideType.trbl => Border(
+          top: BorderSide(
+            color: borderColor ?? const Color(0xFF000000),
+            width: top.pixels.value,
+            strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
+          ),
+          right: BorderSide(
+            color: borderColor ?? const Color(0xFF000000),
+            width: right.pixels.value,
+            strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
+          ),
+          bottom: BorderSide(
+            color: borderColor ?? const Color(0xFF000000),
+            width: bottom.pixels.value,
+            strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
+          ),
+          left: BorderSide(
+            color: borderColor ?? const Color(0xFF000000),
+            width: left.pixels.value,
+            strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
+          ),
+        ),
+      BoxSideType.x || BoxSideType.y || BoxSideType.xy => Border.symmetric(
+          horizontal: x.pixels.value > 0
+              ? BorderSide(
+                  color: borderColor ?? const Color(0xFF000000),
+                  width: x.pixels.value,
+                  strokeAlign:
+                      borderStrokeAlign ?? BorderSide.strokeAlignInside,
+                )
+              : BorderSide.none,
+          vertical: y.pixels.value > 0
+              ? BorderSide(
+                  color: borderColor ?? const Color(0xFF000000),
+                  width: y.pixels.value,
+                  strokeAlign:
+                      borderStrokeAlign ?? BorderSide.strokeAlignInside,
+                )
+              : BorderSide.none,
+        ),
+    };
+  }
 
   bool get isEmpty => switch (type) {
         BoxSideType.all => all.pixels.value == 0,

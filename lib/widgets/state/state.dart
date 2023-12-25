@@ -53,8 +53,6 @@ abstract class TwStatefulWidget extends StatefulWidget {
 
   bool get _isDraggable => dragged != null;
 
-  bool get _isSelectable => selected != null && isSelectable;
-
   const TwStatefulWidget({
     required this.style,
     this.disabled,
@@ -71,7 +69,7 @@ abstract class TwStatefulWidget extends StatefulWidget {
   });
 
   bool get requireGestureDetector =>
-      _isPressable || _isDraggable || _isSelectable;
+      _isPressable || _isDraggable || isSelectable;
 
   bool get requireMouseRegion => _isHoverable || _isDraggable;
 
