@@ -1,3 +1,4 @@
+import 'package:flutter/painting.dart';
 import 'package:meta/meta.dart';
 import 'package:tailwind_elements/config/options/box_types.dart';
 import 'package:tailwind_elements/config/options/units.dart';
@@ -180,6 +181,23 @@ class TwPadding {
         all = const TwPaddingAll(PxUnit(0)),
         type = BoxSideType.trbl;
 
+  EdgeInsetsGeometry toEdgeInsets() => switch (type) {
+        BoxSideType.all => EdgeInsets.all(all.value.logicalPixels),
+        BoxSideType.trbl => EdgeInsets.only(
+            top: top.value.logicalPixels,
+            right: right.value.logicalPixels,
+            bottom: bottom.value.logicalPixels,
+            left: left.value.logicalPixels,
+          ),
+        BoxSideType.x ||
+        BoxSideType.y ||
+        BoxSideType.xy =>
+          EdgeInsets.symmetric(
+            horizontal: x.value.logicalPixels,
+            vertical: y.value.logicalPixels,
+          ),
+      };
+
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
@@ -204,4 +222,14 @@ class TwPadding {
       x.hashCode ^
       y.hashCode ^
       type.hashCode;
+
+  @override
+  String toString() => switch (type) {
+        BoxSideType.all => 'TwPadding{all: ${all.value}}',
+        BoxSideType.x => 'TwPadding{x: ${x.value}}',
+        BoxSideType.y => 'TwPadding{y: ${y.value}}',
+        BoxSideType.xy => 'TwPadding{x: ${x.value}, y: ${y.value}}',
+        BoxSideType.trbl =>
+          'TwPadding{top: ${top.value}, right: ${right.value}, bottom: ${bottom.value}, left: ${left.value}}',
+      };
 }

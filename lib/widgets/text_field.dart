@@ -9,11 +9,11 @@ class TwLabel {
   final String? text;
   final Widget? widget;
 
-  final TwTextStyle? style;
-  final TwTextStyle? disabled;
-  final TwTextStyle? error;
-  final TwTextStyle? focused;
-  final TwTextStyle? hovered;
+  final TwStyle? style;
+  final TwStyle? disabled;
+  final TwStyle? error;
+  final TwStyle? focused;
+  final TwStyle? hovered;
 
   /// Whether the label should float above the content.
   final bool floating;
@@ -48,9 +48,9 @@ class TwLabel {
         );
 
   MaterialStateTextStyle toMaterialTextStyle(
-    final TwTextStyle defaultTextStyle,
+    final TwStyle defaultTextStyle,
   ) =>
-      TwTextStyle.toMaterialTextStyle(
+      TwStyle.toMaterialTextStyle(
         style ?? defaultTextStyle,
         disabled: disabled,
         dragged: null,
@@ -65,11 +65,11 @@ class TwLabel {
 @immutable
 class TwSubtext {
   final String? text;
-  final TwTextStyle? style;
-  final TwTextStyle? disabled;
-  final TwTextStyle? error;
-  final TwTextStyle? focused;
-  final TwTextStyle? hovered;
+  final TwStyle? style;
+  final TwStyle? disabled;
+  final TwStyle? error;
+  final TwStyle? focused;
+  final TwStyle? hovered;
   final int? maxLines;
 
   const TwSubtext({
@@ -83,9 +83,9 @@ class TwSubtext {
   });
 
   MaterialStateTextStyle toMaterialTextStyle(
-    final TwTextStyle defaultTextStyle,
+    final TwStyle defaultTextStyle,
   ) =>
-      TwTextStyle.toMaterialTextStyle(
+      TwStyle.toMaterialTextStyle(
         style ?? defaultTextStyle,
         disabled: disabled,
         dragged: null,
@@ -100,11 +100,11 @@ class TwSubtext {
 @immutable
 class TwHint {
   final String? text;
-  final TwTextStyle? style;
-  final TwTextStyle? disabled;
-  final TwTextStyle? error;
-  final TwTextStyle? focused;
-  final TwTextStyle? hovered;
+  final TwStyle? style;
+  final TwStyle? disabled;
+  final TwStyle? error;
+  final TwStyle? focused;
+  final TwStyle? hovered;
   final int? maxLines;
   final TextDirection? textDirection;
   final Duration? fadeDuration;
@@ -122,9 +122,9 @@ class TwHint {
   });
 
   MaterialStateTextStyle toMaterialTextStyle(
-    final TwTextStyle defaultTextStyle,
+    final TwStyle defaultTextStyle,
   ) =>
-      TwTextStyle.toMaterialTextStyle(
+      TwStyle.toMaterialTextStyle(
         style ?? defaultTextStyle,
         disabled: disabled,
         dragged: null,
@@ -140,11 +140,11 @@ class TwHint {
 class TwError {
   final String? text;
   final Widget? widget;
-  final TwTextStyle? style;
-  final TwTextStyle? disabled;
-  final TwTextStyle? error;
-  final TwTextStyle? focused;
-  final TwTextStyle? hovered;
+  final TwStyle? style;
+  final TwStyle? disabled;
+  final TwStyle? error;
+  final TwStyle? focused;
+  final TwStyle? hovered;
   final int? maxLines;
 
   const TwError({
@@ -162,9 +162,9 @@ class TwError {
         );
 
   MaterialStateTextStyle toMaterialTextStyle(
-    final TwTextStyle defaultTextStyle,
+    final TwStyle defaultTextStyle,
   ) =>
-      TwTextStyle.toMaterialTextStyle(
+      TwStyle.toMaterialTextStyle(
         style ?? defaultTextStyle,
         disabled: disabled,
         dragged: null,
@@ -180,11 +180,11 @@ class TwError {
 class TwCounter {
   final String? text;
   final Widget? widget;
-  final TwTextStyle? style;
-  final TwTextStyle? disabled;
-  final TwTextStyle? error;
-  final TwTextStyle? focused;
-  final TwTextStyle? hovered;
+  final TwStyle? style;
+  final TwStyle? disabled;
+  final TwStyle? error;
+  final TwStyle? focused;
+  final TwStyle? hovered;
   final String? semanticText;
 
   const TwCounter({
@@ -202,9 +202,9 @@ class TwCounter {
         );
 
   MaterialStateTextStyle toMaterialTextStyle(
-    final TwTextStyle defaultTextStyle,
+    final TwStyle defaultTextStyle,
   ) =>
-      TwTextStyle.toMaterialTextStyle(
+      TwStyle.toMaterialTextStyle(
         style ?? defaultTextStyle,
         disabled: disabled,
         dragged: null,
@@ -219,19 +219,19 @@ class TwCounter {
 @immutable
 class TwTextField extends TextField {
   /// Tailwind text style properties
-  final TwTextInputStyle textInputStyle;
+  final TwStyle textInputStyle;
 
   /// Style override for when the text field is disabled
-  final TwTextInputStyle? disabled;
+  final TwStyle? disabled;
 
   /// Style override for when the text field has an error
-  final TwTextInputStyle? error;
+  final TwStyle? error;
 
   /// Style override for when the text field is focused
-  final TwTextInputStyle? focused;
+  final TwStyle? focused;
 
   /// Style override for when the text field is hovered
-  final TwTextInputStyle? hovered;
+  final TwStyle? hovered;
 
   /// See [InputDecoration.isCollapsed]
   final bool? isCollapsed;
@@ -265,7 +265,7 @@ class TwTextField extends TextField {
   }
 
   const TwTextField({
-    final TwTextInputStyle style = const TwTextInputStyle(),
+    final TwStyle style = const TwStyle(),
     this.disabled,
     this.error,
     this.focused,
@@ -340,7 +340,7 @@ class TwTextField extends TextField {
         super();
 
   @override
-  TextStyle? get style => TwTextStyle.toMaterialTextStyle(
+  TextStyle? get style => TwStyle.toMaterialTextStyle(
         textInputStyle,
         disabled: disabled,
         dragged: null,
@@ -351,8 +351,7 @@ class TwTextField extends TextField {
         hovered: hovered,
       );
 
-  InputBorder? _getMaterialInputBorder() =>
-      TwTextInputStyle.toMaterialInputBorder(
+  InputBorder? _getMaterialInputBorder() => TwStyle.toMaterialInputBorder(
         textInputStyle,
         disabled: disabled,
         dragged: null,
@@ -408,7 +407,7 @@ class TwTextField extends TextField {
       semanticCounterText: counter?.semanticText,
 
       // TextField container
-      constraints: textInputStyle.getBoxConstraints(),
+      constraints: textInputStyle.getSimpleConstraints(),
       contentPadding: textInputStyle.padding?.toEdgeInsets(),
       // Don't set errorBorder, focusedBorder, focusedErrorBorder,
       // disabledBorder, nor enabledBorder, since we are using material state

@@ -1,46 +1,10 @@
+import 'package:flutter/painting.dart';
 import 'package:meta/meta.dart';
 import 'package:tailwind_elements/config/options/colors.dart';
-import 'package:tailwind_elements/config/options/units.dart';
-
-@immutable
-class TwBoxShadow {
-  final TwBoxShadowColor color;
-  final TwUnit offsetX;
-  final TwUnit offsetY;
-  final TwUnit blurRadius;
-  final TwUnit spreadRadius;
-
-  const TwBoxShadow({
-    required this.color,
-    required this.offsetX,
-    required this.offsetY,
-    required this.blurRadius,
-    required this.spreadRadius,
-  });
-
-  @override
-  bool operator ==(final Object other) =>
-      identical(this, other) ||
-      other is TwBoxShadow &&
-          runtimeType == other.runtimeType &&
-          color == other.color &&
-          offsetX == other.offsetX &&
-          offsetY == other.offsetY &&
-          blurRadius == other.blurRadius &&
-          spreadRadius == other.spreadRadius;
-
-  @override
-  int get hashCode =>
-      color.hashCode ^
-      offsetX.hashCode ^
-      offsetY.hashCode ^
-      blurRadius.hashCode ^
-      spreadRadius.hashCode;
-}
 
 @immutable
 class TwBoxShadows {
-  final List<TwBoxShadow> boxShadows;
+  final List<BoxShadow> boxShadows;
 
   const TwBoxShadows(this.boxShadows);
 
@@ -53,4 +17,20 @@ class TwBoxShadows {
 
   @override
   int get hashCode => boxShadows.hashCode;
+
+  List<BoxShadow> withColor(final TwBoxShadowColor? color) {
+    if (color == null) {
+      return boxShadows;
+    }
+    return boxShadows
+        .map(
+          (final BoxShadow boxShadow) => BoxShadow(
+            color: color.color,
+            offset: boxShadow.offset,
+            blurRadius: boxShadow.blurRadius,
+            spreadRadius: boxShadow.spreadRadius,
+          ),
+        )
+        .toList();
+  }
 }

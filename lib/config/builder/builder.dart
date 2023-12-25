@@ -19,6 +19,7 @@ import 'package:tailwind_elements/config/builder/builders/options/max_height_bui
 import 'package:tailwind_elements/config/builder/builders/options/max_width_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/options/min_height_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/options/min_width_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/opacity_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/options/padding_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/options/text_decoration_thickness_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/options/transition_delay_builder.dart';
@@ -44,6 +45,7 @@ Builder tailwindConfigBuilder(final BuilderOptions options) {
       BorderRadiusBuilder(options, config),
       // Generate effect constants
       BoxShadowBuilder(options, config),
+      OpacityBuilder(options, config),
       // Generate sizing constants
       GapBuilder(options, config),
       WidthBuilder(options, config),

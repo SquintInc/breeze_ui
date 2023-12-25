@@ -37,10 +37,11 @@ class TwColumn extends StatelessWidget {
     }
 
     final gapBox = TwSizedBox(height: TwHeight(gap.value));
-    return zip(
-      children,
-      List.filled(children.length - 1, gapBox),
-    ).toList();
+    final List<Widget> gappedChildren = List.generate(
+      children.length * 2 - 1,
+      (final index) => (index.isOdd) ? gapBox : children[index ~/ 2],
+    );
+    return gappedChildren;
   }
 
   @override

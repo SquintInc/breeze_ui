@@ -1,16 +1,15 @@
 import 'package:meta/meta.dart';
-import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
-class TwMinWidth {
-  final TwUnit value;
+class TwOpacity {
+  final double value;
 
-  const TwMinWidth(this.value);
+  const TwOpacity(this.value);
 
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
-      other is TwMinWidth &&
+      other is TwOpacity &&
           runtimeType == other.runtimeType &&
           value == other.value;
 
@@ -19,6 +18,6 @@ class TwMinWidth {
 
   @override
   String toString() {
-    return 'TwMinWidth{value: $value}';
+    return 'TwOpacity{value: $value}';
   }
 }

@@ -16,4 +16,9 @@ class TwTransitionDelay {
 
   @override
   int get hashCode => delay.hashCode;
+
+  @override
+  String toString() {
+    return 'TwTransitionDelay{delay: $delay}';
+  }
 }

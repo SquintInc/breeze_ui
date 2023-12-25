@@ -17,6 +17,14 @@ class TwColor {
 
   @override
   int get hashCode => color.hashCode ^ runtimeType.toString().hashCode;
+
+  /// Returns the color as null if the color is transparent for tweening.
+  Color? get tweenColor => color == const Color(0x00000000) ? null : color;
+
+  @override
+  String toString() {
+    return 'TwColor{color: $color}';
+  }
 }
 
 /// A color that is used for the background of an element.
@@ -24,6 +32,11 @@ class TwColor {
 @immutable
 class TwBackgroundColor extends TwColor {
   const TwBackgroundColor(super.color);
+
+  @override
+  String toString() {
+    return 'TwBackgroundColor{$color}';
+  }
 }
 
 /// A color that is used for the box shadow of an element.
@@ -31,6 +44,11 @@ class TwBackgroundColor extends TwColor {
 @immutable
 class TwBoxShadowColor extends TwColor {
   const TwBoxShadowColor(super.color);
+
+  @override
+  String toString() {
+    return 'TwBoxShadowColor{$color}';
+  }
 }
 
 /// A color that is used for the border of an element.
@@ -38,6 +56,11 @@ class TwBoxShadowColor extends TwColor {
 @immutable
 class TwBorderColor extends TwColor {
   const TwBorderColor(super.color);
+
+  @override
+  String toString() {
+    return 'TwBorderColor{$color}';
+  }
 }
 
 /// A color that is used for the text of an element.
@@ -45,6 +68,11 @@ class TwBorderColor extends TwColor {
 @immutable
 class TwTextColor extends TwColor {
   const TwTextColor(super.color);
+
+  @override
+  String toString() {
+    return 'TwTextColor{$color}';
+  }
 }
 
 /// A color that is used for the text decoration of an element.
@@ -52,4 +80,9 @@ class TwTextColor extends TwColor {
 @immutable
 class TwTextDecorationColor extends TwColor {
   const TwTextDecorationColor(super.color);
+
+  @override
+  String toString() {
+    return 'TwTextDecorationColor{$color}';
+  }
 }

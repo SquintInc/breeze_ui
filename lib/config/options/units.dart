@@ -158,7 +158,7 @@ class MillisecondsTimeUnit implements TwTimeUnit {
   TimeUnitType get type => TimeUnitType.ms;
 
   @override
-  String toString() => '$value (${type.name})';
+  String toString() => '$value${type.name}';
 
   @override
   bool operator ==(final Object other) =>
@@ -182,7 +182,7 @@ class SecondsTimeUnit implements TwTimeUnit {
   TimeUnitType get type => TimeUnitType.s;
 
   @override
-  String toString() => '$value (${type.name})';
+  String toString() => '$value${type.name}';
 
   @override
   bool operator ==(final Object other) =>
@@ -207,7 +207,7 @@ class PxUnit implements TwUnit {
   UnitType get type => UnitType.px;
 
   @override
-  String toString() => '$value (${type.name})';
+  String toString() => '$value${type.name}';
 
   @override
   bool operator ==(final Object other) =>
@@ -233,7 +233,7 @@ class EmUnit implements TwUnit {
   UnitType get type => UnitType.em;
 
   @override
-  String toString() => '$value (${type.name})';
+  String toString() => '$value${type.name}';
 
   @override
   bool operator ==(final Object other) =>
@@ -259,7 +259,7 @@ class RemUnit implements TwUnit {
   UnitType get type => UnitType.rem;
 
   @override
-  String toString() => '$value (${type.name})';
+  String toString() => '$value${type.name}';
 
   @override
   bool operator ==(final Object other) =>
@@ -285,7 +285,7 @@ class PercentUnit implements TwUnit {
   UnitType get type => UnitType.percent;
 
   @override
-  String toString() => '$value (${type.name})';
+  String toString() => '$value${type.name}';
 
   @override
   bool operator ==(final Object other) =>
@@ -311,7 +311,7 @@ class ViewportUnit implements TwUnit {
   UnitType get type => UnitType.viewport;
 
   @override
-  String toString() => '$value (${type.name})';
+  String toString() => '$value${type.name}';
 
   @override
   bool operator ==(final Object other) =>
@@ -337,7 +337,7 @@ class SmallViewportUnit implements TwUnit {
   UnitType get type => UnitType.smallViewport;
 
   @override
-  String toString() => '$value (${type.name})';
+  String toString() => '$value${type.name}';
 
   @override
   bool operator ==(final Object other) =>
@@ -363,7 +363,7 @@ class LargeViewportUnit implements TwUnit {
   UnitType get type => UnitType.largeViewport;
 
   @override
-  String toString() => '$value (${type.name})';
+  String toString() => '$value${type.name}';
 
   @override
   bool operator ==(final Object other) =>
@@ -389,7 +389,7 @@ class DynamicViewportUnit implements TwUnit {
   UnitType get type => UnitType.dynamicViewport;
 
   @override
-  String toString() => '$value (${type.name})';
+  String toString() => '$value${type.name}';
 
   @override
   bool operator ==(final Object other) =>

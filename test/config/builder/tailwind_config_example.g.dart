@@ -141,79 +141,95 @@ const rounded_bl_full = TwBorderRadiusBottomLeft(PxUnit(9999.0));
 // **************************************************************************
 
 const shadow_sm = TwBoxShadows([
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0xD000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(1.0),
-      blurRadius: PxUnit(2.0),
-      spreadRadius: PxUnit(0.0)),
+  BoxShadow(
+      color: Color(0x0D000000),
+      offset: Offset(0.0, 1.0),
+      blurRadius: 2.0,
+      spreadRadius: 0.0),
 ]);
 const shadow = TwBoxShadows([
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x1A000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(1.0),
-      blurRadius: PxUnit(3.0),
-      spreadRadius: PxUnit(0.0)),
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x1A000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(1.0),
-      blurRadius: PxUnit(2.0),
-      spreadRadius: PxUnit(-1.0)),
+  BoxShadow(
+      color: Color(0x1A000000),
+      offset: Offset(0.0, 1.0),
+      blurRadius: 3.0,
+      spreadRadius: 0.0),
+  BoxShadow(
+      color: Color(0x1A000000),
+      offset: Offset(0.0, 1.0),
+      blurRadius: 2.0,
+      spreadRadius: -1.0),
 ]);
 const shadow_md = TwBoxShadows([
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x1A000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(4.0),
-      blurRadius: PxUnit(6.0),
-      spreadRadius: PxUnit(-1.0)),
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x1A000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(2.0),
-      blurRadius: PxUnit(4.0),
-      spreadRadius: PxUnit(-2.0)),
+  BoxShadow(
+      color: Color(0x1A000000),
+      offset: Offset(0.0, 4.0),
+      blurRadius: 6.0,
+      spreadRadius: -1.0),
+  BoxShadow(
+      color: Color(0x1A000000),
+      offset: Offset(0.0, 2.0),
+      blurRadius: 4.0,
+      spreadRadius: -2.0),
 ]);
 const shadow_lg = TwBoxShadows([
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x1A000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(10.0),
-      blurRadius: PxUnit(15.0),
-      spreadRadius: PxUnit(-3.0)),
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x1A000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(4.0),
-      blurRadius: PxUnit(6.0),
-      spreadRadius: PxUnit(-4.0)),
+  BoxShadow(
+      color: Color(0x1A000000),
+      offset: Offset(0.0, 10.0),
+      blurRadius: 15.0,
+      spreadRadius: -3.0),
+  BoxShadow(
+      color: Color(0x1A000000),
+      offset: Offset(0.0, 4.0),
+      blurRadius: 6.0,
+      spreadRadius: -4.0),
 ]);
 const shadow_xl = TwBoxShadows([
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x1A000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(20.0),
-      blurRadius: PxUnit(25.0),
-      spreadRadius: PxUnit(-5.0)),
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x1A000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(8.0),
-      blurRadius: PxUnit(10.0),
-      spreadRadius: PxUnit(-6.0)),
+  BoxShadow(
+      color: Color(0x1A000000),
+      offset: Offset(0.0, 20.0),
+      blurRadius: 25.0,
+      spreadRadius: -5.0),
+  BoxShadow(
+      color: Color(0x1A000000),
+      offset: Offset(0.0, 8.0),
+      blurRadius: 10.0,
+      spreadRadius: -6.0),
 ]);
 const shadow_2xl = TwBoxShadows([
-  TwBoxShadow(
-      color: TwBoxShadowColor(Color(0x40000000)),
-      offsetX: PxUnit(0.0),
-      offsetY: PxUnit(25.0),
-      blurRadius: PxUnit(50.0),
-      spreadRadius: PxUnit(-12.0)),
+  BoxShadow(
+      color: Color(0x40000000),
+      offset: Offset(0.0, 25.0),
+      blurRadius: 50.0,
+      spreadRadius: -12.0),
 ]);
-const shadow_inner = TwBoxShadows(<TwBoxShadow>[]);
-const shadow_none = TwBoxShadows(<TwBoxShadow>[]);
+const shadow_inner = TwBoxShadows(<BoxShadow>[]);
+const shadow_none = TwBoxShadows(<BoxShadow>[]);
+
+// **************************************************************************
+// Generator: OpacityBuilder
+// **************************************************************************
+
+const opacity_0 = TwOpacity(0);
+const opacity_5 = TwOpacity(0.05);
+const opacity_10 = TwOpacity(0.1);
+const opacity_15 = TwOpacity(0.15);
+const opacity_20 = TwOpacity(0.2);
+const opacity_25 = TwOpacity(0.25);
+const opacity_30 = TwOpacity(0.3);
+const opacity_35 = TwOpacity(0.35);
+const opacity_40 = TwOpacity(0.4);
+const opacity_45 = TwOpacity(0.45);
+const opacity_50 = TwOpacity(0.5);
+const opacity_55 = TwOpacity(0.55);
+const opacity_60 = TwOpacity(0.6);
+const opacity_65 = TwOpacity(0.65);
+const opacity_70 = TwOpacity(0.7);
+const opacity_75 = TwOpacity(0.75);
+const opacity_80 = TwOpacity(0.8);
+const opacity_85 = TwOpacity(0.85);
+const opacity_90 = TwOpacity(0.9);
+const opacity_95 = TwOpacity(0.95);
+const opacity_100 = TwOpacity(1);
 
 // **************************************************************************
 // Generator: GapBuilder
@@ -1116,7 +1132,7 @@ const pl_96 = TwPaddingLeft(RemUnit(24.0));
 const transition_none = TwTransitionProperty({TransitionProperty.none});
 const transition_all = TwTransitionProperty({TransitionProperty.all});
 const transition = TwTransitionProperty({
-  TransitionProperty.color,
+  TransitionProperty.textColor,
   TransitionProperty.backgroundColor,
   TransitionProperty.borderColor,
   TransitionProperty.textDecorationColor,
@@ -1129,7 +1145,7 @@ const transition = TwTransitionProperty({
   TransitionProperty.backdropFilter
 });
 const transition_colors = TwTransitionProperty({
-  TransitionProperty.color,
+  TransitionProperty.textColor,
   TransitionProperty.backgroundColor,
   TransitionProperty.borderColor,
   TransitionProperty.textDecorationColor,
@@ -1274,7 +1290,7 @@ const tracking_widest = TwLetterSpacing(EmUnit(0.1));
 // Generator: BackgroundColorBuilder
 // **************************************************************************
 
-const bg_transparent = TwBackgroundColor(Color(0x0));
+const bg_transparent = TwBackgroundColor(Color(0x00000000));
 const bg_black = TwBackgroundColor(Color(0xFF000000));
 const bg_white = TwBackgroundColor(Color(0xFFFFFFFF));
 const bg_slate_50 = TwBackgroundColor(Color(0xFFF8FAFC));
@@ -1524,7 +1540,7 @@ const bg_rose_950 = TwBackgroundColor(Color(0xFF4C0519));
 // Generator: BoxShadowColorBuilder
 // **************************************************************************
 
-const shadow_transparent = TwBoxShadowColor(Color(0x0));
+const shadow_transparent = TwBoxShadowColor(Color(0x00000000));
 const shadow_black = TwBoxShadowColor(Color(0xFF000000));
 const shadow_white = TwBoxShadowColor(Color(0xFFFFFFFF));
 const shadow_slate_50 = TwBoxShadowColor(Color(0xFFF8FAFC));
@@ -1774,7 +1790,7 @@ const shadow_rose_950 = TwBoxShadowColor(Color(0xFF4C0519));
 // Generator: TextColorBuilder
 // **************************************************************************
 
-const text_transparent = TwTextColor(Color(0x0));
+const text_transparent = TwTextColor(Color(0x00000000));
 const text_black = TwTextColor(Color(0xFF000000));
 const text_white = TwTextColor(Color(0xFFFFFFFF));
 const text_slate_50 = TwTextColor(Color(0xFFF8FAFC));
@@ -2024,7 +2040,7 @@ const text_rose_950 = TwTextColor(Color(0xFF4C0519));
 // Generator: BorderColorBuilder
 // **************************************************************************
 
-const border_transparent = TwBorderColor(Color(0x0));
+const border_transparent = TwBorderColor(Color(0x00000000));
 const border_black = TwBorderColor(Color(0xFF000000));
 const border_white = TwBorderColor(Color(0xFFFFFFFF));
 const border_slate_50 = TwBorderColor(Color(0xFFF8FAFC));
@@ -2274,7 +2290,7 @@ const border_rose_950 = TwBorderColor(Color(0xFF4C0519));
 // Generator: TextDecorationColorBuilder
 // **************************************************************************
 
-const decoration_transparent = TwTextDecorationColor(Color(0x0));
+const decoration_transparent = TwTextDecorationColor(Color(0x00000000));
 const decoration_black = TwTextDecorationColor(Color(0xFF000000));
 const decoration_white = TwTextDecorationColor(Color(0xFFFFFFFF));
 const decoration_slate_50 = TwTextDecorationColor(Color(0xFFF8FAFC));
