@@ -132,8 +132,8 @@ class TwTransitionController {
       end: defaultStyle.border?.leftPx ?? 0,
     );
     _boxShadow = BoxShadowsTween(
-      begin: defaultStyle.boxShadow?.toBoxShadows(defaultStyle.boxShadowColor),
-      end: defaultStyle.boxShadow?.toBoxShadows(defaultStyle.boxShadowColor),
+      begin: defaultStyle.boxShadow?.withColor(defaultStyle.boxShadowColor),
+      end: defaultStyle.boxShadow?.withColor(defaultStyle.boxShadowColor),
     );
     _boxConstraints = BoxConstraintsTween(
       begin: _trackedConstraints ?? BoxConstraints.tight(Size.zero),
@@ -277,10 +277,10 @@ class TwTransitionController {
     // );
     _updateTween<List<BoxShadow>?>(
       tween: _boxShadow,
-      targetValue: nextStyle.boxShadow?.toBoxShadows(
+      targetValue: nextStyle.boxShadow?.withColor(
             nextStyle.boxShadowColor ?? defaultStyle.boxShadowColor,
           ) ??
-          defaultStyle.boxShadow?.toBoxShadows(
+          defaultStyle.boxShadow?.withColor(
             nextStyle.boxShadowColor ?? defaultStyle.boxShadowColor,
           ),
       shouldAnimate: canAnimateProperty(
@@ -380,10 +380,10 @@ class TwTransitionController {
     );
 
     // Static box shadows
-    final staticBoxShadows = currentStyle.boxShadow?.toBoxShadows(
+    final staticBoxShadows = currentStyle.boxShadow?.withColor(
           currentStyle.boxShadowColor,
         ) ??
-        defaultStyle.boxShadow?.toBoxShadows(defaultStyle.boxShadowColor);
+        defaultStyle.boxShadow?.withColor(defaultStyle.boxShadowColor);
 
     // Static border
     final double strokeAlign = currentStyle.borderStrokeAlign ??

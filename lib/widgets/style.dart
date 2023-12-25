@@ -429,8 +429,8 @@ class TwStyle {
           ? BorderRadius.circular(constraints?.circleRadius ?? 9999)
           : borderRadius?.toBorderRadius() ??
               defaultStyle.borderRadius?.toBorderRadius(),
-      boxShadow: boxShadow?.toBoxShadows(boxShadowColor) ??
-          defaultStyle.boxShadow?.toBoxShadows(boxShadowColor),
+      boxShadow: boxShadow?.withColor(boxShadowColor) ??
+          defaultStyle.boxShadow?.withColor(boxShadowColor),
     );
   }
 

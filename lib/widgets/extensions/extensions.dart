@@ -4,8 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:tailwind_elements/config/options/borders/border_radius.dart';
 import 'package:tailwind_elements/config/options/borders/border_width.dart';
 import 'package:tailwind_elements/config/options/box_types.dart';
-import 'package:tailwind_elements/config/options/colors.dart';
-import 'package:tailwind_elements/config/options/effects/box_shadow.dart';
 import 'package:tailwind_elements/config/options/spacing/margin.dart';
 import 'package:tailwind_elements/config/options/spacing/padding.dart';
 import 'package:tailwind_elements/config/options/typography/font_size.dart';
@@ -192,23 +190,6 @@ extension BorderWidthExtension on TwBorder {
         ),
     };
   }
-}
-
-extension BoxShadowExtension on TwBoxShadows {
-  List<BoxShadow> toBoxShadows(final TwBoxShadowColor? boxShadowColor) =>
-      boxShadows
-          .map(
-            (final boxShadow) => BoxShadow(
-              color: boxShadowColor?.color ?? boxShadow.color.color,
-              offset: Offset(
-                boxShadow.offsetX.logicalPixels,
-                boxShadow.offsetY.logicalPixels,
-              ),
-              blurRadius: boxShadow.blurRadius.logicalPixels,
-              spreadRadius: boxShadow.spreadRadius.logicalPixels,
-            ),
-          )
-          .toList();
 }
 
 extension BoxConstraintsExtension on BoxConstraints {

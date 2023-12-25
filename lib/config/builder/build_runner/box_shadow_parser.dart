@@ -26,12 +26,11 @@ class BoxShadowValue {
   });
 
   String toDartConstructor() {
-    return 'TwBoxShadow('
-        'color: TwBoxShadowColor(Color(${color.toDartHexString()})), '
-        'offsetX: ${offsetX.runtimeType}(${offsetX.value}), '
-        'offsetY: ${offsetY.runtimeType}(${offsetY.value}), '
-        'blurRadius: ${blurRadius.runtimeType}(${blurRadius.value}), '
-        'spreadRadius: ${spreadRadius.runtimeType}(${spreadRadius.value})'
+    return 'BoxShadow('
+        'color: Color(${color.toDartHexString()}), '
+        'offset: Offset(${offsetX.logicalPixels}, ${offsetY.logicalPixels}), '
+        'blurRadius: ${blurRadius.logicalPixels}, '
+        'spreadRadius: ${spreadRadius.logicalPixels}'
         '),';
   }
 
@@ -93,7 +92,7 @@ class BoxShadowParser {
 
   String toDartConstructor({final String? wrapperClassName}) {
     if (boxShadows.isEmpty) {
-      return '${wrapperClassName != null ? "$wrapperClassName(" : ""}<TwBoxShadow>[]${wrapperClassName != null ? ")" : ""}';
+      return '${wrapperClassName != null ? "$wrapperClassName(" : ""}<BoxShadow>[]${wrapperClassName != null ? ")" : ""}';
     }
     final StringBuffer buffer = StringBuffer()
       ..writeln('${wrapperClassName != null ? "$wrapperClassName(" : ""}[')

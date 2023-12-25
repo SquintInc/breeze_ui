@@ -163,7 +163,7 @@ class RgbaColor {
   /// the form of '0xAARRGGBB'. Note that in Dart, the alpha value is the first
   /// two characters, and 0 is transparent whereas 255 is fully opaque.
   String toDartHexString() {
-    return '0x${hexValue.toRadixString(16).toUpperCase()}';
+    return '0x${hexValue.toRadixString(16).toUpperCase().padLeft(8, '0')}';
   }
 
   @override

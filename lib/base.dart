@@ -1,4 +1,4 @@
-export 'package:flutter/animation.dart';
+export 'package:flutter/widgets.dart';
 export 'package:tailwind_elements/config/options/borders/border_radius.dart';
 export 'package:tailwind_elements/config/options/borders/border_width.dart';
 export 'package:tailwind_elements/config/options/colors.dart';
