@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:flutter/painting.dart';
 import 'package:meta/meta.dart';
 import 'package:tailwind_elements/config/options/box_types.dart';
 import 'package:tailwind_elements/config/options/units.dart';
@@ -157,6 +160,8 @@ class TwBorderRadiusAll {
 
 @immutable
 class TwBorderRadius {
+  static const PxUnit fullRadius = PxUnit(9999.0);
+
   // When [type] is [BoxCornerType.tltrbrbl]
   final TwBorderRadiusTopLeft topLeft;
   final TwBorderRadiusTopRight topRight;
@@ -239,7 +244,37 @@ class TwBorderRadius {
       all.hashCode ^
       type.hashCode;
 
-  static const PxUnit fullRadius = PxUnit(9999.0);
+  BorderRadius toBorderRadius() => switch (type) {
+        BoxCornerType.all => BorderRadius.circular(all.value.logicalPixels),
+        BoxCornerType.tltrbrbl => BorderRadius.only(
+            topLeft: topLeft.value.logicalPixels > 0
+                ? Radius.circular(topLeft.value.logicalPixels)
+                : Radius.zero,
+            topRight: topRight.value.logicalPixels > 0
+                ? Radius.circular(topRight.value.logicalPixels)
+                : Radius.zero,
+            bottomRight: bottomRight.value.logicalPixels > 0
+                ? Radius.circular(bottomRight.value.logicalPixels)
+                : Radius.zero,
+            bottomLeft: bottomLeft.value.logicalPixels > 0
+                ? Radius.circular(bottomLeft.value.logicalPixels)
+                : Radius.zero,
+          ),
+        BoxCornerType.trbl => BorderRadius.only(
+            topLeft: Radius.circular(
+              max(top.value.logicalPixels, left.value.logicalPixels),
+            ),
+            topRight: Radius.circular(
+              max(top.value.logicalPixels, right.value.logicalPixels),
+            ),
+            bottomRight: Radius.circular(
+              max(bottom.value.logicalPixels, right.value.logicalPixels),
+            ),
+            bottomLeft: Radius.circular(
+              max(bottom.value.logicalPixels, left.value.logicalPixels),
+            ),
+          )
+      };
 
   bool get isCircle => switch (type) {
         BoxCornerType.all => all.value == fullRadius,

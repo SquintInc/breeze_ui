@@ -1,7 +1,6 @@
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:tailwind_elements/config/builder/builders/generators.dart';
-import 'package:tailwind_elements/config/options/typography/font_weight.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'font-*' font weight
 /// constants to the .g.dart part file.
@@ -17,7 +16,7 @@ class FontWeightBuilder extends ConstantsGenerator {
 
   @override
   Map<String, String> get variablePrefixToValueClassName => {
-        'font': (TwFontWeight).toString(),
+        'font': 'TwFontWeight',
       };
 
   @override

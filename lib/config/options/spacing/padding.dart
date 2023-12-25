@@ -1,3 +1,4 @@
+import 'package:flutter/painting.dart';
 import 'package:meta/meta.dart';
 import 'package:tailwind_elements/config/options/box_types.dart';
 import 'package:tailwind_elements/config/options/units.dart';
@@ -179,6 +180,23 @@ class TwPadding {
         y = const TwPaddingY(PxUnit(0)),
         all = const TwPaddingAll(PxUnit(0)),
         type = BoxSideType.trbl;
+
+  EdgeInsetsGeometry toEdgeInsets() => switch (type) {
+        BoxSideType.all => EdgeInsets.all(all.value.logicalPixels),
+        BoxSideType.trbl => EdgeInsets.only(
+            top: top.value.logicalPixels,
+            right: right.value.logicalPixels,
+            bottom: bottom.value.logicalPixels,
+            left: left.value.logicalPixels,
+          ),
+        BoxSideType.x ||
+        BoxSideType.y ||
+        BoxSideType.xy =>
+          EdgeInsets.symmetric(
+            horizontal: x.value.logicalPixels,
+            vertical: y.value.logicalPixels,
+          ),
+      };
 
   @override
   bool operator ==(final Object other) =>

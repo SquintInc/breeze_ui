@@ -19,4 +19,15 @@ class TwFontSize {
 
   @override
   int get hashCode => value.hashCode ^ lineHeight.hashCode;
+
+  double getLineHeight(final TwLineHeight? height) {
+    if (height != null) {
+      return height.value.isPercentageBased
+          ? height.value.percentage
+          : (height.value.logicalPixels / value.logicalPixels);
+    }
+    return lineHeight.value.isPercentageBased
+        ? lineHeight.value.percentage
+        : (lineHeight.value.logicalPixels / value.logicalPixels);
+  }
 }

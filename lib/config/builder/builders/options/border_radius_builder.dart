@@ -1,5 +1,4 @@
 import 'package:tailwind_elements/config/builder/builders/generators.dart';
-import 'package:tailwind_elements/config/options/borders/border_radius.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'rounded-*' border radius
 /// constants to the .g.dart part file.
@@ -12,15 +11,15 @@ class BorderRadiusBuilder extends ConstantsGenerator {
   @override
   Map<String, String> get variablePrefixToValueClassName {
     return {
-      'rounded': (TwBorderRadiusAll).toString(),
-      'rounded-t': (TwBorderRadiusTop).toString(),
-      'rounded-r': (TwBorderRadiusRight).toString(),
-      'rounded-b': (TwBorderRadiusBottom).toString(),
-      'rounded-l': (TwBorderRadiusLeft).toString(),
-      'rounded-tl': (TwBorderRadiusTopLeft).toString(),
-      'rounded-tr': (TwBorderRadiusTopRight).toString(),
-      'rounded-br': (TwBorderRadiusBottomRight).toString(),
-      'rounded-bl': (TwBorderRadiusBottomLeft).toString(),
+      'rounded': 'TwBorderRadiusAll',
+      'rounded-t': 'TwBorderRadiusTop',
+      'rounded-r': 'TwBorderRadiusRight',
+      'rounded-b': 'TwBorderRadiusBottom',
+      'rounded-l': 'TwBorderRadiusLeft',
+      'rounded-tl': 'TwBorderRadiusTopLeft',
+      'rounded-tr': 'TwBorderRadiusTopRight',
+      'rounded-br': 'TwBorderRadiusBottomRight',
+      'rounded-bl': 'TwBorderRadiusBottomLeft',
     };
   }
 }
