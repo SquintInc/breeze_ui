@@ -204,4 +204,14 @@ class TwMargin {
       x.hashCode ^
       y.hashCode ^
       type.hashCode;
+
+  @override
+  String toString() => switch (type) {
+        BoxSideType.all => 'TwMargin{all: ${all.value}}',
+        BoxSideType.x => 'TwMargin{x: ${x.value}}',
+        BoxSideType.y => 'TwMargin{y: ${y.value}}',
+        BoxSideType.xy => 'TwMargin{x: ${x.value}, y: ${y.value}}',
+        BoxSideType.trbl =>
+          'TwMargin{top: ${top.value}, right: ${right.value}, bottom: ${bottom.value}, left: ${left.value}}',
+      };
 }

@@ -252,4 +252,13 @@ class TwBorderRadius {
             topLeft.value == bottomLeft.value &&
             topLeft.value == fullRadius,
       };
+
+  @override
+  String toString() => switch (type) {
+        BoxCornerType.all => 'TwBorderRadius{all: ${all.value}}',
+        BoxCornerType.trbl =>
+          'TwBorderRadius{top: ${top.value}, right: ${right.value}, bottom: ${bottom.value}, left: ${left.value}}',
+        BoxCornerType.tltrbrbl =>
+          'TwBorderRadius{topLeft: ${topLeft.value}, topRight: ${topRight.value}, bottomRight: ${bottomRight.value}, bottomLeft: ${bottomLeft.value}}',
+      };
 }

@@ -58,6 +58,10 @@ class TailwindElementsPlayground extends StatelessWidget {
                 ),
               ),
               TwDiv(
+                isSelectable: true,
+                selected: TwStyle(
+                  backgroundColor: bg_cyan_700,
+                ),
                 style: TwStyle(
                   width: w_96,
                   height: h_96,
@@ -84,8 +88,8 @@ class TailwindElementsPlayground extends StatelessWidget {
                 pressed: TwStyle(
                   backgroundColor: bg_red_500,
                   border: TwBorder.all(border_2),
-                  borderRadius: TwBorderRadius.all(rounded_full),
-                  width: w_frac_3_4,
+                  // borderRadius: TwBorderRadius.all(rounded_full),
+                  // width: w_frac_3_4,
                 ),
                 disabled: TwStyle(
                   backgroundColor: bg_gray_500,

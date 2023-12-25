@@ -15,4 +15,9 @@ class TwOpacity {
 
   @override
   int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return 'TwOpacity{value: $value}';
+  }
 }

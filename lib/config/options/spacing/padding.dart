@@ -204,4 +204,14 @@ class TwPadding {
       x.hashCode ^
       y.hashCode ^
       type.hashCode;
+
+  @override
+  String toString() => switch (type) {
+        BoxSideType.all => 'TwPadding{all: ${all.value}}',
+        BoxSideType.x => 'TwPadding{x: ${x.value}}',
+        BoxSideType.y => 'TwPadding{y: ${y.value}}',
+        BoxSideType.xy => 'TwPadding{x: ${x.value}, y: ${y.value}}',
+        BoxSideType.trbl =>
+          'TwPadding{top: ${top.value}, right: ${right.value}, bottom: ${bottom.value}, left: ${left.value}}',
+      };
 }

@@ -492,4 +492,47 @@ class TwStyle {
         width: border?.all.pixels.logicalPixels ?? 0.0,
         strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
       );
+
+  @override
+  String toString() {
+    final buf = <String>[];
+    if (backgroundColor != null) {
+      buf.add('backgroundColor: $backgroundColor');
+    }
+    if (backgroundImage != null) {
+      buf.add('backgroundImage: $backgroundImage');
+    }
+    if (backgroundGradient != null) {
+      buf.add('backgroundGradient: $backgroundGradient');
+    }
+    if (textColor != null) buf.add('textColor: $textColor');
+    if (boxShadow != null) buf.add('boxShadow: $boxShadow');
+    if (boxShadowColor != null) buf.add('boxShadowColor: $boxShadowColor');
+    if (opacity != null) buf.add('opacity: $opacity');
+    if (border != null) buf.add('border: $border');
+    if (borderColor != null) buf.add('borderColor: $borderColor');
+    if (borderRadius != null) buf.add('borderRadius: $borderRadius');
+    if (borderStrokeAlign != null) {
+      buf.add('borderStrokeAlign: $borderStrokeAlign');
+    }
+    if (minWidth != null) buf.add('minWidth: $minWidth');
+    if (width != null) buf.add('width: $width');
+    if (maxWidth != null) buf.add('maxWidth: $maxWidth');
+    if (minHeight != null) buf.add('minHeight: $minHeight');
+    if (height != null) buf.add('height: $height');
+    if (maxHeight != null) buf.add('maxHeight: $maxHeight');
+    if (padding != null) buf.add('padding: $padding');
+    if (margin != null) buf.add('margin: $margin');
+    if (transition != null) buf.add('transition: $transition');
+    if (transitionDuration != null) {
+      buf.add('transitionDuration: $transitionDuration');
+    }
+    if (transitionTimingFn != null) {
+      buf.add('transitionTimingFn: $transitionTimingFn');
+    }
+    if (transitionDelay != null) {
+      buf.add('transitionDelay: $transitionDelay');
+    }
+    return 'TwStyle{${buf.join(', ')}}';
+  }
 }

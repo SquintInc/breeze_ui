@@ -243,4 +243,14 @@ class TwBorder {
         BoxSideType.x || BoxSideType.xy => x.pixels.value,
         _ => 0,
       };
+
+  @override
+  String toString() => switch (type) {
+        BoxSideType.all => 'TwBorder{all: ${all.pixels}}',
+        BoxSideType.trbl =>
+          'TwBorder{top: ${top.pixels}, right: ${right.pixels}, bottom: ${bottom.pixels}, left: ${left.pixels}}',
+        BoxSideType.x => 'TwBorder{x: ${x.pixels}}',
+        BoxSideType.y => 'TwBorder{y: ${y.pixels}}',
+        BoxSideType.xy => 'TwBorder{x: ${x.pixels}, y: ${y.pixels}}',
+      };
 }

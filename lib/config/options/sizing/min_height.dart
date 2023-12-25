@@ -16,4 +16,9 @@ class TwMinHeight {
 
   @override
   int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return 'TwMinHeight{value: $value}';
+  }
 }

@@ -16,4 +16,9 @@ class TwMinWidth {
 
   @override
   int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return 'TwMinWidth{value: $value}';
+  }
 }

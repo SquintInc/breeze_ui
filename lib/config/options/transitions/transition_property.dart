@@ -77,4 +77,15 @@ class TwTransitionProperty {
           properties.contains(TransitionProperty.border)) ||
       // check for all properties 'group'
       properties.contains(TransitionProperty.all);
+
+  @override
+  String toString() {
+    if (isNone) {
+      return 'TwTransitionProperty{none}';
+    }
+    if (properties.contains(TransitionProperty.all)) {
+      return 'TwTransitionProperty{all}';
+    }
+    return 'TwTransitionProperty{properties: $properties}';
+  }
 }

@@ -18,10 +18,12 @@ class TwDiv extends TwStatefulWidget {
   const TwDiv({
     super.style = const TwStyle(),
     super.disabled,
-    super.focused,
     super.pressed,
     super.hovered,
     super.dragged,
+    super.focused,
+    super.selected,
+    super.errored,
     this.child,
     this.alignment,
     this.clipBehavior = Clip.none,
@@ -29,6 +31,8 @@ class TwDiv extends TwStatefulWidget {
     this.transformAlignment,
     this.scrollable = false,
     this.scrollDirection = Axis.vertical,
+    super.isDisabled = false,
+    super.isSelectable = false,
     super.statesController,
     super.key,
   });

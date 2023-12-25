@@ -16,4 +16,9 @@ class TwWidth {
 
   @override
   int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return 'TwWidth{value: $value}';
+  }
 }

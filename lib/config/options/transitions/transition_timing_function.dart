@@ -16,4 +16,9 @@ class TwTransitionTimingFunction {
 
   @override
   int get hashCode => curve.hashCode;
+
+  @override
+  String toString() {
+    return 'TwTransitionTimingFunction{curve: $curve}';
+  }
 }

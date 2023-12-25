@@ -16,4 +16,9 @@ class TwTransitionDuration {
 
   @override
   int get hashCode => duration.hashCode;
+
+  @override
+  String toString() {
+    return 'TwTransitionDuration{duration: $duration}';
+  }
 }
