@@ -298,7 +298,8 @@ abstract class TwState<T extends TwStatefulWidget> extends State<T> {
       _widgetState,
     );
 
-    if (animationGroup?.child == widget || internalStatesController != null) {
+    if ((animationGroup != null && identical(animationGroup.child, widget)) ||
+        internalStatesController != null) {
       // Wrap widget in gesture detector only if the widget is pressable,
       // draggable, or selectable.
       if (widget.requireGestureDetector) {
