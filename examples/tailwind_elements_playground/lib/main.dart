@@ -90,6 +90,7 @@ class TailwindElementsPlayground extends StatelessWidget {
                   // opacity: opacity_50,
                   boxShadow: shadow_2xl,
                   boxShadowColor: shadow_black,
+                  transitionDelay: delay_1000,
                 ),
                 pressed: TwStyle(
                   backgroundColor: bg_red_500,

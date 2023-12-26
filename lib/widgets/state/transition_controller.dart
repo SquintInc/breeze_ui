@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:tailwind_elements/config/options/transitions/transition_delay.dart';
 import 'package:tailwind_elements/config/options/transitions/transition_property.dart';
 import 'package:tailwind_elements/widgets/state/animations/box_shadows_tween.dart';
 import 'package:tailwind_elements/widgets/style.dart';
@@ -315,13 +316,18 @@ class TwTransitionController {
   }
 
   /// Animates the transition.
-  void animate() {
+  void animate(final TwTransitionDelay? transitionDelay) {
     if (!canAnimate) return;
     final animationController = _animationController;
     if (animationController != null) {
-      animationController
-        ..value = 0.0
-        ..forward();
+      animationController.value = 0.0;
+      if (transitionDelay != null) {
+        Future.delayed(transitionDelay.delay.value, () {
+          animationController.forward();
+        });
+      } else {
+        animationController.forward();
+      }
     }
   }
 
