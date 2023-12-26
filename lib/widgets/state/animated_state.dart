@@ -38,10 +38,10 @@ abstract class TwAnimatedState<T extends TwStatefulWidget> extends TwState<T>
         animationStatusListener: animationListener,
       );
 
-      _animationController?.initStyleTween(widget.style);
       // Run [initBoxConstraintsTween] only once, after the first frame has been
       // rendered to ensure that the initial constraints have been already set.
       WidgetsBinding.instance.addPostFrameCallback((final timestamp) {
+        _animationController?.initStyleTween(widget.style);
         _animationController?.initBoxConstraintsTween(widget.style);
       });
     }

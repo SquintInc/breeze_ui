@@ -181,11 +181,11 @@ class _DivState extends TwAnimatedState<TwDiv> {
 
   /// Gets a [BoxConstraints] object that assumes usage of simple [PxUnit]
   /// values.
-  BoxConstraints? _tightenConstraints(
-    final double? width,
-    final double? height,
-    final BoxConstraints? constraints,
-  ) {
+  BoxConstraints? _tightenConstraints({
+    required final double? width,
+    required final double? height,
+    required final BoxConstraints? constraints,
+  }) {
     final fullConstraints = (width != null || height != null)
         ? constraints?.tighten(
               width: width,
@@ -206,10 +206,8 @@ class _DivState extends TwAnimatedState<TwDiv> {
     final TwWidgetState state,
   ) {
     final mergedStyle = currentStyle;
-    final bool usesLayoutBuilder =
-        mergedStyle.hasPercentageSize || mergedStyle.hasPercentageConstraints;
 
-    if (usesLayoutBuilder) {
+    if (widget.requiresLayoutBuilder) {
       return LayoutBuilder(
         builder: (
           final BuildContext context,
@@ -221,9 +219,9 @@ class _DivState extends TwAnimatedState<TwDiv> {
           final heightPx = mergedStyle.heightPx(parentHeight);
           final constraints = mergedStyle.hasSizing
               ? _tightenConstraints(
-                  widthPx,
-                  heightPx,
-                  mergedStyle.getPercentageBoxConstraints(
+                  width: widthPx,
+                  height: heightPx,
+                  constraints: mergedStyle.getPercentageBoxConstraints(
                     parentWidth,
                     parentHeight,
                   ),
@@ -237,12 +235,10 @@ class _DivState extends TwAnimatedState<TwDiv> {
       );
     }
 
-    final double? widthPx = mergedStyle.width?.value.logicalPixels;
-    final double? heightPx = mergedStyle.height?.value.logicalPixels;
     final simpleConstraints = _tightenConstraints(
-      widthPx,
-      heightPx,
-      mergedStyle.getSimpleConstraints(),
+      width: mergedStyle.width?.value.logicalPixels,
+      height: mergedStyle.height?.value.logicalPixels,
+      constraints: mergedStyle.getSimpleConstraints(),
     );
     return _buildDiv(
       mergedStyle,

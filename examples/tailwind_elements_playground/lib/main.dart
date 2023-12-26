@@ -82,57 +82,64 @@ class _TailwindElementsPlaygroundState
                   padding: TwPadding.all(p_0),
                 ),
               ),
-              TwDiv(
+              TwAnimationGroup(
                 statesController: statesController,
-                selected: const TwStyle(
-                  backgroundColor: bg_cyan_700,
-                ),
-                style: TwStyle(
-                  width: w_96,
-                  height: h_96,
-                  border: const TwBorder.all(border_8),
-                  borderRadius: const TwBorderRadius.all(rounded_3xl),
-                  borderColor: border_green_600,
-                  backgroundColor: bg_green_500,
-                  boxShadow: shadow_lg,
-                  transition: properties,
-                  transitionDuration: duration_150,
-                  transitionTimingFn: ease_in_out,
-                ),
-                hovered: const TwStyle(
-                  width: w_96,
-                  maxWidth: max_w_screen_2xl,
-                  backgroundColor: bg_blue_500,
-                  borderRadius: TwBorderRadius.all(rounded_full),
-                  borderColor: border_blue_600,
-                  // opacity: opacity_50,
-                  boxShadow: shadow_2xl,
-                  boxShadowColor: shadow_black,
-                ),
-                pressed: const TwStyle(
-                  backgroundColor: bg_red_500,
-                  border: TwBorder.all(border_2),
-                  // borderRadius: TwBorderRadius.all(rounded_full),
-                  // width: w_frac_3_4,
-                ),
-                disabled: const TwStyle(
-                  backgroundColor: bg_gray_500,
-                ),
-                dragged: const TwStyle(
-                  backgroundColor: bg_purple_500,
-                ),
-                child: TwAnimatedText(
-                  text,
-                  statesController: statesController,
-                  style: const TwStyle(
-                    fontSize: text_2xl,
-                    fontWeight: font_bold,
-                    textColor: text_white,
-                    transition: transition_all,
+                child: TwDiv(
+                  alignment: Alignment.center,
+                  selected: const TwStyle(
+                    backgroundColor: bg_cyan_700,
+                  ),
+                  style: TwStyle(
+                    width: w_96,
+                    height: h_96,
+                    border: const TwBorder.all(border_8),
+                    borderRadius: const TwBorderRadius.all(rounded_3xl),
+                    borderColor: border_green_600,
+                    backgroundColor: bg_green_500,
+                    boxShadow: shadow_lg,
+                    transition: properties,
+                    transitionDuration: duration_150,
+                    transitionTimingFn: ease_in_out,
                   ),
                   hovered: const TwStyle(
-                    // fontSize: text_4xl,
-                    textColor: text_gray_500,
+                    width: w_frac_1_2,
+                    maxWidth: max_w_screen_2xl,
+                    backgroundColor: bg_blue_500,
+                    borderRadius: TwBorderRadius.all(rounded_full),
+                    borderColor: border_blue_600,
+                    // opacity: opacity_50,
+                    boxShadow: shadow_2xl,
+                    boxShadowColor: shadow_black,
+                  ),
+                  pressed: const TwStyle(
+                    backgroundColor: bg_red_500,
+                    border: TwBorder.all(border_2),
+                    // borderRadius: TwBorderRadius.all(rounded_full),
+                    // width: w_frac_3_4,
+                  ),
+                  disabled: const TwStyle(
+                    backgroundColor: bg_gray_500,
+                  ),
+                  dragged: const TwStyle(
+                    backgroundColor: bg_purple_500,
+                  ),
+                  child: TwAnimatedText(
+                    text,
+                    style: const TwStyle(
+                      fontSize: text_2xl,
+                      fontWeight: font_bold,
+                      textColor: text_white,
+                      transition: transition_all,
+                      transitionDuration: duration_1000,
+                    ),
+                    hovered: const TwStyle(
+                      // fontSize: text_4xl,
+                      textColor: text_gray_500,
+                    ),
+                    pressed: const TwStyle(
+                      // fontSize: text_4xl,
+                      textColor: text_yellow_500,
+                    ),
                   ),
                 ),
               ),

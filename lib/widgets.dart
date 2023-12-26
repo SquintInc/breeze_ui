@@ -1,4 +1,5 @@
 export 'package:tailwind_elements/widgets/animated_text.dart';
+export 'package:tailwind_elements/widgets/animation_group.dart';
 export 'package:tailwind_elements/widgets/button.dart';
 export 'package:tailwind_elements/widgets/column.dart';
 export 'package:tailwind_elements/widgets/div.dart';
