@@ -16,4 +16,9 @@ class TwLineHeight {
 
   @override
   int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return 'TwLineHeight{value: $value}';
+  }
 }

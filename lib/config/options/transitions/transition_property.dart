@@ -70,14 +70,6 @@ class TwTransitionProperty {
 
   bool get isNone => properties.contains(TransitionProperty.none);
 
-  bool has(final TransitionProperty property) =>
-      properties.contains(property) ||
-      // Check for border property 'group'
-      (property.isBorderProperty &&
-          properties.contains(TransitionProperty.border)) ||
-      // check for all properties 'group'
-      properties.contains(TransitionProperty.all);
-
   @override
   String toString() {
     if (isNone) {

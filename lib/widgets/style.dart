@@ -39,9 +39,15 @@ MaterialStateProperty<T> always<T>(final T value) =>
 /// at their level).
 @immutable
 class TwStyle {
-  static const defaultFontSize =
-      TwFontSize(RemUnit(1.0), TwLineHeight(RemUnit(1.5)));
-  static const defaultFontWeight = TwFontWeight(400);
+  // See `text-base` values from https://tailwindcss.com/docs/font-size
+  static const defaultFontSize = 16.0; // 16px == 1rem
+  static const defaultLineHeight = 1.5;
+
+  // See `text-base` values from https://tailwindcss.com/docs/font-size
+  static const defaultFontWeight = FontWeight.w400;
+
+  /// See `rounded-full` values from https://tailwindcss.com/docs/border-radius
+  static const maxCircleRadius = 9999.0;
 
   // Background styling
   final TwBackgroundColor? backgroundColor;
@@ -78,9 +84,9 @@ class TwStyle {
   final TwTransitionDelay? transitionDelay;
 
   // Typography styling (not applicable to widgets without text)
-  final TwFontSize fontSize;
-  final FontStyle fontStyle;
-  final TwFontWeight fontWeight;
+  final TwFontSize? fontSize;
+  final FontStyle? fontStyle;
+  final TwFontWeight? fontWeight;
   final TwLetterSpacing? letterSpacing;
   final TwLineHeight? lineHeight;
   final TwTextColor? textColor;
@@ -88,7 +94,7 @@ class TwStyle {
   final TwTextDecorationColor? textDecorationColor;
   final TextDecorationStyle? textDecorationStyle;
   final TwTextDecorationThickness? textDecorationThickness;
-  final TextLeadingDistribution leadingDistribution;
+  final TextLeadingDistribution? leadingDistribution;
   final double? wordSpacing;
 
   const TwStyle({
@@ -127,9 +133,9 @@ class TwStyle {
     this.transitionDelay,
 
     // Typography styling
-    this.fontSize = defaultFontSize,
-    this.fontStyle = FontStyle.normal,
-    this.fontWeight = defaultFontWeight,
+    this.fontSize,
+    this.fontStyle,
+    this.fontWeight,
     this.letterSpacing,
     this.lineHeight,
     this.textColor,
@@ -137,7 +143,7 @@ class TwStyle {
     this.textDecorationColor,
     this.textDecorationStyle,
     this.textDecorationThickness,
-    this.leadingDistribution = TextLeadingDistribution.even,
+    this.leadingDistribution,
     this.wordSpacing,
   });
 
@@ -351,31 +357,22 @@ class TwStyle {
   /// Compute the box decoration for this style, based on the merged style and
   /// the current widget's constraints (if applicable, e.g. computed from a
   /// [LayoutBuilder]).
-  Decoration? getBoxDecoration(
-    final TwStyle mergedStyle,
-    final BoxConstraints? constraints,
-  ) {
-    if (!hasDecorations && !mergedStyle.hasDecorations) {
+  Decoration? getBoxDecoration(final BoxConstraints? constraints) {
+    if (!hasDecorations) {
       return null;
     }
-    final bool isCircle =
-        borderRadius?.isCircle ?? mergedStyle.borderRadius?.isCircle ?? false;
-    final borderColor =
-        this.borderColor?.color ?? mergedStyle.borderColor?.color;
-    final borderStrokeAlign =
-        this.borderStrokeAlign ?? mergedStyle.borderStrokeAlign;
+    final bool isCircle = borderRadius?.isCircle ?? false;
+    final borderColor = this.borderColor?.color;
+    final borderStrokeAlign = this.borderStrokeAlign;
     return BoxDecoration(
-      color: backgroundColor?.color ?? mergedStyle.backgroundColor?.color,
-      image: backgroundImage ?? mergedStyle.backgroundImage,
-      gradient: backgroundGradient ?? mergedStyle.backgroundGradient,
-      border: border?.toBorder(borderColor, borderStrokeAlign) ??
-          mergedStyle.border?.toBorder(borderColor, borderStrokeAlign),
+      color: backgroundColor?.color,
+      image: backgroundImage,
+      gradient: backgroundGradient,
+      border: border?.toBorder(borderColor, borderStrokeAlign),
       borderRadius: isCircle
-          ? BorderRadius.circular(constraints?.circleRadius ?? 9999)
-          : borderRadius?.toBorderRadius() ??
-              mergedStyle.borderRadius?.toBorderRadius(),
-      boxShadow: boxShadow?.withColor(boxShadowColor) ??
-          mergedStyle.boxShadow?.withColor(boxShadowColor),
+          ? BorderRadius.circular(constraints?.circleRadius ?? maxCircleRadius)
+          : borderRadius?.toBorderRadius(),
+      boxShadow: boxShadow?.withColor(boxShadowColor),
     );
   }
 
@@ -479,9 +476,9 @@ class TwStyle {
   /// [Text].
   TextStyle toTextStyle() {
     return TextStyle(
-      fontSize: fontSize.value.logicalPixels,
-      fontWeight: fontWeight.fontWeight,
-      height: fontSize.getLineHeight(lineHeight),
+      fontSize: fontSize?.value.logicalPixels ?? defaultFontSize,
+      fontWeight: fontWeight?.fontWeight ?? defaultFontWeight,
+      height: fontSize?.getLineHeight(lineHeight) ?? defaultLineHeight,
       fontStyle: fontStyle,
       color: textColor?.color,
       leadingDistribution: leadingDistribution,
@@ -490,8 +487,8 @@ class TwStyle {
       decorationStyle: textDecorationStyle,
       decorationThickness: textDecorationThickness?.value.logicalPixels,
       wordSpacing: wordSpacing,
-      letterSpacing:
-          letterSpacing?.value.emPixels(fontSize.value.logicalPixels),
+      letterSpacing: letterSpacing?.value
+          .emPixels(fontSize?.value.logicalPixels ?? defaultFontSize),
     );
   }
 
@@ -555,43 +552,15 @@ class TwStyle {
         TwWidgetState.hovered => hovered,
         _ => normal,
       };
-      return TextStyle(
-        fontSize: statusStyle?.fontSize.value.logicalPixels ??
-            normal.fontSize.value.logicalPixels,
-        fontWeight:
-            statusStyle?.fontWeight.fontWeight ?? normal.fontWeight.fontWeight,
-        height: statusStyle?.fontSize.getLineHeight(statusStyle.lineHeight) ??
-            normal.fontSize.getLineHeight(normal.lineHeight),
-        fontStyle: statusStyle?.fontStyle ?? normal.fontStyle,
-        color: statusStyle?.textColor?.color ?? normal.textColor?.color,
-        leadingDistribution:
-            statusStyle?.leadingDistribution ?? normal.leadingDistribution,
-        decoration: statusStyle?.textDecoration ?? normal.textDecoration,
-        decorationColor: statusStyle?.textDecorationColor?.color ??
-            normal.textDecorationColor?.color,
-        decorationStyle:
-            statusStyle?.textDecorationStyle ?? normal.textDecorationStyle,
-        decorationThickness:
-            statusStyle?.textDecorationThickness?.value.logicalPixels ??
-                normal.textDecorationThickness?.value.logicalPixels,
-        wordSpacing: statusStyle?.wordSpacing ?? normal.wordSpacing,
-        letterSpacing: statusStyle?.letterSpacing?.value
-                .emPixels(statusStyle.fontSize.value.logicalPixels) ??
-            normal.letterSpacing?.value
-                .emPixels(normal.fontSize.value.logicalPixels),
-      );
+      return normal.merge(statusStyle).toTextStyle();
     });
   }
 
   @override
   String toString() {
     final buf = <String>[];
-    if (backgroundColor != null) {
-      buf.add('backgroundColor: $backgroundColor');
-    }
-    if (backgroundImage != null) {
-      buf.add('backgroundImage: $backgroundImage');
-    }
+    if (backgroundColor != null) buf.add('backgroundColor: $backgroundColor');
+    if (backgroundImage != null) buf.add('backgroundImage: $backgroundImage');
     if (backgroundGradient != null) {
       buf.add('backgroundGradient: $backgroundGradient');
     }
@@ -620,9 +589,27 @@ class TwStyle {
     if (transitionTimingFn != null) {
       buf.add('transitionTimingFn: $transitionTimingFn');
     }
-    if (transitionDelay != null) {
-      buf.add('transitionDelay: $transitionDelay');
+    if (transitionDelay != null) buf.add('transitionDelay: $transitionDelay');
+    if (fontSize != null) buf.add('fontSize: $fontSize');
+    if (fontStyle != null) buf.add('fontStyle: $fontStyle');
+    if (fontWeight != null) buf.add('fontWeight: $fontWeight');
+    if (letterSpacing != null) buf.add('letterSpacing: $letterSpacing');
+    if (lineHeight != null) buf.add('lineHeight: $lineHeight');
+    if (textColor != null) buf.add('textColor: $textColor');
+    if (textDecoration != null) buf.add('textDecoration: $textDecoration');
+    if (textDecorationColor != null) {
+      buf.add('textDecorationColor: $textDecorationColor');
     }
+    if (textDecorationStyle != null) {
+      buf.add('textDecorationStyle: $textDecorationStyle');
+    }
+    if (textDecorationThickness != null) {
+      buf.add('textDecorationThickness: $textDecorationThickness');
+    }
+    if (leadingDistribution != null) {
+      buf.add('leadingDistribution: $leadingDistribution');
+    }
+    if (wordSpacing != null) buf.add('wordSpacing: $wordSpacing');
     return 'TwStyle{${buf.join(', ')}}';
   }
 

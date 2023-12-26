@@ -244,6 +244,17 @@ class TwBorderRadius {
       all.hashCode ^
       type.hashCode;
 
+  static TwBorderRadius? fromBorderRadius(final BorderRadius? borderRadius) {
+    if (borderRadius == null) return null;
+    return TwBorderRadius.corner(
+      topLeft: TwBorderRadiusTopLeft(PxUnit(borderRadius.topLeft.x)),
+      topRight: TwBorderRadiusTopRight(PxUnit(borderRadius.topRight.x)),
+      bottomRight:
+          TwBorderRadiusBottomRight(PxUnit(borderRadius.bottomRight.x)),
+      bottomLeft: TwBorderRadiusBottomLeft(PxUnit(borderRadius.bottomLeft.x)),
+    );
+  }
+
   BorderRadius toBorderRadius() => switch (type) {
         BoxCornerType.all => BorderRadius.circular(all.value.logicalPixels),
         BoxCornerType.tltrbrbl => BorderRadius.only(

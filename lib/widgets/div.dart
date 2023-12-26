@@ -87,10 +87,14 @@ class _DivState extends TwAnimatedState<TwDiv> {
 
     Widget? current = child;
 
+    final style = mergedStyle.merge(animationController?.animatedStyle);
+    final dynamicConstraints =
+        animationController?.animatedBoxConstraints ?? constraints;
+
     // Render a [LimitedBox] if the widget has no child and no constraints.
     if (child == null &&
-        (!mergedStyle.hasConstraints ||
-            (!mergedStyle.hasTightWidth && !mergedStyle.hasTightHeight))) {
+        (!style.hasConstraints ||
+            (!style.hasTightWidth && !style.hasTightHeight))) {
       current = LimitedBox(
         maxWidth: 0.0,
         maxHeight: 0.0,
@@ -103,28 +107,22 @@ class _DivState extends TwAnimatedState<TwDiv> {
     // Render effective padding (including border widths) around the current
     // widget if applicable.
     final EdgeInsetsGeometry? effectivePadding =
-        _paddingIncludingDecoration(mergedStyle);
+        _paddingIncludingDecoration(style);
     if (effectivePadding != null) {
       current = Padding(padding: effectivePadding, child: current);
     }
 
     // Render a [ColoredBox] if the widget has its background color property set
     // and no other decoration settings.
-    if (mergedStyle.hasOnlyBackgroundColorDecoration) {
-      final backgroundColor = mergedStyle.backgroundColor?.color;
+    if (style.hasOnlyBackgroundColorDecoration) {
       current = ColoredBox(
-        color: animationController?.backgroundColor ??
-            backgroundColor ??
-            Colors.transparent,
+        color: style.backgroundColor?.color ?? Colors.transparent,
         child: current,
       );
     }
 
     // Render [ClipPath]
-    final Decoration? decoration = animationController?.getBoxDecoration(
-          mergedStyle,
-        ) ??
-        mergedStyle.getBoxDecoration(mergedStyle, constraints);
+    final Decoration? decoration = style.getBoxDecoration(dynamicConstraints);
     if (clipBehavior != Clip.none) {
       assert(decoration != null);
       current = ClipPath(
@@ -139,14 +137,14 @@ class _DivState extends TwAnimatedState<TwDiv> {
 
     // Render a [DecoratedBox] only if the background decoration exists and is not
     // just a background color (otherwise a [ColoredBox] would be rendered).
-    if (mergedStyle.hasDecorations && decoration != null) {
+    if (style.hasDecorations && decoration != null) {
       current = DecoratedBox(decoration: decoration, child: current);
     }
 
     // Use constraints passed in to render a [ConstrainedBox] if applicable.
     if (constraints != null) {
       current = ConstrainedBox(
-        constraints: animationController?.boxConstraints ?? constraints,
+        constraints: animationController?.animatedBoxConstraints ?? constraints,
         child: current,
       );
     }
@@ -168,14 +166,15 @@ class _DivState extends TwAnimatedState<TwDiv> {
     // Apply opacity effect if applicable.
     if (widget.hasOpacity) {
       current = Opacity(
-        opacity:
-            animationController?.opacity ?? mergedStyle.opacity?.value ?? 1.0,
+        opacity: style.opacity?.value ?? 1.0,
         child: current,
       );
     }
 
     if (current == null) {
-      throw Exception('current widget returned by _buildDiv is null');
+      throw Exception(
+        'Current widget being built by ${widget.toStringShort()} is null',
+      );
     }
     return current;
   }
@@ -206,8 +205,7 @@ class _DivState extends TwAnimatedState<TwDiv> {
     final MaterialStatesController controller,
     final TwWidgetState state,
   ) {
-    final currentStyle = getStyle(widgetState);
-    final mergedStyle = widget.style.merge(currentStyle);
+    final mergedStyle = currentStyle;
     final bool usesLayoutBuilder =
         mergedStyle.hasPercentageSize || mergedStyle.hasPercentageConstraints;
 
@@ -260,9 +258,7 @@ class _DivState extends TwAnimatedState<TwDiv> {
     required final BoxConstraints? constraints,
     required final TwStyle mergedStyle,
   }) {
-    if (widget.hasTransitions &&
-        animationController?.trackedConstraints != constraints &&
-        (animationController?.canAnimate ?? false)) {
+    if (widget.hasTransitions && (animationController?.canAnimate ?? false)) {
       animationController?.updateTrackedConstraints(
         constraints: constraints,
         mergedStyle: mergedStyle,

@@ -8,6 +8,11 @@ class TwBoxShadows {
 
   const TwBoxShadows(this.boxShadows);
 
+  static TwBoxShadows? fromBoxShadows(final List<BoxShadow>? boxShadows) =>
+      boxShadows != null && boxShadows.isNotEmpty
+          ? TwBoxShadows(boxShadows)
+          : null;
+
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||

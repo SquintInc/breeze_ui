@@ -34,6 +34,9 @@ class TwColor {
 class TwBackgroundColor extends TwColor {
   const TwBackgroundColor(super.color);
 
+  static TwBackgroundColor? fromColor(final Color? color) =>
+      color != null ? TwBackgroundColor(color) : null;
+
   @override
   String toString() {
     return 'TwBackgroundColor{$color}';
@@ -45,6 +48,9 @@ class TwBackgroundColor extends TwColor {
 @immutable
 class TwBoxShadowColor extends TwColor {
   const TwBoxShadowColor(super.color);
+
+  static TwBoxShadowColor? fromColor(final Color? color) =>
+      color != null ? TwBoxShadowColor(color) : null;
 
   @override
   String toString() {
@@ -58,6 +64,9 @@ class TwBoxShadowColor extends TwColor {
 class TwBorderColor extends TwColor {
   const TwBorderColor(super.color);
 
+  static TwBorderColor? fromColor(final Color? color) =>
+      color != null ? TwBorderColor(color) : null;
+
   @override
   String toString() {
     return 'TwBorderColor{$color}';
@@ -70,6 +79,9 @@ class TwBorderColor extends TwColor {
 class TwTextColor extends TwColor {
   const TwTextColor(super.color);
 
+  static TwTextColor? fromColor(final Color? color) =>
+      color != null ? TwTextColor(color) : null;
+
   @override
   String toString() {
     return 'TwTextColor{$color}';
@@ -81,6 +93,9 @@ class TwTextColor extends TwColor {
 @immutable
 class TwTextDecorationColor extends TwColor {
   const TwTextDecorationColor(super.color);
+
+  static TwTextDecorationColor? fromColor(final Color? color) =>
+      color != null ? TwTextDecorationColor(color) : null;
 
   @override
   String toString() {

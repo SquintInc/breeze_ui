@@ -40,4 +40,9 @@ class TwFontWeight {
     }
     return FontWeight.w400;
   }
+
+  @override
+  String toString() {
+    return 'TwFontWeight{weight: $weight}';
+  }
 }

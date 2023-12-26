@@ -100,7 +100,6 @@ abstract class TwState<T extends TwStatefulWidget> extends State<T> {
   /// The internal material states controller for this stateful widget.
   late MaterialStatesController? _statesController;
   TwWidgetState _widgetState = TwWidgetState.normal;
-  TwWidgetState _prevWidgetState = TwWidgetState.normal;
 
   // Internal selectable toggle state
   bool _isSelected = false;
@@ -109,7 +108,7 @@ abstract class TwState<T extends TwStatefulWidget> extends State<T> {
   TwWidgetState get widgetState => _widgetState;
 
   @protected
-  TwWidgetState get prevWidgetState => _prevWidgetState;
+  TwStyle get currentStyle => widget.style.merge(getStyle(_widgetState));
 
   /// Gets this widget's material states controller if it exists, otherwise uses
   /// the internal states controller from [_statesController].
@@ -118,37 +117,34 @@ abstract class TwState<T extends TwStatefulWidget> extends State<T> {
       widget.statesController ?? _statesController!;
 
   /// Gets this widget's style based on the provided widget state.
+  /// Returns the default style if no style is set for the current widget state.
   @protected
-  TwStyle? getStyle(final TwWidgetState widgetState) => switch (widgetState) {
-        TwWidgetState.disabled => widget.disabled,
-        TwWidgetState.focused => widget.focused,
-        TwWidgetState.pressed => widget.pressed,
-        TwWidgetState.hovered => widget.hovered,
-        TwWidgetState.dragged => widget.dragged ?? widget.pressed,
-        TwWidgetState.selected => widget.selected,
-        TwWidgetState.error => widget.errored,
+  TwStyle getStyle(final TwWidgetState widgetState) => switch (widgetState) {
+        TwWidgetState.disabled => widget.disabled ?? widget.style,
+        TwWidgetState.focused => widget.focused ?? widget.style,
+        TwWidgetState.pressed => widget.pressed ?? widget.style,
+        TwWidgetState.hovered => widget.hovered ?? widget.style,
+        TwWidgetState.dragged =>
+          widget.dragged ?? widget.pressed ?? widget.style,
+        TwWidgetState.selected => widget.selected ?? widget.style,
+        TwWidgetState.error => widget.errored ?? widget.style,
         TwWidgetState.normal => widget.style,
       };
+
+  /// Called when the widget state changes.
+  void didWidgetStateChange();
 
   /// Rebuilds the widget when the material states controller changes.
   void onWidgetStateChange() {
     final newWidgetState = getPrimaryWidgetState(statesController.value);
     if (newWidgetState != _widgetState) {
       // Rebuild widget and update previous and current state
-      final prevWidgetState = _widgetState;
       setState(() {
-        _prevWidgetState = prevWidgetState;
         _widgetState = newWidgetState;
       });
-      didWidgetStateChange(prevWidgetState, newWidgetState);
+      didWidgetStateChange();
     }
   }
-
-  /// Called when the widget state changes.
-  void didWidgetStateChange(
-    final TwWidgetState prevWidgetState,
-    final TwWidgetState nextWidgetState,
-  );
 
   void _initMaterialStatesController() {
     if (widget.statesController == null) {
