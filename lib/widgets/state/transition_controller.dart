@@ -96,6 +96,8 @@ class TwTransitionController {
     );
   }
 
+  /// Sets the transition properties that are valid for tween evaluation for the
+  /// current style, inside the [TwStyleTween].
   void refreshStyleTweenProperties(final TwStyle style) {
     _style?.setProperties(style.transition?.properties);
   }
