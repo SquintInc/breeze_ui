@@ -81,7 +81,7 @@ abstract class TwAnimatedState<T extends TwStatefulWidget> extends TwState<T>
 
       animationController
         ..updateTweens(widget.style, nextStyle)
-        ..animate();
+        ..animate(nextStyle.transitionDelay ?? widget.style.transitionDelay);
     }
   }
 
