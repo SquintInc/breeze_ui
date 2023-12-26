@@ -189,7 +189,7 @@ Flutter via `tailwind_elements`.
 |-----------------------|:------------------:|-------------------------------------------------------------------------------------|
 | Box Shadow            | :white_check_mark: | inner / `inset` box shadows are not supported and will be parsed as a `none` shadow |
 | Box Shadow Color      | :white_check_mark: |                                                                                     |
-| Opacity               |                    |                                                                                     |
+| Opacity               | :white_check_mark: |                                                                                     |
 | Mix Blend Mode        |                    |                                                                                     |
 | Background Blend Mode |                    |                                                                                     |
 
@@ -236,13 +236,13 @@ Flutter via `tailwind_elements`.
 <details open>
 <summary>Transitions & Animation</summary>
 
-| Option                     | Supported | Notes |
-|----------------------------|:---------:|-------|
-| Transition Property        |           |       |
-| Transition Duration        |           |       |
-| Transition Timing Function |           |       |
-| Transition Delay           |           |       |
-| Animation                  |           |       |
+| Option                     |     Supported      | Notes |
+|----------------------------|:------------------:|-------|
+| Transition Property        | :white_check_mark: |       |
+| Transition Duration        | :white_check_mark: |       |
+| Transition Timing Function | :white_check_mark: |       |
+| Transition Delay           | :white_check_mark: |       |
+| Animation                  |                    |       |
 
 </details>
 
