@@ -61,11 +61,14 @@ abstract class TwAnimatedState<T extends TwStatefulWidget> extends TwState<T>
       final animationController = this._animationController;
       if (animationController == null) return;
       final nextStyle = getStyle(nextWidgetState);
+      final mergedStyle = (nextStyle != widget.style)
+          ? widget.style.merge(nextStyle)
+          : nextStyle;
+      if (mergedStyle == null) return;
 
       // Compute the new animation curve, with fallback to the default curve
       // if it was set in the [style] property.
-      final Curve? nextCurve = nextStyle.transitionTimingFn?.curve ??
-          widget.style.transitionTimingFn?.curve;
+      final Curve? nextCurve = mergedStyle.transitionTimingFn?.curve;
       if (animationController.curve != nextCurve) {
         animationController.updateAnimationCurve(nextCurve);
       }
@@ -73,15 +76,14 @@ abstract class TwAnimatedState<T extends TwStatefulWidget> extends TwState<T>
       // Compute the new animation duration, with fallback to the default
       // duration if it was set in the [style] property.
       final Duration? nextDuration =
-          nextStyle.transitionDuration?.duration.value ??
-              widget.style.transitionDuration?.duration.value;
+          mergedStyle.transitionDuration?.duration.value;
       if (animationController.duration != nextDuration) {
         animationController.updateAnimationDuration(nextDuration);
       }
 
       animationController
-        ..updateTweens(widget.style, nextStyle)
-        ..animate(nextStyle.transitionDelay ?? widget.style.transitionDelay);
+        ..updateTweens(mergedStyle)
+        ..animate(mergedStyle.transitionDelay);
     }
   }
 

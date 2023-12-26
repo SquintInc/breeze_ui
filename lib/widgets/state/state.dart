@@ -79,7 +79,9 @@ abstract class TwStatefulWidget extends StatefulWidget {
       !(focused?.transition?.isNone ?? true) ||
       !(pressed?.transition?.isNone ?? true) ||
       !(hovered?.transition?.isNone ?? true) ||
-      !(dragged?.transition?.isNone ?? true);
+      !(dragged?.transition?.isNone ?? true) ||
+      !(selected?.transition?.isNone ?? true) ||
+      !(errored?.transition?.isNone ?? true);
 
   bool get hasOpacity =>
       style.opacity != null ||
@@ -87,7 +89,9 @@ abstract class TwStatefulWidget extends StatefulWidget {
       focused?.opacity != null ||
       pressed?.opacity != null ||
       hovered?.opacity != null ||
-      dragged?.opacity != null;
+      dragged?.opacity != null ||
+      selected?.opacity != null ||
+      errored?.opacity != null;
 }
 
 /// A widget [State] subclass with support for [MaterialStatesController] and
@@ -115,16 +119,15 @@ abstract class TwState<T extends TwStatefulWidget> extends State<T> {
 
   /// Gets this widget's style based on the provided widget state.
   @protected
-  TwStyle getStyle(final TwWidgetState widgetState) => switch (widgetState) {
-        TwWidgetState.disabled => widget.disabled ?? widget.style,
-        TwWidgetState.focused => widget.focused ?? widget.style,
-        TwWidgetState.pressed => widget.pressed ?? widget.style,
-        TwWidgetState.hovered => widget.hovered ?? widget.style,
-        TwWidgetState.dragged =>
-          widget.dragged ?? widget.pressed ?? widget.style,
-        TwWidgetState.selected => widget.selected ?? widget.style,
-        TwWidgetState.error => widget.errored ?? widget.style,
-        _ => widget.style,
+  TwStyle? getStyle(final TwWidgetState widgetState) => switch (widgetState) {
+        TwWidgetState.disabled => widget.disabled,
+        TwWidgetState.focused => widget.focused,
+        TwWidgetState.pressed => widget.pressed,
+        TwWidgetState.hovered => widget.hovered,
+        TwWidgetState.dragged => widget.dragged ?? widget.pressed,
+        TwWidgetState.selected => widget.selected,
+        TwWidgetState.error => widget.errored,
+        TwWidgetState.normal => widget.style,
       };
 
   /// Rebuilds the widget when the material states controller changes.

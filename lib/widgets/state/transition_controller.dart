@@ -159,114 +159,82 @@ class TwTransitionController {
       ..end = targetValue;
   }
 
-  BorderRadius? _computeBorderRadius({
-    required final TwStyle currentStyle,
-    required final TwStyle defaultStyle,
-  }) {
+  BorderRadius? _computeBorderRadius(final TwStyle mergedStyle) {
     final trackedConstraints = _trackedConstraints;
     if (trackedConstraints == null) {
-      return currentStyle.borderRadius?.toBorderRadius() ??
-          defaultStyle.borderRadius?.toBorderRadius();
+      return mergedStyle.borderRadius?.toBorderRadius();
     }
 
-    if (currentStyle.borderRadius != null) {
-      final bool isCircle = currentStyle.borderRadius!.isCircle;
-      return isCircle
-          ? BorderRadius.circular(trackedConstraints.circleRadius)
-          : currentStyle.borderRadius!.toBorderRadius();
-    }
-    final bool isCircle = defaultStyle.borderRadius?.isCircle ?? false;
+    final bool isCircle = mergedStyle.borderRadius!.isCircle;
     return isCircle
         ? BorderRadius.circular(trackedConstraints.circleRadius)
-        : defaultStyle.borderRadius?.toBorderRadius();
+        : mergedStyle.borderRadius?.toBorderRadius();
   }
 
   /// Updates the tweens for the current transition.
-  void updateTweens(final TwStyle defaultStyle, final TwStyle nextStyle) {
+  void updateTweens(final TwStyle mergedStyle) {
     _updateTween(
       tween: _textColor,
-      targetValue: (nextStyle.textColor != null)
-          ? nextStyle.textColor!.tweenColor
-          : defaultStyle.textColor?.tweenColor,
+      targetValue: mergedStyle.textColor?.tweenColor,
       shouldAnimate: canAnimateProperty(
         property: TransitionProperty.textColor,
-        defaultStyle: defaultStyle,
-        currentStyle: nextStyle,
+        mergedStyle: mergedStyle,
       ),
     );
     _updateTween<Color?>(
       tween: _backgroundColor,
-      // If the next style has a transparent background, set the target value to
-      // null so that the background color does not transition from black.
-      // See [ColorTween] for more details.
-      targetValue: (nextStyle.backgroundColor != null)
-          ? nextStyle.backgroundColor!.tweenColor
-          : defaultStyle.backgroundColor?.tweenColor,
+      targetValue: mergedStyle.backgroundColor?.tweenColor,
       shouldAnimate: canAnimateProperty(
         property: TransitionProperty.backgroundColor,
-        defaultStyle: defaultStyle,
-        currentStyle: nextStyle,
+        mergedStyle: mergedStyle,
       ),
     );
     _updateTween<Color?>(
       tween: _borderColor,
-      targetValue: (nextStyle.borderColor != null)
-          ? nextStyle.borderColor!.tweenColor
-          : defaultStyle.borderColor?.tweenColor,
+      targetValue: mergedStyle.borderColor?.tweenColor,
       shouldAnimate: canAnimateProperty(
         property: TransitionProperty.borderColor,
-        defaultStyle: defaultStyle,
-        currentStyle: nextStyle,
+        mergedStyle: mergedStyle,
       ),
     );
     _updateTween<BorderRadius?>(
       tween: _borderRadius,
-      targetValue: _computeBorderRadius(
-        currentStyle: nextStyle,
-        defaultStyle: defaultStyle,
-      ),
+      targetValue: _computeBorderRadius(mergedStyle),
       shouldAnimate: canAnimateProperty(
         property: TransitionProperty.borderRadius,
-        defaultStyle: defaultStyle,
-        currentStyle: nextStyle,
+        mergedStyle: mergedStyle,
       ),
     );
     _updateTween<double>(
       tween: _borderTopPx,
-      targetValue: nextStyle.border?.topPx ?? defaultStyle.border?.topPx ?? 0,
+      targetValue: mergedStyle.border?.topPx ?? 0,
       shouldAnimate: canAnimateProperty(
         property: TransitionProperty.borderWidth,
-        defaultStyle: defaultStyle,
-        currentStyle: nextStyle,
+        mergedStyle: mergedStyle,
       ),
     );
     _updateTween<double>(
       tween: _borderRightPx,
-      targetValue:
-          nextStyle.border?.rightPx ?? defaultStyle.border?.rightPx ?? 0,
+      targetValue: mergedStyle.border?.rightPx ?? 0,
       shouldAnimate: canAnimateProperty(
         property: TransitionProperty.borderWidth,
-        defaultStyle: defaultStyle,
-        currentStyle: nextStyle,
+        mergedStyle: mergedStyle,
       ),
     );
     _updateTween<double>(
       tween: _borderBottomPx,
-      targetValue:
-          nextStyle.border?.bottomPx ?? defaultStyle.border?.bottomPx ?? 0,
+      targetValue: mergedStyle.border?.bottomPx ?? 0,
       shouldAnimate: canAnimateProperty(
         property: TransitionProperty.borderWidth,
-        defaultStyle: defaultStyle,
-        currentStyle: nextStyle,
+        mergedStyle: mergedStyle,
       ),
     );
     _updateTween<double>(
       tween: _borderLeftPx,
-      targetValue: nextStyle.border?.leftPx ?? defaultStyle.border?.leftPx ?? 0,
+      targetValue: mergedStyle.border?.leftPx ?? 0,
       shouldAnimate: canAnimateProperty(
         property: TransitionProperty.borderWidth,
-        defaultStyle: defaultStyle,
-        currentStyle: nextStyle,
+        mergedStyle: mergedStyle,
       ),
     );
     // TODO: update tween for text decoration color
@@ -278,16 +246,12 @@ class TwTransitionController {
     // );
     _updateTween<List<BoxShadow>?>(
       tween: _boxShadow,
-      targetValue: nextStyle.boxShadow?.withColor(
-            nextStyle.boxShadowColor ?? defaultStyle.boxShadowColor,
-          ) ??
-          defaultStyle.boxShadow?.withColor(
-            nextStyle.boxShadowColor ?? defaultStyle.boxShadowColor,
-          ),
+      targetValue: mergedStyle.boxShadow?.withColor(
+        mergedStyle.boxShadowColor,
+      ),
       shouldAnimate: canAnimateProperty(
         property: TransitionProperty.boxShadow,
-        defaultStyle: defaultStyle,
-        currentStyle: nextStyle,
+        mergedStyle: mergedStyle,
       ),
     );
     _updateTween<BoxConstraints>(
@@ -295,22 +259,19 @@ class TwTransitionController {
       targetValue: _trackedConstraints ?? BoxConstraints.tight(Size.zero),
       shouldAnimate: canAnimateProperty(
             property: TransitionProperty.width,
-            defaultStyle: defaultStyle,
-            currentStyle: nextStyle,
+            mergedStyle: mergedStyle,
           ) ||
           canAnimateProperty(
             property: TransitionProperty.height,
-            defaultStyle: defaultStyle,
-            currentStyle: nextStyle,
+            mergedStyle: mergedStyle,
           ),
     );
     _updateTween<double>(
       tween: _opacity,
-      targetValue: nextStyle.opacity?.value ?? 1,
+      targetValue: mergedStyle.opacity?.value ?? 1,
       shouldAnimate: canAnimateProperty(
         property: TransitionProperty.opacity,
-        defaultStyle: defaultStyle,
-        currentStyle: nextStyle,
+        mergedStyle: mergedStyle,
       ),
     );
   }
@@ -336,21 +297,18 @@ class TwTransitionController {
   /// [LayoutBuilder] to calculate the constraints.
   void updateTrackedConstraints({
     required final BoxConstraints? constraints,
-    required final TwStyle currentStyle,
-    required final TwStyle defaultStyle,
+    required final TwStyle mergedStyle,
   }) {
     _updateTween(
       tween: _boxConstraints,
       targetValue: constraints,
       shouldAnimate: canAnimateProperty(
             property: TransitionProperty.width,
-            defaultStyle: defaultStyle,
-            currentStyle: currentStyle,
+            mergedStyle: mergedStyle,
           ) ||
           canAnimateProperty(
             property: TransitionProperty.height,
-            defaultStyle: defaultStyle,
-            currentStyle: currentStyle,
+            mergedStyle: mergedStyle,
           ),
     );
     _trackedConstraints = constraints;
@@ -366,47 +324,35 @@ class TwTransitionController {
     }
   }
 
-  Decoration? getBoxDecoration({
-    required final TwStyle defaultStyle,
-    required final TwStyle currentStyle,
-  }) {
+  Decoration? getBoxDecoration(final TwStyle mergedStyle) {
     if (!canAnimate) return null;
     // Static background color
-    final staticBackgroundColor = currentStyle.backgroundColor?.color ??
-        defaultStyle.backgroundColor?.color;
+    final Color? staticBackgroundColor = mergedStyle.backgroundColor?.color;
 
     // Static border color
-    final staticBorderColor =
-        currentStyle.borderColor?.color ?? defaultStyle.borderColor?.color;
+    final Color? staticBorderColor = mergedStyle.borderColor?.color;
 
     // Static border radius
-    final staticBorderRadius = _computeBorderRadius(
-      currentStyle: currentStyle,
-      defaultStyle: defaultStyle,
-    );
+    final BorderRadius? staticBorderRadius = _computeBorderRadius(mergedStyle);
 
     // Static box shadows
-    final staticBoxShadows = currentStyle.boxShadow?.withColor(
-          currentStyle.boxShadowColor,
-        ) ??
-        defaultStyle.boxShadow?.withColor(defaultStyle.boxShadowColor);
+    final List<BoxShadow>? staticBoxShadows = mergedStyle.boxShadow?.withColor(
+      mergedStyle.boxShadowColor,
+    );
 
     // Static border
-    final double strokeAlign = currentStyle.borderStrokeAlign ??
-        defaultStyle.borderStrokeAlign ??
-        BorderSide.strokeAlignInside;
-    final staticBorder = (currentStyle.border ?? defaultStyle.border)
-        ?.toBorder(staticBorderColor, strokeAlign);
+    final double strokeAlign =
+        mergedStyle.borderStrokeAlign ?? BorderSide.strokeAlignInside;
+    final staticBorder =
+        mergedStyle.border?.toBorder(staticBorderColor, strokeAlign);
 
     final bool canAnimateBorderWidth = canAnimateProperty(
       property: TransitionProperty.borderWidth,
-      defaultStyle: defaultStyle,
-      currentStyle: currentStyle,
+      mergedStyle: mergedStyle,
     );
     final bool canAnimateBorderColor = canAnimateProperty(
       property: TransitionProperty.borderColor,
-      defaultStyle: defaultStyle,
-      currentStyle: currentStyle,
+      mergedStyle: mergedStyle,
     );
     final bool shouldUseTweenedBoxBorder =
         canAnimateBorderWidth || canAnimateBorderColor;
@@ -445,26 +391,22 @@ class TwTransitionController {
     return BoxDecoration(
       color: canAnimateProperty(
         property: TransitionProperty.backgroundColor,
-        defaultStyle: defaultStyle,
-        currentStyle: currentStyle,
+        mergedStyle: mergedStyle,
       )
           ? backgroundColor ?? staticBackgroundColor
           : staticBackgroundColor,
-      image: currentStyle.backgroundImage ?? defaultStyle.backgroundImage,
-      gradient:
-          currentStyle.backgroundGradient ?? defaultStyle.backgroundGradient,
+      image: mergedStyle.backgroundImage,
+      gradient: mergedStyle.backgroundGradient,
       border: tweenedBorder ?? staticBorder,
       borderRadius: canAnimateProperty(
         property: TransitionProperty.borderRadius,
-        defaultStyle: defaultStyle,
-        currentStyle: currentStyle,
+        mergedStyle: mergedStyle,
       )
           ? borderRadius ?? staticBorderRadius
           : staticBorderRadius,
       boxShadow: canAnimateProperty(
         property: TransitionProperty.boxShadow,
-        defaultStyle: defaultStyle,
-        currentStyle: currentStyle,
+        mergedStyle: mergedStyle,
       )
           ? boxShadow ?? staticBoxShadows
           : staticBoxShadows,
@@ -473,12 +415,10 @@ class TwTransitionController {
 
   bool canAnimateProperty({
     required final TransitionProperty property,
-    required final TwStyle defaultStyle,
-    required final TwStyle currentStyle,
+    required final TwStyle mergedStyle,
   }) {
     if (!canAnimate) return false;
-    return (currentStyle.transition?.has(property) ?? false) ||
-        (defaultStyle.transition?.has(property) ?? false);
+    return mergedStyle.transition?.has(property) ?? false;
   }
 
   BoxConstraints? get trackedConstraints => _trackedConstraints;

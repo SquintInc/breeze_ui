@@ -3,7 +3,7 @@ import 'package:tailwind_elements/config/options/sizing/height.dart';
 import 'package:tailwind_elements/config/options/sizing/width.dart';
 import 'package:tailwind_elements/config/options/units.dart';
 
-/// A simple [SizedBox] wrapper with constrained width and height.
+/// A simple, unstyled [SizedBox] wrapper with constrained width and height.
 @immutable
 class TwSizedBox extends SizedBox {
   final TwWidth? widthConstrained;

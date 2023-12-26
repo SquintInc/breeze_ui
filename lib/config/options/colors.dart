@@ -19,6 +19,7 @@ class TwColor {
   int get hashCode => color.hashCode ^ runtimeType.toString().hashCode;
 
   /// Returns the color as null if the color is transparent for tweening.
+  /// See [ColorTween] for more details.
   Color? get tweenColor => color == const Color(0x00000000) ? null : color;
 
   @override

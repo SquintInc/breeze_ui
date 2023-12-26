@@ -141,47 +141,184 @@ class TwStyle {
     this.wordSpacing,
   });
 
+  /// Merges another [TwStyle] with this style, and overwrites any existing
+  /// properties from this style with the [other]'s property if set.
+  TwStyle merge(final TwStyle? other) {
+    if (other == null || other == this) {
+      return this;
+    }
+
+    return copyWith(
+      backgroundColor: other.backgroundColor,
+      backgroundImage: other.backgroundImage,
+      backgroundGradient: other.backgroundGradient,
+      boxShadow: other.boxShadow,
+      boxShadowColor: other.boxShadowColor,
+      opacity: other.opacity,
+      border: other.border,
+      borderColor: other.borderColor,
+      borderRadius: other.borderRadius,
+      borderStrokeAlign: other.borderStrokeAlign,
+      minWidth: other.minWidth,
+      width: other.width,
+      maxWidth: other.maxWidth,
+      minHeight: other.minHeight,
+      height: other.height,
+      maxHeight: other.maxHeight,
+      padding: other.padding,
+      margin: other.margin,
+      transition: other.transition,
+      transitionDuration: other.transitionDuration,
+      transitionTimingFn: other.transitionTimingFn,
+      transitionDelay: other.transitionDelay,
+      fontSize: other.fontSize,
+      fontStyle: other.fontStyle,
+      fontWeight: other.fontWeight,
+      letterSpacing: other.letterSpacing,
+      lineHeight: other.lineHeight,
+      textColor: other.textColor,
+      textDecoration: other.textDecoration,
+      textDecorationColor: other.textDecorationColor,
+      textDecorationStyle: other.textDecorationStyle,
+      textDecorationThickness: other.textDecorationThickness,
+      leadingDistribution: other.leadingDistribution,
+      wordSpacing: other.wordSpacing,
+    );
+  }
+
+  TwStyle copyWith({
+    // Background styling
+    final TwBackgroundColor? backgroundColor,
+    final DecorationImage? backgroundImage,
+    final Gradient? backgroundGradient,
+    final TwBoxShadows? boxShadow,
+    final TwBoxShadowColor? boxShadowColor,
+    final TwOpacity? opacity,
+    final TwBorder? border,
+    final TwBorderColor? borderColor,
+    final TwBorderRadius? borderRadius,
+    final double? borderStrokeAlign,
+    final TwMinWidth? minWidth,
+    final TwWidth? width,
+    final TwMaxWidth? maxWidth,
+    final TwMinHeight? minHeight,
+    final TwHeight? height,
+    final TwMaxHeight? maxHeight,
+    final TwPadding? padding,
+    final TwMargin? margin,
+    final TwTransitionProperty? transition,
+    final TwTransitionDuration? transitionDuration,
+    final TwTransitionTimingFunction? transitionTimingFn,
+    final TwTransitionDelay? transitionDelay,
+    final TwFontSize? fontSize,
+    final FontStyle? fontStyle,
+    final TwFontWeight? fontWeight,
+    final TwLetterSpacing? letterSpacing,
+    final TwLineHeight? lineHeight,
+    final TwTextColor? textColor,
+    final TextDecoration? textDecoration,
+    final TwTextDecorationColor? textDecorationColor,
+    final TextDecorationStyle? textDecorationStyle,
+    final TwTextDecorationThickness? textDecorationThickness,
+    final TextLeadingDistribution? leadingDistribution,
+    final double? wordSpacing,
+  }) =>
+      TwStyle(
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+        backgroundImage: backgroundImage ?? this.backgroundImage,
+        backgroundGradient: backgroundGradient ?? this.backgroundGradient,
+        boxShadow: boxShadow ?? this.boxShadow,
+        boxShadowColor: boxShadowColor ?? this.boxShadowColor,
+        opacity: opacity ?? this.opacity,
+        border: border ?? this.border,
+        borderColor: borderColor ?? this.borderColor,
+        borderRadius: borderRadius ?? this.borderRadius,
+        borderStrokeAlign: borderStrokeAlign ?? this.borderStrokeAlign,
+        minWidth: minWidth ?? this.minWidth,
+        width: width ?? this.width,
+        maxWidth: maxWidth ?? this.maxWidth,
+        minHeight: minHeight ?? this.minHeight,
+        height: height ?? this.height,
+        maxHeight: maxHeight ?? this.maxHeight,
+        padding: padding ?? this.padding,
+        margin: margin ?? this.margin,
+        transition: transition ?? this.transition,
+        transitionDuration: transitionDuration ?? this.transitionDuration,
+        transitionTimingFn: transitionTimingFn ?? this.transitionTimingFn,
+        transitionDelay: transitionDelay ?? this.transitionDelay,
+        fontSize: fontSize ?? this.fontSize,
+        fontStyle: fontStyle ?? this.fontStyle,
+        fontWeight: fontWeight ?? this.fontWeight,
+        letterSpacing: letterSpacing ?? this.letterSpacing,
+        lineHeight: lineHeight ?? this.lineHeight,
+        textColor: textColor ?? this.textColor,
+        textDecoration: textDecoration ?? this.textDecoration,
+        textDecorationColor: textDecorationColor ?? this.textDecorationColor,
+        textDecorationStyle: textDecorationStyle ?? this.textDecorationStyle,
+        textDecorationThickness:
+            textDecorationThickness ?? this.textDecorationThickness,
+        leadingDistribution: leadingDistribution ?? this.leadingDistribution,
+        wordSpacing: wordSpacing ?? this.wordSpacing,
+      );
+
+  /// Determines whether the style has min/max width and height constraints.
   bool get hasConstraints =>
       minWidth != null ||
       maxWidth != null ||
       minHeight != null ||
       maxHeight != null;
 
+  /// Determines whether the style has any sizing properties for width and
+  /// height.
   bool get hasSizing => width != null || height != null || hasConstraints;
 
+  /// Determines whether the style has its min and max width set
   bool get hasTightWidth =>
       minWidth != null &&
       maxWidth != null &&
       minWidth!.value == maxWidth!.value;
 
+  /// Determines whether the style has its min and max height set
   bool get hasTightHeight =>
       minHeight != null &&
       maxHeight != null &&
       minHeight!.value == maxHeight!.value;
 
+  /// Determines if the style has any percentage based min/max sizing
+  /// constraints
   bool get hasPercentageConstraints =>
       (minWidth?.value.isPercentageBased ?? false) ||
       (maxWidth?.value.isPercentageBased ?? false) ||
       (minHeight?.value.isPercentageBased ?? false) ||
       (maxHeight?.value.isPercentageBased ?? false);
 
+  /// Determines if the style has any percentage based sizing constraints
   bool get hasPercentageSize =>
       (width?.value.isPercentageBased ?? false) ||
       (height?.value.isPercentageBased ?? false);
 
+  /// Determines if the style has any background decoration at all (e.g. color,
+  /// image, gradient)
   bool get hasBackgroundDecoration =>
       backgroundColor != null ||
       backgroundImage != null ||
       backgroundGradient != null;
 
+  /// Determines if the style has any border decoration at all (e.g. border
+  /// thickness, border radius)
   bool get hasBorderDecoration =>
       (border != null && !(border?.isEmpty ?? true)) || borderRadius != null;
 
+  /// Determines if the style has any box shadow decoration at all
   bool get hasBoxShadowDecoration => boxShadow != null;
 
+  /// Determines if the style has any decoration at all (e.g. background,
+  /// borders, shadows)
   bool get hasDecorations =>
       hasBackgroundDecoration || hasBorderDecoration || hasBoxShadowDecoration;
 
+  /// Determines if the style has only background color decoration, for
+  /// optimized rendering of a [ColoredBox] widget.
   bool get hasOnlyBackgroundColorDecoration =>
       hasBackgroundDecoration &&
       !hasBorderDecoration &&
@@ -189,6 +326,8 @@ class TwStyle {
       backgroundImage == null &&
       backgroundGradient == null;
 
+  /// Calculates the width of this widget in pixels, based on a percentage of
+  /// its parent widget's width, or via this widget's own logical pixel width.
   double widthPx(final double parentWidth) {
     final width = this.width;
     if (width == null) return double.infinity;
@@ -198,6 +337,8 @@ class TwStyle {
         : width.value.logicalPixels;
   }
 
+  /// Calculates the height of this widget in pixels, based on a percentage of
+  /// its parent widget's height, or via this widget's own logical pixel height.
   double heightPx(final double parentHeight) {
     final height = this.height;
     if (height == null) return double.infinity;
@@ -207,34 +348,39 @@ class TwStyle {
         : height.value.logicalPixels;
   }
 
+  /// Compute the box decoration for this style, based on the merged style and
+  /// the current widget's constraints (if applicable, e.g. computed from a
+  /// [LayoutBuilder]).
   Decoration? getBoxDecoration(
-    final TwStyle defaultStyle,
+    final TwStyle mergedStyle,
     final BoxConstraints? constraints,
   ) {
-    if (!hasDecorations && !defaultStyle.hasDecorations) {
+    if (!hasDecorations && !mergedStyle.hasDecorations) {
       return null;
     }
     final bool isCircle =
-        borderRadius?.isCircle ?? defaultStyle.borderRadius?.isCircle ?? false;
+        borderRadius?.isCircle ?? mergedStyle.borderRadius?.isCircle ?? false;
     final borderColor =
-        this.borderColor?.color ?? defaultStyle.borderColor?.color;
+        this.borderColor?.color ?? mergedStyle.borderColor?.color;
     final borderStrokeAlign =
-        this.borderStrokeAlign ?? defaultStyle.borderStrokeAlign;
+        this.borderStrokeAlign ?? mergedStyle.borderStrokeAlign;
     return BoxDecoration(
-      color: backgroundColor?.color ?? defaultStyle.backgroundColor?.color,
-      image: backgroundImage ?? defaultStyle.backgroundImage,
-      gradient: backgroundGradient ?? defaultStyle.backgroundGradient,
+      color: backgroundColor?.color ?? mergedStyle.backgroundColor?.color,
+      image: backgroundImage ?? mergedStyle.backgroundImage,
+      gradient: backgroundGradient ?? mergedStyle.backgroundGradient,
       border: border?.toBorder(borderColor, borderStrokeAlign) ??
-          defaultStyle.border?.toBorder(borderColor, borderStrokeAlign),
+          mergedStyle.border?.toBorder(borderColor, borderStrokeAlign),
       borderRadius: isCircle
           ? BorderRadius.circular(constraints?.circleRadius ?? 9999)
           : borderRadius?.toBorderRadius() ??
-              defaultStyle.borderRadius?.toBorderRadius(),
+              mergedStyle.borderRadius?.toBorderRadius(),
       boxShadow: boxShadow?.withColor(boxShadowColor) ??
-          defaultStyle.boxShadow?.withColor(boxShadowColor),
+          mergedStyle.boxShadow?.withColor(boxShadowColor),
     );
   }
 
+  /// Compute the box constraints for this style based on a percentage of the
+  /// parent widget's sizing.
   BoxConstraints getPercentageBoxConstraints(
     final double parentWidth,
     final double parentHeight,
@@ -273,6 +419,8 @@ class TwStyle {
     );
   }
 
+  /// Compute simple box constraints for this style, using the min/max width and
+  /// height sizing values, assuming that they are logical pixels.
   BoxConstraints? getSimpleConstraints() {
     if (!hasConstraints) return null;
     return BoxConstraints(
@@ -327,6 +475,8 @@ class TwStyle {
         },
       );
 
+  /// Converts this style to a [TextStyle] for use in a widget that may render
+  /// [Text].
   TextStyle toTextStyle() {
     return TextStyle(
       fontSize: fontSize.value.logicalPixels,
@@ -475,4 +625,81 @@ class TwStyle {
     }
     return 'TwStyle{${buf.join(', ')}}';
   }
+
+  @override
+  bool operator ==(final Object other) =>
+      identical(this, other) ||
+      other is TwStyle &&
+          runtimeType == other.runtimeType &&
+          backgroundColor == other.backgroundColor &&
+          backgroundImage == other.backgroundImage &&
+          backgroundGradient == other.backgroundGradient &&
+          boxShadow == other.boxShadow &&
+          boxShadowColor == other.boxShadowColor &&
+          opacity == other.opacity &&
+          border == other.border &&
+          borderColor == other.borderColor &&
+          borderRadius == other.borderRadius &&
+          borderStrokeAlign == other.borderStrokeAlign &&
+          minWidth == other.minWidth &&
+          width == other.width &&
+          maxWidth == other.maxWidth &&
+          minHeight == other.minHeight &&
+          height == other.height &&
+          maxHeight == other.maxHeight &&
+          padding == other.padding &&
+          margin == other.margin &&
+          transition == other.transition &&
+          transitionDuration == other.transitionDuration &&
+          transitionTimingFn == other.transitionTimingFn &&
+          transitionDelay == other.transitionDelay &&
+          fontSize == other.fontSize &&
+          fontStyle == other.fontStyle &&
+          fontWeight == other.fontWeight &&
+          letterSpacing == other.letterSpacing &&
+          lineHeight == other.lineHeight &&
+          textColor == other.textColor &&
+          textDecoration == other.textDecoration &&
+          textDecorationColor == other.textDecorationColor &&
+          textDecorationStyle == other.textDecorationStyle &&
+          textDecorationThickness == other.textDecorationThickness &&
+          leadingDistribution == other.leadingDistribution &&
+          wordSpacing == other.wordSpacing;
+
+  @override
+  int get hashCode =>
+      backgroundColor.hashCode ^
+      backgroundImage.hashCode ^
+      backgroundGradient.hashCode ^
+      boxShadow.hashCode ^
+      boxShadowColor.hashCode ^
+      opacity.hashCode ^
+      border.hashCode ^
+      borderColor.hashCode ^
+      borderRadius.hashCode ^
+      borderStrokeAlign.hashCode ^
+      minWidth.hashCode ^
+      width.hashCode ^
+      maxWidth.hashCode ^
+      minHeight.hashCode ^
+      height.hashCode ^
+      maxHeight.hashCode ^
+      padding.hashCode ^
+      margin.hashCode ^
+      transition.hashCode ^
+      transitionDuration.hashCode ^
+      transitionTimingFn.hashCode ^
+      transitionDelay.hashCode ^
+      fontSize.hashCode ^
+      fontStyle.hashCode ^
+      fontWeight.hashCode ^
+      letterSpacing.hashCode ^
+      lineHeight.hashCode ^
+      textColor.hashCode ^
+      textDecoration.hashCode ^
+      textDecorationColor.hashCode ^
+      textDecorationStyle.hashCode ^
+      textDecorationThickness.hashCode ^
+      leadingDistribution.hashCode ^
+      wordSpacing.hashCode;
 }
