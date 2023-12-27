@@ -131,6 +131,26 @@ class _TailwindElementsPlaygroundState
                   padding: TwPadding.all(p_0),
                 ),
               ),
+              const TwDiv(
+                style: TwStyle(
+                  width: w_96,
+                  height: h_20,
+                  backgroundColor: bg_green_400,
+                  textColor: text_gray_500,
+                  fontSize: text_2xl,
+                  fontWeight: font_bold,
+                  transition: transition_all,
+                  borderRadius: TwBorderRadius.all(rounded_lg),
+                  transitionDuration: duration_1000,
+                ),
+                hovered: TwStyle(
+                  backgroundColor: bg_blue_400,
+                  textColor: text_blue_700,
+                  // fontSize: text_4xl,
+                  fontWeight: font_light,
+                ),
+                child: TwText('test inherited text style'),
+              ),
               TwAnimationGroup(
                 child: TwDiv(
                   alignment: Alignment.center,
@@ -138,8 +158,8 @@ class _TailwindElementsPlaygroundState
                     backgroundColor: bg_cyan_700,
                   ),
                   style: const TwStyle(
-                    width: w_96,
-                    height: h_96,
+                    width: w_48,
+                    height: h_24,
                     border: TwBorder.all(border_8),
                     borderRadius: TwBorderRadius.all(rounded_3xl),
                     borderColor: border_green_600,
@@ -151,7 +171,7 @@ class _TailwindElementsPlaygroundState
                     transitionTimingFn: ease_in_out,
                   ),
                   hovered: const TwStyle(
-                    width: w_144,
+                    width: w_64,
                     maxWidth: max_w_screen_2xl,
                     backgroundColor: bg_black,
                     borderRadius: TwBorderRadius.all(rounded_full),

@@ -99,6 +99,17 @@ class _DivState extends TwAnimatedState<TwDiv> {
       current = Align(alignment: alignment, child: current);
     }
 
+    // Set a [DefaultTextStyle] if the widget has any typography styling set, so
+    // that text styling can be inherited by child [Text] widgets.
+    if (widget.hasTypographyStyling) {
+      final DefaultTextStyle parentTextStyle = DefaultTextStyle.of(context);
+      final textStyle = style.toTextStyle();
+      current = DefaultTextStyle(
+        style: parentTextStyle.style.merge(textStyle),
+        child: current!,
+      );
+    }
+
     // Render effective padding (including border widths) around the current
     // widget if applicable.
     final EdgeInsetsGeometry? effectivePadding =
