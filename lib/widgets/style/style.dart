@@ -342,7 +342,8 @@ class TwStyle {
       decorationStyle: textDecorationStyle,
       decorationThickness: textDecorationThickness?.value.logicalPixels,
       wordSpacing: wordSpacing,
-      letterSpacing: letterSpacing?.value
+      letterSpacing: (letterSpacing ?? const TwLetterSpacing(EmUnit(0)))
+          .value
           .emPixels(fontSize?.value.logicalPixels ?? defaultFontSize),
     );
   }

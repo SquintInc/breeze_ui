@@ -6,6 +6,11 @@ import 'package:tailwind_elements/config/options/colors.dart';
 import 'package:tailwind_elements/config/options/effects/box_shadow.dart';
 import 'package:tailwind_elements/config/options/effects/opacity.dart';
 import 'package:tailwind_elements/config/options/transitions/transition_property.dart';
+import 'package:tailwind_elements/config/options/typography/font_size.dart';
+import 'package:tailwind_elements/config/options/typography/font_weight.dart';
+import 'package:tailwind_elements/config/options/typography/letter_spacing.dart';
+import 'package:tailwind_elements/config/options/typography/line_height.dart';
+import 'package:tailwind_elements/config/options/typography/text_decoration_thickness.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 
 /// Tween class for [TwStyle] values. Supports conditional evaluation of
@@ -57,6 +62,38 @@ class TwStyleTween extends Tween<TwStyle?> {
 
     final boxShadowColor = (has(TransitionProperty.boxShadow))
         ? TwBoxShadowColor.fromColor(_lerpBoxShadowColor(begin, end, t))
+        : null;
+
+    final lineHeight = has(TransitionProperty.lineHeight)
+        ? TwLineHeight(
+            PxUnit(
+              ui.lerpDouble(
+                    begin.lineHeight?.value.logicalPixels ??
+                        TwStyle.defaultLineHeight,
+                    end.lineHeight?.value.logicalPixels ??
+                        TwStyle.defaultLineHeight,
+                    t,
+                  ) ??
+                  TwStyle.defaultLineHeight,
+            ),
+          )
+        : null;
+
+    final fontSize = has(TransitionProperty.fontSize)
+        ? TwFontSize(
+            PxUnit(
+              ui.lerpDouble(
+                    begin.fontSize?.value.logicalPixels ??
+                        TwStyle.defaultFontSize,
+                    end.fontSize?.value.logicalPixels ??
+                        TwStyle.defaultFontSize,
+                    t,
+                  ) ??
+                  TwStyle.defaultFontSize,
+            ),
+            lineHeight ??
+                const TwLineHeight(RemUnit(TwStyle.defaultLineHeight)),
+          )
         : null;
 
     return TwStyle(
@@ -155,6 +192,63 @@ class TwStyleTween extends Tween<TwStyle?> {
                     t,
                   ) ??
                   1,
+            )
+          : null,
+      fontWeight: has(TransitionProperty.fontWeight)
+          ? TwFontWeight(
+              FontWeight.lerp(
+                    begin.fontWeight?.fontWeight ?? TwStyle.defaultFontWeight,
+                    end.fontWeight?.fontWeight ?? TwStyle.defaultFontWeight,
+                    t,
+                  )?.value ??
+                  400,
+            )
+          : null,
+      lineHeight: lineHeight,
+      fontSize: has(TransitionProperty.fontSize)
+          ? TwFontSize(
+              PxUnit(
+                ui.lerpDouble(
+                      begin.fontSize?.value.logicalPixels ??
+                          TwStyle.defaultFontSize,
+                      end.fontSize?.value.logicalPixels ??
+                          TwStyle.defaultFontSize,
+                      t,
+                    ) ??
+                    TwStyle.defaultFontSize,
+              ),
+              lineHeight ??
+                  const TwLineHeight(RemUnit(TwStyle.defaultLineHeight)),
+            )
+          : null,
+      textDecorationThickness: has(TransitionProperty.textDecorationThickness)
+          ? TwTextDecorationThickness(
+              PxUnit(
+                ui.lerpDouble(
+                      begin.textDecorationThickness?.value.logicalPixels ?? 0,
+                      end.textDecorationThickness?.value.logicalPixels ?? 0,
+                      t,
+                    ) ??
+                    0,
+              ),
+            )
+          : const TwTextDecorationThickness(PxUnit(0)),
+      letterSpacing: has(TransitionProperty.letterSpacing)
+          ? TwLetterSpacing(
+              fontSize != null
+                  ? EmUnit(
+                      ui.lerpDouble(
+                            begin.letterSpacing?.value
+                                    .emPixels(fontSize.value.logicalPixels) ??
+                                0,
+                            end.letterSpacing?.value
+                                    .emPixels(fontSize.value.logicalPixels) ??
+                                0,
+                            t,
+                          ) ??
+                          0,
+                    )
+                  : const EmUnit(0),
             )
           : null,
     );
