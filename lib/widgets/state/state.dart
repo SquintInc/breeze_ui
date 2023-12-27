@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/widgets/animation_group.dart';
+import 'package:tailwind_elements/widgets/animation/animation_group.dart';
 import 'package:tailwind_elements/widgets/state/widget_state.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
+
+/// A [Widget] subclass with support for Tailwind styled properties.
+abstract class TwWidget extends StatelessWidget {
+  /// Default style properties for this widget.
+  final TwStyle style;
+
+  const TwWidget({
+    required this.style,
+    super.key,
+  });
+}
 
 /// A [StatefulWidget] subclass with support for [MaterialStatesController].
 abstract class TwStatefulWidget extends StatefulWidget {
@@ -43,9 +54,13 @@ abstract class TwStatefulWidget extends StatefulWidget {
   /// Whether or not the widget is selectable (toggleable)
   final bool isSelectable;
 
-  /// Whether or not the widget should be wrapped in a [GestureDetector] and
-  /// [MouseRegion] for handling material state controller inputs.
-  final bool hasGestureDetector;
+  /// Whether or not the widget should be wrapped in a [GestureDetector] for
+  /// handling material state controller inputs.
+  final bool useGestureDetector;
+
+  /// Whether or not the widget should be wrapped in a [MouseRegion] for
+  /// handling material state controller inputs.
+  final bool useMouseRegion;
 
   /// An optional material states controller that can be passed down from a
   /// parent widget to create a single shared 'group' of states which applies
@@ -70,7 +85,8 @@ abstract class TwStatefulWidget extends StatefulWidget {
     this.isDisabled = false,
     this.isSelectable = false,
     this.statesController,
-    this.hasGestureDetector = true,
+    this.useGestureDetector = true,
+    this.useMouseRegion = true,
     super.key,
   });
 
@@ -127,24 +143,21 @@ enum StatesControllerType {
 /// animated transitions.
 abstract class TwState<T extends TwStatefulWidget> extends State<T> {
   /// The internal material states controller for this stateful widget.
-  late StatesControllerType _statesControllerType;
+  late StatesControllerType statesControllerType;
   MaterialStatesController? internalStatesController;
   MaterialStatesController? animationGroupStatesController;
 
-  @protected
-  bool get shouldInheritAnimationGroupStatesController;
-
-  @protected
-  StatesControllerType get statesControllerType => _statesControllerType;
-
+  /// Current material state for the widget
   late TwWidgetState _widgetState;
 
-  // Internal selectable toggle state
+  /// Internal selectable toggle state, only used when the widget is selectable
   bool _isSelected = false;
 
+  /// Gets the current material state for the widget.
   @protected
   TwWidgetState get widgetState => _widgetState;
 
+  /// Gets the current merged style using the widget's current material state.
   @protected
   TwStyle get currentStyle => widget.style.merge(getStyle(_widgetState));
 
@@ -152,7 +165,7 @@ abstract class TwState<T extends TwStatefulWidget> extends State<T> {
   /// [statesControllerType].
   @protected
   MaterialStatesController get statesController =>
-      switch (_statesControllerType) {
+      switch (statesControllerType) {
         StatesControllerType.passedDown => widget.statesController!,
         StatesControllerType.internal => internalStatesController!,
         StatesControllerType.inherited => animationGroupStatesController!,
@@ -189,17 +202,16 @@ abstract class TwState<T extends TwStatefulWidget> extends State<T> {
   }
 
   void initStatesController() {
-    final animationGroup =
-        context.dependOnInheritedWidgetOfExactType<TwAnimationGroup>();
+    final AnimationGroupData? animationGroup = AnimationGroupData.of(context);
 
     // Determine material states controller type
     if (animationGroup != null) {
-      _statesControllerType = StatesControllerType.inherited;
+      statesControllerType = StatesControllerType.inherited;
       animationGroupStatesController = animationGroup.statesController;
     } else if (widget.statesController != null) {
-      _statesControllerType = StatesControllerType.passedDown;
+      statesControllerType = StatesControllerType.passedDown;
     } else {
-      _statesControllerType = StatesControllerType.internal;
+      statesControllerType = StatesControllerType.internal;
       internalStatesController = MaterialStatesController();
     }
 
@@ -207,9 +219,6 @@ abstract class TwState<T extends TwStatefulWidget> extends State<T> {
     // has values set.
     statesController.update(MaterialState.disabled, widget.isDisabled);
     _widgetState = getPrimaryWidgetState(statesController.value);
-
-    // Call [handleStatesControllerChange] whenever the state values in the
-    // controller changes.
     statesController.addListener(handleStatesControllerChange);
   }
 
@@ -249,13 +258,6 @@ abstract class TwState<T extends TwStatefulWidget> extends State<T> {
     internalStatesController?.dispose();
     super.dispose();
   }
-
-  @protected
-  Widget buildForState(
-    final BuildContext context,
-    final MaterialStatesController controller,
-    final TwWidgetState state,
-  );
 
   /// Manages [MaterialState.pressed] and [MaterialState.dragged] for this
   /// widget.
@@ -336,30 +338,30 @@ abstract class TwState<T extends TwStatefulWidget> extends State<T> {
     );
   }
 
+  @protected
+  Widget buildForState(
+    final BuildContext context,
+  );
+
   @override
   Widget build(final BuildContext context) {
-    final animationGroup =
-        context.dependOnInheritedWidgetOfExactType<TwAnimationGroup>();
-    Widget builtWidget = buildForState(
-      context,
-      statesController,
-      _widgetState,
-    );
+    final animationGroup = AnimationGroupData.of(context);
+    Widget builtWidget = buildForState(context);
 
-    if (widget.hasGestureDetector) {
-      if ((animationGroup != null && identical(animationGroup.child, widget)) ||
-          internalStatesController != null) {
-        // Wrap widget in gesture detector only if the widget is pressable,
-        // draggable, or selectable.
-        if (widget.requireGestureDetector) {
-          builtWidget = _wrapGestureDetector(builtWidget);
-        }
+    final bool isAnimationGroupImmediateChild =
+        animationGroup != null && identical(animationGroup.child, widget);
+    final bool canWrap =
+        isAnimationGroupImmediateChild || internalStatesController != null;
 
-        // Wrap widget in mouse region only if the widget is hoverable or draggable.
-        if (widget.requireMouseRegion) {
-          builtWidget = _wrapMouseRegion(builtWidget);
-        }
-      }
+    // Wrap widget in gesture detector only if the widget is pressable,
+    // draggable, or selectable.
+    if (widget.useGestureDetector && widget.requireGestureDetector && canWrap) {
+      builtWidget = _wrapGestureDetector(builtWidget);
+    }
+
+    // Wrap widget in mouse region only if the widget is hoverable or draggable.
+    if (widget.useMouseRegion && widget.requireMouseRegion && canWrap) {
+      builtWidget = _wrapMouseRegion(builtWidget);
     }
 
     return builtWidget;

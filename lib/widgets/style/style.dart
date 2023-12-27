@@ -24,7 +24,6 @@ import 'package:tailwind_elements/config/options/typography/text_decoration_thic
 import 'package:tailwind_elements/config/options/units.dart';
 import 'package:tailwind_elements/widgets/extensions/extensions.dart';
 import 'package:tailwind_elements/widgets/state/widget_state.dart';
-import 'package:tailwind_elements/widgets/style/text_style.dart';
 
 export 'package:tailwind_elements/config/options/units.dart';
 export 'package:tailwind_elements/widgets/extensions/extensions.dart';
@@ -39,7 +38,14 @@ MaterialStateProperty<T> always<T>(final T value) =>
 /// properties won't be applicable to widgets that are not meant to render text
 /// at their level).
 @immutable
-class TwStyle extends TwTextStyle {
+class TwStyle {
+  // See `text-base` values from https://tailwindcss.com/docs/font-size
+  static const defaultFontSize = 16.0; // 16px == 1rem
+  static const defaultLineHeight = 1.5;
+
+  // See `text-base` values from https://tailwindcss.com/docs/font-size
+  static const defaultFontWeight = FontWeight.w400;
+
   /// See `rounded-full` values from https://tailwindcss.com/docs/border-radius
   static const maxCircleRadius = 9999.0;
 
@@ -77,6 +83,21 @@ class TwStyle extends TwTextStyle {
   final TwTransitionTimingFunction? transitionTimingFn;
   final TwTransitionDelay? transitionDelay;
 
+  // Typography styling only
+  final TwFontSize? fontSize;
+  final FontStyle? fontStyle;
+  final TwFontWeight? fontWeight;
+  final TwLetterSpacing? letterSpacing;
+  final TwLineHeight? lineHeight;
+  final TwTextColor? textColor;
+  final TwTextColor? selectionColor;
+  final TextDecoration? textDecoration;
+  final TwTextDecorationColor? textDecorationColor;
+  final TextDecorationStyle? textDecorationStyle;
+  final TwTextDecorationThickness? textDecorationThickness;
+  final TextLeadingDistribution? leadingDistribution;
+  final double? wordSpacing;
+
   const TwStyle({
     // Background
     this.backgroundColor,
@@ -113,18 +134,19 @@ class TwStyle extends TwTextStyle {
     this.transitionDelay,
 
     // Typography styling
-    super.fontSize,
-    super.fontStyle,
-    super.fontWeight,
-    super.letterSpacing,
-    super.lineHeight,
-    super.textColor,
-    super.textDecoration,
-    super.textDecorationColor,
-    super.textDecorationStyle,
-    super.textDecorationThickness,
-    super.leadingDistribution,
-    super.wordSpacing,
+    this.fontSize,
+    this.fontStyle,
+    this.fontWeight,
+    this.letterSpacing,
+    this.lineHeight,
+    this.textColor,
+    this.selectionColor,
+    this.textDecoration,
+    this.textDecorationColor,
+    this.textDecorationStyle,
+    this.textDecorationThickness,
+    this.leadingDistribution,
+    this.wordSpacing,
   });
 
   /// Determines whether the style has min/max width and height constraints.
@@ -285,6 +307,26 @@ class TwStyle extends TwTextStyle {
       maxWidth: maxWidth?.value.logicalPixels ?? double.infinity,
       minHeight: minHeight?.value.logicalPixels ?? 0.0,
       maxHeight: maxHeight?.value.logicalPixels ?? double.infinity,
+    );
+  }
+
+  /// Converts this style to a [TextStyle] for use in a widget that may render
+  /// [Text].
+  TextStyle toTextStyle() {
+    return TextStyle(
+      fontSize: fontSize?.value.logicalPixels ?? defaultFontSize,
+      fontWeight: fontWeight?.fontWeight ?? defaultFontWeight,
+      height: fontSize?.getLineHeight(lineHeight) ?? defaultLineHeight,
+      fontStyle: fontStyle,
+      color: textColor?.color,
+      leadingDistribution: leadingDistribution,
+      decoration: textDecoration,
+      decorationColor: textDecorationColor?.color,
+      decorationStyle: textDecorationStyle,
+      decorationThickness: textDecorationThickness?.value.logicalPixels,
+      wordSpacing: wordSpacing,
+      letterSpacing: letterSpacing?.value
+          .emPixels(fontSize?.value.logicalPixels ?? defaultFontSize),
     );
   }
 

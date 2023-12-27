@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:tailwind_elements/widgets.dart';
 import 'package:tailwind_elements/widgets/state/animated_state.dart';
 import 'package:tailwind_elements/widgets/state/state.dart';
-import 'package:tailwind_elements/widgets/state/widget_state.dart';
 
 /// A [Container] widget wrapper with support for Tailwind styled properties
 /// and animated property transitions.
 ///
-/// Prefer to use a [TwAnimationGroup] to reuse the same animation controller
+/// Prefer to use a [AnimationGroupData] to reuse the same animation controller
 /// for multiple [TwStatefulWidget]s that support animations.
 class TwDiv extends TwStatefulWidget {
   // Passthrough [Container] properties
@@ -38,7 +37,8 @@ class TwDiv extends TwStatefulWidget {
     super.isDisabled = false,
     super.isSelectable = false,
     super.statesController,
-    super.hasGestureDetector = true,
+    super.useGestureDetector = true,
+    super.useMouseRegion = true,
     super.key,
   });
 
@@ -47,9 +47,6 @@ class TwDiv extends TwStatefulWidget {
 }
 
 class _DivState extends TwAnimatedState<TwDiv> {
-  @override
-  bool get shouldInheritAnimationGroupStatesController => true;
-
   EdgeInsetsGeometry? _paddingIncludingDecoration(final TwStyle style) {
     final padding = style.padding;
     final paddingEdgeInsets = padding?.toEdgeInsets();
@@ -198,11 +195,7 @@ class _DivState extends TwAnimatedState<TwDiv> {
   }
 
   @override
-  Widget buildForState(
-    final BuildContext context,
-    final MaterialStatesController controller,
-    final TwWidgetState state,
-  ) {
+  Widget buildForState(final BuildContext context) {
     final mergedStyle = currentStyle;
 
     if (widget.requiresLayoutBuilder) {

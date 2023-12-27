@@ -116,6 +116,9 @@ extension TwButtonStyleExtension on TwStyle {
       ),
       tapTargetSize: tapTargetSize,
       alignment: alignment,
+      animationDuration: transition != null
+          ? transitionDuration?.duration.value
+          : Duration.zero,
     );
   }
 }
@@ -126,16 +129,23 @@ class _TwButtonState extends State<TwButton> {
   MaterialStatesController get statesController =>
       widget.statesController ?? internalStatesController!;
 
+  void handleStatesControllerChange() {
+    // Force a rebuild to resolve MaterialStateProperty properties
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
     if (widget.statesController == null) {
       internalStatesController = MaterialStatesController();
     }
+    statesController.addListener(handleStatesControllerChange);
   }
 
   @override
   void dispose() {
+    statesController.removeListener(handleStatesControllerChange);
     internalStatesController?.dispose();
     super.dispose();
   }
@@ -157,6 +167,19 @@ class _TwButtonState extends State<TwButton> {
   /// rebuilding both the [TwDiv] and [TextButton].
   @override
   Widget build(final BuildContext context) {
+    final widgetState = getPrimaryWidgetState(statesController.value);
+    final stateStyle = switch (widgetState) {
+      TwWidgetState.disabled => widget.disabled,
+      TwWidgetState.pressed => widget.pressed,
+      TwWidgetState.hovered => widget.hovered,
+      TwWidgetState.dragged => widget.dragged,
+      TwWidgetState.focused => widget.focused,
+      TwWidgetState.selected => widget.selected,
+      TwWidgetState.error => widget.errored,
+      _ => widget.style,
+    };
+    final mergedStyle = widget.style.merge(stateStyle);
+
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -172,13 +195,16 @@ class _TwButtonState extends State<TwButton> {
           errored: widget.errored,
           isDisabled: widget.onPressed == null && widget.onLongPress == null,
           isSelectable: false,
-          hasGestureDetector: false,
+          useGestureDetector: false,
+          useMouseRegion: false,
           statesController: statesController,
         ),
         Positioned.fill(
           child: TextButton(
-            style: widget.style
-                .toButtonStyle(widget.tapTargetSize, widget.alignment),
+            style: mergedStyle.toButtonStyle(
+              widget.tapTargetSize,
+              widget.alignment,
+            ),
             onPressed: widget.onPressed,
             onLongPress: widget.onLongPress,
             onHover: widget.onHover,

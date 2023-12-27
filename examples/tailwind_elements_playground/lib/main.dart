@@ -69,26 +69,16 @@ class _TailwindElementsPlaygroundState
                     textColor: text_white,
                   ),
                 ),
-                onPressed: () {
-
-                },
+                onPressed: () {},
                 // onLongPress: () {
                 //   print('long press');
                 // },
-                onHover: (final hovered) {
-
-                },
+                onHover: (final hovered) {},
               ),
               TwButton(
-                onPressed: () {
-
-                },
-                onLongPress: () {
-
-                },
-                onHover: (final hovered) {
-
-                },
+                onPressed: () {},
+                onLongPress: () {},
+                onHover: (final hovered) {},
                 style: const TwStyle(
                   width: w_96,
                   height: h_20,
@@ -108,15 +98,25 @@ class _TailwindElementsPlaygroundState
                   ),
                 ),
               ),
-              // TwButton(
-              //   style: const TwStyle(
-              //     width: w_14,
-              //     height: h_9,
-              //     backgroundColor: bg_green_400,
-              //   ),
-              //   child: const TwText('Bottom Button'),
-              //   onPressed: () {},
-              // ),
+              TwButton(
+                style: const TwStyle(
+                  width: w_24,
+                  height: h_12,
+                  backgroundColor: bg_green_400,
+                  textColor: text_white,
+                  transition: transition_all,
+                ),
+                hovered: const TwStyle(
+                  backgroundColor: bg_blue_400,
+                  textColor: text_blue_700,
+                ),
+                pressed: const TwStyle(
+                  backgroundColor: bg_red_400,
+                  textColor: text_red_700,
+                ),
+                child: const Text('Bottom Button'),
+                onPressed: () {},
+              ),
               const TwTextField(
                 style: TwStyle(
                   border: TwBorder.all(border_8),
@@ -132,7 +132,6 @@ class _TailwindElementsPlaygroundState
                 ),
               ),
               TwAnimationGroup(
-                statesController: statesController,
                 child: TwDiv(
                   alignment: Alignment.center,
                   selected: const TwStyle(
@@ -144,7 +143,7 @@ class _TailwindElementsPlaygroundState
                     border: TwBorder.all(border_8),
                     borderRadius: TwBorderRadius.all(rounded_3xl),
                     borderColor: border_green_600,
-                    backgroundColor: bg_white,
+                    backgroundColor: bg_teal_400,
                     boxShadow: shadow_lg,
                     boxShadowColor: shadow_gray_500,
                     transition: transition_all,
@@ -193,9 +192,8 @@ class _TailwindElementsPlaygroundState
                   ),
                 ),
               ),
-              TwAnimationGroup(
-                statesController: textStatesController,
-                child: const TwAnimatedText.rich(
+              const TwAnimationGroup(
+                child: TwAnimatedText.rich(
                   TwTextSpan(
                     children: [
                       TwTextSpan(
@@ -209,7 +207,7 @@ class _TailwindElementsPlaygroundState
                             fontWeight: font_bold,
                             textColor: text_black,
                             transition: transition_all,
-                            transitionDuration: duration_300,
+                            transitionDuration: duration_1000,
                             transitionDelay: delay_1000,
                           ),
                           hovered: TwStyle(

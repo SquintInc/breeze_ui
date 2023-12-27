@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:tailwind_elements/widgets.dart';
 import 'package:tailwind_elements/widgets/state/animated_state.dart';
 import 'package:tailwind_elements/widgets/state/state.dart';
-import 'package:tailwind_elements/widgets/state/widget_state.dart';
 
 /// A [TwText] widget wrapper with support for animations.
 /// To animate nested text spans individually, use [TwAnimatedText.rich] and
 /// pass in a [WidgetSpan] wrapper that wraps another [TwAnimatedText].
 ///
-/// Prefer to use a [TwAnimationGroup] to reuse the same animation controller
+/// Prefer to use a [AnimationGroupData] to reuse the same animation controller
 /// for multiple [TwStatefulWidget]s that support animations.
 class TwAnimatedText extends TwStatefulWidget {
   final String? data;
@@ -93,14 +92,7 @@ class TwAnimatedText extends TwStatefulWidget {
 
 class _AnimatedText extends TwAnimatedState<TwAnimatedText> {
   @override
-  bool get shouldInheritAnimationGroupStatesController => true;
-
-  @override
-  Widget buildForState(
-    final BuildContext context,
-    final MaterialStatesController controller,
-    final TwWidgetState state,
-  ) {
+  Widget buildForState(final BuildContext context) {
     assert(widget.data != null || widget.textSpan != null);
     final mergedStyle = currentStyle;
     final animatedStyle = mergedStyle.merge(animationController?.animatedStyle);
