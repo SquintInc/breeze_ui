@@ -15,6 +15,14 @@ enum TransitionProperty {
   filter,
   backdropFilter,
 
+  // typography settings
+  fontWeight,
+  fontSize,
+  lineHeight,
+  textDecorationThickness,
+  letterSpacing,
+  wordSpacing,
+
   // other common CSS properties not set by Tailwind defaults
   borderWidth,
   width,
@@ -41,6 +49,12 @@ enum TransitionProperty {
       'border-radius' => TransitionProperty.borderRadius,
       'border-width' => TransitionProperty.borderWidth,
       'border' => TransitionProperty.border,
+      'font-weight' => TransitionProperty.fontWeight,
+      'font-size' => TransitionProperty.fontSize,
+      'line-height' => TransitionProperty.lineHeight,
+      'text-decoration-thickness' => TransitionProperty.textDecorationThickness,
+      'letter-spacing' => TransitionProperty.letterSpacing,
+      'word-spacing' => TransitionProperty.wordSpacing,
       _ => TransitionProperty.none,
     };
   }

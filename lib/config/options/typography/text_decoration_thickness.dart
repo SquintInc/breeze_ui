@@ -16,4 +16,9 @@ class TwTextDecorationThickness {
 
   @override
   int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return 'TwTextDecorationThickness{value: $value}';
+  }
 }

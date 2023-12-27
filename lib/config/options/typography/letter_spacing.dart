@@ -16,4 +16,9 @@ class TwLetterSpacing {
 
   @override
   int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return 'TwLetterSpacing{value: $value}';
+  }
 }
