@@ -54,6 +54,8 @@ enum TransitionProperty {
 
 @immutable
 class TwTransitionProperty {
+  const TwTransitionProperty.none() : properties = const {};
+
   final Set<TransitionProperty> properties;
 
   const TwTransitionProperty(this.properties);

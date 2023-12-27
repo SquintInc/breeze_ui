@@ -47,14 +47,7 @@ class TwDiv extends TwStatefulWidget {
 
 class _DivState extends TwAnimatedState<TwDiv> {
   @override
-  void animationListener(final AnimationStatus status) {
-    switch (status) {
-      case AnimationStatus.completed:
-      case AnimationStatus.dismissed:
-      case AnimationStatus.forward:
-      case AnimationStatus.reverse:
-    }
-  }
+  bool get shouldInheritAnimationGroupStatesController => true;
 
   EdgeInsetsGeometry? _paddingIncludingDecoration(final TwStyle style) {
     final padding = style.padding;

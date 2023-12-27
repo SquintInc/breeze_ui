@@ -39,12 +39,24 @@ class _TailwindElementsPlaygroundState
           ),
           child: TwColumn(
             gap: gap_y_4,
+            scrollable: true,
             children: [
               TwButton(
                 style: const TwStyle(
-                  width: w_frac_1_3,
+                  width: w_96,
                   height: h_20,
                   backgroundColor: bg_green_400,
+                  transition: transition_all,
+                  transitionDuration: duration_150,
+                  borderRadius: TwBorderRadius.all(rounded_full),
+                ),
+                hovered: const TwStyle(
+                  backgroundColor: bg_blue_400,
+                  borderRadius: TwBorderRadius.all(rounded_lg),
+                ),
+                pressed: const TwStyle(
+                  backgroundColor: bg_red_400,
+                  // borderRadius: TwBorderRadius.all(rounded_full),
                 ),
                 child: const TwText(
                   'Top Button',
@@ -61,13 +73,34 @@ class _TailwindElementsPlaygroundState
                   });
                 },
               ),
-              const TwButton(
+              const TwDiv(
                 style: TwStyle(
-                  width: w_frac_1_3,
+                  width: w_96,
+                  height: h_20,
+                  backgroundColor: bg_white,
+                  transition: transition_colors,
+                  transitionDuration: duration_150,
+                ),
+                hovered: TwStyle(
+                  backgroundColor: bg_blue_400,
+                ),
+                child: TwText(
+                  'Top Button',
+                  style: TwStyle(
+                    fontSize: text_2xl,
+                    fontWeight: font_bold,
+                    textColor: text_white,
+                  ),
+                ),
+              ),
+              TwButton(
+                style: const TwStyle(
+                  width: w_14,
                   height: h_9,
                   backgroundColor: bg_green_400,
                 ),
-                child: TwText('Bottom Button'),
+                child: const TwText('Bottom Button'),
+                onPressed: () {},
               ),
               const TwTextField(
                 style: TwStyle(
@@ -90,22 +123,23 @@ class _TailwindElementsPlaygroundState
                   selected: const TwStyle(
                     backgroundColor: bg_cyan_700,
                   ),
-                  style: TwStyle(
+                  style: const TwStyle(
                     width: w_96,
                     height: h_96,
-                    border: const TwBorder.all(border_8),
-                    borderRadius: const TwBorderRadius.all(rounded_3xl),
+                    border: TwBorder.all(border_8),
+                    borderRadius: TwBorderRadius.all(rounded_3xl),
                     borderColor: border_green_600,
-                    backgroundColor: bg_green_500,
+                    backgroundColor: bg_white,
                     boxShadow: shadow_lg,
-                    transition: properties,
-                    transitionDuration: duration_150,
+                    boxShadowColor: shadow_gray_500,
+                    transition: transition_all,
+                    transitionDuration: duration_300,
                     transitionTimingFn: ease_in_out,
                   ),
                   hovered: const TwStyle(
-                    width: w_frac_1_2,
+                    width: w_144,
                     maxWidth: max_w_screen_2xl,
-                    backgroundColor: bg_blue_500,
+                    backgroundColor: bg_black,
                     borderRadius: TwBorderRadius.all(rounded_full),
                     borderColor: border_blue_600,
                     // opacity: opacity_50,

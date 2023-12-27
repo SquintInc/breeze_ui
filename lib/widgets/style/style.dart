@@ -299,39 +299,6 @@ class TwStyle extends TwTextStyle {
         strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
       );
 
-  static MaterialStateProperty<T> resolveStatus<T>(
-    final TwStyle normal,
-    final StyleValueResolver resolver, {
-    required final T defaultValue,
-    required final TwStyle? disabled,
-    required final TwStyle? dragged,
-    required final TwStyle? error,
-    required final TwStyle? focused,
-    required final TwStyle? selected,
-    required final TwStyle? pressed,
-    required final TwStyle? hovered,
-  }) =>
-      MaterialStateProperty.resolveWith<T>(
-        (final Set<MaterialState> states) =>
-            switch (getPrimaryWidgetState(states)) {
-          TwWidgetState.disabled =>
-            resolver(disabled) ?? resolver(normal) ?? defaultValue,
-          TwWidgetState.dragged =>
-            resolver(dragged) ?? resolver(normal) ?? defaultValue,
-          TwWidgetState.error =>
-            resolver(error) ?? resolver(normal) ?? defaultValue,
-          TwWidgetState.focused =>
-            resolver(focused) ?? resolver(normal) ?? defaultValue,
-          TwWidgetState.selected =>
-            resolver(selected) ?? resolver(normal) ?? defaultValue,
-          TwWidgetState.pressed =>
-            resolver(pressed) ?? resolver(normal) ?? defaultValue,
-          TwWidgetState.hovered =>
-            resolver(hovered) ?? resolver(normal) ?? defaultValue,
-          TwWidgetState.normal => resolver(normal) ?? defaultValue,
-        },
-      );
-
   InputBorder? toBorder() => hasBorderDecoration
       ? OutlineInputBorder(
           borderRadius: borderRadius?.toBorderRadius() ?? BorderRadius.zero,

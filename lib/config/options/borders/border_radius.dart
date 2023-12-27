@@ -299,6 +299,21 @@ class TwBorderRadius {
             topLeft.value == fullRadius,
       };
 
+  double get minRadius => switch (type) {
+        BoxCornerType.all => all.value.logicalPixels,
+        BoxCornerType.trbl => min(
+            min(top.value.logicalPixels, right.value.logicalPixels),
+            min(bottom.value.logicalPixels, left.value.logicalPixels),
+          ),
+        BoxCornerType.tltrbrbl => min(
+            min(topLeft.value.logicalPixels, topRight.value.logicalPixels),
+            min(
+              bottomRight.value.logicalPixels,
+              bottomLeft.value.logicalPixels,
+            ),
+          ),
+      };
+
   @override
   String toString() => switch (type) {
         BoxCornerType.all => 'TwBorderRadius{all: ${all.value}}',

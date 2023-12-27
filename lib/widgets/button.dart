@@ -1,35 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/config/options/box_types.dart';
 import 'package:tailwind_elements/widgets/div.dart';
+import 'package:tailwind_elements/widgets/state/animated_state.dart';
+import 'package:tailwind_elements/widgets/state/state.dart';
+import 'package:tailwind_elements/widgets/state/widget_state.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
-
-extension TwStyleButtonExtension on TwStyle {
-  bool get requiresDivWrapper =>
-      boxShadow != null ||
-      margin != null ||
-      hasConstraints ||
-      hasPercentageSize ||
-      hasPercentageConstraints;
-}
 
 /// A [TextButton] widget wrapper with support for Tailwind styled properties.
 @immutable
-class TwButton extends StatelessWidget {
-  /// Tailwind style properties (including styling for different button states)
-  final TwStyle style;
-
-  /// Style override for when the button is disabled
-  final TwStyle? disabled;
-
-  /// Style override for when the button is focused
-  final TwStyle? focused;
-
-  /// Style override for when the button is pressed
-  final TwStyle? pressed;
-
-  /// Style override for when the button is hovered
-  final TwStyle? hovered;
-
+class TwButton extends TwStatefulWidget {
   // Pass-through properties for [TextButton]
   final Widget? child;
   final VoidCallback? onPressed;
@@ -39,20 +17,23 @@ class TwButton extends StatelessWidget {
   final FocusNode? focusNode;
   final bool autofocus;
   final Clip clipBehavior;
-  final MaterialStatesController? statesController;
   final bool isSemanticButton;
+  final Matrix4? transform;
+  final AlignmentGeometry? transformAlignment;
 
   // Pass-through properties for [ButtonStyle]
   final MaterialTapTargetSize tapTargetSize;
-  final Duration animationDuration;
   final AlignmentGeometry? alignment;
 
   const TwButton({
-    this.style = const TwStyle(),
-    this.disabled,
-    this.focused,
-    this.pressed,
-    this.hovered,
+    super.style = const TwStyle(),
+    super.disabled,
+    super.pressed,
+    super.hovered,
+    super.dragged,
+    super.focused,
+    super.selected,
+    super.errored,
     this.child,
     this.onPressed,
     this.onLongPress,
@@ -61,171 +42,282 @@ class TwButton extends StatelessWidget {
     this.focusNode,
     this.autofocus = false,
     this.clipBehavior = Clip.none,
-    this.statesController,
     this.isSemanticButton = true,
     this.tapTargetSize = MaterialTapTargetSize.padded,
-    this.animationDuration = const Duration(milliseconds: 0),
     this.alignment,
+    this.transform,
+    this.transformAlignment,
+    super.statesController,
     super.key,
   });
 
-  Size _buttonSize({
-    required final double? widthPx,
-    required final double? heightPx,
-  }) {
-    if (widthPx != null && heightPx != null) return Size(widthPx, heightPx);
-    if (widthPx != null) return Size.fromWidth(widthPx);
-    if (heightPx != null) return Size.fromHeight(heightPx);
-    return Size.infinite;
+  @override
+  State createState() => _TwButtonState();
+}
+
+extension TwButtonStyleExtension on TwStyle {
+  bool get requiresDivWrapper =>
+      boxShadow != null ||
+      margin != null ||
+      hasConstraints ||
+      hasPercentageSize ||
+      hasPercentageConstraints;
+
+  ButtonStyle toButtonStyle(
+    final MaterialTapTargetSize tapTargetSize,
+    final AlignmentGeometry? alignment,
+  ) {
+    return ButtonStyle(
+      backgroundColor: always(Colors.transparent),
+      foregroundColor: always(textColor?.color ?? Colors.transparent),
+      overlayColor: always(Colors.transparent),
+      textStyle: always(toTextStyle()),
+      splashFactory: NoSplash.splashFactory,
+      shape: always(
+        RoundedRectangleBorder(
+          borderRadius: borderRadius?.toBorderRadius() ?? BorderRadius.zero,
+        ),
+      ),
+      tapTargetSize: tapTargetSize,
+      alignment: alignment,
+    );
+  }
+}
+
+class _TwButtonState extends TwAnimatedState<TwButton> {
+  /// This is set to false as buttons need their own material states controller.
+  @override
+  bool get shouldInheritAnimationGroupStatesController => false;
+
+  /// This is set to false as we pass the [statesController] down to the
+  /// underlying [TextButton] widget, which handles the material states
+  /// properties for us.
+  @override
+  bool get enableInternalGestureDetector => false;
+
+  EdgeInsetsGeometry? _paddingIncludingDecoration(final TwStyle style) {
+    final padding = style.padding;
+    final paddingEdgeInsets = padding?.toEdgeInsets();
+    if (!style.hasBorderDecoration) return paddingEdgeInsets;
+    final EdgeInsetsGeometry decorationPadding = style.border
+            ?.toBorder(style.borderColor?.color, style.borderStrokeAlign)
+            ?.dimensions ??
+        EdgeInsets.zero;
+    return (paddingEdgeInsets == null)
+        ? decorationPadding
+        : paddingEdgeInsets.add(decorationPadding);
   }
 
-  MaterialStateProperty<T> whenStyleStatus<T>(
-    final StyleValueResolver resolver, {
-    required final T defaultValue,
-  }) =>
-      TwStyle.resolveStatus(
-        style,
-        resolver,
-        defaultValue: defaultValue,
-        disabled: disabled,
-        dragged: null,
-        error: null,
-        focused: focused,
-        selected: null,
-        pressed: pressed,
-        hovered: hovered,
-      );
-
-  ButtonStyle _buttonStyle({
-    required final double? widthPx,
-    required final double? heightPx,
-  }) =>
-      ButtonStyle(
-        foregroundColor: whenStyleStatus(
-          (final statusStyle) => statusStyle?.textColor?.color,
-          defaultValue: Colors.black,
-        ),
-        backgroundColor: whenStyleStatus(
-          (final statusStyle) => statusStyle?.backgroundColor?.color,
-          defaultValue: Colors.transparent,
-        ),
-        fixedSize: always(
-          _buttonSize(
-            widthPx: widthPx,
-            heightPx: heightPx,
-          ),
-        ),
-        padding: whenStyleStatus(
-          (final statusStyle) => statusStyle?.padding?.toEdgeInsets(),
-          defaultValue: EdgeInsets.zero,
-        ),
-        shape: style.hasBorderDecoration
-            ? whenStyleStatus(
-                (final statusStyle) => RoundedRectangleBorder(
-                  borderRadius:
-                      statusStyle?.borderRadius?.type == BoxCornerType.all
-                          ? style.borderRadius?.toBorderRadius() ??
-                              BorderRadius.zero
-                          : BorderRadius.zero,
-                  side: statusStyle?.toBorderSide() ?? style.toBorderSide(),
-                ),
-                defaultValue: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                  side: style.toBorderSide(),
-                ),
-              )
-            : always(const RoundedRectangleBorder()),
-        side: style.hasBorderDecoration
-            ? whenStyleStatus(
-                (final statusStyle) => statusStyle?.toBorderSide(),
-                defaultValue: style.toBorderSide(),
-              )
-            : null,
-        // Currently no support for overlay color
-        overlayColor: always(Colors.transparent),
-        // Currently no support for elevation color
-        elevation: always(0),
-        shadowColor: null,
-        animationDuration: animationDuration,
-        tapTargetSize: tapTargetSize,
-        alignment: alignment,
-      );
-
   bool get requiresDivWrapper =>
-      style.requiresDivWrapper ||
-      (disabled?.requiresDivWrapper ?? false) ||
-      (focused?.requiresDivWrapper ?? false) ||
-      (pressed?.requiresDivWrapper ?? false) ||
-      (hovered?.requiresDivWrapper ?? false);
+      widget.style.requiresDivWrapper ||
+      (widget.disabled?.requiresDivWrapper ?? false) ||
+      (widget.pressed?.requiresDivWrapper ?? false) ||
+      (widget.hovered?.requiresDivWrapper ?? false) ||
+      (widget.focused?.requiresDivWrapper ?? false) ||
+      (widget.dragged?.requiresDivWrapper ?? false) ||
+      (widget.selected?.requiresDivWrapper ?? false) ||
+      (widget.errored?.requiresDivWrapper ?? false);
 
-  TextButton _createTextButton({
-    required final double? widthPx,
-    required final double? heightPx,
-  }) =>
-      TextButton(
-        key: key,
-        onPressed: onPressed,
-        onLongPress: onLongPress,
-        onHover: onHover,
-        onFocusChange: onFocusChange,
-        style: _buttonStyle(
-          widthPx: widthPx,
-          heightPx: heightPx,
-        ),
-        focusNode: focusNode,
-        autofocus: autofocus,
-        clipBehavior: clipBehavior,
-        statesController: statesController,
-        isSemanticButton: isSemanticButton,
-        child: child ?? const SizedBox(),
-      );
+  TextButton _buildTextButton(final TwStyle mergedStyle) {
+    return TextButton(
+      key: widget.key,
+      onPressed: widget.onPressed,
+      onLongPress: widget.onLongPress,
+      onHover: widget.onHover,
+      onFocusChange: widget.onFocusChange,
+      style: mergedStyle.toButtonStyle(
+        widget.tapTargetSize,
+        widget.alignment,
+      ),
+      focusNode: widget.focusNode,
+      autofocus: widget.autofocus,
+      clipBehavior: widget.clipBehavior,
+      statesController: statesController,
+      isSemanticButton: widget.isSemanticButton,
+      child: widget.child ?? const SizedBox(),
+    );
+  }
 
-  @override
-  Widget build(final BuildContext context) {
-    if (requiresDivWrapper) {
-      return TwDiv(
-        key: key,
-        alignment: alignment,
-        clipBehavior: clipBehavior,
-        style: TwStyle(
-          width: style.width,
-          height: style.height,
-          borderRadius: style.borderRadius,
-          boxShadow: style.boxShadow,
-          margin: style.margin,
-          minWidth: style.minWidth,
-          minHeight: style.minHeight,
-          maxWidth: style.maxWidth,
-          maxHeight: style.maxHeight,
-        ),
-        child: (style.hasPercentageSize || style.hasPercentageConstraints)
-            ? LayoutBuilder(
-                builder: (
-                  final BuildContext context,
-                  final BoxConstraints parentConstraints,
-                ) {
-                  final parentWidth =
-                      parentConstraints.limitedMaxWidth(context);
-                  final parentHeight = parentConstraints.maxHeight;
-                  final widthPx = style.widthPx(parentWidth);
-                  final heightPx = style.heightPx(parentHeight);
+  /// Loosely copied from [Container.build]. The main difference is that we
+  /// choose to explicitly not support 'foregroundDecoration'.
+  /// Note that [mergedStyle] is the style for the current state of the widget
+  /// merged with the widget's default style.
+  Widget _buildDiv(
+    final TwStyle mergedStyle,
+    final BoxConstraints? constraints,
+  ) {
+    _trackConstraintsForAnimation(
+      constraints: constraints,
+      mergedStyle: mergedStyle,
+    );
 
-                  return _createTextButton(
-                    widthPx: widthPx,
-                    heightPx: heightPx,
-                  );
-                },
-              )
-            : _createTextButton(
-                widthPx: style.width?.value.logicalPixels,
-                heightPx: style.height?.value.logicalPixels,
-              ),
+    final Widget button = _buildTextButton(mergedStyle);
+    final AlignmentGeometry? alignment = widget.alignment;
+    final Clip clipBehavior = widget.clipBehavior;
+    final EdgeInsetsGeometry? margin = mergedStyle.margin?.toEdgeInsets();
+    final Matrix4? transform = widget.transform;
+    final AlignmentGeometry? transformAlignment = widget.transformAlignment;
+
+    Widget current = button;
+
+    final style = mergedStyle.merge(animationController?.animatedStyle);
+    final dynamicConstraints =
+        animationController?.animatedBoxConstraints ?? constraints;
+
+    if (alignment != null) {
+      current = Align(alignment: alignment, child: current);
+    }
+
+    // Render effective padding (including border widths) around the current
+    // widget if applicable.
+    final EdgeInsetsGeometry? effectivePadding =
+        _paddingIncludingDecoration(style);
+    if (effectivePadding != null) {
+      current = Padding(padding: effectivePadding, child: current);
+    }
+
+    // Render a [ColoredBox] if the widget has its background color property set
+    // and no other decoration settings.
+    if (style.hasOnlyBackgroundColorDecoration) {
+      current = ColoredBox(
+        color: style.backgroundColor?.color ?? Colors.transparent,
+        child: current,
       );
     }
 
-    return _createTextButton(
-      widthPx: style.width?.value.logicalPixels,
-      heightPx: style.height?.value.logicalPixels,
+    // Render [ClipPath]
+    final Decoration? decoration = style.getBoxDecoration(dynamicConstraints);
+    if (clipBehavior != Clip.none) {
+      assert(decoration != null);
+      current = ClipPath(
+        clipper: DecorationClipper(
+          textDirection: Directionality.maybeOf(context),
+          decoration: decoration!,
+        ),
+        clipBehavior: clipBehavior,
+        child: current,
+      );
+    }
+
+    // Render a [DecoratedBox] only if the background decoration exists and is not
+    // just a background color (otherwise a [ColoredBox] would be rendered).
+    if (style.hasDecorations && decoration != null) {
+      current = DecoratedBox(decoration: decoration, child: current);
+    }
+
+    // Use constraints passed in to render a [ConstrainedBox] if applicable.
+    if (constraints != null) {
+      current = ConstrainedBox(
+        constraints: animationController?.animatedBoxConstraints ?? constraints,
+        child: current,
+      );
+    }
+
+    // Wrap current widget with [Padding] to represent the margin if applicable.
+    if (margin != null) {
+      current = Padding(padding: margin, child: current);
+    }
+
+    // Apply transform via [Transform] widget if applicable.
+    if (transform != null) {
+      current = Transform(
+        transform: transform,
+        alignment: transformAlignment,
+        child: current,
+      );
+    }
+
+    // Apply opacity effect if applicable.
+    if (widget.hasOpacity) {
+      current = Opacity(
+        opacity: style.opacity?.value ?? 1.0,
+        child: current,
+      );
+    }
+
+    return current;
+  }
+
+  /// Gets a [BoxConstraints] object that assumes usage of simple [PxUnit]
+  /// values.
+  BoxConstraints? _tightenConstraints({
+    required final double? width,
+    required final double? height,
+    required final BoxConstraints? constraints,
+  }) {
+    final fullConstraints = (width != null || height != null)
+        ? constraints?.tighten(
+              width: width,
+              height: height,
+            ) ??
+            BoxConstraints.tightFor(
+              width: width,
+              height: height,
+            )
+        : constraints;
+    return fullConstraints;
+  }
+
+  @override
+  Widget buildForState(
+    final BuildContext context,
+    final MaterialStatesController controller,
+    final TwWidgetState state,
+  ) {
+    final mergedStyle = currentStyle;
+
+    if (widget.requiresLayoutBuilder) {
+      return LayoutBuilder(
+        builder: (
+          final BuildContext context,
+          final BoxConstraints parentConstraints,
+        ) {
+          final parentWidth = parentConstraints.limitedMaxWidth(context);
+          final parentHeight = parentConstraints.maxHeight;
+          final widthPx = mergedStyle.widthPx(parentWidth);
+          final heightPx = mergedStyle.heightPx(parentHeight);
+          final constraints = mergedStyle.hasSizing
+              ? _tightenConstraints(
+                  width: widthPx,
+                  height: heightPx,
+                  constraints: mergedStyle.getPercentageBoxConstraints(
+                    parentWidth,
+                    parentHeight,
+                  ),
+                )
+              : null;
+          return _buildDiv(
+            mergedStyle,
+            constraints,
+          );
+        },
+      );
+    }
+
+    final simpleConstraints = _tightenConstraints(
+      width: mergedStyle.width?.value.logicalPixels,
+      height: mergedStyle.height?.value.logicalPixels,
+      constraints: mergedStyle.getSimpleConstraints(),
     );
+    return _buildDiv(
+      mergedStyle,
+      simpleConstraints,
+    );
+  }
+
+  /// Updates the constraints tween to use the current calculated constraints
+  /// on build time. This is necessary because the constraints are calculated
+  /// in the build method and may additionally use a [LayoutBuilder] to
+  /// calculate percentage constraints.
+  void _trackConstraintsForAnimation({
+    required final BoxConstraints? constraints,
+    required final TwStyle mergedStyle,
+  }) {
+    if (widget.hasTransitions && (animationController?.canAnimate ?? false)) {
+      animationController?.updateTrackedConstraints(
+        constraints: constraints,
+        mergedStyle: mergedStyle,
+      );
+    }
   }
 }

@@ -54,7 +54,11 @@ class TwBoxShadowColor extends TwColor {
 
   @override
   String toString() {
-    return 'TwBoxShadowColor{$color}';
+    return 'TwBoxShadowColor{rgb(${color.red}, ${color.green}, ${color.blue})}';
+  }
+
+  String toRgbString() {
+    return 'rgb(${color.red}, ${color.green}, ${color.blue})';
   }
 }
 

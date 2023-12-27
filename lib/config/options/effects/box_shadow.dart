@@ -23,6 +23,11 @@ class TwBoxShadows {
   @override
   int get hashCode => boxShadows.hashCode;
 
+  Color? get firstColor {
+    if (boxShadows.isEmpty) return null;
+    return boxShadows.firstOrNull?.color;
+  }
+
   List<BoxShadow> withColor(final TwBoxShadowColor? color) {
     if (color == null) {
       return boxShadows;
@@ -37,5 +42,10 @@ class TwBoxShadows {
           ),
         )
         .toList();
+  }
+
+  @override
+  String toString() {
+    return 'TwBoxShadows{boxShadows: $boxShadows}';
   }
 }

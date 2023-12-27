@@ -53,7 +53,10 @@ abstract class TwAnimatedState<T extends TwStatefulWidget> extends TwState<T>
   }
 
   @protected
-  void animationListener(final AnimationStatus status);
+  void animationListener(final AnimationStatus status) {
+    // No-op, can be overridden by subclasses for custom behavior when reacting
+    // to an animation status change
+  }
 
   @override
   void didUpdateWidget(final T oldWidget) {

@@ -32,6 +32,22 @@ class TwStyleTween extends Tween<TwStyle?> {
       (property.isBorderProperty &&
           _properties.contains(TransitionProperty.border));
 
+  Color? _lerpBoxShadowColor(
+    final TwStyle begin,
+    final TwStyle end,
+    final double t,
+  ) {
+    final beginBoxShadowColor =
+        begin.boxShadowColor?.color ?? begin.boxShadow?.firstColor;
+    final endBoxShadowColor =
+        end.boxShadowColor?.color ?? end.boxShadow?.firstColor;
+    return Color.lerp(
+      beginBoxShadowColor == Colors.transparent ? null : beginBoxShadowColor,
+      endBoxShadowColor == Colors.transparent ? null : endBoxShadowColor,
+      t,
+    );
+  }
+
   @override
   TwStyle? lerp(final double t) {
     final begin = this.begin;
@@ -39,11 +55,9 @@ class TwStyleTween extends Tween<TwStyle?> {
     if (begin == end) return begin;
     if (begin == null || end == null) return null;
 
-    final boxShadowColor = Color.lerp(
-      begin.boxShadowColor?.tweenColor,
-      end.boxShadowColor?.tweenColor,
-      t,
-    );
+    final boxShadowColor = (has(TransitionProperty.boxShadow))
+        ? TwBoxShadowColor.fromColor(_lerpBoxShadowColor(begin, end, t))
+        : null;
 
     return TwStyle(
       textColor: has(TransitionProperty.textColor)
@@ -73,9 +87,7 @@ class TwStyleTween extends Tween<TwStyle?> {
               ),
             )
           : null,
-      boxShadowColor: has(TransitionProperty.boxShadow)
-          ? TwBoxShadowColor.fromColor(boxShadowColor)
-          : null,
+      boxShadowColor: boxShadowColor,
       textDecorationColor: has(TransitionProperty.textDecorationColor)
           ? TwTextDecorationColor.fromColor(
               Color.lerp(
@@ -129,8 +141,8 @@ class TwStyleTween extends Tween<TwStyle?> {
       boxShadow: has(TransitionProperty.boxShadow)
           ? TwBoxShadows.fromBoxShadows(
               BoxShadow.lerpList(
-                begin.boxShadow?.boxShadows,
-                end.boxShadow?.boxShadows,
+                begin.boxShadow?.withColor(boxShadowColor),
+                end.boxShadow?.withColor(boxShadowColor),
                 t,
               ),
             )

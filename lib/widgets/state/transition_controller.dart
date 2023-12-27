@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:tailwind_elements/config/options/borders/border_radius.dart';
-import 'package:tailwind_elements/config/options/transitions/transition_delay.dart';
+import 'package:tailwind_elements/base.dart';
 import 'package:tailwind_elements/widgets/state/style_tween.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 
@@ -120,7 +118,7 @@ class TwTransitionController {
       return mergedStyle.borderRadius;
     }
 
-    final bool isCircle = mergedStyle.borderRadius!.isCircle;
+    final bool isCircle = mergedStyle.borderRadius?.isCircle ?? false;
     return isCircle
         ? TwBorderRadius.all(
             TwBorderRadiusAll(PxUnit(trackedConstraints.circleRadius)),
@@ -167,11 +165,8 @@ class TwTransitionController {
     required final TwStyle mergedStyle,
   }) {
     if (_trackedConstraints != constraints) {
-      _updateTween(
-        tween: _boxConstraints,
-        targetValue: constraints,
-      );
       _trackedConstraints = constraints;
+      updateTweens(mergedStyle);
     }
   }
 
@@ -188,6 +183,9 @@ class TwTransitionController {
   TwStyle? get animatedStyle =>
       canAnimate ? _style?.evaluate(_animationCurve!) : null;
 
-  BoxConstraints? get animatedBoxConstraints =>
-      canAnimate ? _boxConstraints?.evaluate(_animationCurve!) : null;
+  BoxConstraints? get animatedBoxConstraints => canAnimate &&
+          ((_style?.has(TransitionProperty.width) ?? false) ||
+              (_style?.has(TransitionProperty.height) ?? false))
+      ? _boxConstraints?.evaluate(_animationCurve!)
+      : null;
 }
