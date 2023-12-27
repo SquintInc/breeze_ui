@@ -3,6 +3,7 @@ import 'package:tailwind_elements/config/options/sizing/gap.dart';
 import 'package:tailwind_elements/config/options/sizing/height.dart';
 import 'package:tailwind_elements/widgets.dart';
 
+/// A [Column] widget wrapper with support for Tailwind styled properties.
 @immutable
 class TwColumn extends StatelessWidget {
   final TwGapY? gap;

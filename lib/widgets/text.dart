@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 import 'package:tailwind_elements/widgets/style/text_style.dart';
 
-/// A [Text] widget wrapper with support for Tailwind styled properties.
+/// A [Text] widget wrapper with support for Tailwind styled properties. If
+/// animated property transitions are wanted, use [TwAnimatedText] instead.
 @immutable
 class TwText extends Text {
   /// Tailwind text style properties

@@ -4,7 +4,11 @@ import 'package:tailwind_elements/widgets/state/animated_state.dart';
 import 'package:tailwind_elements/widgets/state/state.dart';
 import 'package:tailwind_elements/widgets/state/widget_state.dart';
 
-/// A [Container] widget wrapper with support for Tailwind styled properties.
+/// A [Container] widget wrapper with support for Tailwind styled properties
+/// and animated property transitions.
+///
+/// Prefer to use a [TwAnimationGroup] to reuse the same animation controller
+/// for multiple [TwStatefulWidget]s that support animations.
 class TwDiv extends TwStatefulWidget {
   // Passthrough [Container] properties
   final Widget? child;

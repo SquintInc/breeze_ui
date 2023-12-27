@@ -3,6 +3,7 @@ import 'package:tailwind_elements/config/options/sizing/gap.dart';
 import 'package:tailwind_elements/config/options/sizing/width.dart';
 import 'package:tailwind_elements/widgets.dart';
 
+/// A [Row] widget wrapper with support for Tailwind styled properties.
 @immutable
 class TwRow extends StatelessWidget {
   final TwGapX? gap;

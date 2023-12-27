@@ -4,8 +4,12 @@ import 'package:tailwind_elements/widgets/state/animated_state.dart';
 import 'package:tailwind_elements/widgets/state/state.dart';
 import 'package:tailwind_elements/widgets/state/widget_state.dart';
 
-/// A [TwText] widget wrapper with support for animations via an internal
-/// [MaterialStatesController] or when nested underneath a [TwAnimationGroup].
+/// A [TwText] widget wrapper with support for animations.
+/// To animate nested text spans individually, use [TwAnimatedText.rich] and
+/// pass in a [WidgetSpan] wrapper that wraps another [TwAnimatedText].
+///
+/// Prefer to use a [TwAnimationGroup] to reuse the same animation controller
+/// for multiple [TwStatefulWidget]s that support animations.
 class TwAnimatedText extends TwStatefulWidget {
   final String? data;
   final InlineSpan? textSpan;
