@@ -35,24 +35,27 @@ class _TailwindElementsPlaygroundState
         child: TwDiv(
           style: const TwStyle(
             height: h_96,
-            backgroundColor: bg_white,
+            backgroundColor: bg_slate_700,
           ),
           child: TwColumn(
             gap: gap_y_4,
             scrollable: true,
             children: [
               TwButton(
+                alignment: Alignment.center,
                 style: const TwStyle(
                   width: w_96,
                   height: h_20,
                   backgroundColor: bg_green_400,
+                  borderRadius: TwBorderRadius.all(rounded_lg),
                   transition: transition_all,
                   transitionDuration: duration_150,
-                  borderRadius: TwBorderRadius.all(rounded_full),
+                  boxShadow: shadow_md,
+                  boxShadowColor: shadow_gray_500,
                 ),
                 hovered: const TwStyle(
                   backgroundColor: bg_blue_400,
-                  borderRadius: TwBorderRadius.all(rounded_lg),
+                  boxShadow: shadow_2xl,
                 ),
                 pressed: const TwStyle(
                   backgroundColor: bg_red_400,
@@ -67,24 +70,36 @@ class _TailwindElementsPlaygroundState
                   ),
                 ),
                 onPressed: () {
-                  setState(() {
-                    properties = transition_colors;
-                    text = 'Test 123';
-                  });
+
+                },
+                // onLongPress: () {
+                //   print('long press');
+                // },
+                onHover: (final hovered) {
+
                 },
               ),
-              const TwDiv(
-                style: TwStyle(
+              TwButton(
+                onPressed: () {
+
+                },
+                onLongPress: () {
+
+                },
+                onHover: (final hovered) {
+
+                },
+                style: const TwStyle(
                   width: w_96,
                   height: h_20,
-                  backgroundColor: bg_white,
+                  backgroundColor: bg_black,
                   transition: transition_colors,
                   transitionDuration: duration_150,
                 ),
-                hovered: TwStyle(
+                hovered: const TwStyle(
                   backgroundColor: bg_blue_400,
                 ),
-                child: TwText(
+                child: const TwText(
                   'Top Button',
                   style: TwStyle(
                     fontSize: text_2xl,
@@ -93,15 +108,15 @@ class _TailwindElementsPlaygroundState
                   ),
                 ),
               ),
-              TwButton(
-                style: const TwStyle(
-                  width: w_14,
-                  height: h_9,
-                  backgroundColor: bg_green_400,
-                ),
-                child: const TwText('Bottom Button'),
-                onPressed: () {},
-              ),
+              // TwButton(
+              //   style: const TwStyle(
+              //     width: w_14,
+              //     height: h_9,
+              //     backgroundColor: bg_green_400,
+              //   ),
+              //   child: const TwText('Bottom Button'),
+              //   onPressed: () {},
+              // ),
               const TwTextField(
                 style: TwStyle(
                   border: TwBorder.all(border_8),

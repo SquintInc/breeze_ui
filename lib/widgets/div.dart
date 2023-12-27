@@ -38,6 +38,7 @@ class TwDiv extends TwStatefulWidget {
     super.isDisabled = false,
     super.isSelectable = false,
     super.statesController,
+    super.hasGestureDetector = true,
     super.key,
   });
 
