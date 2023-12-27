@@ -214,6 +214,22 @@ class TwStyle {
       backgroundImage == null &&
       backgroundGradient == null;
 
+  /// Determines if the style has any typography styling properties
+  bool get hasTypographyProperties =>
+      fontSize != null ||
+      fontStyle != null ||
+      fontWeight != null ||
+      letterSpacing != null ||
+      lineHeight != null ||
+      textColor != null ||
+      selectionColor != null ||
+      textDecoration != null ||
+      textDecorationColor != null ||
+      textDecorationStyle != null ||
+      textDecorationThickness != null ||
+      leadingDistribution != null ||
+      wordSpacing != null;
+
   /// Calculates the width of this widget in pixels, based on a percentage of
   /// its parent widget's width, or via this widget's own logical pixel width.
   double widthPx(final double parentWidth) {
@@ -314,6 +330,7 @@ class TwStyle {
   /// [Text].
   TextStyle toTextStyle() {
     return TextStyle(
+      inherit: true,
       fontSize: fontSize?.value.logicalPixels ?? defaultFontSize,
       fontWeight: fontWeight?.fontWeight ?? defaultFontWeight,
       height: fontSize?.getLineHeight(lineHeight) ?? defaultLineHeight,

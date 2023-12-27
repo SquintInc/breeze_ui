@@ -131,6 +131,16 @@ abstract class TwStatefulWidget extends StatefulWidget {
           (selected?.hasPercentageConstraints ?? false)) ||
       ((errored?.hasPercentageSize ?? false) ||
           (errored?.hasPercentageConstraints ?? false));
+
+  bool get hasTypographyStyling =>
+      style.hasTypographyProperties ||
+      (disabled?.hasTypographyProperties ?? false) ||
+      (focused?.hasTypographyProperties ?? false) ||
+      (pressed?.hasTypographyProperties ?? false) ||
+      (hovered?.hasTypographyProperties ?? false) ||
+      (dragged?.hasTypographyProperties ?? false) ||
+      (selected?.hasTypographyProperties ?? false) ||
+      (errored?.hasTypographyProperties ?? false);
 }
 
 enum StatesControllerType {
