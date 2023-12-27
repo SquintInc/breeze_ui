@@ -336,7 +336,7 @@ class TwStyle {
       height: fontSize?.getLineHeight(lineHeight) ?? defaultLineHeight,
       fontStyle: fontStyle,
       color: textColor?.color,
-      leadingDistribution: leadingDistribution,
+      leadingDistribution: leadingDistribution ?? TextLeadingDistribution.even,
       decoration: textDecoration,
       decorationColor: textDecorationColor?.color,
       decorationStyle: textDecorationStyle,
