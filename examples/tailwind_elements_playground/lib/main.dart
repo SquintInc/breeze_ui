@@ -21,6 +21,7 @@ class _TailwindElementsPlaygroundState
   TwTransitionProperty properties = transition_all;
   String text = 'Hello world!';
   final statesController = MaterialStatesController();
+  final textStatesController = MaterialStatesController();
 
   @override
   Widget build(final BuildContext context) {
@@ -140,6 +141,51 @@ class _TailwindElementsPlaygroundState
                       // fontSize: text_4xl,
                       textColor: text_yellow_500,
                     ),
+                  ),
+                ),
+              ),
+              TwAnimationGroup(
+                statesController: textStatesController,
+                child: const TwAnimatedText.rich(
+                  TwTextSpan(
+                    children: [
+                      TwTextSpan(
+                        text: 'Hello ',
+                      ),
+                      WidgetSpan(
+                        child: TwAnimatedText(
+                          'world!',
+                          style: TwStyle(
+                            fontSize: text_2xl,
+                            fontWeight: font_bold,
+                            textColor: text_black,
+                            transition: transition_all,
+                            transitionDuration: duration_300,
+                            transitionDelay: delay_1000,
+                          ),
+                          hovered: TwStyle(
+                            // fontSize: text_4xl,
+                            textColor: text_gray_500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  style: TwStyle(
+                    fontSize: text_2xl,
+                    fontWeight: font_bold,
+                    textColor: text_indigo_700,
+                    transition: transition_all,
+                    transitionDuration: duration_1000,
+                    transitionDelay: delay_300,
+                  ),
+                  hovered: TwStyle(
+                    // fontSize: text_4xl,
+                    textColor: text_gray_500,
+                  ),
+                  pressed: TwStyle(
+                    // fontSize: text_4xl,
+                    textColor: text_yellow_500,
                   ),
                 ),
               ),

@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/widgets/style.dart';
+import 'package:tailwind_elements/widgets/style/style.dart';
 
 @immutable
 class TwLabel {

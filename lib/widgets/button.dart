@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tailwind_elements/config/options/box_types.dart';
 import 'package:tailwind_elements/widgets/div.dart';
-import 'package:tailwind_elements/widgets/style.dart';
+import 'package:tailwind_elements/widgets/style/style.dart';
 
 extension TwStyleButtonExtension on TwStyle {
   bool get requiresDivWrapper =>

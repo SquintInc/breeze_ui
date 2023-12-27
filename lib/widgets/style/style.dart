@@ -24,6 +24,7 @@ import 'package:tailwind_elements/config/options/typography/text_decoration_thic
 import 'package:tailwind_elements/config/options/units.dart';
 import 'package:tailwind_elements/widgets/extensions/extensions.dart';
 import 'package:tailwind_elements/widgets/state/widget_state.dart';
+import 'package:tailwind_elements/widgets/style/text_style.dart';
 
 export 'package:tailwind_elements/config/options/units.dart';
 export 'package:tailwind_elements/widgets/extensions/extensions.dart';
@@ -38,14 +39,7 @@ MaterialStateProperty<T> always<T>(final T value) =>
 /// properties won't be applicable to widgets that are not meant to render text
 /// at their level).
 @immutable
-class TwStyle {
-  // See `text-base` values from https://tailwindcss.com/docs/font-size
-  static const defaultFontSize = 16.0; // 16px == 1rem
-  static const defaultLineHeight = 1.5;
-
-  // See `text-base` values from https://tailwindcss.com/docs/font-size
-  static const defaultFontWeight = FontWeight.w400;
-
+class TwStyle extends TwTextStyle {
   /// See `rounded-full` values from https://tailwindcss.com/docs/border-radius
   static const maxCircleRadius = 9999.0;
 
@@ -83,20 +77,6 @@ class TwStyle {
   final TwTransitionTimingFunction? transitionTimingFn;
   final TwTransitionDelay? transitionDelay;
 
-  // Typography styling (not applicable to widgets without text)
-  final TwFontSize? fontSize;
-  final FontStyle? fontStyle;
-  final TwFontWeight? fontWeight;
-  final TwLetterSpacing? letterSpacing;
-  final TwLineHeight? lineHeight;
-  final TwTextColor? textColor;
-  final TextDecoration? textDecoration;
-  final TwTextDecorationColor? textDecorationColor;
-  final TextDecorationStyle? textDecorationStyle;
-  final TwTextDecorationThickness? textDecorationThickness;
-  final TextLeadingDistribution? leadingDistribution;
-  final double? wordSpacing;
-
   const TwStyle({
     // Background
     this.backgroundColor,
@@ -133,139 +113,19 @@ class TwStyle {
     this.transitionDelay,
 
     // Typography styling
-    this.fontSize,
-    this.fontStyle,
-    this.fontWeight,
-    this.letterSpacing,
-    this.lineHeight,
-    this.textColor,
-    this.textDecoration,
-    this.textDecorationColor,
-    this.textDecorationStyle,
-    this.textDecorationThickness,
-    this.leadingDistribution,
-    this.wordSpacing,
+    super.fontSize,
+    super.fontStyle,
+    super.fontWeight,
+    super.letterSpacing,
+    super.lineHeight,
+    super.textColor,
+    super.textDecoration,
+    super.textDecorationColor,
+    super.textDecorationStyle,
+    super.textDecorationThickness,
+    super.leadingDistribution,
+    super.wordSpacing,
   });
-
-  /// Merges another [TwStyle] with this style, and overwrites any existing
-  /// properties from this style with the [other]'s property if set.
-  TwStyle merge(final TwStyle? other) {
-    if (other == null || other == this) {
-      return this;
-    }
-
-    return copyWith(
-      backgroundColor: other.backgroundColor,
-      backgroundImage: other.backgroundImage,
-      backgroundGradient: other.backgroundGradient,
-      boxShadow: other.boxShadow,
-      boxShadowColor: other.boxShadowColor,
-      opacity: other.opacity,
-      border: other.border,
-      borderColor: other.borderColor,
-      borderRadius: other.borderRadius,
-      borderStrokeAlign: other.borderStrokeAlign,
-      minWidth: other.minWidth,
-      width: other.width,
-      maxWidth: other.maxWidth,
-      minHeight: other.minHeight,
-      height: other.height,
-      maxHeight: other.maxHeight,
-      padding: other.padding,
-      margin: other.margin,
-      transition: other.transition,
-      transitionDuration: other.transitionDuration,
-      transitionTimingFn: other.transitionTimingFn,
-      transitionDelay: other.transitionDelay,
-      fontSize: other.fontSize,
-      fontStyle: other.fontStyle,
-      fontWeight: other.fontWeight,
-      letterSpacing: other.letterSpacing,
-      lineHeight: other.lineHeight,
-      textColor: other.textColor,
-      textDecoration: other.textDecoration,
-      textDecorationColor: other.textDecorationColor,
-      textDecorationStyle: other.textDecorationStyle,
-      textDecorationThickness: other.textDecorationThickness,
-      leadingDistribution: other.leadingDistribution,
-      wordSpacing: other.wordSpacing,
-    );
-  }
-
-  TwStyle copyWith({
-    // Background styling
-    final TwBackgroundColor? backgroundColor,
-    final DecorationImage? backgroundImage,
-    final Gradient? backgroundGradient,
-    final TwBoxShadows? boxShadow,
-    final TwBoxShadowColor? boxShadowColor,
-    final TwOpacity? opacity,
-    final TwBorder? border,
-    final TwBorderColor? borderColor,
-    final TwBorderRadius? borderRadius,
-    final double? borderStrokeAlign,
-    final TwMinWidth? minWidth,
-    final TwWidth? width,
-    final TwMaxWidth? maxWidth,
-    final TwMinHeight? minHeight,
-    final TwHeight? height,
-    final TwMaxHeight? maxHeight,
-    final TwPadding? padding,
-    final TwMargin? margin,
-    final TwTransitionProperty? transition,
-    final TwTransitionDuration? transitionDuration,
-    final TwTransitionTimingFunction? transitionTimingFn,
-    final TwTransitionDelay? transitionDelay,
-    final TwFontSize? fontSize,
-    final FontStyle? fontStyle,
-    final TwFontWeight? fontWeight,
-    final TwLetterSpacing? letterSpacing,
-    final TwLineHeight? lineHeight,
-    final TwTextColor? textColor,
-    final TextDecoration? textDecoration,
-    final TwTextDecorationColor? textDecorationColor,
-    final TextDecorationStyle? textDecorationStyle,
-    final TwTextDecorationThickness? textDecorationThickness,
-    final TextLeadingDistribution? leadingDistribution,
-    final double? wordSpacing,
-  }) =>
-      TwStyle(
-        backgroundColor: backgroundColor ?? this.backgroundColor,
-        backgroundImage: backgroundImage ?? this.backgroundImage,
-        backgroundGradient: backgroundGradient ?? this.backgroundGradient,
-        boxShadow: boxShadow ?? this.boxShadow,
-        boxShadowColor: boxShadowColor ?? this.boxShadowColor,
-        opacity: opacity ?? this.opacity,
-        border: border ?? this.border,
-        borderColor: borderColor ?? this.borderColor,
-        borderRadius: borderRadius ?? this.borderRadius,
-        borderStrokeAlign: borderStrokeAlign ?? this.borderStrokeAlign,
-        minWidth: minWidth ?? this.minWidth,
-        width: width ?? this.width,
-        maxWidth: maxWidth ?? this.maxWidth,
-        minHeight: minHeight ?? this.minHeight,
-        height: height ?? this.height,
-        maxHeight: maxHeight ?? this.maxHeight,
-        padding: padding ?? this.padding,
-        margin: margin ?? this.margin,
-        transition: transition ?? this.transition,
-        transitionDuration: transitionDuration ?? this.transitionDuration,
-        transitionTimingFn: transitionTimingFn ?? this.transitionTimingFn,
-        transitionDelay: transitionDelay ?? this.transitionDelay,
-        fontSize: fontSize ?? this.fontSize,
-        fontStyle: fontStyle ?? this.fontStyle,
-        fontWeight: fontWeight ?? this.fontWeight,
-        letterSpacing: letterSpacing ?? this.letterSpacing,
-        lineHeight: lineHeight ?? this.lineHeight,
-        textColor: textColor ?? this.textColor,
-        textDecoration: textDecoration ?? this.textDecoration,
-        textDecorationColor: textDecorationColor ?? this.textDecorationColor,
-        textDecorationStyle: textDecorationStyle ?? this.textDecorationStyle,
-        textDecorationThickness:
-            textDecorationThickness ?? this.textDecorationThickness,
-        leadingDistribution: leadingDistribution ?? this.leadingDistribution,
-        wordSpacing: wordSpacing ?? this.wordSpacing,
-      );
 
   /// Determines whether the style has min/max width and height constraints.
   bool get hasConstraints =>
@@ -472,26 +332,6 @@ class TwStyle {
         },
       );
 
-  /// Converts this style to a [TextStyle] for use in a widget that may render
-  /// [Text].
-  TextStyle toTextStyle() {
-    return TextStyle(
-      fontSize: fontSize?.value.logicalPixels ?? defaultFontSize,
-      fontWeight: fontWeight?.fontWeight ?? defaultFontWeight,
-      height: fontSize?.getLineHeight(lineHeight) ?? defaultLineHeight,
-      fontStyle: fontStyle,
-      color: textColor?.color,
-      leadingDistribution: leadingDistribution,
-      decoration: textDecoration,
-      decorationColor: textDecorationColor?.color,
-      decorationStyle: textDecorationStyle,
-      decorationThickness: textDecorationThickness?.value.logicalPixels,
-      wordSpacing: wordSpacing,
-      letterSpacing: letterSpacing?.value
-          .emPixels(fontSize?.value.logicalPixels ?? defaultFontSize),
-    );
-  }
-
   InputBorder? toBorder() => hasBorderDecoration
       ? OutlineInputBorder(
           borderRadius: borderRadius?.toBorderRadius() ?? BorderRadius.zero,
@@ -689,4 +529,126 @@ class TwStyle {
       textDecorationThickness.hashCode ^
       leadingDistribution.hashCode ^
       wordSpacing.hashCode;
+}
+
+extension TwStyleCopyMerge on TwStyle {
+  /// Merges another [TwStyle] with this style, and overwrites any existing
+  /// properties from this style with the [other]'s property if set.
+  TwStyle merge(final TwStyle? other) {
+    if (other == null || other == this) {
+      return this;
+    }
+
+    return copyWith(
+      backgroundColor: other.backgroundColor,
+      backgroundImage: other.backgroundImage,
+      backgroundGradient: other.backgroundGradient,
+      boxShadow: other.boxShadow,
+      boxShadowColor: other.boxShadowColor,
+      opacity: other.opacity,
+      border: other.border,
+      borderColor: other.borderColor,
+      borderRadius: other.borderRadius,
+      borderStrokeAlign: other.borderStrokeAlign,
+      minWidth: other.minWidth,
+      width: other.width,
+      maxWidth: other.maxWidth,
+      minHeight: other.minHeight,
+      height: other.height,
+      maxHeight: other.maxHeight,
+      padding: other.padding,
+      margin: other.margin,
+      transition: other.transition,
+      transitionDuration: other.transitionDuration,
+      transitionTimingFn: other.transitionTimingFn,
+      transitionDelay: other.transitionDelay,
+      fontSize: other.fontSize,
+      fontStyle: other.fontStyle,
+      fontWeight: other.fontWeight,
+      letterSpacing: other.letterSpacing,
+      lineHeight: other.lineHeight,
+      textColor: other.textColor,
+      textDecoration: other.textDecoration,
+      textDecorationColor: other.textDecorationColor,
+      textDecorationStyle: other.textDecorationStyle,
+      textDecorationThickness: other.textDecorationThickness,
+      leadingDistribution: other.leadingDistribution,
+      wordSpacing: other.wordSpacing,
+    );
+  }
+
+  TwStyle copyWith({
+    // Background styling
+    final TwBackgroundColor? backgroundColor,
+    final DecorationImage? backgroundImage,
+    final Gradient? backgroundGradient,
+    final TwBoxShadows? boxShadow,
+    final TwBoxShadowColor? boxShadowColor,
+    final TwOpacity? opacity,
+    final TwBorder? border,
+    final TwBorderColor? borderColor,
+    final TwBorderRadius? borderRadius,
+    final double? borderStrokeAlign,
+    final TwMinWidth? minWidth,
+    final TwWidth? width,
+    final TwMaxWidth? maxWidth,
+    final TwMinHeight? minHeight,
+    final TwHeight? height,
+    final TwMaxHeight? maxHeight,
+    final TwPadding? padding,
+    final TwMargin? margin,
+    final TwTransitionProperty? transition,
+    final TwTransitionDuration? transitionDuration,
+    final TwTransitionTimingFunction? transitionTimingFn,
+    final TwTransitionDelay? transitionDelay,
+    final TwFontSize? fontSize,
+    final FontStyle? fontStyle,
+    final TwFontWeight? fontWeight,
+    final TwLetterSpacing? letterSpacing,
+    final TwLineHeight? lineHeight,
+    final TwTextColor? textColor,
+    final TextDecoration? textDecoration,
+    final TwTextDecorationColor? textDecorationColor,
+    final TextDecorationStyle? textDecorationStyle,
+    final TwTextDecorationThickness? textDecorationThickness,
+    final TextLeadingDistribution? leadingDistribution,
+    final double? wordSpacing,
+  }) =>
+      TwStyle(
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+        backgroundImage: backgroundImage ?? this.backgroundImage,
+        backgroundGradient: backgroundGradient ?? this.backgroundGradient,
+        boxShadow: boxShadow ?? this.boxShadow,
+        boxShadowColor: boxShadowColor ?? this.boxShadowColor,
+        opacity: opacity ?? this.opacity,
+        border: border ?? this.border,
+        borderColor: borderColor ?? this.borderColor,
+        borderRadius: borderRadius ?? this.borderRadius,
+        borderStrokeAlign: borderStrokeAlign ?? this.borderStrokeAlign,
+        minWidth: minWidth ?? this.minWidth,
+        width: width ?? this.width,
+        maxWidth: maxWidth ?? this.maxWidth,
+        minHeight: minHeight ?? this.minHeight,
+        height: height ?? this.height,
+        maxHeight: maxHeight ?? this.maxHeight,
+        padding: padding ?? this.padding,
+        margin: margin ?? this.margin,
+        transition: transition ?? this.transition,
+        transitionDuration: transitionDuration ?? this.transitionDuration,
+        transitionTimingFn: transitionTimingFn ?? this.transitionTimingFn,
+        transitionDelay: transitionDelay ?? this.transitionDelay,
+        fontSize: fontSize ?? this.fontSize,
+        fontStyle: fontStyle ?? this.fontStyle,
+        fontWeight: fontWeight ?? this.fontWeight,
+        letterSpacing: letterSpacing ?? this.letterSpacing,
+        lineHeight: lineHeight ?? this.lineHeight,
+        textColor: textColor ?? this.textColor,
+        textDecoration: textDecoration ?? this.textDecoration,
+        textDecorationColor: textDecorationColor ?? this.textDecorationColor,
+        textDecorationStyle: textDecorationStyle ?? this.textDecorationStyle,
+        textDecorationThickness:
+            textDecorationThickness ?? this.textDecorationThickness,
+        leadingDistribution: leadingDistribution ?? this.leadingDistribution,
+        wordSpacing: wordSpacing ?? this.wordSpacing,
+      );
 }

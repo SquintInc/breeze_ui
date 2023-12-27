@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/widgets/style.dart';
+import 'package:tailwind_elements/widgets/style/text_style.dart';
 
 /// A [TextSpan] widget wrapper with support for Tailwind styled properties.
 @immutable
 class TwTextSpan extends TextSpan {
   /// Tailwind text style properties
-  final TwStyle? textStyle;
+  final TwTextStyle? _style;
 
   /// Takes in a Flutter [TextStyle] to merge and override the Tailwind styles
   final TextStyle? overrideStyle;
@@ -13,7 +13,7 @@ class TwTextSpan extends TextSpan {
   const TwTextSpan({
     super.text,
     super.children,
-    final TwStyle? style,
+    final TwTextStyle? style,
     this.overrideStyle,
     super.recognizer,
     super.mouseCursor,
@@ -22,9 +22,9 @@ class TwTextSpan extends TextSpan {
     super.semanticsLabel,
     super.locale,
     super.spellOut,
-  })  : textStyle = style,
+  })  : _style = style,
         super();
 
   @override
-  TextStyle? get style => textStyle?.toTextStyle().merge(overrideStyle);
+  TextStyle? get style => _style?.toTextStyle().merge(overrideStyle);
 }

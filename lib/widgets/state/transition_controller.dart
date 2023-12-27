@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tailwind_elements/config/options/borders/border_radius.dart';
 import 'package:tailwind_elements/config/options/transitions/transition_delay.dart';
 import 'package:tailwind_elements/widgets/state/style_tween.dart';
-import 'package:tailwind_elements/widgets/style.dart';
+import 'package:tailwind_elements/widgets/style/style.dart';
 
 /// Controller class that contains all the tracked variables and tween values
 /// for animated transitions.

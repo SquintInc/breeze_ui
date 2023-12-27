@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tailwind_elements/widgets/animation_group.dart';
 import 'package:tailwind_elements/widgets/state/widget_state.dart';
-import 'package:tailwind_elements/widgets/style.dart';
+import 'package:tailwind_elements/widgets/style/style.dart';
 
 /// A [StatefulWidget] subclass with support for [MaterialStatesController].
 abstract class TwStatefulWidget extends StatefulWidget {

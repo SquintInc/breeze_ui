@@ -6,7 +6,7 @@ import 'package:tailwind_elements/config/options/colors.dart';
 import 'package:tailwind_elements/config/options/effects/box_shadow.dart';
 import 'package:tailwind_elements/config/options/effects/opacity.dart';
 import 'package:tailwind_elements/config/options/transitions/transition_property.dart';
-import 'package:tailwind_elements/widgets/style.dart';
+import 'package:tailwind_elements/widgets/style/style.dart';
 
 /// Tween class for [TwStyle] values. Supports conditional evaluation of
 /// properties to be tweened via [setProperties], which is used by
