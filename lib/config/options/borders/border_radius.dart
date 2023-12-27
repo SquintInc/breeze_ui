@@ -244,6 +244,17 @@ class TwBorderRadius {
       all.hashCode ^
       type.hashCode;
 
+  static TwBorderRadius? fromBorderRadius(final BorderRadius? borderRadius) {
+    if (borderRadius == null) return null;
+    return TwBorderRadius.corner(
+      topLeft: TwBorderRadiusTopLeft(PxUnit(borderRadius.topLeft.x)),
+      topRight: TwBorderRadiusTopRight(PxUnit(borderRadius.topRight.x)),
+      bottomRight:
+          TwBorderRadiusBottomRight(PxUnit(borderRadius.bottomRight.x)),
+      bottomLeft: TwBorderRadiusBottomLeft(PxUnit(borderRadius.bottomLeft.x)),
+    );
+  }
+
   BorderRadius toBorderRadius() => switch (type) {
         BoxCornerType.all => BorderRadius.circular(all.value.logicalPixels),
         BoxCornerType.tltrbrbl => BorderRadius.only(
@@ -286,6 +297,21 @@ class TwBorderRadius {
             topLeft.value == bottomRight.value &&
             topLeft.value == bottomLeft.value &&
             topLeft.value == fullRadius,
+      };
+
+  double get minRadius => switch (type) {
+        BoxCornerType.all => all.value.logicalPixels,
+        BoxCornerType.trbl => min(
+            min(top.value.logicalPixels, right.value.logicalPixels),
+            min(bottom.value.logicalPixels, left.value.logicalPixels),
+          ),
+        BoxCornerType.tltrbrbl => min(
+            min(topLeft.value.logicalPixels, topRight.value.logicalPixels),
+            min(
+              bottomRight.value.logicalPixels,
+              bottomLeft.value.logicalPixels,
+            ),
+          ),
       };
 
   @override

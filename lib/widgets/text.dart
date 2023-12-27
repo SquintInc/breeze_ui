@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/widgets/style.dart';
+import 'package:tailwind_elements/widgets/style/style.dart';
 
-/// A [Text] widget wrapper with support for Tailwind styled properties.
+/// A [Text] widget wrapper with support for Tailwind styled properties. If
+/// animated property transitions are wanted, use [TwAnimatedText] instead.
 @immutable
 class TwText extends Text {
   /// Tailwind text style properties
-  final TwStyle? textStyle;
+  final TwStyle? _style;
 
   /// Takes in a Flutter [TextStyle] to merge and override the Tailwind styles
   final TextStyle? overrideStyle;
@@ -25,9 +26,8 @@ class TwText extends Text {
     super.semanticsLabel,
     super.textWidthBasis,
     super.textHeightBehavior,
-    super.selectionColor,
     super.key,
-  })  : textStyle = style,
+  })  : _style = style,
         super();
 
   const TwText.rich(
@@ -45,11 +45,13 @@ class TwText extends Text {
     super.semanticsLabel,
     super.textWidthBasis,
     super.textHeightBehavior,
-    super.selectionColor,
     super.key,
-  })  : textStyle = style,
+  })  : _style = style,
         super.rich();
 
   @override
-  TextStyle? get style => textStyle?.toTextStyle().merge(overrideStyle);
+  TextStyle? get style => _style?.toTextStyle().merge(overrideStyle);
+
+  @override
+  Color? get selectionColor => _style?.selectionColor?.color;
 }

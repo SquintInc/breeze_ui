@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:tailwind_elements/widgets.dart';
 import 'package:tailwind_elements/widgets/state/animated_state.dart';
 import 'package:tailwind_elements/widgets/state/state.dart';
-import 'package:tailwind_elements/widgets/state/widget_state.dart';
 
-/// A [Container] widget wrapper with support for Tailwind styled properties.
+/// A [Container] widget wrapper with support for Tailwind styled properties
+/// and animated property transitions.
+///
+/// Prefer to use a [AnimationGroupData] to reuse the same animation controller
+/// for multiple [TwStatefulWidget]s that support animations.
 class TwDiv extends TwStatefulWidget {
   // Passthrough [Container] properties
   final Widget? child;
@@ -34,6 +37,8 @@ class TwDiv extends TwStatefulWidget {
     super.isDisabled = false,
     super.isSelectable = false,
     super.statesController,
+    super.useGestureDetector = true,
+    super.useMouseRegion = true,
     super.key,
   });
 
@@ -42,16 +47,6 @@ class TwDiv extends TwStatefulWidget {
 }
 
 class _DivState extends TwAnimatedState<TwDiv> {
-  @override
-  void animationListener(final AnimationStatus status) {
-    switch (status) {
-      case AnimationStatus.completed:
-      case AnimationStatus.dismissed:
-      case AnimationStatus.forward:
-      case AnimationStatus.reverse:
-    }
-  }
-
   EdgeInsetsGeometry? _paddingIncludingDecoration(final TwStyle style) {
     final padding = style.padding;
     final paddingEdgeInsets = padding?.toEdgeInsets();
@@ -67,22 +62,29 @@ class _DivState extends TwAnimatedState<TwDiv> {
 
   /// Loosely copied from [Container.build]. The main difference is that we
   /// choose to explicitly not support 'foregroundDecoration'.
-  /// Note that [style] is the style for the current state of the widget.
-  Widget _buildDiv(final TwStyle style, final BoxConstraints? constraints) {
+  /// Note that [mergedStyle] is the style for the current state of the widget
+  /// merged with the widget's default style.
+  Widget _buildDiv(
+    final TwStyle mergedStyle,
+    final BoxConstraints? constraints,
+  ) {
     _trackConstraintsForAnimation(
       constraints: constraints,
-      defaultStyle: widget.style,
-      currentStyle: style,
+      mergedStyle: mergedStyle,
     );
 
     final Widget? child = widget.child;
     final AlignmentGeometry? alignment = widget.alignment;
     final Clip clipBehavior = widget.clipBehavior;
-    final EdgeInsetsGeometry? margin = style.margin?.toEdgeInsets();
+    final EdgeInsetsGeometry? margin = mergedStyle.margin?.toEdgeInsets();
     final Matrix4? transform = widget.transform;
     final AlignmentGeometry? transformAlignment = widget.transformAlignment;
 
     Widget? current = child;
+
+    final style = mergedStyle.merge(animationController?.animatedStyle);
+    final dynamicConstraints =
+        animationController?.animatedBoxConstraints ?? constraints;
 
     // Render a [LimitedBox] if the widget has no child and no constraints.
     if (child == null &&
@@ -107,24 +109,15 @@ class _DivState extends TwAnimatedState<TwDiv> {
 
     // Render a [ColoredBox] if the widget has its background color property set
     // and no other decoration settings.
-    if (style.hasOnlyBackgroundColorDecoration &&
-        widget.style.hasOnlyBackgroundColorDecoration) {
-      final backgroundColor =
-          style.backgroundColor?.color ?? widget.style.backgroundColor?.color;
+    if (style.hasOnlyBackgroundColorDecoration) {
       current = ColoredBox(
-        color: animationController?.backgroundColor ??
-            backgroundColor ??
-            Colors.transparent,
+        color: style.backgroundColor?.color ?? Colors.transparent,
         child: current,
       );
     }
 
     // Render [ClipPath]
-    final Decoration? decoration = animationController?.getBoxDecoration(
-          defaultStyle: widget.style,
-          currentStyle: style,
-        ) ??
-        style.getBoxDecoration(widget.style, constraints);
+    final Decoration? decoration = style.getBoxDecoration(dynamicConstraints);
     if (clipBehavior != Clip.none) {
       assert(decoration != null);
       current = ClipPath(
@@ -146,7 +139,7 @@ class _DivState extends TwAnimatedState<TwDiv> {
     // Use constraints passed in to render a [ConstrainedBox] if applicable.
     if (constraints != null) {
       current = ConstrainedBox(
-        constraints: animationController?.boxConstraints ?? constraints,
+        constraints: animationController?.animatedBoxConstraints ?? constraints,
         child: current,
       );
     }
@@ -168,24 +161,26 @@ class _DivState extends TwAnimatedState<TwDiv> {
     // Apply opacity effect if applicable.
     if (widget.hasOpacity) {
       current = Opacity(
-        opacity: animationController?.opacity ?? style.opacity?.value ?? 1.0,
+        opacity: style.opacity?.value ?? 1.0,
         child: current,
       );
     }
 
     if (current == null) {
-      throw Exception('current widget returned by _buildDiv is null');
+      throw Exception(
+        'Current widget being built by ${widget.toStringShort()} is null',
+      );
     }
     return current;
   }
 
   /// Gets a [BoxConstraints] object that assumes usage of simple [PxUnit]
   /// values.
-  BoxConstraints? _tightenConstraints(
-    final double? width,
-    final double? height,
-    final BoxConstraints? constraints,
-  ) {
+  BoxConstraints? _tightenConstraints({
+    required final double? width,
+    required final double? height,
+    required final BoxConstraints? constraints,
+  }) {
     final fullConstraints = (width != null || height != null)
         ? constraints?.tighten(
               width: width,
@@ -200,18 +195,10 @@ class _DivState extends TwAnimatedState<TwDiv> {
   }
 
   @override
-  Widget buildForState(
-    final BuildContext context,
-    final MaterialStatesController controller,
-    final TwWidgetState state,
-  ) {
-    final style = getStyle(widgetState);
-    final bool defaultStyleUsesLayoutBuilder =
-        widget.style.hasPercentageSize || widget.style.hasPercentageConstraints;
-    final bool currentStyleUsesLayoutBuilder =
-        style.hasPercentageSize || style.hasPercentageConstraints;
+  Widget buildForState(final BuildContext context) {
+    final mergedStyle = currentStyle;
 
-    if (defaultStyleUsesLayoutBuilder || currentStyleUsesLayoutBuilder) {
+    if (widget.requiresLayoutBuilder) {
       return LayoutBuilder(
         builder: (
           final BuildContext context,
@@ -219,46 +206,33 @@ class _DivState extends TwAnimatedState<TwDiv> {
         ) {
           final parentWidth = parentConstraints.limitedMaxWidth(context);
           final parentHeight = parentConstraints.maxHeight;
-          final widthPx = style.width != null
-              ? style.widthPx(parentWidth)
-              : widget.style.widthPx(parentWidth);
-          final heightPx = style.height != null
-              ? style.heightPx(parentHeight)
-              : widget.style.heightPx(parentHeight);
-          final constraints = style.hasSizing || widget.style.hasSizing
+          final widthPx = mergedStyle.widthPx(parentWidth);
+          final heightPx = mergedStyle.heightPx(parentHeight);
+          final constraints = mergedStyle.hasSizing
               ? _tightenConstraints(
-                  widthPx,
-                  heightPx,
-                  style.hasConstraints
-                      ? style.getPercentageBoxConstraints(
-                          parentWidth,
-                          parentHeight,
-                        )
-                      : widget.style.getPercentageBoxConstraints(
-                          parentWidth,
-                          parentHeight,
-                        ),
+                  width: widthPx,
+                  height: heightPx,
+                  constraints: mergedStyle.getPercentageBoxConstraints(
+                    parentWidth,
+                    parentHeight,
+                  ),
                 )
               : null;
           return _buildDiv(
-            style,
+            mergedStyle,
             constraints,
           );
         },
       );
     }
 
-    final double? widthPx = style.width?.value.logicalPixels ??
-        widget.style.width?.value.logicalPixels;
-    final double? heightPx = style.height?.value.logicalPixels ??
-        widget.style.height?.value.logicalPixels;
     final simpleConstraints = _tightenConstraints(
-      widthPx,
-      heightPx,
-      style.getSimpleConstraints() ?? widget.style.getSimpleConstraints(),
+      width: mergedStyle.width?.value.logicalPixels,
+      height: mergedStyle.height?.value.logicalPixels,
+      constraints: mergedStyle.getSimpleConstraints(),
     );
     return _buildDiv(
-      style,
+      mergedStyle,
       simpleConstraints,
     );
   }
@@ -269,16 +243,12 @@ class _DivState extends TwAnimatedState<TwDiv> {
   /// calculate percentage constraints.
   void _trackConstraintsForAnimation({
     required final BoxConstraints? constraints,
-    required final TwStyle currentStyle,
-    required final TwStyle defaultStyle,
+    required final TwStyle mergedStyle,
   }) {
-    if (widget.hasTransitions &&
-        animationController?.trackedConstraints != constraints &&
-        (animationController?.canAnimate ?? false)) {
+    if (widget.hasTransitions && (animationController?.canAnimate ?? false)) {
       animationController?.updateTrackedConstraints(
         constraints: constraints,
-        currentStyle: currentStyle,
-        defaultStyle: defaultStyle,
+        mergedStyle: mergedStyle,
       );
     }
   }

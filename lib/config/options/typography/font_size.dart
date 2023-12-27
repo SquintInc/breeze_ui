@@ -30,4 +30,9 @@ class TwFontSize {
         ? lineHeight.value.percentage
         : (lineHeight.value.logicalPixels / value.logicalPixels);
   }
+
+  @override
+  String toString() {
+    return 'TwFontSize{value: $value, lineHeight: $lineHeight}';
+  }
 }

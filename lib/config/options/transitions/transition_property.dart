@@ -54,6 +54,8 @@ enum TransitionProperty {
 
 @immutable
 class TwTransitionProperty {
+  const TwTransitionProperty.none() : properties = const {};
+
   final Set<TransitionProperty> properties;
 
   const TwTransitionProperty(this.properties);
@@ -69,14 +71,6 @@ class TwTransitionProperty {
   int get hashCode => properties.hashCode;
 
   bool get isNone => properties.contains(TransitionProperty.none);
-
-  bool has(final TransitionProperty property) =>
-      properties.contains(property) ||
-      // Check for border property 'group'
-      (property.isBorderProperty &&
-          properties.contains(TransitionProperty.border)) ||
-      // check for all properties 'group'
-      properties.contains(TransitionProperty.all);
 
   @override
   String toString() {

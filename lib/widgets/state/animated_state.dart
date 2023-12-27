@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tailwind_elements/widgets/state/state.dart';
 import 'package:tailwind_elements/widgets/state/transition_controller.dart';
-import 'package:tailwind_elements/widgets/state/widget_state.dart';
 
 /// Animated [State] extension over [TwState] that adds support for animated
 /// transitions via an internal [TwTransitionController].
@@ -23,9 +22,13 @@ abstract class TwAnimatedState<T extends TwStatefulWidget> extends TwState<T>
   @override
   void initState() {
     super.initState();
+    _initAnimationController();
+  }
+
+  void _initAnimationController() {
     if (widget.hasTransitions) {
       // Only create animation controller if transitions are enabled
-      _animationController = TwTransitionController(
+      _animationController ??= TwTransitionController(
         widget: widget,
         vsync: this,
         duration:
@@ -35,10 +38,11 @@ abstract class TwAnimatedState<T extends TwStatefulWidget> extends TwState<T>
         animationStatusListener: animationListener,
       );
 
-      // Run [initTweens] only once, after the first frame has been rendered to
-      // ensure that the initial constraints have been already set.
+      // Run [initBoxConstraintsTween] only once, after the first frame has been
+      // rendered to ensure that the initial constraints have been already set.
       WidgetsBinding.instance.addPostFrameCallback((final timestamp) {
-        _animationController?.initTweens(widget.style);
+        _animationController?.initStyleTween(widget.style);
+        _animationController?.initBoxConstraintsTween(widget.style);
       });
     }
   }
@@ -49,39 +53,45 @@ abstract class TwAnimatedState<T extends TwStatefulWidget> extends TwState<T>
   }
 
   @protected
-  void animationListener(final AnimationStatus status);
+  void animationListener(final AnimationStatus status) {
+    // No-op, can be overridden by subclasses for custom behavior when reacting
+    // to an animation status change
+  }
 
   @override
-  void didWidgetStateChange(
-    final TwWidgetState prevWidgetState,
-    final TwWidgetState nextWidgetState,
-  ) {
+  void didUpdateWidget(final T oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _animationController?.refreshStyleTweenProperties(widget.style);
+    didWidgetStateChange();
+  }
+
+  @override
+  void didWidgetStateChange() {
     // Update transitions and tweens
     if (widget.hasTransitions) {
       final animationController = this._animationController;
       if (animationController == null) return;
-      final nextStyle = getStyle(nextWidgetState);
+      final mergedStyle = currentStyle;
 
       // Compute the new animation curve, with fallback to the default curve
       // if it was set in the [style] property.
-      final Curve? nextCurve = nextStyle.transitionTimingFn?.curve ??
-          widget.style.transitionTimingFn?.curve;
+      final Curve nextCurve =
+          mergedStyle.transitionTimingFn?.curve ?? defaultCurve;
       if (animationController.curve != nextCurve) {
         animationController.updateAnimationCurve(nextCurve);
       }
 
       // Compute the new animation duration, with fallback to the default
       // duration if it was set in the [style] property.
-      final Duration? nextDuration =
-          nextStyle.transitionDuration?.duration.value ??
-              widget.style.transitionDuration?.duration.value;
+      final Duration nextDuration =
+          mergedStyle.transitionDuration?.duration.value ?? defaultDuration;
       if (animationController.duration != nextDuration) {
         animationController.updateAnimationDuration(nextDuration);
       }
 
       animationController
-        ..updateTweens(widget.style, nextStyle)
-        ..animate(nextStyle.transitionDelay ?? widget.style.transitionDelay);
+        ..updateTweens(mergedStyle)
+        ..animate(mergedStyle.transitionDelay);
     }
   }
 

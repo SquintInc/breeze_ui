@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/widgets/style.dart';
+import 'package:tailwind_elements/widgets/style/style.dart';
 
 @immutable
 class TwLabel {
@@ -218,20 +218,25 @@ class TwCounter {
 
 @immutable
 class TwTextField extends TextField {
-  /// Tailwind text style properties
-  final TwStyle textInputStyle;
+  /// Default style properties for this widget.
+  /// Corresponds to [TwWidgetState.normal].
+  final TwStyle _style;
 
-  /// Style override for when the text field is disabled
+  /// Style override for when the widget is disabled.
+  /// Corresponds to [TwWidgetState.disabled].
   final TwStyle? disabled;
 
-  /// Style override for when the text field has an error
-  final TwStyle? error;
+  /// Style override for when the widget is hovered
+  /// Corresponds to [TwWidgetState.hovered].
+  final TwStyle? hovered;
 
-  /// Style override for when the text field is focused
+  /// Style override for when the widget is focused (if applicable).
+  /// Corresponds to [TwWidgetState.focused].
   final TwStyle? focused;
 
-  /// Style override for when the text field is hovered
-  final TwStyle? hovered;
+  /// Style override for when the widget has an error (if applicable).
+  /// Corresponds to [TwWidgetState.error].
+  final TwStyle? errored;
 
   /// See [InputDecoration.isCollapsed]
   final bool? isCollapsed;
@@ -267,7 +272,7 @@ class TwTextField extends TextField {
   const TwTextField({
     final TwStyle style = const TwStyle(),
     this.disabled,
-    this.error,
+    this.errored,
     this.focused,
     this.hovered,
     this.isCollapsed,
@@ -336,15 +341,15 @@ class TwTextField extends TextField {
     super.spellCheckConfiguration,
     super.magnifierConfiguration,
     super.key,
-  })  : textInputStyle = style,
+  })  : _style = style,
         super();
 
   @override
   TextStyle? get style => TwStyle.toMaterialTextStyle(
-        textInputStyle,
+        _style,
         disabled: disabled,
         dragged: null,
-        error: error,
+        error: errored,
         focused: focused,
         selected: null,
         pressed: null,
@@ -352,10 +357,10 @@ class TwTextField extends TextField {
       );
 
   InputBorder? _getMaterialInputBorder() => TwStyle.toMaterialInputBorder(
-        textInputStyle,
+        _style,
         disabled: disabled,
         dragged: null,
-        error: error,
+        error: errored,
         focused: focused,
         selected: null,
         pressed: null,
@@ -364,7 +369,7 @@ class TwTextField extends TextField {
 
   @override
   InputDecoration get decoration {
-    final labelStyle = inputLabel?.toMaterialTextStyle(textInputStyle);
+    final labelStyle = inputLabel?.toMaterialTextStyle(_style);
     return InputDecoration(
       isCollapsed: isCollapsed,
       isDense: isDense,
@@ -384,12 +389,12 @@ class TwTextField extends TextField {
 
       // Subtext sub-component
       helperText: subtext?.text,
-      helperStyle: subtext?.toMaterialTextStyle(textInputStyle),
+      helperStyle: subtext?.toMaterialTextStyle(_style),
       helperMaxLines: subtext?.maxLines,
 
       // Placeholder sub-component
       hintText: placeholder?.text,
-      hintStyle: placeholder?.toMaterialTextStyle(textInputStyle),
+      hintStyle: placeholder?.toMaterialTextStyle(_style),
       hintMaxLines: placeholder?.maxLines,
       hintTextDirection: placeholder?.textDirection,
       hintFadeDuration: placeholder?.fadeDuration,
@@ -397,24 +402,24 @@ class TwTextField extends TextField {
       // Error sub-component
       errorText: errorLabel?.text,
       error: errorLabel?.widget,
-      errorStyle: errorLabel?.toMaterialTextStyle(textInputStyle),
+      errorStyle: errorLabel?.toMaterialTextStyle(_style),
       errorMaxLines: errorLabel?.maxLines,
 
       // Counter sub-component
       counter: counter?.widget,
       counterText: counter?.text,
-      counterStyle: counter?.toMaterialTextStyle(textInputStyle),
+      counterStyle: counter?.toMaterialTextStyle(_style),
       semanticCounterText: counter?.semanticText,
 
       // TextField container
-      constraints: textInputStyle.getSimpleConstraints(),
-      contentPadding: textInputStyle.padding?.toEdgeInsets(),
+      constraints: _style.getSimpleConstraints(),
+      contentPadding: _style.padding?.toEdgeInsets(),
       // Don't set errorBorder, focusedBorder, focusedErrorBorder,
       // disabledBorder, nor enabledBorder, since we are using material state
       // resolver for the border
       border: _getMaterialInputBorder(),
-      filled: textInputStyle.backgroundColor != null,
-      fillColor: textInputStyle.backgroundColor?.color,
+      filled: _style.backgroundColor != null,
+      fillColor: _style.backgroundColor?.color,
     );
   }
 }

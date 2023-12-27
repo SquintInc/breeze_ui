@@ -8,6 +8,11 @@ class TwBoxShadows {
 
   const TwBoxShadows(this.boxShadows);
 
+  static TwBoxShadows? fromBoxShadows(final List<BoxShadow>? boxShadows) =>
+      boxShadows != null && boxShadows.isNotEmpty
+          ? TwBoxShadows(boxShadows)
+          : null;
+
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
@@ -17,6 +22,11 @@ class TwBoxShadows {
 
   @override
   int get hashCode => boxShadows.hashCode;
+
+  Color? get firstColor {
+    if (boxShadows.isEmpty) return null;
+    return boxShadows.firstOrNull?.color;
+  }
 
   List<BoxShadow> withColor(final TwBoxShadowColor? color) {
     if (color == null) {
@@ -32,5 +42,10 @@ class TwBoxShadows {
           ),
         )
         .toList();
+  }
+
+  @override
+  String toString() {
+    return 'TwBoxShadows{boxShadows: $boxShadows}';
   }
 }

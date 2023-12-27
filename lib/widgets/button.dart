@@ -1,34 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/config/options/box_types.dart';
 import 'package:tailwind_elements/widgets/div.dart';
-import 'package:tailwind_elements/widgets/style.dart';
-
-extension TwStyleButtonExtension on TwStyle {
-  bool get requiresDivWrapper =>
-      boxShadow != null ||
-      margin != null ||
-      hasConstraints ||
-      hasPercentageSize ||
-      hasPercentageConstraints;
-}
+import 'package:tailwind_elements/widgets/state/widget_state.dart';
+import 'package:tailwind_elements/widgets/style/style.dart';
 
 /// A [TextButton] widget wrapper with support for Tailwind styled properties.
+///
+/// See the [build] method for more details about the implementation choice.
 @immutable
-class TwButton extends StatelessWidget {
-  /// Tailwind style properties (including styling for different button states)
+class TwButton extends StatefulWidget {
+  /// Default style properties for this widget.
+  /// Corresponds to [TwWidgetState.normal].
   final TwStyle style;
 
-  /// Style override for when the button is disabled
+  /// Style override for when the widget is disabled.
+  /// Corresponds to [TwWidgetState.disabled].
   final TwStyle? disabled;
 
-  /// Style override for when the button is focused
-  final TwStyle? focused;
-
-  /// Style override for when the button is pressed
+  /// Style override for when the widget is pressed
+  /// Corresponds to [TwWidgetState.pressed].
   final TwStyle? pressed;
 
-  /// Style override for when the button is hovered
+  /// Style override for when the widget is hovered
+  /// Corresponds to [TwWidgetState.hovered].
   final TwStyle? hovered;
+
+  /// Style override for when the widget is dragged
+  /// Corresponds to [TwWidgetState.dragged].
+  final TwStyle? dragged;
+
+  /// Style override for when the widget is focused (if applicable).
+  /// Corresponds to [TwWidgetState.focused].
+  final TwStyle? focused;
+
+  /// Style override for when the widget is selected (if applicable).
+  /// Corresponds to [TwWidgetState.selected].
+  final TwStyle? selected;
+
+  /// Style override for when the widget has an error (if applicable).
+  /// Corresponds to [TwWidgetState.error].
+  final TwStyle? errored;
+
+  final MaterialStatesController? statesController;
 
   // Pass-through properties for [TextButton]
   final Widget? child;
@@ -39,20 +51,23 @@ class TwButton extends StatelessWidget {
   final FocusNode? focusNode;
   final bool autofocus;
   final Clip clipBehavior;
-  final MaterialStatesController? statesController;
   final bool isSemanticButton;
+  final Matrix4? transform;
+  final AlignmentGeometry? transformAlignment;
 
   // Pass-through properties for [ButtonStyle]
   final MaterialTapTargetSize tapTargetSize;
-  final Duration animationDuration;
   final AlignmentGeometry? alignment;
 
   const TwButton({
     this.style = const TwStyle(),
     this.disabled,
-    this.focused,
     this.pressed,
     this.hovered,
+    this.dragged,
+    this.focused,
+    this.selected,
+    this.errored,
     this.child,
     this.onPressed,
     this.onLongPress,
@@ -61,171 +76,147 @@ class TwButton extends StatelessWidget {
     this.focusNode,
     this.autofocus = false,
     this.clipBehavior = Clip.none,
-    this.statesController,
     this.isSemanticButton = true,
     this.tapTargetSize = MaterialTapTargetSize.padded,
-    this.animationDuration = const Duration(milliseconds: 0),
     this.alignment,
+    this.transform,
+    this.transformAlignment,
+    this.statesController,
     super.key,
   });
 
-  Size _buttonSize({
-    required final double? widthPx,
-    required final double? heightPx,
-  }) {
-    if (widthPx != null && heightPx != null) return Size(widthPx, heightPx);
-    if (widthPx != null) return Size.fromWidth(widthPx);
-    if (heightPx != null) return Size.fromHeight(heightPx);
-    return Size.infinite;
+  @override
+  State createState() => _TwButtonState();
+
+  bool get enabled => onPressed != null || onLongPress != null;
+}
+
+extension TwButtonStyleExtension on TwStyle {
+  bool get requiresDivWrapper =>
+      boxShadow != null ||
+      margin != null ||
+      hasConstraints ||
+      hasPercentageSize ||
+      hasPercentageConstraints;
+
+  ButtonStyle toButtonStyle(
+    final MaterialTapTargetSize tapTargetSize,
+    final AlignmentGeometry? alignment,
+  ) {
+    return ButtonStyle(
+      backgroundColor: always(Colors.transparent),
+      foregroundColor: always(textColor?.color ?? Colors.transparent),
+      overlayColor: always(Colors.transparent),
+      textStyle: always(toTextStyle()),
+      splashFactory: NoSplash.splashFactory,
+      shape: always(
+        RoundedRectangleBorder(
+          borderRadius: borderRadius?.toBorderRadius() ?? BorderRadius.zero,
+        ),
+      ),
+      tapTargetSize: tapTargetSize,
+      alignment: alignment,
+      animationDuration: transition != null
+          ? transitionDuration?.duration.value
+          : Duration.zero,
+    );
+  }
+}
+
+class _TwButtonState extends State<TwButton> {
+  MaterialStatesController? internalStatesController;
+
+  MaterialStatesController get statesController =>
+      widget.statesController ?? internalStatesController!;
+
+  void handleStatesControllerChange() {
+    // Force a rebuild to resolve MaterialStateProperty properties
+    setState(() {});
   }
 
-  MaterialStateProperty<T> whenStyleStatus<T>(
-    final StyleValueResolver resolver, {
-    required final T defaultValue,
-  }) =>
-      TwStyle.resolveStatus(
-        style,
-        resolver,
-        defaultValue: defaultValue,
-        disabled: disabled,
-        dragged: null,
-        error: null,
-        focused: focused,
-        selected: null,
-        pressed: pressed,
-        hovered: hovered,
-      );
-
-  ButtonStyle _buttonStyle({
-    required final double? widthPx,
-    required final double? heightPx,
-  }) =>
-      ButtonStyle(
-        foregroundColor: whenStyleStatus(
-          (final statusStyle) => statusStyle?.textColor?.color,
-          defaultValue: Colors.black,
-        ),
-        backgroundColor: whenStyleStatus(
-          (final statusStyle) => statusStyle?.backgroundColor?.color,
-          defaultValue: Colors.transparent,
-        ),
-        fixedSize: always(
-          _buttonSize(
-            widthPx: widthPx,
-            heightPx: heightPx,
-          ),
-        ),
-        padding: whenStyleStatus(
-          (final statusStyle) => statusStyle?.padding?.toEdgeInsets(),
-          defaultValue: EdgeInsets.zero,
-        ),
-        shape: style.hasBorderDecoration
-            ? whenStyleStatus(
-                (final statusStyle) => RoundedRectangleBorder(
-                  borderRadius:
-                      statusStyle?.borderRadius?.type == BoxCornerType.all
-                          ? style.borderRadius?.toBorderRadius() ??
-                              BorderRadius.zero
-                          : BorderRadius.zero,
-                  side: statusStyle?.toBorderSide() ?? style.toBorderSide(),
-                ),
-                defaultValue: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                  side: style.toBorderSide(),
-                ),
-              )
-            : always(const RoundedRectangleBorder()),
-        side: style.hasBorderDecoration
-            ? whenStyleStatus(
-                (final statusStyle) => statusStyle?.toBorderSide(),
-                defaultValue: style.toBorderSide(),
-              )
-            : null,
-        // Currently no support for overlay color
-        overlayColor: always(Colors.transparent),
-        // Currently no support for elevation color
-        elevation: always(0),
-        shadowColor: null,
-        animationDuration: animationDuration,
-        tapTargetSize: tapTargetSize,
-        alignment: alignment,
-      );
-
-  bool get requiresDivWrapper =>
-      style.requiresDivWrapper ||
-      (disabled?.requiresDivWrapper ?? false) ||
-      (focused?.requiresDivWrapper ?? false) ||
-      (pressed?.requiresDivWrapper ?? false) ||
-      (hovered?.requiresDivWrapper ?? false);
-
-  TextButton _createTextButton({
-    required final double? widthPx,
-    required final double? heightPx,
-  }) =>
-      TextButton(
-        key: key,
-        onPressed: onPressed,
-        onLongPress: onLongPress,
-        onHover: onHover,
-        onFocusChange: onFocusChange,
-        style: _buttonStyle(
-          widthPx: widthPx,
-          heightPx: heightPx,
-        ),
-        focusNode: focusNode,
-        autofocus: autofocus,
-        clipBehavior: clipBehavior,
-        statesController: statesController,
-        isSemanticButton: isSemanticButton,
-        child: child ?? const SizedBox(),
-      );
+  @override
+  void initState() {
+    super.initState();
+    if (widget.statesController == null) {
+      internalStatesController = MaterialStatesController();
+    }
+    statesController.addListener(handleStatesControllerChange);
+  }
 
   @override
+  void dispose() {
+    statesController.removeListener(handleStatesControllerChange);
+    internalStatesController?.dispose();
+    super.dispose();
+  }
+
+  /// Wrap the button in a [TwDiv] for simplicity of applying styles with
+  /// support for animated transitions. Use a [Stack] to render the
+  /// [TextButton] over the [TwDiv] due to how [statesController] notifies
+  /// its listeners and marks each widget listening in as dirty.
+  ///
+  /// Why not render the [TextButton] as a child of the [TwDiv]? This is because
+  /// the [statesController] is shared between the [TwDiv] and the [TextButton].
+  /// The [TwDiv] would be marked as dirty and would rebuild whenever the
+  /// current widget state and style changes, which would propagate a rebuild
+  /// to the child widget. However, the [statesController] is updated by the
+  /// [TextButton], which would cause a setState() call on the [TextButton] but
+  /// also a setState() call on the [TwDiv].  This would cause a `setState() or
+  /// markNeedsBuild() called when widget tree was locked` error during
+  /// rendering. Using a [Stack] prevents the setState() dependency loop when
+  /// rebuilding both the [TwDiv] and [TextButton].
+  @override
   Widget build(final BuildContext context) {
-    if (requiresDivWrapper) {
-      return TwDiv(
-        key: key,
-        alignment: alignment,
-        clipBehavior: clipBehavior,
-        style: TwStyle(
-          width: style.width,
-          height: style.height,
-          borderRadius: style.borderRadius,
-          boxShadow: style.boxShadow,
-          margin: style.margin,
-          minWidth: style.minWidth,
-          minHeight: style.minHeight,
-          maxWidth: style.maxWidth,
-          maxHeight: style.maxHeight,
+    final widgetState = getPrimaryWidgetState(statesController.value);
+    final stateStyle = switch (widgetState) {
+      TwWidgetState.disabled => widget.disabled,
+      TwWidgetState.pressed => widget.pressed,
+      TwWidgetState.hovered => widget.hovered,
+      TwWidgetState.dragged => widget.dragged,
+      TwWidgetState.focused => widget.focused,
+      TwWidgetState.selected => widget.selected,
+      TwWidgetState.error => widget.errored,
+      _ => widget.style,
+    };
+    final mergedStyle = widget.style.merge(stateStyle);
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        TwDiv(
+          key: widget.key,
+          style: widget.style,
+          disabled: widget.disabled,
+          pressed: widget.pressed,
+          hovered: widget.hovered,
+          dragged: widget.dragged,
+          focused: widget.focused,
+          selected: widget.selected,
+          errored: widget.errored,
+          isDisabled: widget.onPressed == null && widget.onLongPress == null,
+          isSelectable: false,
+          useGestureDetector: false,
+          useMouseRegion: false,
+          statesController: statesController,
         ),
-        child: (style.hasPercentageSize || style.hasPercentageConstraints)
-            ? LayoutBuilder(
-                builder: (
-                  final BuildContext context,
-                  final BoxConstraints parentConstraints,
-                ) {
-                  final parentWidth =
-                      parentConstraints.limitedMaxWidth(context);
-                  final parentHeight = parentConstraints.maxHeight;
-                  final widthPx = style.widthPx(parentWidth);
-                  final heightPx = style.heightPx(parentHeight);
-
-                  return _createTextButton(
-                    widthPx: widthPx,
-                    heightPx: heightPx,
-                  );
-                },
-              )
-            : _createTextButton(
-                widthPx: style.width?.value.logicalPixels,
-                heightPx: style.height?.value.logicalPixels,
-              ),
-      );
-    }
-
-    return _createTextButton(
-      widthPx: style.width?.value.logicalPixels,
-      heightPx: style.height?.value.logicalPixels,
+        Positioned.fill(
+          child: TextButton(
+            style: mergedStyle.toButtonStyle(
+              widget.tapTargetSize,
+              widget.alignment,
+            ),
+            onPressed: widget.onPressed,
+            onLongPress: widget.onLongPress,
+            onHover: widget.onHover,
+            onFocusChange: widget.onFocusChange,
+            focusNode: widget.focusNode,
+            autofocus: widget.autofocus,
+            clipBehavior: widget.clipBehavior,
+            statesController: statesController,
+            child: widget.child ?? const SizedBox(),
+          ),
+        ),
+      ],
     );
   }
 }

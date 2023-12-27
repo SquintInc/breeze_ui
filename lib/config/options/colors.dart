@@ -19,6 +19,7 @@ class TwColor {
   int get hashCode => color.hashCode ^ runtimeType.toString().hashCode;
 
   /// Returns the color as null if the color is transparent for tweening.
+  /// See [ColorTween] for more details.
   Color? get tweenColor => color == const Color(0x00000000) ? null : color;
 
   @override
@@ -33,6 +34,9 @@ class TwColor {
 class TwBackgroundColor extends TwColor {
   const TwBackgroundColor(super.color);
 
+  static TwBackgroundColor? fromColor(final Color? color) =>
+      color != null ? TwBackgroundColor(color) : null;
+
   @override
   String toString() {
     return 'TwBackgroundColor{$color}';
@@ -45,9 +49,16 @@ class TwBackgroundColor extends TwColor {
 class TwBoxShadowColor extends TwColor {
   const TwBoxShadowColor(super.color);
 
+  static TwBoxShadowColor? fromColor(final Color? color) =>
+      color != null ? TwBoxShadowColor(color) : null;
+
   @override
   String toString() {
-    return 'TwBoxShadowColor{$color}';
+    return 'TwBoxShadowColor{rgb(${color.red}, ${color.green}, ${color.blue})}';
+  }
+
+  String toRgbString() {
+    return 'rgb(${color.red}, ${color.green}, ${color.blue})';
   }
 }
 
@@ -56,6 +67,9 @@ class TwBoxShadowColor extends TwColor {
 @immutable
 class TwBorderColor extends TwColor {
   const TwBorderColor(super.color);
+
+  static TwBorderColor? fromColor(final Color? color) =>
+      color != null ? TwBorderColor(color) : null;
 
   @override
   String toString() {
@@ -69,6 +83,9 @@ class TwBorderColor extends TwColor {
 class TwTextColor extends TwColor {
   const TwTextColor(super.color);
 
+  static TwTextColor? fromColor(final Color? color) =>
+      color != null ? TwTextColor(color) : null;
+
   @override
   String toString() {
     return 'TwTextColor{$color}';
@@ -80,6 +97,9 @@ class TwTextColor extends TwColor {
 @immutable
 class TwTextDecorationColor extends TwColor {
   const TwTextDecorationColor(super.color);
+
+  static TwTextDecorationColor? fromColor(final Color? color) =>
+      color != null ? TwTextDecorationColor(color) : null;
 
   @override
   String toString() {

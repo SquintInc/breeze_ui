@@ -9,6 +9,10 @@ class TwBorderTop {
 
   const TwBorderTop(this.pixels);
 
+  static TwBorderTop fromPx(final double? pixels) {
+    return TwBorderTop(PxUnit(pixels ?? 0));
+  }
+
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
@@ -25,6 +29,10 @@ class TwBorderRight {
   final PxUnit pixels;
 
   const TwBorderRight(this.pixels);
+
+  static TwBorderRight fromPx(final double? px) {
+    return TwBorderRight(PxUnit(px ?? 0));
+  }
 
   @override
   bool operator ==(final Object other) =>
@@ -43,6 +51,10 @@ class TwBorderBottom {
 
   const TwBorderBottom(this.pixels);
 
+  static TwBorderBottom fromPx(final double? px) {
+    return TwBorderBottom(PxUnit(px ?? 0));
+  }
+
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
@@ -59,6 +71,10 @@ class TwBorderLeft {
   final PxUnit pixels;
 
   const TwBorderLeft(this.pixels);
+
+  static TwBorderLeft fromPx(final double? px) {
+    return TwBorderLeft(PxUnit(px ?? 0));
+  }
 
   @override
   bool operator ==(final Object other) =>
