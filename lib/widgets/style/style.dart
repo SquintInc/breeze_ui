@@ -480,85 +480,6 @@ class TwStyle {
     return 'TwStyle{${buf.join(', ')}}';
   }
 
-  @override
-  bool operator ==(final Object other) =>
-      identical(this, other) ||
-      other is TwStyle &&
-          runtimeType == other.runtimeType &&
-          backgroundColor == other.backgroundColor &&
-          backgroundImage == other.backgroundImage &&
-          backgroundGradient == other.backgroundGradient &&
-          boxShadow == other.boxShadow &&
-          boxShadowColor == other.boxShadowColor &&
-          opacity == other.opacity &&
-          border == other.border &&
-          borderColor == other.borderColor &&
-          borderRadius == other.borderRadius &&
-          borderStrokeAlign == other.borderStrokeAlign &&
-          minWidth == other.minWidth &&
-          width == other.width &&
-          maxWidth == other.maxWidth &&
-          minHeight == other.minHeight &&
-          height == other.height &&
-          maxHeight == other.maxHeight &&
-          padding == other.padding &&
-          margin == other.margin &&
-          transition == other.transition &&
-          transitionDuration == other.transitionDuration &&
-          transitionTimingFn == other.transitionTimingFn &&
-          transitionDelay == other.transitionDelay &&
-          fontSize == other.fontSize &&
-          fontStyle == other.fontStyle &&
-          fontWeight == other.fontWeight &&
-          letterSpacing == other.letterSpacing &&
-          lineHeight == other.lineHeight &&
-          textColor == other.textColor &&
-          textDecoration == other.textDecoration &&
-          textDecorationColor == other.textDecorationColor &&
-          textDecorationStyle == other.textDecorationStyle &&
-          textDecorationThickness == other.textDecorationThickness &&
-          leadingDistribution == other.leadingDistribution &&
-          wordSpacing == other.wordSpacing;
-
-  @override
-  int get hashCode =>
-      backgroundColor.hashCode ^
-      backgroundImage.hashCode ^
-      backgroundGradient.hashCode ^
-      boxShadow.hashCode ^
-      boxShadowColor.hashCode ^
-      opacity.hashCode ^
-      border.hashCode ^
-      borderColor.hashCode ^
-      borderRadius.hashCode ^
-      borderStrokeAlign.hashCode ^
-      minWidth.hashCode ^
-      width.hashCode ^
-      maxWidth.hashCode ^
-      minHeight.hashCode ^
-      height.hashCode ^
-      maxHeight.hashCode ^
-      padding.hashCode ^
-      margin.hashCode ^
-      transition.hashCode ^
-      transitionDuration.hashCode ^
-      transitionTimingFn.hashCode ^
-      transitionDelay.hashCode ^
-      fontSize.hashCode ^
-      fontStyle.hashCode ^
-      fontWeight.hashCode ^
-      letterSpacing.hashCode ^
-      lineHeight.hashCode ^
-      textColor.hashCode ^
-      textDecoration.hashCode ^
-      textDecorationColor.hashCode ^
-      textDecorationStyle.hashCode ^
-      textDecorationThickness.hashCode ^
-      leadingDistribution.hashCode ^
-      wordSpacing.hashCode;
-}
-
-extension TwStyleCopyMerge on TwStyle {
   /// Merges another [TwStyle] with this style, and overwrites any existing
   /// properties from this style with the [other]'s property if set.
   TwStyle merge(final TwStyle? other) {
@@ -595,6 +516,7 @@ extension TwStyleCopyMerge on TwStyle {
       letterSpacing: other.letterSpacing,
       lineHeight: other.lineHeight,
       textColor: other.textColor,
+      selectionColor: other.selectionColor,
       textDecoration: other.textDecoration,
       textDecorationColor: other.textDecorationColor,
       textDecorationStyle: other.textDecorationStyle,
@@ -634,6 +556,7 @@ extension TwStyleCopyMerge on TwStyle {
     final TwLetterSpacing? letterSpacing,
     final TwLineHeight? lineHeight,
     final TwTextColor? textColor,
+    final TwTextColor? selectionColor,
     final TextDecoration? textDecoration,
     final TwTextDecorationColor? textDecorationColor,
     final TextDecorationStyle? textDecorationStyle,
@@ -670,6 +593,7 @@ extension TwStyleCopyMerge on TwStyle {
         letterSpacing: letterSpacing ?? this.letterSpacing,
         lineHeight: lineHeight ?? this.lineHeight,
         textColor: textColor ?? this.textColor,
+        selectionColor: selectionColor ?? this.selectionColor,
         textDecoration: textDecoration ?? this.textDecoration,
         textDecorationColor: textDecorationColor ?? this.textDecorationColor,
         textDecorationStyle: textDecorationStyle ?? this.textDecorationStyle,
@@ -678,4 +602,83 @@ extension TwStyleCopyMerge on TwStyle {
         leadingDistribution: leadingDistribution ?? this.leadingDistribution,
         wordSpacing: wordSpacing ?? this.wordSpacing,
       );
+
+  @override
+  bool operator ==(final Object other) =>
+      identical(this, other) ||
+      other is TwStyle &&
+          runtimeType == other.runtimeType &&
+          backgroundColor == other.backgroundColor &&
+          backgroundImage == other.backgroundImage &&
+          backgroundGradient == other.backgroundGradient &&
+          boxShadow == other.boxShadow &&
+          boxShadowColor == other.boxShadowColor &&
+          opacity == other.opacity &&
+          border == other.border &&
+          borderColor == other.borderColor &&
+          borderRadius == other.borderRadius &&
+          borderStrokeAlign == other.borderStrokeAlign &&
+          minWidth == other.minWidth &&
+          width == other.width &&
+          maxWidth == other.maxWidth &&
+          minHeight == other.minHeight &&
+          height == other.height &&
+          maxHeight == other.maxHeight &&
+          padding == other.padding &&
+          margin == other.margin &&
+          transition == other.transition &&
+          transitionDuration == other.transitionDuration &&
+          transitionTimingFn == other.transitionTimingFn &&
+          transitionDelay == other.transitionDelay &&
+          fontSize == other.fontSize &&
+          fontStyle == other.fontStyle &&
+          fontWeight == other.fontWeight &&
+          letterSpacing == other.letterSpacing &&
+          lineHeight == other.lineHeight &&
+          textColor == other.textColor &&
+          selectionColor == other.selectionColor &&
+          textDecoration == other.textDecoration &&
+          textDecorationColor == other.textDecorationColor &&
+          textDecorationStyle == other.textDecorationStyle &&
+          textDecorationThickness == other.textDecorationThickness &&
+          leadingDistribution == other.leadingDistribution &&
+          wordSpacing == other.wordSpacing;
+
+  @override
+  int get hashCode =>
+      backgroundColor.hashCode ^
+      backgroundImage.hashCode ^
+      backgroundGradient.hashCode ^
+      boxShadow.hashCode ^
+      boxShadowColor.hashCode ^
+      opacity.hashCode ^
+      border.hashCode ^
+      borderColor.hashCode ^
+      borderRadius.hashCode ^
+      borderStrokeAlign.hashCode ^
+      minWidth.hashCode ^
+      width.hashCode ^
+      maxWidth.hashCode ^
+      minHeight.hashCode ^
+      height.hashCode ^
+      maxHeight.hashCode ^
+      padding.hashCode ^
+      margin.hashCode ^
+      transition.hashCode ^
+      transitionDuration.hashCode ^
+      transitionTimingFn.hashCode ^
+      transitionDelay.hashCode ^
+      fontSize.hashCode ^
+      fontStyle.hashCode ^
+      fontWeight.hashCode ^
+      letterSpacing.hashCode ^
+      lineHeight.hashCode ^
+      textColor.hashCode ^
+      selectionColor.hashCode ^
+      textDecoration.hashCode ^
+      textDecorationColor.hashCode ^
+      textDecorationStyle.hashCode ^
+      textDecorationThickness.hashCode ^
+      leadingDistribution.hashCode ^
+      wordSpacing.hashCode;
 }
