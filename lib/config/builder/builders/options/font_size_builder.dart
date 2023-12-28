@@ -35,12 +35,21 @@ class FontSizeBuilder extends ConstantsGenerator {
           prefix.key,
           themeValue.key == 'DEFAULT' ? '' : themeValue.key.toSnakeCase(),
         );
-        final List<dynamic> values = themeValue.value;
-        final String fontSizeString = values[0];
-        final Map<String, dynamic> additionalProps = values[1];
-        final TwUnit fontSizeValue = TwUnit.parse(fontSizeString);
-        final String lineHeightString = additionalProps['lineHeight'] ?? '1';
-        final TwUnit lineHeightValue = TwUnit.parse(lineHeightString);
+        final dynamic values = themeValue.value;
+
+        TwUnit fontSizeValue;
+        TwUnit lineHeightValue;
+        if (values is String) {
+          fontSizeValue = TwUnit.parse(values);
+          lineHeightValue = TwUnit.parse('1.5');
+        } else {
+          final String fontSizeString = values[0];
+          final Map<String, dynamic> additionalProps = values[1];
+          fontSizeValue = TwUnit.parse(fontSizeString);
+          final String lineHeightString =
+              additionalProps['lineHeight'] ?? '1.5';
+          lineHeightValue = TwUnit.parse(lineHeightString);
+        }
 
         final String lineDeclaration = CodeWriter.dartLineDeclaration(
           variableName: varName,

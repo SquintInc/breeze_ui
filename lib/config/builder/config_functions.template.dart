@@ -40,10 +40,11 @@ class GeneratedTailwindConfig {
       for (final entry in extend.entries) {
         final String key = entry.key;
         final Map<dynamic, dynamic> toAdd = entry.value;
-        if (combinedTheme[key] == null) {
-          combinedTheme[key] = {};
-        }
-        (combinedTheme[key] as Map<dynamic, dynamic>).addAll(toAdd);
+
+        final Map<String, dynamic> existing = {
+          ...combinedTheme[key] ?? <Map<String, dynamic>>{},
+        }..addAll(toAdd as Map<String, dynamic>);
+        combinedTheme[key] = existing;
       }
     }
     if (extendColors != null) {

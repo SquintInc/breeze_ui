@@ -13,7 +13,12 @@ module.exports = {
         '15': '3.75rem',
         '128': '32rem',
         '144': '36rem',
-      }
+      },
+      fontSize: {
+        '7xl': '5rem',
+        '8xl': '6rem',
+        '9xl': '7rem',
+      },
     },
   },
 };

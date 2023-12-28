@@ -1316,9 +1316,9 @@ const text_3xl = TwFontSize(RemUnit(1.875), TwLineHeight(RemUnit(2.25)));
 const text_4xl = TwFontSize(RemUnit(2.25), TwLineHeight(RemUnit(2.5)));
 const text_5xl = TwFontSize(RemUnit(3.0), TwLineHeight(PercentUnit(100.0)));
 const text_6xl = TwFontSize(RemUnit(3.75), TwLineHeight(PercentUnit(100.0)));
-const text_7xl = TwFontSize(RemUnit(4.5), TwLineHeight(PercentUnit(100.0)));
-const text_8xl = TwFontSize(RemUnit(6.0), TwLineHeight(PercentUnit(100.0)));
-const text_9xl = TwFontSize(RemUnit(8.0), TwLineHeight(PercentUnit(100.0)));
+const text_7xl = TwFontSize(RemUnit(5.0), TwLineHeight(PercentUnit(150.0)));
+const text_8xl = TwFontSize(RemUnit(6.0), TwLineHeight(PercentUnit(150.0)));
+const text_9xl = TwFontSize(RemUnit(7.0), TwLineHeight(PercentUnit(150.0)));
 
 // **************************************************************************
 // Generator: FontWeightBuilder
