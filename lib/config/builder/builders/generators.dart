@@ -36,26 +36,24 @@ class CodeWriter {
   }
 
   static String variableNameSuffix(final String key, final dynamic unit) {
-    if (unit is TwUnit) {
+    if (unit is CssMeasurementUnit) {
       return switch (unit.type) {
-        UnitType.px ||
-        UnitType.em ||
-        UnitType.rem =>
+        CssUnitType.px ||
+        CssUnitType.em ||
+        CssUnitType.rem =>
           key == 'DEFAULT' ? '' : key.toSnakeCase(),
-        UnitType.percent => percentageVarNameSuffix(key, unit.value),
-        UnitType.viewport => key.toSnakeCase(),
-        UnitType.smallViewport => key.toSnakeCase(),
-        UnitType.largeViewport => key.toSnakeCase(),
-        UnitType.dynamicViewport => key.toSnakeCase(),
+        CssUnitType.percent => percentageVarNameSuffix(key, unit.value),
+        CssUnitType.viewport => key.toSnakeCase(),
+        CssUnitType.smallViewport => key.toSnakeCase(),
+        CssUnitType.largeViewport => key.toSnakeCase(),
+        CssUnitType.dynamicViewport => key.toSnakeCase(),
         _ => throw Exception(
             'Invalid unit type for conversion to identifier: ${unit.type}',
           ),
       };
-    } else if (unit is TwTimeUnit) {
+    } else if (unit is CssTimeUnit) {
       return switch (unit.type) {
-        TimeUnitType.ms ||
-        TimeUnitType.s =>
-          key == 'DEFAULT' ? '' : key.toSnakeCase(),
+        TimeType.ms || TimeType.s => key == 'DEFAULT' ? '' : key.toSnakeCase(),
       };
     } else if (unit is double || unit is int || unit is String) {
       return key == 'DEFAULT' ? '' : key.toSnakeCase();
@@ -71,16 +69,16 @@ class CodeWriter {
     required final dynamic unit,
   }) {
     var valueConstructor = '';
-    if (unit is TwUnit) {
+    if (unit is CssMeasurementUnit) {
       valueConstructor = switch (unit.type) {
-        UnitType.px ||
-        UnitType.em ||
-        UnitType.rem ||
-        UnitType.percent ||
-        UnitType.viewport ||
-        UnitType.smallViewport ||
-        UnitType.largeViewport ||
-        UnitType.dynamicViewport =>
+        CssUnitType.px ||
+        CssUnitType.em ||
+        CssUnitType.rem ||
+        CssUnitType.percent ||
+        CssUnitType.viewport ||
+        CssUnitType.smallViewport ||
+        CssUnitType.largeViewport ||
+        CssUnitType.dynamicViewport =>
           valueClassName.isEmpty
               ? unit.toDartConstructor()
               : '$valueClassName(${unit.toDartConstructor()})',
@@ -88,10 +86,10 @@ class CodeWriter {
             'Invalid unit type for converting unit to a Dart declaration: ${unit.type}',
           ),
       };
-    } else if (unit is TwTimeUnit) {
+    } else if (unit is CssTimeUnit) {
       valueConstructor = switch (unit.type) {
-        TimeUnitType.ms => '$valueClassName(${unit.toDartConstructor()})',
-        TimeUnitType.s => valueClassName.isEmpty
+        TimeType.ms => '$valueClassName(${unit.toDartConstructor()})',
+        TimeType.s => valueClassName.isEmpty
             ? unit.toDartConstructor()
             : '$valueClassName(${unit.toDartConstructor()})',
       };

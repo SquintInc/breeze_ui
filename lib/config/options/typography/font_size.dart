@@ -4,7 +4,18 @@ import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwFontSize {
-  final TwUnit value;
+  /// Default font size in pixels taken from
+  /// https://tailwindcss.com/docs/font-size
+  static const double defaultFontSizePx = 16.0;
+
+  /// Default font size using [defaultFontSizePx] and
+  /// [TwLineHeight.defaultLineHeight].
+  static const TwFontSize defaultFontSize = TwFontSize(
+    PxUnit(defaultFontSizePx),
+    TwLineHeight.defaultLineHeight,
+  );
+
+  final CssAbsoluteUnit value;
   final TwLineHeight lineHeight;
 
   const TwFontSize(this.value, this.lineHeight);
@@ -20,15 +31,15 @@ class TwFontSize {
   @override
   int get hashCode => value.hashCode ^ lineHeight.hashCode;
 
-  double getLineHeight(final TwLineHeight? height) {
-    if (height != null) {
-      return height.value.isPercentageBased
-          ? height.value.percentage
-          : (height.value.logicalPixels / value.logicalPixels);
-    }
-    return lineHeight.value.isPercentageBased
-        ? lineHeight.value.percentage
-        : (lineHeight.value.logicalPixels / value.logicalPixels);
+  double getLineHeight(final TwLineHeight? customHeight) {
+    final double fontSize = value.pixels(defaultFontSizePx);
+    final TwLineHeight lineHeight = customHeight ?? this.lineHeight;
+    return switch (lineHeight.value) {
+      CssAbsoluteUnit() =>
+        (lineHeight.value as CssAbsoluteUnit).pixels(fontSize) / fontSize,
+      CssRelativeUnit() =>
+        (lineHeight.value as CssRelativeUnit).percentageFloat(),
+    };
   }
 
   @override

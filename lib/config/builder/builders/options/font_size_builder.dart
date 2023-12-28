@@ -37,18 +37,18 @@ class FontSizeBuilder extends ConstantsGenerator {
         );
         final dynamic values = themeValue.value;
 
-        TwUnit fontSizeValue;
-        TwUnit lineHeightValue;
+        CssMeasurementUnit fontSizeValue;
+        CssMeasurementUnit lineHeightValue;
         if (values is String) {
-          fontSizeValue = TwUnit.parse(values);
-          lineHeightValue = TwUnit.parse('1.5');
+          fontSizeValue = CssMeasurementUnit.parse(values);
+          lineHeightValue = CssMeasurementUnit.parse('1.5');
         } else {
           final String fontSizeString = values[0];
           final Map<String, dynamic> additionalProps = values[1];
-          fontSizeValue = TwUnit.parse(fontSizeString);
+          fontSizeValue = CssMeasurementUnit.parse(fontSizeString);
           final String lineHeightString =
               additionalProps['lineHeight'] ?? '1.5';
-          lineHeightValue = TwUnit.parse(lineHeightString);
+          lineHeightValue = CssMeasurementUnit.parse(lineHeightString);
         }
 
         final String lineDeclaration = CodeWriter.dartLineDeclaration(

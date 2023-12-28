@@ -28,8 +28,16 @@ class TwSizedBox extends SizedBox {
         heightConstrained = const TwHeight(PxUnit(0));
 
   @override
-  double? get width => widthConstrained?.value.logicalPixels;
+  double? get width => switch (widthConstrained?.value) {
+        CssAbsoluteUnit() =>
+          (widthConstrained!.value as CssAbsoluteUnit).pixels(),
+        _ => null,
+      };
 
   @override
-  double? get height => heightConstrained?.value.logicalPixels;
+  double? get height => switch (heightConstrained?.value) {
+        CssAbsoluteUnit() =>
+          (heightConstrained!.value as CssAbsoluteUnit).pixels(),
+        _ => null,
+      };
 }

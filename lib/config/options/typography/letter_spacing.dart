@@ -3,7 +3,16 @@ import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwLetterSpacing {
-  final TwUnit value;
+  /// Default letter spacing in em taken from
+  /// https://tailwindcss.com/docs/letter-spacing
+  static const defaultLetterSpacingEm = 0.0;
+
+  /// Default letter spacing using [defaultLetterSpacingEm].
+  static const defaultLetterSpacing = TwLetterSpacing(
+    EmUnit(defaultLetterSpacingEm),
+  );
+
+  final CssAbsoluteUnit value;
 
   const TwLetterSpacing(this.value);
 

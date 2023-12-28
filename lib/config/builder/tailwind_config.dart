@@ -31,22 +31,24 @@ class TailwindConfig {
     return Map.unmodifiable(values);
   }
 
-  Map<String, TwUnit> getUnits(final String key) {
-    final Map<String, TwUnit> values = (theme[key] as Map<String, dynamic>).map(
-      (final key, final value) => MapEntry(key, TwUnit.parse(value)),
+  Map<String, CssMeasurementUnit> getUnits(final String key) {
+    final Map<String, CssMeasurementUnit> values =
+        (theme[key] as Map<String, dynamic>).map(
+      (final key, final value) =>
+          MapEntry(key, CssMeasurementUnit.parse(value)),
     );
     return Map.unmodifiable(
       Map.fromEntries(
         values.entries
-            .where((final entry) => entry.value.type != UnitType.ignored),
+            .where((final entry) => entry.value.type != CssUnitType.ignored),
       ),
     );
   }
 
-  Map<String, TwTimeUnit> getTimeUnits(final String key) {
-    final Map<String, TwTimeUnit> values =
+  Map<String, CssTimeUnit> getTimeUnits(final String key) {
+    final Map<String, CssTimeUnit> values =
         (theme[key] as Map<String, dynamic>).map(
-      (final key, final value) => MapEntry(key, TwTimeUnit.parse(value)),
+      (final key, final value) => MapEntry(key, CssTimeUnit.parse(value)),
     );
     return Map.unmodifiable(values);
   }

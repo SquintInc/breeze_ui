@@ -12,10 +12,10 @@ final RegExp boxShadowRegExp = RegExp(boxShadowPattern);
 @immutable
 class BoxShadowValue {
   final RgbaColor color;
-  final TwUnit offsetX;
-  final TwUnit offsetY;
-  final TwUnit blurRadius;
-  final TwUnit spreadRadius;
+  final CssMeasurementUnit offsetX;
+  final CssMeasurementUnit offsetY;
+  final CssMeasurementUnit blurRadius;
+  final CssMeasurementUnit spreadRadius;
 
   const BoxShadowValue({
     required this.color,
@@ -61,10 +61,10 @@ class BoxShadowParser {
 
   static BoxShadowValue _parseSingleBoxShadow(final String boxShadow) {
     final parts = boxShadow.split(' ');
-    final offsetX = TwUnit.parse(parts[0]);
-    final offsetY = TwUnit.parse(parts[1]);
-    final blurRadius = TwUnit.parse(parts[2]);
-    final spreadRadius = TwUnit.parse(parts[3]);
+    final offsetX = CssMeasurementUnit.parse(parts[0]);
+    final offsetY = CssMeasurementUnit.parse(parts[1]);
+    final blurRadius = CssMeasurementUnit.parse(parts[2]);
+    final spreadRadius = CssMeasurementUnit.parse(parts[3]);
     final color = RgbaColor.fromCssRgba(parts.sublist(4).join(' '));
 
     return BoxShadowValue(

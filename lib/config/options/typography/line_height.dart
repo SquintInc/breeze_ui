@@ -3,7 +3,16 @@ import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwLineHeight {
-  final TwUnit value;
+  /// Default line height percentage taken from
+  /// https://tailwindcss.com/docs/line-height
+  static const double defaultLineHeightPercentage = 1.5;
+
+  /// Default line height using [defaultLineHeightPercentage].
+  static const TwLineHeight defaultLineHeight = TwLineHeight(
+    PercentUnit.fromFloat(defaultLineHeightPercentage),
+  );
+
+  final CssMeasurementUnit value;
 
   const TwLineHeight(this.value);
 
@@ -20,5 +29,14 @@ class TwLineHeight {
   @override
   String toString() {
     return 'TwLineHeight{value: $value}';
+  }
+
+  double asPercentageFloat(final double fontSizePx) {
+    switch (value) {
+      case CssRelativeUnit():
+        return (value as CssRelativeUnit).percentageFloat();
+      case CssAbsoluteUnit():
+        return (value as CssAbsoluteUnit).pixels(fontSizePx) / fontSizePx;
+    }
   }
 }

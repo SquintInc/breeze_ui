@@ -39,21 +39,11 @@ MaterialStateProperty<T> always<T>(final T value) =>
 /// at their level).
 @immutable
 class TwStyle {
-  // See `text-base` values from https://tailwindcss.com/docs/font-size
-  static const defaultFontSize = 16.0; // 16px == 1rem
-  static const defaultLineHeight = 1.5;
-
-  // See `text-base` values from https://tailwindcss.com/docs/font-size
-  static const defaultFontWeight = FontWeight.w400;
-
-  /// See `rounded-full` values from https://tailwindcss.com/docs/border-radius
-  static const maxCircleRadius = 9999.0;
-
   static const defaultTextStyle = TextStyle(
     inherit: true,
-    fontSize: defaultFontSize,
-    fontWeight: defaultFontWeight,
-    height: defaultLineHeight,
+    fontSize: TwFontSize.defaultFontSizePx,
+    fontWeight: TwFontWeight.defaultFlutterFontWeight,
+    height: TwLineHeight.defaultLineHeightPercentage,
     color: Colors.black,
     leadingDistribution: TextLeadingDistribution.even,
   );
@@ -107,6 +97,9 @@ class TwStyle {
   final TextLeadingDistribution? leadingDistribution;
   final double? wordSpacing;
 
+  // For em unit calculations
+  final TwFontSize? parentFontSize;
+
   const TwStyle({
     // Background
     this.backgroundColor,
@@ -156,7 +149,12 @@ class TwStyle {
     this.textDecorationThickness,
     this.leadingDistribution,
     this.wordSpacing,
+    this.parentFontSize,
   });
+
+  double get fontSizePx =>
+      fontSize?.value.pixels(parentFontSize?.value.pixels()) ??
+      TwFontSize.defaultFontSizePx;
 
   /// Determines whether the style has min/max width and height constraints.
   bool get hasConstraints =>
@@ -184,15 +182,14 @@ class TwStyle {
   /// Determines if the style has any percentage based min/max sizing
   /// constraints
   bool get hasPercentageConstraints =>
-      (minWidth?.value.isPercentageBased ?? false) ||
-      (maxWidth?.value.isPercentageBased ?? false) ||
-      (minHeight?.value.isPercentageBased ?? false) ||
-      (maxHeight?.value.isPercentageBased ?? false);
+      (minWidth?.value is CssRelativeUnit) ||
+      (maxWidth?.value is CssRelativeUnit) ||
+      (minHeight?.value is CssRelativeUnit) ||
+      (maxHeight?.value is CssRelativeUnit);
 
   /// Determines if the style has any percentage based sizing constraints
   bool get hasPercentageSize =>
-      (width?.value.isPercentageBased ?? false) ||
-      (height?.value.isPercentageBased ?? false);
+      (width?.value is CssRelativeUnit) || (height?.value is CssRelativeUnit);
 
   /// Determines if the style has any background decoration at all (e.g. color,
   /// image, gradient)
@@ -245,9 +242,11 @@ class TwStyle {
     final width = this.width;
     if (width == null) return double.infinity;
 
-    return width.value.isPercentageBased
-        ? parentWidth * width.value.percentage
-        : width.value.logicalPixels;
+    return switch (width.value) {
+      CssAbsoluteUnit() => (width.value as CssAbsoluteUnit).pixels(fontSizePx),
+      CssRelativeUnit() =>
+        parentWidth * (width.value as CssRelativeUnit).percentageFloat(),
+    };
   }
 
   /// Calculates the height of this widget in pixels, based on a percentage of
@@ -256,9 +255,11 @@ class TwStyle {
     final height = this.height;
     if (height == null) return double.infinity;
 
-    return height.value.isPercentageBased
-        ? parentHeight * height.value.percentage
-        : height.value.logicalPixels;
+    return switch (height.value) {
+      CssAbsoluteUnit() => (height.value as CssAbsoluteUnit).pixels(fontSizePx),
+      CssRelativeUnit() =>
+        parentHeight * (height.value as CssRelativeUnit).percentageFloat(),
+    };
   }
 
   /// Compute the box decoration for this style, based on the merged style and
@@ -277,7 +278,9 @@ class TwStyle {
       gradient: backgroundGradient,
       border: border?.toBorder(borderColor, borderStrokeAlign),
       borderRadius: isCircle
-          ? BorderRadius.circular(constraints?.circleRadius ?? maxCircleRadius)
+          ? BorderRadius.circular(
+              constraints?.circleRadius ?? TwBorderRadius.fullRadiusPx,
+            )
           : borderRadius?.toBorderRadius(),
       boxShadow: boxShadow?.withColor(boxShadowColor),
     );
@@ -295,24 +298,36 @@ class TwStyle {
     final maxHeight = this.maxHeight;
 
     final minWidthPx = minWidth != null
-        ? (minWidth.value.isPercentageBased
-            ? parentWidth * minWidth.value.percentage
-            : minWidth.value.logicalPixels)
+        ? switch (minWidth.value) {
+            CssAbsoluteUnit() =>
+              (minWidth.value as CssAbsoluteUnit).pixels(fontSizePx),
+            CssRelativeUnit() => parentWidth *
+                (minWidth.value as CssRelativeUnit).percentageFloat(),
+          }
         : 0.0;
     final minHeightPx = minHeight != null
-        ? (minHeight.value.isPercentageBased
-            ? parentHeight * minHeight.value.percentage
-            : minHeight.value.logicalPixels)
+        ? switch (minHeight.value) {
+            CssAbsoluteUnit() =>
+              (minHeight.value as CssAbsoluteUnit).pixels(fontSizePx),
+            CssRelativeUnit() => parentHeight *
+                (minHeight.value as CssRelativeUnit).percentageFloat(),
+          }
         : 0.0;
     final maxWidthPx = maxWidth != null
-        ? (maxWidth.value.isPercentageBased
-            ? parentWidth * maxWidth.value.percentage
-            : maxWidth.value.logicalPixels)
+        ? switch (maxWidth.value) {
+            CssAbsoluteUnit() =>
+              (maxWidth.value as CssAbsoluteUnit).pixels(fontSizePx),
+            CssRelativeUnit() => parentWidth *
+                (maxWidth.value as CssRelativeUnit).percentageFloat(),
+          }
         : double.infinity;
     final maxHeightPx = maxHeight != null
-        ? (maxHeight.value.isPercentageBased
-            ? parentHeight * maxHeight.value.percentage
-            : maxHeight.value.logicalPixels)
+        ? switch (maxHeight.value) {
+            CssAbsoluteUnit() =>
+              (maxHeight.value as CssAbsoluteUnit).pixels(fontSizePx),
+            CssRelativeUnit() => parentHeight *
+                (maxHeight.value as CssRelativeUnit).percentageFloat(),
+          }
         : double.infinity;
 
     return BoxConstraints(
@@ -328,10 +343,26 @@ class TwStyle {
   BoxConstraints? getSimpleConstraints() {
     if (!hasConstraints) return null;
     return BoxConstraints(
-      minWidth: minWidth?.value.logicalPixels ?? 0.0,
-      maxWidth: maxWidth?.value.logicalPixels ?? double.infinity,
-      minHeight: minHeight?.value.logicalPixels ?? 0.0,
-      maxHeight: maxHeight?.value.logicalPixels ?? double.infinity,
+      minWidth: switch (minWidth?.value) {
+        CssAbsoluteUnit() =>
+          (minWidth!.value as CssAbsoluteUnit).pixels(fontSizePx),
+        _ => 0.0,
+      },
+      maxWidth: switch (maxWidth?.value) {
+        CssAbsoluteUnit() =>
+          (maxWidth!.value as CssAbsoluteUnit).pixels(fontSizePx),
+        _ => double.infinity,
+      },
+      minHeight: switch (minHeight?.value) {
+        CssAbsoluteUnit() =>
+          (minHeight!.value as CssAbsoluteUnit).pixels(fontSizePx),
+        _ => 0.0,
+      },
+      maxHeight: switch (maxHeight?.value) {
+        CssAbsoluteUnit() =>
+          (maxHeight!.value as CssAbsoluteUnit).pixels(fontSizePx),
+        _ => double.infinity,
+      },
     );
   }
 
@@ -340,33 +371,24 @@ class TwStyle {
   TextStyle toTextStyle() {
     return TextStyle(
       inherit: true,
-      fontSize: fontSize?.value.logicalPixels ?? defaultFontSize,
-      fontWeight: fontWeight?.fontWeight ?? defaultFontWeight,
-      height: fontSize?.getLineHeight(lineHeight) ?? defaultLineHeight,
+      fontSize: fontSizePx,
+      fontWeight:
+          fontWeight?.fontWeight ?? TwFontWeight.defaultFlutterFontWeight,
+      height: fontSize?.getLineHeight(lineHeight) ??
+          TwLineHeight.defaultLineHeightPercentage,
       fontStyle: fontStyle,
       color: textColor?.color ?? Colors.black,
       leadingDistribution: leadingDistribution ?? TextLeadingDistribution.even,
       decoration: textDecoration,
       decorationColor: textDecorationColor?.color,
       decorationStyle: textDecorationStyle,
-      decorationThickness: textDecorationThickness?.value.logicalPixels,
+      decorationThickness: textDecorationThickness?.value.pixels(fontSizePx),
       wordSpacing: wordSpacing,
-      letterSpacing: (letterSpacing ?? const TwLetterSpacing(EmUnit(0)))
+      letterSpacing: (letterSpacing ?? TwLetterSpacing.defaultLetterSpacing)
           .value
-          .emPixels(fontSize?.value.logicalPixels ?? defaultFontSize),
+          .pixels(fontSizePx),
     );
   }
-
-  /// Gets the [BorderSide] from a [TwStyle], which includes the border color
-  /// and width. Note that Material buttons only support a single border width
-  /// via TwBorder.all(...)
-  BorderSide toBorderSide() => BorderSide(
-        color: hasBorderDecoration
-            ? borderColor?.color ?? Colors.transparent
-            : Colors.transparent,
-        width: border?.all.pixels.logicalPixels ?? 0.0,
-        strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
-      );
 
   InputBorder? toBorder() => hasBorderDecoration
       ? OutlineInputBorder(
@@ -375,7 +397,7 @@ class TwStyle {
             color: hasBorderDecoration
                 ? borderColor?.color ?? Colors.transparent
                 : Colors.transparent,
-            width: border?.all.pixels.logicalPixels ?? 0.0,
+            width: border?.all.value.pixels(fontSizePx) ?? 0,
             strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
           ),
         )

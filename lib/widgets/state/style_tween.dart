@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:tailwind_elements/config/options/borders/border_radius.dart';
 import 'package:tailwind_elements/config/options/borders/border_width.dart';
@@ -53,6 +54,29 @@ class TwStyleTween extends Tween<TwStyle?> {
     );
   }
 
+  TwLineHeight _lerpLineHeightPercentage(
+    final TwStyle begin,
+    final TwStyle end,
+    final double t,
+  ) {
+    final beginLineHeightAsPercentage =
+        (begin.lineHeight ?? TwLineHeight.defaultLineHeight)
+            .asPercentageFloat(begin.fontSizePx);
+    final endLineHeightAsPercentage =
+        (end.lineHeight ?? TwLineHeight.defaultLineHeight)
+            .asPercentageFloat(end.fontSizePx);
+    return TwLineHeight(
+      PercentUnit.fromFloat(
+        ui.lerpDouble(
+              beginLineHeightAsPercentage,
+              endLineHeightAsPercentage,
+              t,
+            ) ??
+            TwLineHeight.defaultLineHeightPercentage,
+      ),
+    );
+  }
+
   @override
   TwStyle? lerp(final double t) {
     final begin = this.begin;
@@ -65,34 +89,16 @@ class TwStyleTween extends Tween<TwStyle?> {
         : null;
 
     final lineHeight = has(TransitionProperty.lineHeight)
-        ? TwLineHeight(
-            PxUnit(
-              ui.lerpDouble(
-                    begin.lineHeight?.value.logicalPixels ??
-                        TwStyle.defaultLineHeight,
-                    end.lineHeight?.value.logicalPixels ??
-                        TwStyle.defaultLineHeight,
-                    t,
-                  ) ??
-                  TwStyle.defaultLineHeight,
-            ),
-          )
+        ? _lerpLineHeightPercentage(begin, end, t)
         : null;
 
     final fontSize = has(TransitionProperty.fontSize)
         ? TwFontSize(
             PxUnit(
-              ui.lerpDouble(
-                    begin.fontSize?.value.logicalPixels ??
-                        TwStyle.defaultFontSize,
-                    end.fontSize?.value.logicalPixels ??
-                        TwStyle.defaultFontSize,
-                    t,
-                  ) ??
-                  TwStyle.defaultFontSize,
+              ui.lerpDouble(begin.fontSizePx, end.fontSizePx, t) ??
+                  TwFontSize.defaultFontSizePx,
             ),
-            lineHeight ??
-                const TwLineHeight(RemUnit(TwStyle.defaultLineHeight)),
+            lineHeight ?? TwLineHeight.defaultLineHeight,
           )
         : null;
 
@@ -197,36 +203,27 @@ class TwStyleTween extends Tween<TwStyle?> {
       fontWeight: has(TransitionProperty.fontWeight)
           ? TwFontWeight(
               FontWeight.lerp(
-                    begin.fontWeight?.fontWeight ?? TwStyle.defaultFontWeight,
-                    end.fontWeight?.fontWeight ?? TwStyle.defaultFontWeight,
+                    begin.fontWeight?.fontWeight ??
+                        TwFontWeight.defaultFlutterFontWeight,
+                    end.fontWeight?.fontWeight ??
+                        TwFontWeight.defaultFlutterFontWeight,
                     t,
                   )?.value ??
                   400,
             )
           : null,
       lineHeight: lineHeight,
-      fontSize: has(TransitionProperty.fontSize)
-          ? TwFontSize(
-              PxUnit(
-                ui.lerpDouble(
-                      begin.fontSize?.value.logicalPixels ??
-                          TwStyle.defaultFontSize,
-                      end.fontSize?.value.logicalPixels ??
-                          TwStyle.defaultFontSize,
-                      t,
-                    ) ??
-                    TwStyle.defaultFontSize,
-              ),
-              lineHeight ??
-                  const TwLineHeight(RemUnit(TwStyle.defaultLineHeight)),
-            )
-          : null,
+      fontSize: fontSize,
       textDecorationThickness: has(TransitionProperty.textDecorationThickness)
           ? TwTextDecorationThickness(
               PxUnit(
                 ui.lerpDouble(
-                      begin.textDecorationThickness?.value.logicalPixels ?? 0,
-                      end.textDecorationThickness?.value.logicalPixels ?? 0,
+                      begin.textDecorationThickness?.value
+                              .pixels(fontSize?.value.pixels()) ??
+                          0,
+                      end.textDecorationThickness?.value
+                              .pixels(fontSize?.value.pixels()) ??
+                          0,
                       t,
                     ) ??
                     0,
@@ -239,10 +236,10 @@ class TwStyleTween extends Tween<TwStyle?> {
                   ? EmUnit(
                       ui.lerpDouble(
                             begin.letterSpacing?.value
-                                    .emPixels(fontSize.value.logicalPixels) ??
+                                    .pixels(fontSize.value.pixels()) ??
                                 0,
                             end.letterSpacing?.value
-                                    .emPixels(fontSize.value.logicalPixels) ??
+                                    .pixels(fontSize.value.pixels()) ??
                                 0,
                             t,
                           ) ??

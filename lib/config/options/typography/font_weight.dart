@@ -4,6 +4,13 @@ import 'package:meta/meta.dart';
 
 @immutable
 class TwFontWeight {
+  /// Default Flutter [FontWeight] value, using default value from
+  /// https://tailwindcss.com/docs/font-size
+  static const defaultFlutterFontWeight = FontWeight.w400;
+
+  /// Default font weight using [defaultFlutterFontWeight] value.
+  static const defaultFontWeight = TwFontWeight(400);
+
   final int weight;
 
   const TwFontWeight(this.weight);
