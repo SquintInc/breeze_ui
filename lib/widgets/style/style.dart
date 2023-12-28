@@ -49,6 +49,15 @@ class TwStyle {
   /// See `rounded-full` values from https://tailwindcss.com/docs/border-radius
   static const maxCircleRadius = 9999.0;
 
+  static const defaultTextStyle = TextStyle(
+    inherit: true,
+    fontSize: defaultFontSize,
+    fontWeight: defaultFontWeight,
+    height: defaultLineHeight,
+    color: Colors.black,
+    leadingDistribution: TextLeadingDistribution.even,
+  );
+
   // Background styling
   final TwBackgroundColor? backgroundColor;
   final DecorationImage? backgroundImage;
@@ -335,7 +344,7 @@ class TwStyle {
       fontWeight: fontWeight?.fontWeight ?? defaultFontWeight,
       height: fontSize?.getLineHeight(lineHeight) ?? defaultLineHeight,
       fontStyle: fontStyle,
-      color: textColor?.color,
+      color: textColor?.color ?? Colors.black,
       leadingDistribution: leadingDistribution ?? TextLeadingDistribution.even,
       decoration: textDecoration,
       decorationColor: textDecorationColor?.color,

@@ -26,5 +26,6 @@ class TwTextSpan extends TextSpan {
         super();
 
   @override
-  TextStyle? get style => _style?.toTextStyle().merge(overrideStyle);
+  TextStyle? get style =>
+      (_style?.toTextStyle() ?? TwStyle.defaultTextStyle).merge(overrideStyle);
 }
