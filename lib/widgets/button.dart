@@ -130,8 +130,12 @@ class _TwButtonState extends State<TwButton> {
       widget.statesController ?? internalStatesController!;
 
   void handleStatesControllerChange() {
-    // Force a rebuild to resolve MaterialStateProperty properties
-    setState(() {});
+    // Force a rebuild in the next frame to resolve MaterialStateProperty
+    // properties, because the underlying [TextButton] widget will already call
+    // setState() in the current frame.
+    WidgetsBinding.instance.addPostFrameCallback((final timestamp) {
+      setState(() {});
+    });
   }
 
   @override

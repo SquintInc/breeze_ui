@@ -28,7 +28,7 @@ class TwDiv extends TwStatefulWidget {
     super.selected,
     super.errored,
     this.child,
-    this.alignment,
+    this.alignment = Alignment.topLeft,
     this.clipBehavior = Clip.none,
     this.transform,
     this.transformAlignment,
