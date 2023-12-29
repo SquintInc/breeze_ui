@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:tailwind_elements/widgets/state/widget_state.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 
 @immutable
@@ -50,7 +51,7 @@ class TwLabel {
   MaterialStateTextStyle toMaterialTextStyle(
     final TwStyle defaultTextStyle,
   ) =>
-      TwStyle.toMaterialTextStyle(
+      TwStyle.resolveMaterialTextStyle(
         style ?? defaultTextStyle,
         disabled: disabled,
         dragged: null,
@@ -85,7 +86,7 @@ class TwSubtext {
   MaterialStateTextStyle toMaterialTextStyle(
     final TwStyle defaultTextStyle,
   ) =>
-      TwStyle.toMaterialTextStyle(
+      TwStyle.resolveMaterialTextStyle(
         style ?? defaultTextStyle,
         disabled: disabled,
         dragged: null,
@@ -124,7 +125,7 @@ class TwHint {
   MaterialStateTextStyle toMaterialTextStyle(
     final TwStyle defaultTextStyle,
   ) =>
-      TwStyle.toMaterialTextStyle(
+      TwStyle.resolveMaterialTextStyle(
         style ?? defaultTextStyle,
         disabled: disabled,
         dragged: null,
@@ -164,7 +165,7 @@ class TwError {
   MaterialStateTextStyle toMaterialTextStyle(
     final TwStyle defaultTextStyle,
   ) =>
-      TwStyle.toMaterialTextStyle(
+      TwStyle.resolveMaterialTextStyle(
         style ?? defaultTextStyle,
         disabled: disabled,
         dragged: null,
@@ -204,7 +205,7 @@ class TwCounter {
   MaterialStateTextStyle toMaterialTextStyle(
     final TwStyle defaultTextStyle,
   ) =>
-      TwStyle.toMaterialTextStyle(
+      TwStyle.resolveMaterialTextStyle(
         style ?? defaultTextStyle,
         disabled: disabled,
         dragged: null,
@@ -345,7 +346,7 @@ class TwTextField extends TextField {
         super();
 
   @override
-  TextStyle? get style => TwStyle.toMaterialTextStyle(
+  TextStyle? get style => TwStyle.resolveMaterialTextStyle(
         _style,
         disabled: disabled,
         dragged: null,
@@ -356,7 +357,8 @@ class TwTextField extends TextField {
         hovered: hovered,
       );
 
-  InputBorder? _getMaterialInputBorder() => TwStyle.toMaterialInputBorder(
+  InputBorder? _resolveMaterialInputBorder() =>
+      TwStyle.resolveMaterialInputBorder(
         _style,
         disabled: disabled,
         dragged: null,
@@ -366,6 +368,22 @@ class TwTextField extends TextField {
         pressed: null,
         hovered: hovered,
       );
+
+  Color? _resolveBackgroundColor() =>
+      MaterialStateColor.resolveWith((final Set<MaterialState> states) {
+        final TwStyle? statusStyle = switch (getPrimaryWidgetState(states)) {
+          TwWidgetState.disabled => disabled,
+          TwWidgetState.dragged => null,
+          TwWidgetState.error => errored,
+          TwWidgetState.focused => focused,
+          TwWidgetState.selected => null,
+          TwWidgetState.pressed => null,
+          TwWidgetState.hovered => hovered,
+          _ => _style,
+        };
+        return _style.merge(statusStyle).backgroundColor?.color ??
+            Colors.transparent;
+      });
 
   @override
   InputDecoration get decoration {
@@ -417,9 +435,9 @@ class TwTextField extends TextField {
       // Don't set errorBorder, focusedBorder, focusedErrorBorder,
       // disabledBorder, nor enabledBorder, since we are using material state
       // resolver for the border
-      border: _getMaterialInputBorder(),
+      border: _resolveMaterialInputBorder(),
       filled: _style.backgroundColor != null,
-      fillColor: _style.backgroundColor?.color,
+      fillColor: _resolveBackgroundColor(),
     );
   }
 }

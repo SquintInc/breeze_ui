@@ -381,7 +381,7 @@ class TwStyle {
         )
       : InputBorder.none;
 
-  static InputBorder? toMaterialInputBorder(
+  static InputBorder? resolveMaterialInputBorder(
     final TwStyle normal, {
     required final TwStyle? disabled,
     required final TwStyle? dragged,
@@ -406,7 +406,7 @@ class TwStyle {
         return statusStyle?.toBorder() ?? normal.toBorder() ?? InputBorder.none;
       });
 
-  static MaterialStateTextStyle toMaterialTextStyle(
+  static MaterialStateTextStyle resolveMaterialTextStyle(
     final TwStyle normal, {
     required final TwStyle? disabled,
     required final TwStyle? dragged,
