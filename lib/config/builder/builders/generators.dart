@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:tailwind_elements/config/builder/build_runner/rgba_color.dart';
 import 'package:tailwind_elements/config/builder/tailwind_config.dart';
+import 'package:tailwind_elements/config/builder/units_parser.dart';
 import 'package:tailwind_elements/config/options/units.dart';
 
 extension StringExt on String {
@@ -36,26 +37,21 @@ class CodeWriter {
   }
 
   static String variableNameSuffix(final String key, final dynamic unit) {
-    if (unit is TwUnit) {
+    if (unit is CssMeasurementUnit) {
       return switch (unit.type) {
-        UnitType.px ||
-        UnitType.em ||
-        UnitType.rem =>
+        MeasurementType.px ||
+        MeasurementType.em ||
+        MeasurementType.rem =>
           key == 'DEFAULT' ? '' : key.toSnakeCase(),
-        UnitType.percent => percentageVarNameSuffix(key, unit.value),
-        UnitType.viewport => key.toSnakeCase(),
-        UnitType.smallViewport => key.toSnakeCase(),
-        UnitType.largeViewport => key.toSnakeCase(),
-        UnitType.dynamicViewport => key.toSnakeCase(),
-        _ => throw Exception(
-            'Invalid unit type for conversion to identifier: ${unit.type}',
-          ),
+        MeasurementType.percent => percentageVarNameSuffix(key, unit.value),
+        MeasurementType.viewport => key.toSnakeCase(),
+        MeasurementType.smallViewport => key.toSnakeCase(),
+        MeasurementType.largeViewport => key.toSnakeCase(),
+        MeasurementType.dynamicViewport => key.toSnakeCase(),
       };
-    } else if (unit is TwTimeUnit) {
+    } else if (unit is CssTimeUnit) {
       return switch (unit.type) {
-        TimeUnitType.ms ||
-        TimeUnitType.s =>
-          key == 'DEFAULT' ? '' : key.toSnakeCase(),
+        TimeType.ms || TimeType.s => key == 'DEFAULT' ? '' : key.toSnakeCase(),
       };
     } else if (unit is double || unit is int || unit is String) {
       return key == 'DEFAULT' ? '' : key.toSnakeCase();
@@ -71,27 +67,24 @@ class CodeWriter {
     required final dynamic unit,
   }) {
     var valueConstructor = '';
-    if (unit is TwUnit) {
+    if (unit is CssMeasurementUnit) {
       valueConstructor = switch (unit.type) {
-        UnitType.px ||
-        UnitType.em ||
-        UnitType.rem ||
-        UnitType.percent ||
-        UnitType.viewport ||
-        UnitType.smallViewport ||
-        UnitType.largeViewport ||
-        UnitType.dynamicViewport =>
+        MeasurementType.px ||
+        MeasurementType.em ||
+        MeasurementType.rem ||
+        MeasurementType.percent ||
+        MeasurementType.viewport ||
+        MeasurementType.smallViewport ||
+        MeasurementType.largeViewport ||
+        MeasurementType.dynamicViewport =>
           valueClassName.isEmpty
               ? unit.toDartConstructor()
               : '$valueClassName(${unit.toDartConstructor()})',
-        _ => throw Exception(
-            'Invalid unit type for converting unit to a Dart declaration: ${unit.type}',
-          ),
       };
-    } else if (unit is TwTimeUnit) {
+    } else if (unit is CssTimeUnit) {
       valueConstructor = switch (unit.type) {
-        TimeUnitType.ms => '$valueClassName(${unit.toDartConstructor()})',
-        TimeUnitType.s => valueClassName.isEmpty
+        TimeType.ms => '$valueClassName(${unit.toDartConstructor()})',
+        TimeType.s => valueClassName.isEmpty
             ? unit.toDartConstructor()
             : '$valueClassName(${unit.toDartConstructor()})',
       };

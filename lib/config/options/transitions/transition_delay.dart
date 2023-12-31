@@ -3,7 +3,7 @@ import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwTransitionDelay {
-  final TwTimeUnit delay;
+  final CssTimeUnit delay;
 
   const TwTransitionDelay(this.delay);
 

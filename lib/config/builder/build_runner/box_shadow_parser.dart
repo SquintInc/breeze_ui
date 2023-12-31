@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:tailwind_elements/config/builder/build_runner/rgba_color.dart';
+import 'package:tailwind_elements/config/builder/units_parser.dart';
 import 'package:tailwind_elements/config/options/units.dart';
 
 const String numValuePattern = '[0-9]+(?:[a-zA-Z%]{0,4})';
@@ -12,10 +13,10 @@ final RegExp boxShadowRegExp = RegExp(boxShadowPattern);
 @immutable
 class BoxShadowValue {
   final RgbaColor color;
-  final TwUnit offsetX;
-  final TwUnit offsetY;
-  final TwUnit blurRadius;
-  final TwUnit spreadRadius;
+  final CssAbsoluteUnit offsetX;
+  final CssAbsoluteUnit offsetY;
+  final CssAbsoluteUnit blurRadius;
+  final CssAbsoluteUnit spreadRadius;
 
   const BoxShadowValue({
     required this.color,
@@ -28,9 +29,9 @@ class BoxShadowValue {
   String toDartConstructor() {
     return 'BoxShadow('
         'color: Color(${color.toDartHexString()}), '
-        'offset: Offset(${offsetX.logicalPixels}, ${offsetY.logicalPixels}), '
-        'blurRadius: ${blurRadius.logicalPixels}, '
-        'spreadRadius: ${spreadRadius.logicalPixels}'
+        'offset: Offset(${offsetX.pixels()}, ${offsetY.pixels()}), '
+        'blurRadius: ${blurRadius.pixels()}, '
+        'spreadRadius: ${spreadRadius.pixels()}'
         '),';
   }
 
@@ -61,18 +62,18 @@ class BoxShadowParser {
 
   static BoxShadowValue _parseSingleBoxShadow(final String boxShadow) {
     final parts = boxShadow.split(' ');
-    final offsetX = TwUnit.parse(parts[0]);
-    final offsetY = TwUnit.parse(parts[1]);
-    final blurRadius = TwUnit.parse(parts[2]);
-    final spreadRadius = TwUnit.parse(parts[3]);
+    final offsetX = parseMeasurementUnit(parts[0]);
+    final offsetY = parseMeasurementUnit(parts[1]);
+    final blurRadius = parseMeasurementUnit(parts[2]);
+    final spreadRadius = parseMeasurementUnit(parts[3]);
     final color = RgbaColor.fromCssRgba(parts.sublist(4).join(' '));
 
     return BoxShadowValue(
       color: color,
-      offsetX: offsetX,
-      offsetY: offsetY,
-      blurRadius: blurRadius,
-      spreadRadius: spreadRadius,
+      offsetX: offsetX as CssAbsoluteUnit,
+      offsetY: offsetY as CssAbsoluteUnit,
+      blurRadius: blurRadius as CssAbsoluteUnit,
+      spreadRadius: spreadRadius as CssAbsoluteUnit,
     );
   }
 

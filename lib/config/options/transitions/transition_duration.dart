@@ -3,7 +3,7 @@ import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwTransitionDuration {
-  final TwTimeUnit duration;
+  final CssTimeUnit duration;
 
   const TwTransitionDuration(this.duration);
 

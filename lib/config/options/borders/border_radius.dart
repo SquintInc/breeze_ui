@@ -7,7 +7,7 @@ import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwBorderRadiusTopLeft {
-  final TwUnit value;
+  final CssAbsoluteUnit value;
 
   const TwBorderRadiusTopLeft(this.value);
 
@@ -24,7 +24,7 @@ class TwBorderRadiusTopLeft {
 
 @immutable
 class TwBorderRadiusTopRight {
-  final TwUnit value;
+  final CssAbsoluteUnit value;
 
   const TwBorderRadiusTopRight(this.value);
 
@@ -41,7 +41,7 @@ class TwBorderRadiusTopRight {
 
 @immutable
 class TwBorderRadiusBottomLeft {
-  final TwUnit value;
+  final CssAbsoluteUnit value;
 
   const TwBorderRadiusBottomLeft(this.value);
 
@@ -58,7 +58,7 @@ class TwBorderRadiusBottomLeft {
 
 @immutable
 class TwBorderRadiusBottomRight {
-  final TwUnit value;
+  final CssAbsoluteUnit value;
 
   const TwBorderRadiusBottomRight(this.value);
 
@@ -75,7 +75,7 @@ class TwBorderRadiusBottomRight {
 
 @immutable
 class TwBorderRadiusTop {
-  final TwUnit value;
+  final CssAbsoluteUnit value;
 
   const TwBorderRadiusTop(this.value);
 
@@ -92,7 +92,7 @@ class TwBorderRadiusTop {
 
 @immutable
 class TwBorderRadiusRight {
-  final TwUnit value;
+  final CssAbsoluteUnit value;
 
   const TwBorderRadiusRight(this.value);
 
@@ -109,7 +109,7 @@ class TwBorderRadiusRight {
 
 @immutable
 class TwBorderRadiusBottom {
-  final TwUnit value;
+  final CssAbsoluteUnit value;
 
   const TwBorderRadiusBottom(this.value);
 
@@ -126,7 +126,7 @@ class TwBorderRadiusBottom {
 
 @immutable
 class TwBorderRadiusLeft {
-  final TwUnit value;
+  final CssAbsoluteUnit value;
 
   const TwBorderRadiusLeft(this.value);
 
@@ -143,7 +143,7 @@ class TwBorderRadiusLeft {
 
 @immutable
 class TwBorderRadiusAll {
-  final TwUnit value;
+  final CssAbsoluteUnit value;
 
   const TwBorderRadiusAll(this.value);
 
@@ -160,7 +160,12 @@ class TwBorderRadiusAll {
 
 @immutable
 class TwBorderRadius {
-  static const PxUnit fullRadius = PxUnit(9999.0);
+  /// Full radius value in pixels, 'rounded-full', taken from
+  /// https://tailwindcss.com/docs/border-radius
+  static const double fullRadiusPx = 9999.0;
+
+  /// Full radius value in pixel units using [fullRadiusPx].
+  static const PxUnit fullRadius = PxUnit(fullRadiusPx);
 
   // When [type] is [BoxCornerType.tltrbrbl]
   final TwBorderRadiusTopLeft topLeft;
@@ -256,33 +261,33 @@ class TwBorderRadius {
   }
 
   BorderRadius toBorderRadius() => switch (type) {
-        BoxCornerType.all => BorderRadius.circular(all.value.logicalPixels),
+        BoxCornerType.all => BorderRadius.circular(all.value.pixels()),
         BoxCornerType.tltrbrbl => BorderRadius.only(
-            topLeft: topLeft.value.logicalPixels > 0
-                ? Radius.circular(topLeft.value.logicalPixels)
+            topLeft: topLeft.value.pixels() > 0
+                ? Radius.circular(topLeft.value.pixels())
                 : Radius.zero,
-            topRight: topRight.value.logicalPixels > 0
-                ? Radius.circular(topRight.value.logicalPixels)
+            topRight: topRight.value.pixels() > 0
+                ? Radius.circular(topRight.value.pixels())
                 : Radius.zero,
-            bottomRight: bottomRight.value.logicalPixels > 0
-                ? Radius.circular(bottomRight.value.logicalPixels)
+            bottomRight: bottomRight.value.pixels() > 0
+                ? Radius.circular(bottomRight.value.pixels())
                 : Radius.zero,
-            bottomLeft: bottomLeft.value.logicalPixels > 0
-                ? Radius.circular(bottomLeft.value.logicalPixels)
+            bottomLeft: bottomLeft.value.pixels() > 0
+                ? Radius.circular(bottomLeft.value.pixels())
                 : Radius.zero,
           ),
         BoxCornerType.trbl => BorderRadius.only(
             topLeft: Radius.circular(
-              max(top.value.logicalPixels, left.value.logicalPixels),
+              max(top.value.pixels(), left.value.pixels()),
             ),
             topRight: Radius.circular(
-              max(top.value.logicalPixels, right.value.logicalPixels),
+              max(top.value.pixels(), right.value.pixels()),
             ),
             bottomRight: Radius.circular(
-              max(bottom.value.logicalPixels, right.value.logicalPixels),
+              max(bottom.value.pixels(), right.value.pixels()),
             ),
             bottomLeft: Radius.circular(
-              max(bottom.value.logicalPixels, left.value.logicalPixels),
+              max(bottom.value.pixels(), left.value.pixels()),
             ),
           )
       };
@@ -300,16 +305,16 @@ class TwBorderRadius {
       };
 
   double get minRadius => switch (type) {
-        BoxCornerType.all => all.value.logicalPixels,
+        BoxCornerType.all => all.value.pixels(),
         BoxCornerType.trbl => min(
-            min(top.value.logicalPixels, right.value.logicalPixels),
-            min(bottom.value.logicalPixels, left.value.logicalPixels),
+            min(top.value.pixels(), right.value.pixels()),
+            min(bottom.value.pixels(), left.value.pixels()),
           ),
         BoxCornerType.tltrbrbl => min(
-            min(topLeft.value.logicalPixels, topRight.value.logicalPixels),
+            min(topLeft.value.pixels(), topRight.value.pixels()),
             min(
-              bottomRight.value.logicalPixels,
-              bottomLeft.value.logicalPixels,
+              bottomRight.value.pixels(),
+              bottomLeft.value.pixels(),
             ),
           ),
       };

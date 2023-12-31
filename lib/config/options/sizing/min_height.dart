@@ -3,7 +3,7 @@ import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwMinHeight {
-  final TwUnit value;
+  final CssMeasurementUnit value;
 
   const TwMinHeight(this.value);
 

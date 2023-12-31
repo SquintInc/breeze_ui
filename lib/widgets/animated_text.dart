@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tailwind_elements/base.dart';
 import 'package:tailwind_elements/widgets.dart';
 import 'package:tailwind_elements/widgets/state/animated_state.dart';
 import 'package:tailwind_elements/widgets/state/state.dart';

@@ -238,8 +238,16 @@ class _DivState extends TwAnimatedState<TwDiv> {
     }
 
     final simpleConstraints = _tightenConstraints(
-      width: mergedStyle.width?.value.logicalPixels,
-      height: mergedStyle.height?.value.logicalPixels,
+      width: switch (mergedStyle.width?.value) {
+        CssAbsoluteUnit() =>
+          (mergedStyle.width!.value as CssAbsoluteUnit).pixels(),
+        _ => null,
+      },
+      height: switch (mergedStyle.height?.value) {
+        CssAbsoluteUnit() =>
+          (mergedStyle.height!.value as CssAbsoluteUnit).pixels(),
+        _ => null,
+      },
       constraints: mergedStyle.getSimpleConstraints(),
     );
     return _buildDiv(

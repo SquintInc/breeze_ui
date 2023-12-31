@@ -150,7 +150,7 @@ class _TailwindElementsPlaygroundState
                 ),
                 hovered: TwStyle(
                   backgroundColor: bg_blue_400,
-                  textColor: text_blue_700,
+                  textColor: text_black,
                   fontSize: text_3xl,
                   textDecorationThickness: decoration_8,
                   textDecorationColor: decoration_indigo_700,
@@ -175,6 +175,9 @@ class _TailwindElementsPlaygroundState
                     transition: transition_all,
                     transitionDuration: duration_300,
                     transitionTimingFn: ease_in_out,
+                    fontSize: text_2xl,
+                    fontWeight: font_bold,
+                    textColor: text_white,
                   ),
                   hovered: const TwStyle(
                     width: w_64,
@@ -200,20 +203,8 @@ class _TailwindElementsPlaygroundState
                   ),
                   child: TwAnimatedText(
                     text,
-                    style: const TwStyle(
-                      fontSize: text_2xl,
-                      fontWeight: font_bold,
-                      textColor: text_white,
-                      transition: transition_all,
-                      transitionDuration: duration_1000,
-                    ),
                     hovered: const TwStyle(
-                      // fontSize: text_4xl,
-                      textColor: text_gray_500,
-                    ),
-                    pressed: const TwStyle(
-                      // fontSize: text_4xl,
-                      textColor: text_yellow_500,
+                      textColor: text_blue_700,
                     ),
                   ),
                 ),
@@ -246,11 +237,10 @@ class _TailwindElementsPlaygroundState
                   ),
                   style: TwStyle(
                     fontSize: text_2xl,
-                    fontWeight: font_bold,
-                    textColor: text_indigo_700,
+                    textColor: text_white,
                     transition: transition_all,
                     transitionDuration: duration_1000,
-                    transitionDelay: delay_300,
+                    // transitionDelay: delay_300,
                   ),
                   hovered: TwStyle(
                     // fontSize: text_4xl,

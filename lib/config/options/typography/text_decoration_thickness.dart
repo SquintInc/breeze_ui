@@ -3,7 +3,7 @@ import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwTextDecorationThickness {
-  final TwUnit value;
+  final CssAbsoluteUnit value;
 
   const TwTextDecorationThickness(this.value);
 

@@ -3,7 +3,7 @@ import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwGapX {
-  final TwUnit value;
+  final CssMeasurementUnit value;
 
   const TwGapX(this.value);
 
@@ -20,7 +20,7 @@ class TwGapX {
 
 @immutable
 class TwGapY {
-  final TwUnit value;
+  final CssMeasurementUnit value;
 
   const TwGapY(this.value);
 

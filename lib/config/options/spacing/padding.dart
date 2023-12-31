@@ -5,7 +5,7 @@ import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwPaddingTop {
-  final TwUnit value;
+  final CssAbsoluteUnit value;
 
   const TwPaddingTop(this.value);
 
@@ -22,7 +22,7 @@ class TwPaddingTop {
 
 @immutable
 class TwPaddingRight {
-  final TwUnit value;
+  final CssAbsoluteUnit value;
 
   const TwPaddingRight(this.value);
 
@@ -39,7 +39,7 @@ class TwPaddingRight {
 
 @immutable
 class TwPaddingBottom {
-  final TwUnit value;
+  final CssAbsoluteUnit value;
 
   const TwPaddingBottom(this.value);
 
@@ -56,7 +56,7 @@ class TwPaddingBottom {
 
 @immutable
 class TwPaddingLeft {
-  final TwUnit value;
+  final CssAbsoluteUnit value;
 
   const TwPaddingLeft(this.value);
 
@@ -73,7 +73,7 @@ class TwPaddingLeft {
 
 @immutable
 class TwPaddingAll {
-  final TwUnit value;
+  final CssAbsoluteUnit value;
 
   const TwPaddingAll(this.value);
 
@@ -90,7 +90,7 @@ class TwPaddingAll {
 
 @immutable
 class TwPaddingX {
-  final TwUnit value;
+  final CssAbsoluteUnit value;
 
   const TwPaddingX(this.value);
 
@@ -107,7 +107,7 @@ class TwPaddingX {
 
 @immutable
 class TwPaddingY {
-  final TwUnit value;
+  final CssAbsoluteUnit value;
 
   const TwPaddingY(this.value);
 
@@ -182,19 +182,19 @@ class TwPadding {
         type = BoxSideType.trbl;
 
   EdgeInsetsGeometry toEdgeInsets() => switch (type) {
-        BoxSideType.all => EdgeInsets.all(all.value.logicalPixels),
+        BoxSideType.all => EdgeInsets.all(all.value.pixels()),
         BoxSideType.trbl => EdgeInsets.only(
-            top: top.value.logicalPixels,
-            right: right.value.logicalPixels,
-            bottom: bottom.value.logicalPixels,
-            left: left.value.logicalPixels,
+            top: top.value.pixels(),
+            right: right.value.pixels(),
+            bottom: bottom.value.pixels(),
+            left: left.value.pixels(),
           ),
         BoxSideType.x ||
         BoxSideType.y ||
         BoxSideType.xy =>
           EdgeInsets.symmetric(
-            horizontal: x.value.logicalPixels,
-            vertical: y.value.logicalPixels,
+            horizontal: x.value.pixels(),
+            vertical: y.value.pixels(),
           ),
       };
 

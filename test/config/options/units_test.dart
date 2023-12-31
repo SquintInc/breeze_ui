@@ -1,6 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tailwind_elements/base.dart';
+import 'package:tailwind_elements/config/builder/units_parser.dart';
+import 'package:tailwind_elements/config/builder/units_parser.dart';
+import 'package:tailwind_elements/config/builder/units_parser.dart';
+import 'package:tailwind_elements/config/builder/units_parser.dart';
+import 'package:tailwind_elements/config/builder/units_parser.dart';
+import 'package:tailwind_elements/config/builder/units_parser.dart';
 
 void main() {
   test('tailwind units use value equality', () {
@@ -8,8 +14,8 @@ void main() {
     expect(const PxUnit(456), equals(PxUnit(450 + 6)));
   });
 
-  test('zeroed tailwind units are all equal', () {
-    final List<TwUnit> units = [
+  test('zeroed tailwind measurement units are all equal', () {
+    final List<CssMeasurementUnit> units = [
       const PxUnit(0),
       const EmUnit(0),
       const RemUnit(0),
@@ -33,7 +39,7 @@ void main() {
   });
 
   test('random non-zero tailwind units are not equal', () {
-    final List<TwUnit> units = [
+    final List<CssMeasurementUnit> units = [
       const PxUnit(1),
       const EmUnit(1),
       const RemUnit(1),
@@ -57,20 +63,20 @@ void main() {
   });
 
   test('TwUnit.parse() parses successfully for "rem" units', () {
-    expect(TwUnit.parse('-0.05rem'), equals(RemUnit(-0.05)));
-    expect(TwUnit.parse('-0.025rem'), equals(RemUnit(-0.025)));
-    expect(TwUnit.parse('0rem'), equals(RemUnit(0)));
-    expect(TwUnit.parse('0.025rem'), equals(RemUnit(0.025)));
-    expect(TwUnit.parse('0.05rem'), equals(RemUnit(0.05)));
-    expect(TwUnit.parse('0.1rem'), equals(RemUnit(0.1)));
+    expect(parseMeasurementUnit('-0.05rem'), equals(RemUnit(-0.05)));
+    expect(parseMeasurementUnit('-0.025rem'), equals(RemUnit(-0.025)));
+    expect(parseMeasurementUnit('0rem'), equals(RemUnit(0)));
+    expect(parseMeasurementUnit('0.025rem'), equals(RemUnit(0.025)));
+    expect(parseMeasurementUnit('0.05rem'), equals(RemUnit(0.05)));
+    expect(parseMeasurementUnit('0.1rem'), equals(RemUnit(0.1)));
   });
 
   test('TwUnit.parse() parses successfully for "em" units', () {
-    expect(TwUnit.parse('-0.05em'), equals(EmUnit(-0.05)));
-    expect(TwUnit.parse('-0.025em'), equals(EmUnit(-0.025)));
-    expect(TwUnit.parse('0em'), equals(EmUnit(0)));
-    expect(TwUnit.parse('0.025em'), equals(EmUnit(0.025)));
-    expect(TwUnit.parse('0.05em'), equals(EmUnit(0.05)));
-    expect(TwUnit.parse('0.1em'), equals(EmUnit(0.1)));
+    expect(parseMeasurementUnit('-0.05em'), equals(EmUnit(-0.05)));
+    expect(parseMeasurementUnit('-0.025em'), equals(EmUnit(-0.025)));
+    expect(parseMeasurementUnit('0em'), equals(EmUnit(0)));
+    expect(parseMeasurementUnit('0.025em'), equals(EmUnit(0.025)));
+    expect(parseMeasurementUnit('0.05em'), equals(EmUnit(0.05)));
+    expect(parseMeasurementUnit('0.1em'), equals(EmUnit(0.1)));
   });
 }
