@@ -59,12 +59,14 @@ class TwStyleTween extends Tween<TwStyle?> {
     final TwStyle end,
     final double t,
   ) {
-    final beginLineHeightAsPercentage =
-        (begin.lineHeight ?? TwLineHeight.defaultLineHeight)
-            .asPercentageFloat(begin.fontSizePx);
-    final endLineHeightAsPercentage =
-        (end.lineHeight ?? TwLineHeight.defaultLineHeight)
-            .asPercentageFloat(end.fontSizePx);
+    final double beginLineHeightAsPercentage = (begin.lineHeight ??
+            begin.fontSize?.lineHeight ??
+            TwLineHeight.defaultLineHeight)
+        .asPercentageFloat(begin.fontSizePx);
+    final double endLineHeightAsPercentage = (end.lineHeight ??
+            end.fontSize?.lineHeight ??
+            TwLineHeight.defaultLineHeight)
+        .asPercentageFloat(end.fontSizePx);
     return TwLineHeight(
       PercentUnit.fromFloat(
         ui.lerpDouble(

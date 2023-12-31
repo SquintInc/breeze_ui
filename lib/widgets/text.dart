@@ -51,7 +51,7 @@ class TwText extends Text {
 
   @override
   TextStyle? get style =>
-      (_style?.toTextStyle() ?? TwStyle.defaultTextStyle).merge(overrideStyle);
+      _style?.toTextStyle().merge(overrideStyle);
 
   @override
   Color? get selectionColor => _style?.selectionColor?.color;

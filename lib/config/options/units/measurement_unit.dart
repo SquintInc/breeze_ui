@@ -22,6 +22,10 @@ sealed class CssMeasurementUnit {
   double get value;
 }
 
+extension IsZeroExtension on CssMeasurementUnit {
+  bool get isZero => value == 0;
+}
+
 /// Represents a CSS measurement unit that provides absolute values in logical
 /// pixels.
 @immutable
@@ -58,6 +62,7 @@ class PxUnit implements CssAbsoluteUnit {
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
+      isZero && other is CssMeasurementUnit && other.isZero ||
       other is PxUnit &&
           runtimeType == other.runtimeType &&
           value == other.value;
@@ -93,6 +98,7 @@ class EmUnit implements CssAbsoluteUnit {
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
+      isZero && other is CssMeasurementUnit && other.isZero ||
       other is EmUnit &&
           runtimeType == other.runtimeType &&
           value == other.value;
@@ -123,6 +129,7 @@ class RemUnit implements CssAbsoluteUnit {
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
+      isZero && other is CssMeasurementUnit && other.isZero ||
       other is RemUnit &&
           runtimeType == other.runtimeType &&
           value == other.value;
@@ -156,6 +163,7 @@ class PercentUnit implements CssRelativeUnit {
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
+      isZero && other is CssMeasurementUnit && other.isZero ||
       other is PercentUnit &&
           runtimeType == other.runtimeType &&
           value == other.value;
@@ -186,6 +194,7 @@ class ViewportUnit implements CssRelativeUnit {
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
+      isZero && other is CssMeasurementUnit && other.isZero ||
       other is ViewportUnit &&
           runtimeType == other.runtimeType &&
           value == other.value;
@@ -216,6 +225,7 @@ class SmallViewportUnit implements CssRelativeUnit {
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
+      isZero && other is CssMeasurementUnit && other.isZero ||
       other is SmallViewportUnit &&
           runtimeType == other.runtimeType &&
           value == other.value;
@@ -246,6 +256,7 @@ class LargeViewportUnit implements CssRelativeUnit {
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
+      isZero && other is CssMeasurementUnit && other.isZero ||
       other is LargeViewportUnit &&
           runtimeType == other.runtimeType &&
           value == other.value;
@@ -276,6 +287,7 @@ class DynamicViewportUnit implements CssRelativeUnit {
   @override
   bool operator ==(final Object other) =>
       identical(this, other) ||
+      isZero && other is CssMeasurementUnit && other.isZero ||
       other is DynamicViewportUnit &&
           runtimeType == other.runtimeType &&
           value == other.value;

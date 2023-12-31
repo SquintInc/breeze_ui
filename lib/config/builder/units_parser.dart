@@ -17,7 +17,7 @@ CssTimeUnit parseTimeUnit(final String value) {
       Duration(milliseconds: (s * Duration.millisecondsPerSecond).toInt()),
     );
   }
-  throw UnsupportedError('Unsupported CSS time unit: $value');
+  throw UnsupportedError('Unsupported CSS time unit "$value"');
 }
 
 /// Parses a CSS unit value from a string representation into one of the many
@@ -33,7 +33,7 @@ CssTimeUnit parseTimeUnit(final String value) {
 ///   - [DynamicViewportUnit]
 ///   - [LargeViewportUnit]
 ///   - [IgnoreUnit]
-CssMeasurementUnit parseUnit(final String value) {
+CssMeasurementUnit parseMeasurementUnit(final String value) {
   if (value == '0') return const PxUnit(0);
 
   if (value.endsWith('px')) {
@@ -65,7 +65,7 @@ CssMeasurementUnit parseUnit(final String value) {
     return PercentUnit(tryPercentage * 100);
   }
 
-  throw UnsupportedError('Unsupported CSS measurement unit: $value');
+  throw UnsupportedError('Unsupported CSS measurement unit "$value"');
 }
 
 extension MeasurementUnitConstructorExtension on CssMeasurementUnit {

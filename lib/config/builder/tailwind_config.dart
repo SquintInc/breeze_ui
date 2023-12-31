@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:tailwind_elements/config/builder/build_runner/rgba_color.dart';
+import 'package:tailwind_elements/config/builder/units_parser.dart';
 import 'package:tailwind_elements/config/options/units.dart';
 
 /// TailwindCSS config representation in Dart. This class is used by the
@@ -15,6 +16,15 @@ class TailwindConfig {
     'DEFAULT',
     'inherit',
     'current',
+  };
+  static const Set<String> ignoredMeasurementValues = {
+    'auto',
+    'min-content',
+    'max-content',
+    'fit-content',
+    'none',
+    '65ch',
+    'from-font',
   };
 
   /// Returns an empty [TailwindConfig] instance.
@@ -32,23 +42,30 @@ class TailwindConfig {
   }
 
   Map<String, CssMeasurementUnit> getUnits(final String key) {
-    final Map<String, CssMeasurementUnit> values =
-        (theme[key] as Map<String, dynamic>).map(
-      (final key, final value) =>
-          MapEntry(key, CssMeasurementUnit.parse(value)),
-    );
-    return Map.unmodifiable(
-      Map.fromEntries(
-        values.entries
-            .where((final entry) => entry.value.type != CssUnitType.ignored),
-      ),
-    );
+    final values = (theme[key] as Map<String, dynamic>)
+        .entries
+        .where(
+          (final entry) => (entry.value is String)
+              ? !ignoredMeasurementValues.contains(entry.value)
+              : true,
+        )
+        .map((final entry) {
+      try {
+        final parsedValue = parseMeasurementUnit(entry.value);
+        return MapEntry(entry.key, parsedValue);
+      } catch (e) {
+        throw Exception(
+          'Failed to parse value for key: ${entry.key}, value: ${entry.value}. $e',
+        );
+      }
+    });
+    return Map.unmodifiable(Map.fromEntries(values));
   }
 
   Map<String, CssTimeUnit> getTimeUnits(final String key) {
     final Map<String, CssTimeUnit> values =
         (theme[key] as Map<String, dynamic>).map(
-      (final key, final value) => MapEntry(key, CssTimeUnit.parse(value)),
+      (final key, final value) => MapEntry(key, parseTimeUnit(value)),
     );
     return Map.unmodifiable(values);
   }

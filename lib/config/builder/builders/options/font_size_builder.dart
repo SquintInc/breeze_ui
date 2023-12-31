@@ -1,6 +1,7 @@
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:tailwind_elements/config/builder/builders/generators.dart';
+import 'package:tailwind_elements/config/builder/units_parser.dart';
 import 'package:tailwind_elements/config/options/typography/font_size.dart';
 import 'package:tailwind_elements/config/options/units.dart';
 
@@ -40,15 +41,15 @@ class FontSizeBuilder extends ConstantsGenerator {
         CssMeasurementUnit fontSizeValue;
         CssMeasurementUnit lineHeightValue;
         if (values is String) {
-          fontSizeValue = CssMeasurementUnit.parse(values);
-          lineHeightValue = CssMeasurementUnit.parse('1.5');
+          fontSizeValue = parseMeasurementUnit(values);
+          lineHeightValue = parseMeasurementUnit('1.5');
         } else {
           final String fontSizeString = values[0];
           final Map<String, dynamic> additionalProps = values[1];
-          fontSizeValue = CssMeasurementUnit.parse(fontSizeString);
+          fontSizeValue = parseMeasurementUnit(fontSizeString);
           final String lineHeightString =
               additionalProps['lineHeight'] ?? '1.5';
-          lineHeightValue = CssMeasurementUnit.parse(lineHeightString);
+          lineHeightValue = parseMeasurementUnit(lineHeightString);
         }
 
         final String lineDeclaration = CodeWriter.dartLineDeclaration(

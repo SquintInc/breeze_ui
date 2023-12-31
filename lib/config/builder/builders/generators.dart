@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:tailwind_elements/config/builder/build_runner/rgba_color.dart';
 import 'package:tailwind_elements/config/builder/tailwind_config.dart';
+import 'package:tailwind_elements/config/builder/units_parser.dart';
 import 'package:tailwind_elements/config/options/units.dart';
 
 extension StringExt on String {
@@ -38,18 +39,15 @@ class CodeWriter {
   static String variableNameSuffix(final String key, final dynamic unit) {
     if (unit is CssMeasurementUnit) {
       return switch (unit.type) {
-        CssUnitType.px ||
-        CssUnitType.em ||
-        CssUnitType.rem =>
+        MeasurementType.px ||
+        MeasurementType.em ||
+        MeasurementType.rem =>
           key == 'DEFAULT' ? '' : key.toSnakeCase(),
-        CssUnitType.percent => percentageVarNameSuffix(key, unit.value),
-        CssUnitType.viewport => key.toSnakeCase(),
-        CssUnitType.smallViewport => key.toSnakeCase(),
-        CssUnitType.largeViewport => key.toSnakeCase(),
-        CssUnitType.dynamicViewport => key.toSnakeCase(),
-        _ => throw Exception(
-            'Invalid unit type for conversion to identifier: ${unit.type}',
-          ),
+        MeasurementType.percent => percentageVarNameSuffix(key, unit.value),
+        MeasurementType.viewport => key.toSnakeCase(),
+        MeasurementType.smallViewport => key.toSnakeCase(),
+        MeasurementType.largeViewport => key.toSnakeCase(),
+        MeasurementType.dynamicViewport => key.toSnakeCase(),
       };
     } else if (unit is CssTimeUnit) {
       return switch (unit.type) {
@@ -71,20 +69,17 @@ class CodeWriter {
     var valueConstructor = '';
     if (unit is CssMeasurementUnit) {
       valueConstructor = switch (unit.type) {
-        CssUnitType.px ||
-        CssUnitType.em ||
-        CssUnitType.rem ||
-        CssUnitType.percent ||
-        CssUnitType.viewport ||
-        CssUnitType.smallViewport ||
-        CssUnitType.largeViewport ||
-        CssUnitType.dynamicViewport =>
+        MeasurementType.px ||
+        MeasurementType.em ||
+        MeasurementType.rem ||
+        MeasurementType.percent ||
+        MeasurementType.viewport ||
+        MeasurementType.smallViewport ||
+        MeasurementType.largeViewport ||
+        MeasurementType.dynamicViewport =>
           valueClassName.isEmpty
               ? unit.toDartConstructor()
               : '$valueClassName(${unit.toDartConstructor()})',
-        _ => throw Exception(
-            'Invalid unit type for converting unit to a Dart declaration: ${unit.type}',
-          ),
       };
     } else if (unit is CssTimeUnit) {
       valueConstructor = switch (unit.type) {
