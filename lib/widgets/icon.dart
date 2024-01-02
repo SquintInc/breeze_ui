@@ -10,8 +10,14 @@ import 'package:tailwind_elements/widgets/style/style.dart';
 /// be treated as a null value.
 @immutable
 class TwIcon extends StatelessWidget {
+  /// The icon data to display, when not using SVG graphics.
   final IconData? icon;
+
+  /// The SVG graphic data to display, when not using an [IconData].
   final BytesLoader? svg;
+
+  /// Tailwind styling properties, supports only [textColor], and [CssAbsoluteUnit] values for
+  /// [width] and [height].
   final TwStyle style;
 
   const TwIcon.icon({
