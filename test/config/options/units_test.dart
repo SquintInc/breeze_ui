@@ -2,11 +2,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tailwind_elements/base.dart';
 import 'package:tailwind_elements/config/builder/units_parser.dart';
-import 'package:tailwind_elements/config/builder/units_parser.dart';
-import 'package:tailwind_elements/config/builder/units_parser.dart';
-import 'package:tailwind_elements/config/builder/units_parser.dart';
-import 'package:tailwind_elements/config/builder/units_parser.dart';
-import 'package:tailwind_elements/config/builder/units_parser.dart';
 
 void main() {
   test('tailwind units use value equality', () {
