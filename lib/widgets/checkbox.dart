@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tailwind_elements/base.dart';
+import 'package:tailwind_elements/config/options/sizing/height.dart';
+import 'package:tailwind_elements/config/options/sizing/width.dart';
 import 'package:tailwind_elements/widgets.dart';
 import 'package:tailwind_elements/widgets/state/animated_state.dart';
 import 'package:tailwind_elements/widgets/state/state.dart';
-import 'package:tailwind_elements/widgets/style/style.dart';
 
 /// A widget meant to represent a [Checkbox] with custom styling via Tailwind
 /// styled properties.
@@ -35,7 +35,7 @@ class TwCheckbox extends TwStatefulWidget {
   final CssAbsoluteUnit tapTargetSize;
 
   /// Custom SVG asset to use for the checkmark icon.
-  final BytesLoader? checkmarkSvg;
+  final SvgAssetLoader? checkmarkSvg;
 
   const TwCheckbox({
     required this.initialValue,
@@ -81,33 +81,6 @@ class _CheckboxState extends TwAnimatedState<TwCheckbox> {
     return (paddingEdgeInsets == null)
         ? decorationPadding
         : paddingEdgeInsets.add(decorationPadding);
-  }
-
-  SvgPicture _checkmarkSvg(
-    final TwStyle style,
-    final BytesLoader svgAssetLoader,
-    final double checkmarkSizePx,
-  ) {
-    return SvgPicture(
-      svgAssetLoader,
-      colorFilter: ColorFilter.mode(
-        style.textColor?.color ?? Colors.transparent,
-        BlendMode.srcIn,
-      ),
-      width: checkmarkSizePx,
-      height: checkmarkSizePx,
-    );
-  }
-
-  Icon _checkmarkIcon(
-    final TwStyle style,
-    final double checkmarkSizePx,
-  ) {
-    return Icon(
-      Icons.check,
-      color: style.textColor?.color ?? Colors.transparent,
-      size: checkmarkSizePx,
-    );
   }
 
   BoxConstraints _getSizeConstraints(
@@ -164,11 +137,23 @@ class _CheckboxState extends TwAnimatedState<TwCheckbox> {
             ),
     };
 
-    final checkmarkSvg = widget.checkmarkSvg;
-    final checkmark = checkmarkSvg != null
-        ? _checkmarkSvg(style, checkmarkSvg, checkmarkSizePx)
-        : _checkmarkIcon(style, checkmarkSizePx);
-    Widget current = Align(alignment: Alignment.center, child: checkmark);
+    final svg = widget.checkmarkSvg;
+    final checkmarkIcon = svg != null
+        ? TwIcon.svg(
+            svg: svg,
+            style: style.copyWith(
+              width: TwWidth(PxUnit(checkmarkSizePx)),
+              height: TwHeight(PxUnit(checkmarkSizePx)),
+            ),
+          )
+        : TwIcon.icon(
+            icon: Icons.check,
+            style: style.copyWith(
+              width: TwWidth(PxUnit(checkmarkSizePx)),
+              height: TwHeight(PxUnit(checkmarkSizePx)),
+            ),
+          );
+    Widget current = Align(alignment: Alignment.center, child: checkmarkIcon);
 
     // Render effective padding (including border widths) around the current
     // widget if applicable.
