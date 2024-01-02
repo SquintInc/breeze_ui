@@ -558,7 +558,6 @@ class TwStyle {
   }
 
   TwStyle copyWith({
-    // Background styling
     final TwBackgroundColor? backgroundColor,
     final DecorationImage? backgroundImage,
     final Gradient? backgroundGradient,

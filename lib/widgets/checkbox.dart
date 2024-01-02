@@ -2,11 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tailwind_elements/config/options/colors.dart';
 import 'package:tailwind_elements/config/options/sizing/height.dart';
 import 'package:tailwind_elements/config/options/sizing/width.dart';
 import 'package:tailwind_elements/widgets.dart';
 import 'package:tailwind_elements/widgets/state/animated_state.dart';
 import 'package:tailwind_elements/widgets/state/state.dart';
+import 'package:tailwind_elements/widgets/state/widget_state.dart';
 
 /// A widget meant to represent a [Checkbox] with custom styling via Tailwind
 /// styled properties.
@@ -110,7 +112,13 @@ class _CheckboxState extends TwAnimatedState<TwCheckbox> {
   @override
   Widget buildForState(final BuildContext context) {
     final mergedStyle = currentStyle;
-    final style = mergedStyle.merge(animationController?.animatedStyle);
+    final animatedStyle = mergedStyle.merge(animationController?.animatedStyle);
+    final style = animatedStyle.copyWith(
+      textColor: animatedStyle.textColor == null &&
+              widgetState != TwWidgetState.selected
+          ? const TwTextColor(Colors.transparent)
+          : null,
+    );
 
     final double? widthPx =
         style.width != null && style.width!.value is CssAbsoluteUnit
