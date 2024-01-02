@@ -11,7 +11,7 @@ import 'package:tailwind_elements/widgets/style/style.dart';
 @immutable
 class TwIcon extends StatelessWidget {
   final IconData? icon;
-  final SvgAssetLoader? svg;
+  final BytesLoader? svg;
   final TwStyle style;
 
   const TwIcon.icon({
