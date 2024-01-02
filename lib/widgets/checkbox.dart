@@ -8,7 +8,6 @@ import 'package:tailwind_elements/config/options/sizing/width.dart';
 import 'package:tailwind_elements/widgets.dart';
 import 'package:tailwind_elements/widgets/state/animated_state.dart';
 import 'package:tailwind_elements/widgets/state/state.dart';
-import 'package:tailwind_elements/widgets/state/widget_state.dart';
 
 /// A widget meant to represent a [Checkbox] with custom styling via Tailwind
 /// styled properties.
@@ -112,27 +111,32 @@ class _CheckboxState extends TwAnimatedState<TwCheckbox> {
   @override
   Widget buildForState(final BuildContext context) {
     final mergedStyle = currentStyle;
-    final animatedStyle = mergedStyle.merge(animationController?.animatedStyle);
-    final style = animatedStyle.copyWith(
-      textColor: animatedStyle.textColor == null &&
-              widgetState != TwWidgetState.selected
-          ? const TwTextColor(Colors.transparent)
-          : null,
-    );
-
     final double? widthPx =
-        style.width != null && style.width!.value is CssAbsoluteUnit
-            ? (style.width!.value as CssAbsoluteUnit).pixels()
+        mergedStyle.width != null && mergedStyle.width!.value is CssAbsoluteUnit
+            ? (mergedStyle.width!.value as CssAbsoluteUnit).pixels()
             : null;
-    final double? heightPx =
-        style.height != null && style.height!.value is CssAbsoluteUnit
-            ? (style.height!.value as CssAbsoluteUnit).pixels()
-            : null;
+    final double? heightPx = mergedStyle.height != null &&
+            mergedStyle.height!.value is CssAbsoluteUnit
+        ? (mergedStyle.height!.value as CssAbsoluteUnit).pixels()
+        : null;
     final constraints = _getSizeConstraints(widthPx, heightPx);
     _trackConstraintsForAnimation(
       constraints: constraints,
       mergedStyle: mergedStyle,
     );
+
+    final animatedStyle = mergedStyle.merge(animationController?.animatedStyle);
+    final style = animatedStyle.copyWith(
+      textColor: !isSelected ? const TwTextColor(Colors.transparent) : null,
+    );
+    final dynamicConstraints =
+        animationController?.animatedBoxConstraints ?? constraints;
+    final double? dynamicWidthPx = dynamicConstraints.maxWidth.isFinite
+        ? dynamicConstraints.maxWidth
+        : null;
+    final double? dynamicHeightPx = dynamicConstraints.maxHeight.isFinite
+        ? dynamicConstraints.maxHeight
+        : null;
 
     final checkmarkSizePx = switch (widget.checkmarkSize.value) {
       CssAbsoluteUnit() =>
@@ -140,8 +144,8 @@ class _CheckboxState extends TwAnimatedState<TwCheckbox> {
       CssRelativeUnit() =>
         (widget.checkmarkSize.value as CssRelativeUnit).percentageFloat() *
             min(
-              widthPx ?? TwCheckbox.defaultCheckmarkSizePx,
-              heightPx ?? TwCheckbox.defaultCheckmarkSizePx,
+              dynamicWidthPx ?? TwCheckbox.defaultCheckmarkSizePx,
+              dynamicHeightPx ?? TwCheckbox.defaultCheckmarkSizePx,
             ),
     };
 
@@ -174,7 +178,7 @@ class _CheckboxState extends TwAnimatedState<TwCheckbox> {
       );
     }
 
-    final Decoration? decoration = style.getBoxDecoration(constraints);
+    final Decoration? decoration = style.getBoxDecoration(dynamicConstraints);
     if (decoration != null) {
       current = DecoratedBox(
         decoration: decoration,
@@ -183,18 +187,22 @@ class _CheckboxState extends TwAnimatedState<TwCheckbox> {
     }
 
     current = ConstrainedBox(
-      constraints: constraints,
+      constraints: dynamicConstraints,
       child: current,
     );
 
     final double tapTargetSizePx = max(
       widget.tapTargetSize.pixels(),
-      max(constraints.minWidth, constraints.minHeight),
+      max(dynamicConstraints.minWidth, dynamicConstraints.minHeight),
     );
-    final marginWidth = (tapTargetSizePx - constraints.minWidth) / 2;
-    if (marginWidth > 0) {
+    final marginWidth = (tapTargetSizePx - dynamicConstraints.minWidth) / 2;
+    final marginHeight = (tapTargetSizePx - dynamicConstraints.minHeight) / 2;
+    if (marginWidth > 0 || marginHeight > 0) {
       current = Padding(
-        padding: EdgeInsets.all(marginWidth),
+        padding: EdgeInsets.symmetric(
+          horizontal: marginWidth,
+          vertical: marginHeight,
+        ),
         child: current,
       );
     }

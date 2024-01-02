@@ -379,6 +379,7 @@ abstract class TwState<T extends TwStatefulWidget> extends State<T> {
   /// Manages [MaterialState.hovered] for this widget.
   Widget _wrapMouseRegion(final Widget child) {
     return MouseRegion(
+      hitTestBehavior: widget.gestureBehavior,
       onEnter: (final details) {
         if (!statesController.value.contains(MaterialState.hovered)) {
           statesController.update(MaterialState.hovered, true);
