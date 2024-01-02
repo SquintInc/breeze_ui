@@ -35,7 +35,7 @@ class TwCheckbox extends TwStatefulWidget {
   final CssAbsoluteUnit tapTargetSize;
 
   /// Custom SVG asset to use for the checkmark icon.
-  final SvgAssetLoader? checkmarkSvg;
+  final BytesLoader? checkmarkSvg;
 
   const TwCheckbox({
     required this.initialValue,
