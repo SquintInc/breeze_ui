@@ -74,7 +74,6 @@ class _CheckboxState extends TwAnimatedState<TwCheckbox> {
     isSelected = widget.initialValue ?? false;
   }
 
-
   @override
   void didUpdateWidget(final TwCheckbox oldWidget) {
     super.didUpdateWidget(oldWidget);
