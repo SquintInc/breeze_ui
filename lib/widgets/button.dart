@@ -57,7 +57,7 @@ class TwButton extends StatefulWidget {
 
   // Pass-through properties for [ButtonStyle]
   final MaterialTapTargetSize tapTargetSize;
-  final AlignmentGeometry? alignment;
+  final AlignmentGeometry alignment;
 
   const TwButton({
     this.style = const TwStyle(),
@@ -78,7 +78,7 @@ class TwButton extends StatefulWidget {
     this.clipBehavior = Clip.none,
     this.isSemanticButton = true,
     this.tapTargetSize = MaterialTapTargetSize.padded,
-    this.alignment,
+    this.alignment = Alignment.center,
     this.transform,
     this.transformAlignment,
     this.statesController,
@@ -184,10 +184,13 @@ class _TwButtonState extends State<TwButton> {
     };
     final mergedStyle = widget.style.merge(stateStyle);
 
+    final child = widget.child ?? const SizedBox();
+
     return Stack(
       alignment: Alignment.center,
       children: [
         TwDiv(
+          alignment: widget.alignment,
           key: widget.key,
           style: widget.style,
           disabled: widget.disabled,
@@ -202,6 +205,7 @@ class _TwButtonState extends State<TwButton> {
           useGestureDetector: false,
           useMouseRegion: false,
           statesController: statesController,
+          child: child,
         ),
         Positioned.fill(
           child: TextButton(
@@ -217,7 +221,9 @@ class _TwButtonState extends State<TwButton> {
             autofocus: widget.autofocus,
             clipBehavior: widget.clipBehavior,
             statesController: statesController,
-            child: widget.child ?? const SizedBox(),
+            // Hide the button's child because it is rendered by the TwDiv for intrinsic height
+            // values when calculating the TwButton's padding.
+            child: const SizedBox(),
           ),
         ),
       ],
