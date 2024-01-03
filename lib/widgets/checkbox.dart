@@ -40,7 +40,7 @@ class TwCheckbox extends TwStatefulWidget {
 
   const TwCheckbox({
     required this.initialValue,
-    required this.onChanged,
+    this.onChanged,
     this.checkmarkSize = const TwWidth(PxUnit(defaultCheckmarkSizePx)),
     this.tapTargetSize = const PxUnit(minTapTargetSizePx),
     this.checkmarkSvg,
@@ -52,10 +52,13 @@ class TwCheckbox extends TwStatefulWidget {
     super.focused,
     super.selected,
     super.errored,
-    super.key,
     super.isDisabled,
+    super.isSelectable = true,
+    super.key,
   }) : super(
-          isSelectable: true,
+          // Have the checkbox for display only if "isSelectable" is false
+          useGestureDetector: isSelectable,
+          useMouseRegion: isSelectable,
           onSelected: onChanged,
           gestureBehavior: HitTestBehavior.opaque,
         );
@@ -69,6 +72,14 @@ class _CheckboxState extends TwAnimatedState<TwCheckbox> {
   void initState() {
     super.initState();
     isSelected = widget.initialValue ?? false;
+  }
+
+  @override
+  void didUpdateWidget(final TwCheckbox oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!widget.isSelectable) {
+      isSelected = widget.initialValue ?? false;
+    }
   }
 
   EdgeInsetsGeometry? _paddingIncludingDecoration(final TwStyle style) {
