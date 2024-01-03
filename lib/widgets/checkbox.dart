@@ -156,6 +156,7 @@ class _CheckboxState extends TwAnimatedState<TwCheckbox> {
             style: style.copyWith(
               width: TwWidth(PxUnit(checkmarkSizePx)),
               height: TwHeight(PxUnit(checkmarkSizePx)),
+              textColor: style.textColor,
             ),
           )
         : TwIcon.icon(
@@ -163,6 +164,7 @@ class _CheckboxState extends TwAnimatedState<TwCheckbox> {
             style: style.copyWith(
               width: TwWidth(PxUnit(checkmarkSizePx)),
               height: TwHeight(PxUnit(checkmarkSizePx)),
+              textColor: style.textColor,
             ),
           );
     Widget current = Align(alignment: Alignment.center, child: checkmarkIcon);
