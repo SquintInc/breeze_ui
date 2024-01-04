@@ -159,17 +159,16 @@ class _CheckboxState extends TwAnimatedState<TwCheckbox> {
             ),
     };
 
-    final checkmarkIconData = widget.checkmarkIcon;
-    final checkmarkIcon = checkmarkIconData != null
-        ? TwIcon(
-            icon: checkmarkIconData,
-            style: style.copyWith(
-              width: TwWidth(PxUnit(checkmarkSizePx)),
-              height: TwHeight(PxUnit(checkmarkSizePx)),
-              textColor: style.textColor,
-            ),
-          )
-        : null;
+    final checkmarkIconData =
+        widget.checkmarkIcon ?? const IconFontData(Icons.check);
+    final checkmarkIcon = TwIcon(
+      icon: checkmarkIconData,
+      style: style.copyWith(
+        width: TwWidth(PxUnit(checkmarkSizePx)),
+        height: TwHeight(PxUnit(checkmarkSizePx)),
+        textColor: style.textColor,
+      ),
+    );
 
     Widget current = Align(alignment: Alignment.center, child: checkmarkIcon);
 
