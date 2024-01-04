@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tailwind_elements/config/options/colors.dart';
 import 'package:tailwind_elements/config/options/sizing/height.dart';
 import 'package:tailwind_elements/config/options/sizing/width.dart';
@@ -35,15 +34,15 @@ class TwCheckbox extends TwStatefulWidget {
   /// guidelines.
   final CssAbsoluteUnit tapTargetSize;
 
-  /// Custom SVG asset to use for the checkmark icon.
-  final BytesLoader? checkmarkSvg;
+  /// Custom icon to use for the checkmark icon.
+  final TwIconData? checkmarkIcon;
 
   const TwCheckbox({
     required this.initialValue,
     this.onChanged,
     this.checkmarkSize = const TwWidth(PxUnit(defaultCheckmarkSizePx)),
     this.tapTargetSize = const PxUnit(minTapTargetSizePx),
-    this.checkmarkSvg,
+    this.checkmarkIcon,
     super.style = const TwStyle(),
     super.disabled,
     super.pressed,
@@ -160,24 +159,18 @@ class _CheckboxState extends TwAnimatedState<TwCheckbox> {
             ),
     };
 
-    final svg = widget.checkmarkSvg;
-    final checkmarkIcon = svg != null
-        ? TwIcon.svg(
-            svg: svg,
+    final checkmarkIconData = widget.checkmarkIcon;
+    final checkmarkIcon = checkmarkIconData != null
+        ? TwIcon(
+            icon: checkmarkIconData,
             style: style.copyWith(
               width: TwWidth(PxUnit(checkmarkSizePx)),
               height: TwHeight(PxUnit(checkmarkSizePx)),
               textColor: style.textColor,
             ),
           )
-        : TwIcon.icon(
-            icon: Icons.check,
-            style: style.copyWith(
-              width: TwWidth(PxUnit(checkmarkSizePx)),
-              height: TwHeight(PxUnit(checkmarkSizePx)),
-              textColor: style.textColor,
-            ),
-          );
+        : null;
+
     Widget current = Align(alignment: Alignment.center, child: checkmarkIcon);
 
     // Render effective padding (including border widths) around the current
