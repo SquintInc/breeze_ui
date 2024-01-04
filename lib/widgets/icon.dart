@@ -3,6 +3,30 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tailwind_elements/base.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 
+/// Sealed class representing the icon data using either an [IconData] or svg [BytesLoader].
+@immutable
+sealed class TwIconData {
+  static IconSvgData svg(final BytesLoader svg) => IconSvgData(svg);
+
+  static IconFontData icon(final IconData iconData) => IconFontData(iconData);
+}
+
+/// Icon data using an [IconData].
+@immutable
+class IconFontData implements TwIconData {
+  final IconData iconData;
+
+  const IconFontData(this.iconData);
+}
+
+/// Icon data using an svg [BytesLoader].
+@immutable
+class IconSvgData implements TwIconData {
+  final BytesLoader svg;
+
+  const IconSvgData(this.svg);
+}
+
 /// A widget meant to represent an [Icon] or [SvgPicture] with constrained
 /// styling via Tailwind styled properties. Supports only [width], [height], and
 /// [textColor] styling properties, and [width] and [height] must be
@@ -10,31 +34,21 @@ import 'package:tailwind_elements/widgets/style/style.dart';
 /// be treated as a null value.
 @immutable
 class TwIcon extends StatelessWidget {
-  /// The icon data to display, when not using SVG graphics.
-  final IconData? icon;
-
-  /// The SVG graphic data to display, when not using an [IconData].
-  final BytesLoader? svg;
+  /// The icon data to use for display
+  final TwIconData icon;
 
   /// Tailwind styling properties, supports only [textColor], and [CssAbsoluteUnit] values for
   /// [width] and [height].
   final TwStyle style;
 
-  const TwIcon.icon({
+  const TwIcon({
     required this.icon,
     this.style = const TwStyle(),
     super.key,
-  }) : svg = null;
-
-  const TwIcon.svg({
-    required this.svg,
-    this.style = const TwStyle(),
-    super.key,
-  }) : icon = null;
+  });
 
   @override
   Widget build(final BuildContext context) {
-    assert(icon != null || svg != null, 'Either icon or svg must be provided');
     final widthPx = switch (style.width?.value) {
       CssAbsoluteUnit() => (style.width!.value as CssAbsoluteUnit).pixels(),
       _ => null,
@@ -43,21 +57,23 @@ class TwIcon extends StatelessWidget {
       CssAbsoluteUnit() => (style.height!.value as CssAbsoluteUnit).pixels(),
       _ => null,
     };
-    if (icon != null) {
-      return Icon(
-        icon,
-        size: widthPx ?? heightPx,
-        color: style.textColor?.color,
-      );
+    switch (icon) {
+      case IconSvgData(svg: final svg):
+        return SvgPicture(
+          svg,
+          width: widthPx,
+          height: heightPx,
+          colorFilter: ColorFilter.mode(
+            style.textColor?.color ?? Colors.transparent,
+            BlendMode.srcIn,
+          ),
+        );
+      case IconFontData(iconData: final iconData):
+        return Icon(
+          iconData,
+          size: widthPx ?? heightPx,
+          color: style.textColor?.color,
+        );
     }
-    return SvgPicture(
-      svg!,
-      width: widthPx,
-      height: heightPx,
-      colorFilter: ColorFilter.mode(
-        style.textColor?.color ?? Colors.transparent,
-        BlendMode.srcIn,
-      ),
-    );
   }
 }
