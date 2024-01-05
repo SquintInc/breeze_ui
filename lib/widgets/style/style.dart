@@ -23,7 +23,6 @@ import 'package:tailwind_elements/config/options/typography/line_height.dart';
 import 'package:tailwind_elements/config/options/typography/text_decoration_thickness.dart';
 import 'package:tailwind_elements/config/options/units.dart';
 import 'package:tailwind_elements/widgets/extensions/extensions.dart';
-import 'package:tailwind_elements/widgets/state/widget_state.dart';
 
 export 'package:tailwind_elements/config/options/units.dart';
 export 'package:tailwind_elements/widgets/extensions/extensions.dart';
@@ -403,6 +402,41 @@ class TwStyle {
         )
       : InputBorder.none;
 
+  static TwStyle defaultStyleResolver(
+    final Set<MaterialState> states, {
+    required final TwStyle normal,
+    required final TwStyle? disabled,
+    required final TwStyle? dragged,
+    required final TwStyle? errored,
+    required final TwStyle? focused,
+    required final TwStyle? selected,
+    required final TwStyle? pressed,
+    required final TwStyle? hovered,
+  }) {
+    if (states.contains(MaterialState.disabled)) {
+      return normal.merge(disabled);
+    }
+    if (states.contains(MaterialState.dragged)) {
+      return normal.merge(pressed).merge(dragged);
+    }
+    if (states.contains(MaterialState.error)) {
+      return normal.merge(errored);
+    }
+    if (states.contains(MaterialState.focused)) {
+      return normal.merge(focused);
+    }
+    if (states.contains(MaterialState.pressed)) {
+      return normal.merge(pressed);
+    }
+    if (states.contains(MaterialState.selected)) {
+      return normal.merge(selected);
+    }
+    if (states.contains(MaterialState.hovered)) {
+      return normal.merge(hovered);
+    }
+    return normal;
+  }
+
   static InputBorder? resolveMaterialInputBorder(
     final TwStyle normal, {
     required final TwStyle? disabled,
@@ -415,17 +449,18 @@ class TwStyle {
   }) =>
       MaterialStateOutlineInputBorder.resolveWith(
           (final Set<MaterialState> states) {
-        final TwStyle? statusStyle = switch (getPrimaryWidgetState(states)) {
-          TwWidgetState.disabled => disabled,
-          TwWidgetState.dragged => dragged,
-          TwWidgetState.error => error,
-          TwWidgetState.focused => focused,
-          TwWidgetState.selected => selected,
-          TwWidgetState.pressed => pressed,
-          TwWidgetState.hovered => hovered,
-          _ => normal,
-        };
-        return statusStyle?.toBorder() ?? normal.toBorder() ?? InputBorder.none;
+        final currentStyle = defaultStyleResolver(
+          states,
+          normal: normal,
+          disabled: disabled,
+          dragged: dragged,
+          errored: error,
+          focused: focused,
+          selected: selected,
+          pressed: pressed,
+          hovered: hovered,
+        );
+        return currentStyle.toBorder() ?? InputBorder.none;
       });
 
   static MaterialStateTextStyle resolveMaterialTextStyle(
@@ -440,17 +475,18 @@ class TwStyle {
   }) {
     return MaterialStateTextStyle.resolveWith(
         (final Set<MaterialState> states) {
-      final TwStyle? statusStyle = switch (getPrimaryWidgetState(states)) {
-        TwWidgetState.disabled => disabled,
-        TwWidgetState.dragged => dragged,
-        TwWidgetState.error => error,
-        TwWidgetState.focused => focused,
-        TwWidgetState.selected => selected,
-        TwWidgetState.pressed => pressed,
-        TwWidgetState.hovered => hovered,
-        _ => normal,
-      };
-      return normal.merge(statusStyle).toTextStyle();
+      final currentStyle = defaultStyleResolver(
+        states,
+        normal: normal,
+        disabled: disabled,
+        dragged: dragged,
+        errored: error,
+        focused: focused,
+        selected: selected,
+        pressed: pressed,
+        hovered: hovered,
+      );
+      return currentStyle.toTextStyle();
     });
   }
 

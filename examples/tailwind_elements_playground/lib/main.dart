@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/base.dart';
 import 'package:tailwind_elements/widgets.dart';
 import 'package:tailwind_elements/widgets/inherited/parent_constraints_data.dart';
-import 'package:tailwind_elements/widgets/stateless/animated_div.dart';
 import 'package:tailwind_elements/widgets/stateless/div.dart';
 import 'package:tailwind_elements_playground/tailwind_config.dart';
 
@@ -32,7 +30,7 @@ class _TailwindElementsPlaygroundState
         useMaterial3: true,
       ),
       home: Material(
-        child: TwDiv(
+        child: Div(
           style: const TwStyle(
             height: h_96,
             backgroundColor: bg_black,
@@ -102,25 +100,28 @@ class _TailwindElementsPlaygroundState
                 TwRow(
                   children: [
                     AnimatedDiv(
-                      useInputDetectors: false,
+                      useInputDetectors: true,
                       style: TwStyle(
                         width: w_frac_1_3,
                         height: toggled ? h_64 : h_36,
                         backgroundColor: bg_amber_500,
+                        transition: transition_all,
                       ),
-                      pressed: TwStyle(
+                      pressed: const TwStyle(
                         backgroundColor: bg_red_600,
+                        width: w_64,
                       ),
-                      hovered: TwStyle(
+                      hovered: const TwStyle(
                         backgroundColor: bg_amber_400,
+                        width: w_frac_2_3,
                       ),
-                      focused: TwStyle(
+                      focused: const TwStyle(
                         backgroundColor: bg_amber_700,
                       ),
-                      selected: TwStyle(
+                      selected: const TwStyle(
                         backgroundColor: bg_indigo_50,
                       ),
-                      dragged: TwStyle(
+                      dragged: const TwStyle(
                         backgroundColor: bg_blue_900,
                       ),
                     ),

@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/widgets/state/widget_state.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 
 @immutable
@@ -371,18 +370,18 @@ class TwTextField extends TextField {
 
   Color? _resolveBackgroundColor() =>
       MaterialStateColor.resolveWith((final Set<MaterialState> states) {
-        final TwStyle? statusStyle = switch (getPrimaryWidgetState(states)) {
-          TwWidgetState.disabled => disabled,
-          TwWidgetState.dragged => null,
-          TwWidgetState.error => errored,
-          TwWidgetState.focused => focused,
-          TwWidgetState.selected => null,
-          TwWidgetState.pressed => null,
-          TwWidgetState.hovered => hovered,
-          _ => _style,
-        };
-        return _style.merge(statusStyle).backgroundColor?.color ??
-            Colors.transparent;
+        final currentStyle = TwStyle.defaultStyleResolver(
+          states,
+          normal: _style,
+          disabled: disabled,
+          dragged: null,
+          errored: errored,
+          focused: focused,
+          selected: null,
+          pressed: null,
+          hovered: hovered,
+        );
+        return currentStyle.backgroundColor?.color ?? Colors.transparent;
       });
 
   @override

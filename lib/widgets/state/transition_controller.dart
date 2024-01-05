@@ -14,7 +14,7 @@ class TwTransitionController {
 
   // Tween values for animated transitions
   // NOTE: no support for fill, stroke, transform, filter, and backdropFilter
-  TwStyleTween? _style;
+  TwStyleTweenOLD? _style;
   BoxConstraintsTween? _boxConstraints;
 
   /// Temporary box constraint value tracked for transitions, necessary due to
@@ -80,7 +80,7 @@ class TwTransitionController {
   }
 
   void initStyleTween(final TwStyle style) {
-    _style = TwStyleTween(
+    _style = TwStyleTweenOLD(
       begin: style,
       end: style,
     );
@@ -95,7 +95,7 @@ class TwTransitionController {
   }
 
   /// Sets the transition properties that are valid for tween evaluation for the
-  /// current style, inside the [TwStyleTween].
+  /// current style, inside the [TwStyleTweenOLD].
   void refreshStyleTweenProperties(final TwStyle style) {
     _style?.setProperties(style.transition?.properties);
   }
