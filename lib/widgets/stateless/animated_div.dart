@@ -61,11 +61,14 @@ abstract class TwStatefulWidget extends StatefulWidget {
   /// the same states to all widgets within this 'group'.
   final MaterialStatesController? statesController;
 
-  /// Whether or not the widget is disabled
+  /// Whether or not the widget is disabled.
   final bool isDisabled;
 
-  /// Whether or not the widget can be toggle selected
+  /// Whether or not the widget can be toggle selected.
   final bool isToggleable;
+
+  /// Whether or not the widget is toggle selected; initial toggle value if the widget is toggleable.
+  final bool isToggled;
 
   /// Whether or not the widget should use [GestureDetector] and [MouseRegion] to manage material
   /// state controller values.
@@ -97,6 +100,7 @@ abstract class TwStatefulWidget extends StatefulWidget {
     this.hitTestBehavior,
     this.isDisabled = false,
     this.isToggleable = false,
+    this.isToggled = false,
     this.useInputDetectors = false,
     this.enableFeedback = false,
     super.key,
@@ -161,6 +165,7 @@ class AnimatedDiv extends TwStatefulWidget {
     super.hitTestBehavior,
     super.isDisabled,
     super.isToggleable,
+    super.isToggled,
     super.useInputDetectors,
     super.enableFeedback,
     super.key,
@@ -188,10 +193,7 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
           _animationGroupStatesController!,
       };
 
-  Set<MaterialState> getCurrentStates() => _statesController.value;
-
-  /// If the widget is hoverable, this keeps track of the widget's hover state.
-  bool _isHovering = false;
+  Set<MaterialState> get currentStates => _statesController.value;
 
   /// If the widget is selectable, this keeps track of the widget's selection / toggle state.
   bool _isSelected = false;
@@ -199,6 +201,8 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   @override
   void initState() {
     super.initState();
+    // Track initial toggle selection state from the value passed to the widget
+    _isSelected = widget.isToggled;
   }
 
   /// Rebuilds the widget when the material states controller changes.
@@ -248,9 +252,14 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     }
     if (widget.isDisabled != oldWidget.isDisabled) {
       _statesController.update(MaterialState.disabled, widget.isDisabled);
+      // Remove pressed state if applicable, if the widget is now disabled
       if (widget.isDisabled) {
         _statesController.update(MaterialState.pressed, false);
       }
+    }
+    if (widget.isToggled != oldWidget.isToggled) {
+      _isSelected = widget.isToggled;
+      _statesController.update(MaterialState.selected, _isSelected);
     }
   }
 
@@ -262,17 +271,39 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   }
 
   @protected
-  TwStyle getCurrentStyle();
+  TwStyle getCurrentStyle() {
+    final states = currentStates;
+    if (states.contains(MaterialState.disabled)) {
+      return widget.disabled ?? widget.style;
+    }
+    if (states.contains(MaterialState.dragged)) {
+      return widget.dragged ?? widget.pressed ?? widget.style;
+    }
+    if (states.contains(MaterialState.error)) {
+      return widget.errored ?? widget.style;
+    }
+    if (states.contains(MaterialState.focused)) {
+      return widget.focused ?? widget.style;
+    }
+    if (states.contains(MaterialState.pressed)) {
+      return widget.pressed ?? widget.style;
+    }
+    if (states.contains(MaterialState.selected)) {
+      return widget.selected ?? widget.style;
+    }
+    if (states.contains(MaterialState.hovered)) {
+      return widget.hovered ?? widget.style;
+    }
+    return widget.style;
+  }
 
   Widget _wrapMouseRegion(final Widget child) {
     return MouseRegion(
       onEnter: (final event) {
-        _isHovering = true;
         _statesController.update(MaterialState.hovered, true);
         widget.onHover?.call(true);
       },
       onExit: (final event) {
-        _isHovering = false;
         _statesController.update(MaterialState.hovered, false);
         widget.onHover?.call(false);
       },
@@ -323,33 +354,6 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
 }
 
 class _AnimatedDiv extends TwMaterialState<AnimatedDiv> {
-  @override
-  TwStyle getCurrentStyle() {
-    final states = getCurrentStates();
-    if (states.contains(MaterialState.disabled)) {
-      return widget.disabled ?? widget.style;
-    }
-    if (states.contains(MaterialState.dragged)) {
-      return widget.dragged ?? widget.pressed ?? widget.style;
-    }
-    if (states.contains(MaterialState.error)) {
-      return widget.errored ?? widget.style;
-    }
-    if (states.contains(MaterialState.focused)) {
-      return widget.focused ?? widget.style;
-    }
-    if (states.contains(MaterialState.pressed)) {
-      return widget.pressed ?? widget.style;
-    }
-    if (states.contains(MaterialState.selected)) {
-      return widget.selected ?? widget.style;
-    }
-    if (states.contains(MaterialState.hovered)) {
-      return widget.hovered ?? widget.style;
-    }
-    return widget.style;
-  }
-
   @override
   Widget build(final BuildContext context) {
     final currentStyle = getCurrentStyle();

@@ -21,7 +21,7 @@ class TailwindElementsPlayground extends StatefulWidget {
 
 class _TailwindElementsPlaygroundState
     extends State<TailwindElementsPlayground> {
-  bool toggled = false;
+  bool toggled = true;
 
   @override
   Widget build(final BuildContext context) {
@@ -102,13 +102,12 @@ class _TailwindElementsPlaygroundState
                 TwRow(
                   children: [
                     AnimatedDiv(
-                      useInputDetectors: true,
+                      useInputDetectors: false,
                       style: TwStyle(
                         width: w_frac_1_3,
                         height: toggled ? h_64 : h_36,
                         backgroundColor: bg_amber_500,
                       ),
-                      isToggleable: true,
                       pressed: TwStyle(
                         backgroundColor: bg_red_600,
                       ),
