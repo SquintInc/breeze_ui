@@ -108,6 +108,7 @@ class _TailwindElementsPlaygroundState
                         height: toggled ? h_64 : h_36,
                         backgroundColor: bg_amber_500,
                       ),
+                      isToggleable: true,
                       pressed: TwStyle(
                         backgroundColor: bg_red_600,
                       ),
@@ -118,7 +119,7 @@ class _TailwindElementsPlaygroundState
                         backgroundColor: bg_amber_700,
                       ),
                       selected: TwStyle(
-                        backgroundColor: bg_amber_800,
+                        backgroundColor: bg_indigo_50,
                       ),
                       dragged: TwStyle(
                         backgroundColor: bg_blue_900,

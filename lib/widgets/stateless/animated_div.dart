@@ -285,14 +285,12 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
       excludeFromSemantics: true,
       behavior: widget.hitTestBehavior,
       onPanStart: (final DragStartDetails details) {
-        print('onPanStart');
         if (widget.dragged != null) {
           _statesController.update(MaterialState.dragged, true);
           widget.onDragged?.call(true);
         }
       },
       onPanEnd: (final DragEndDetails details) {
-        print('onPanEnd');
         _statesController.update(MaterialState.pressed, false);
         if (widget.dragged != null) {
           _statesController.update(MaterialState.dragged, false);
@@ -300,7 +298,6 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
         }
       },
       onPanCancel: () {
-        print('onPanCancel');
         _statesController.update(MaterialState.pressed, false);
         if (widget.dragged != null) {
           _statesController.update(MaterialState.dragged, false);
@@ -308,11 +305,9 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
         }
       },
       onPanDown: (final DragDownDetails details) {
-        print('onPanDown');
         _statesController.update(MaterialState.pressed, true);
       },
       onTap: () {
-        print('onTap');
         if (widget.isToggleable) {
           _isSelected = !_isSelected;
           _statesController.update(MaterialState.selected, _isSelected);
@@ -343,11 +338,11 @@ class _AnimatedDiv extends TwMaterialState<AnimatedDiv> {
     if (states.contains(MaterialState.focused)) {
       return widget.focused ?? widget.style;
     }
-    if (states.contains(MaterialState.selected)) {
-      return widget.selected ?? widget.style;
-    }
     if (states.contains(MaterialState.pressed)) {
       return widget.pressed ?? widget.style;
+    }
+    if (states.contains(MaterialState.selected)) {
+      return widget.selected ?? widget.style;
     }
     if (states.contains(MaterialState.hovered)) {
       return widget.hovered ?? widget.style;
