@@ -72,10 +72,6 @@ class _AnimatedDiv extends TwAnimatedMaterialState<AnimatedDiv> {
       );
     }
 
-    if (widget.hasTransitions) {
-      // TODO: Implement animated transitions
-    }
-
     current = conditionallyWrapInputDetectors(current);
 
     return current;

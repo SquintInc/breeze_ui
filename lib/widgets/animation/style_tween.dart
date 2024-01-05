@@ -46,11 +46,98 @@ class TwStyleTween extends Tween<TwStyle?> {
       (property.isBorderProperty &&
           _properties.contains(TransitionProperty.border));
 
+  TwBoxShadowColor? lerpBoxShadowColor(
+    final TwBoxShadowColor? begin,
+    final TwBoxShadowColor? end,
+    final double t,
+  ) {
+    if (!has(TransitionProperty.boxShadow) || (begin == null && end == null)) {
+      return null;
+    }
+    return TwBoxShadowColor.fromColor(
+      Color.lerp(
+        begin?.tweenColor,
+        end?.tweenColor,
+        t,
+      ),
+    );
+  }
+
+  TwTextColor? lerpTextColor(
+    final TwTextColor? begin,
+    final TwTextColor? end,
+    final double t,
+  ) {
+    if (!has(TransitionProperty.textColor) || (begin == null && end == null)) {
+      return null;
+    }
+    return TwTextColor.fromColor(
+      Color.lerp(
+        begin?.tweenColor,
+        end?.tweenColor,
+        t,
+      ),
+    );
+  }
+
+  TwBackgroundColor? lerpBackgroundColor(
+    final TwBackgroundColor? begin,
+    final TwBackgroundColor? end,
+    final double t,
+  ) {
+    if (!has(TransitionProperty.backgroundColor) ||
+        (begin == null && end == null)) return null;
+    return TwBackgroundColor.fromColor(
+      Color.lerp(
+        begin?.tweenColor,
+        end?.tweenColor,
+        t,
+      ),
+    );
+  }
+
+  TwBorderColor? lerpBorderColor(
+    final TwBorderColor? begin,
+    final TwBorderColor? end,
+    final double t,
+  ) {
+    if (!has(TransitionProperty.borderColor) ||
+        (begin == null && end == null)) {
+      return null;
+    }
+    return TwBorderColor.fromColor(
+      Color.lerp(
+        begin?.tweenColor,
+        end?.tweenColor,
+        t,
+      ),
+    );
+  }
+
+  TwTextDecorationColor? lerpTextDecorationColor(
+    final TwTextDecorationColor? begin,
+    final TwTextDecorationColor? end,
+    final double t,
+  ) {
+    if (!has(TransitionProperty.textDecorationColor) ||
+        (begin == null && end == null)) return null;
+    return TwTextDecorationColor.fromColor(
+      Color.lerp(
+        begin?.tweenColor,
+        end?.tweenColor,
+        t,
+      ),
+    );
+  }
+
   TwMinWidth? lerpMinWidth(
     final TwMinWidth? begin,
     final TwMinWidth? end,
     final double t,
   ) {
+    if (!has(TransitionProperty.width) || (begin == null && end == null)) {
+      return null;
+    }
     final parentConstraints = _parentConstraints;
     if (begin == null || end == null) return null;
     final beginMinWidthPx = switch (begin.value) {
@@ -77,6 +164,9 @@ class TwStyleTween extends Tween<TwStyle?> {
     final TwMaxWidth? end,
     final double t,
   ) {
+    if (!has(TransitionProperty.width) || (begin == null && end == null)) {
+      return null;
+    }
     final parentConstraints = _parentConstraints;
     if (begin == null || end == null) return null;
     final beginMaxWidthPx = switch (begin.value) {
@@ -103,6 +193,9 @@ class TwStyleTween extends Tween<TwStyle?> {
     final TwWidth? end,
     final double t,
   ) {
+    if (!has(TransitionProperty.width) || (begin == null && end == null)) {
+      return null;
+    }
     final parentConstraints = _parentConstraints;
     if (begin == null || end == null) return null;
     final beginWidthPx = switch (begin.value) {
@@ -129,6 +222,9 @@ class TwStyleTween extends Tween<TwStyle?> {
     final TwHeight? end,
     final double t,
   ) {
+    if (!has(TransitionProperty.height) || (begin == null && end == null)) {
+      return null;
+    }
     final parentConstraints = _parentConstraints;
     if (begin == null || end == null) return null;
     final beginHeightPx = switch (begin.value) {
@@ -155,6 +251,9 @@ class TwStyleTween extends Tween<TwStyle?> {
     final TwMinHeight? end,
     final double t,
   ) {
+    if (!has(TransitionProperty.height) || (begin == null && end == null)) {
+      return null;
+    }
     final parentConstraints = _parentConstraints;
     if (begin == null || end == null) return null;
     final beginMinHeightPx = switch (begin.value) {
@@ -181,6 +280,9 @@ class TwStyleTween extends Tween<TwStyle?> {
     final TwMaxHeight? end,
     final double t,
   ) {
+    if (!has(TransitionProperty.height) || (begin == null && end == null)) {
+      return null;
+    }
     final parentConstraints = _parentConstraints;
     if (begin == null || end == null) return null;
     final beginMaxHeightPx = switch (begin.value) {
@@ -202,90 +304,129 @@ class TwStyleTween extends Tween<TwStyle?> {
     return TwMaxHeight(PxUnit(maxHeightPx));
   }
 
-  @override
-  TwStyle? lerp(final double t) {
-    final begin = this.begin;
-    final end = this.end;
-    if (begin == end) return begin;
-    if (begin == null || end == null) return null;
-
-    return TwStyle(
-      backgroundColor: has(TransitionProperty.backgroundColor)
-          ? TwBackgroundColor.fromColor(
-              Color.lerp(
-                begin.backgroundColor?.tweenColor,
-                end.backgroundColor?.tweenColor,
-                t,
-              ),
-            )
-          : null,
-      width: has(TransitionProperty.width)
-          ? lerpWidth(begin.width, end.width, t)
-          : null,
-      height: has(TransitionProperty.height)
-          ? lerpHeight(begin.height, end.height, t)
-          : null,
-      minWidth: has(TransitionProperty.width)
-          ? lerpMinWidth(begin.minWidth, end.minWidth, t)
-          : null,
-      maxWidth: has(TransitionProperty.width)
-          ? lerpMaxWidth(begin.maxWidth, end.maxWidth, t)
-          : null,
-      minHeight: has(TransitionProperty.height)
-          ? lerpMinHeight(begin.minHeight, end.minHeight, t)
-          : null,
-      maxHeight: has(TransitionProperty.height)
-          ? lerpMaxHeight(begin.maxHeight, end.maxHeight, t)
-          : null,
-    );
-  }
-}
-
-/// Tween class for [TwStyle] values. Supports conditional evaluation of
-/// properties to be tweened via [setProperties], which is used by
-/// [TwTransitionController].
-class TwStyleTweenOLD extends Tween<TwStyle?> {
-  final Set<TransitionProperty> _properties = {};
-
-  TwStyleTweenOLD({super.begin, super.end});
-
-  void setProperties(final Set<TransitionProperty>? properties) {
-    _properties.clear();
-    if (properties != null) {
-      _properties.addAll(properties);
+  TwBorderRadius? lerpBorderRadius(
+    final TwBorderRadius? begin,
+    final TwBorderRadius? end,
+    final double t,
+  ) {
+    if (!has(TransitionProperty.borderRadius) ||
+        (begin == null && end == null)) {
+      return null;
     }
-  }
-
-  bool has(final TransitionProperty property) =>
-      // check for all properties 'group'
-      _properties.contains(TransitionProperty.all) ||
-      // Check for specific property
-      _properties.contains(property) ||
-      // Check for border property 'group'
-      (property.isBorderProperty &&
-          _properties.contains(TransitionProperty.border));
-
-  Color? _lerpBoxShadowColor(
-    final TwStyle begin,
-    final TwStyle end,
-    final double t,
-  ) {
-    final beginBoxShadowColor =
-        begin.boxShadowColor?.color ?? begin.boxShadow?.firstColor;
-    final endBoxShadowColor =
-        end.boxShadowColor?.color ?? end.boxShadow?.firstColor;
-    return Color.lerp(
-      beginBoxShadowColor == Colors.transparent ? null : beginBoxShadowColor,
-      endBoxShadowColor == Colors.transparent ? null : endBoxShadowColor,
-      t,
+    return TwBorderRadius.fromBorderRadius(
+      BorderRadius.lerp(
+        begin?.toBorderRadius() ?? BorderRadius.zero,
+        end?.toBorderRadius() ?? BorderRadius.zero,
+        t,
+      ),
     );
   }
 
-  TwLineHeight _lerpLineHeightPercentage(
+  TwBorder? lerpBorderWidth(
+    final TwBorder? begin,
+    final TwBorder? end,
+    final double t,
+  ) {
+    if (!has(TransitionProperty.borderWidth) ||
+        (begin == null && end == null)) {
+      return null;
+    }
+    return TwBorder(
+      top: TwBorderTop.fromPx(
+        ui.lerpDouble(
+          begin?.topPx ?? 0,
+          end?.topPx ?? 0,
+          t,
+        ),
+      ),
+      right: TwBorderRight.fromPx(
+        ui.lerpDouble(
+          begin?.rightPx ?? 0,
+          end?.rightPx ?? 0,
+          t,
+        ),
+      ),
+      bottom: TwBorderBottom.fromPx(
+        ui.lerpDouble(
+          begin?.bottomPx ?? 0,
+          end?.bottomPx ?? 0,
+          t,
+        ),
+      ),
+      left: TwBorderLeft.fromPx(
+        ui.lerpDouble(
+          begin?.leftPx ?? 0,
+          end?.leftPx ?? 0,
+          t,
+        ),
+      ),
+    );
+  }
+
+  TwBoxShadows? lerpBoxShadows(
+    final TwBoxShadows? begin,
+    final TwBoxShadows? end,
+    final double t,
+    final TwBoxShadowColor? beginBoxShadowColor,
+    final TwBoxShadowColor? endBoxShadowColor,
+  ) {
+    if (!has(TransitionProperty.boxShadow) || (begin == null && end == null)) {
+      return null;
+    }
+    return TwBoxShadows.fromBoxShadows(
+      BoxShadow.lerpList(
+        begin?.withColor(beginBoxShadowColor),
+        end?.withColor(endBoxShadowColor),
+        t,
+      ),
+    );
+  }
+
+  TwOpacity? lerpOpacity(
+    final TwOpacity? begin,
+    final TwOpacity? end,
+    final double t,
+  ) {
+    if (!has(TransitionProperty.opacity) || (begin == null && end == null)) {
+      return null;
+    }
+    return TwOpacity(
+      ui.lerpDouble(
+            begin?.value ?? 1,
+            end?.value ?? 1,
+            t,
+          ) ??
+          1,
+    );
+  }
+
+  TwFontWeight? lerpFontWeight(
+    final TwFontWeight? begin,
+    final TwFontWeight? end,
+    final double t,
+  ) {
+    if (!has(TransitionProperty.fontWeight) || (begin == null && end == null)) {
+      return null;
+    }
+    return TwFontWeight(
+      FontWeight.lerp(
+            begin?.fontWeight ?? TwFontWeight.defaultFlutterFontWeight,
+            end?.fontWeight ?? TwFontWeight.defaultFlutterFontWeight,
+            t,
+          )?.value ??
+          400,
+    );
+  }
+
+  TwLineHeight? lerpLineHeightAsPercentage(
     final TwStyle begin,
     final TwStyle end,
     final double t,
   ) {
+    if (!has(TransitionProperty.lineHeight) ||
+        (begin.lineHeight == null && end.lineHeight == null)) {
+      return null;
+    }
     final double beginLineHeightAsPercentage = (begin.lineHeight ??
             begin.fontSize?.lineHeight ??
             TwLineHeight.defaultLineHeight)
@@ -306,6 +447,65 @@ class TwStyleTweenOLD extends Tween<TwStyle?> {
     );
   }
 
+  TwFontSize? lerpFontSize(
+    final TwStyle begin,
+    final TwStyle end,
+    final double t,
+    final TwLineHeight? lerpedLineHeight,
+  ) {
+    if (!has(TransitionProperty.fontSize) ||
+        (begin.fontSize == null && end.fontSize == null)) {
+      return null;
+    }
+    return TwFontSize(
+      PxUnit(
+        ui.lerpDouble(begin.fontSizePx, end.fontSizePx, t) ??
+            TwFontSize.defaultFontSizePx,
+      ),
+      lerpedLineHeight ?? TwLineHeight.defaultLineHeight,
+    );
+  }
+
+  TwTextDecorationThickness? lerpTextDecorationThickness(
+    final TwTextDecorationThickness? begin,
+    final TwTextDecorationThickness? end,
+    final double t,
+    final TwFontSize? beginFontSize,
+    final TwFontSize? endFontSize,
+  ) {
+    if (!has(TransitionProperty.textDecorationThickness) ||
+        (begin == null && end == null)) {
+      return null;
+    }
+    final thicknessPx = ui.lerpDouble(
+      begin?.value.pixels(beginFontSize?.value.pixels()),
+      end?.value.pixels(endFontSize?.value.pixels()),
+      t,
+    );
+    if (thicknessPx == null) return null;
+    return TwTextDecorationThickness(PxUnit(thicknessPx));
+  }
+
+  TwLetterSpacing? lerpLetterSpacing(
+    final TwLetterSpacing? begin,
+    final TwLetterSpacing? end,
+    final double t,
+    final TwFontSize? beginFontSize,
+    final TwFontSize? endFontSize,
+  ) {
+    if (!has(TransitionProperty.letterSpacing) ||
+        (begin == null && end == null)) {
+      return null;
+    }
+    final letterSpacingPx = ui.lerpDouble(
+      begin?.value.pixels(beginFontSize?.value.pixels()),
+      end?.value.pixels(endFontSize?.value.pixels()),
+      t,
+    );
+    if (letterSpacingPx == null) return null;
+    return TwLetterSpacing(PxUnit(letterSpacingPx));
+  }
+
   @override
   TwStyle? lerp(final double t) {
     final begin = this.begin;
@@ -313,170 +513,60 @@ class TwStyleTweenOLD extends Tween<TwStyle?> {
     if (begin == end) return begin;
     if (begin == null || end == null) return null;
 
-    final boxShadowColor = (has(TransitionProperty.boxShadow))
-        ? TwBoxShadowColor.fromColor(_lerpBoxShadowColor(begin, end, t))
-        : null;
-
-    final lineHeight = has(TransitionProperty.lineHeight)
-        ? _lerpLineHeightPercentage(begin, end, t)
-        : null;
-
-    final fontSize = has(TransitionProperty.fontSize)
-        ? TwFontSize(
-            PxUnit(
-              ui.lerpDouble(begin.fontSizePx, end.fontSizePx, t) ??
-                  TwFontSize.defaultFontSizePx,
-            ),
-            lineHeight ?? TwLineHeight.defaultLineHeight,
-          )
-        : null;
+    final lineHeight = lerpLineHeightAsPercentage(begin, end, t);
 
     return TwStyle(
-      textColor: has(TransitionProperty.textColor)
-          ? TwTextColor.fromColor(
-              Color.lerp(
-                begin.textColor?.tweenColor,
-                end.textColor?.tweenColor,
-                t,
-              ),
-            )
-          : null,
-      backgroundColor: has(TransitionProperty.backgroundColor)
-          ? TwBackgroundColor.fromColor(
-              Color.lerp(
-                begin.backgroundColor?.tweenColor,
-                end.backgroundColor?.tweenColor,
-                t,
-              ),
-            )
-          : null,
-      borderColor: has(TransitionProperty.borderColor)
-          ? TwBorderColor.fromColor(
-              Color.lerp(
-                begin.borderColor?.tweenColor,
-                end.borderColor?.tweenColor,
-                t,
-              ),
-            )
-          : null,
-      boxShadowColor: boxShadowColor,
-      textDecorationColor: has(TransitionProperty.textDecorationColor)
-          ? TwTextDecorationColor.fromColor(
-              Color.lerp(
-                begin.textDecorationColor?.tweenColor,
-                end.textDecorationColor?.tweenColor,
-                t,
-              ),
-            )
-          : null,
-      borderRadius: has(TransitionProperty.borderRadius)
-          ? TwBorderRadius.fromBorderRadius(
-              BorderRadius.lerp(
-                begin.borderRadius?.toBorderRadius() ?? BorderRadius.zero,
-                end.borderRadius?.toBorderRadius() ?? BorderRadius.zero,
-                t,
-              ),
-            )
-          : null,
-      border: has(TransitionProperty.borderWidth)
-          ? TwBorder(
-              top: TwBorderTop.fromPx(
-                ui.lerpDouble(
-                  begin.border?.topPx ?? 0,
-                  end.border?.topPx ?? 0,
-                  t,
-                ),
-              ),
-              right: TwBorderRight.fromPx(
-                ui.lerpDouble(
-                  begin.border?.rightPx ?? 0,
-                  end.border?.rightPx ?? 0,
-                  t,
-                ),
-              ),
-              bottom: TwBorderBottom.fromPx(
-                ui.lerpDouble(
-                  begin.border?.bottomPx ?? 0,
-                  end.border?.bottomPx ?? 0,
-                  t,
-                ),
-              ),
-              left: TwBorderLeft.fromPx(
-                ui.lerpDouble(
-                  begin.border?.leftPx ?? 0,
-                  end.border?.leftPx ?? 0,
-                  t,
-                ),
-              ),
-            )
-          : null,
-      boxShadow: has(TransitionProperty.boxShadow)
-          ? TwBoxShadows.fromBoxShadows(
-              BoxShadow.lerpList(
-                begin.boxShadow?.withColor(boxShadowColor),
-                end.boxShadow?.withColor(boxShadowColor),
-                t,
-              ),
-            )
-          : null,
-      opacity: has(TransitionProperty.opacity)
-          ? TwOpacity(
-              ui.lerpDouble(
-                    begin.opacity?.value ?? 1,
-                    end.opacity?.value ?? 1,
-                    t,
-                  ) ??
-                  1,
-            )
-          : null,
-      fontWeight: has(TransitionProperty.fontWeight)
-          ? TwFontWeight(
-              FontWeight.lerp(
-                    begin.fontWeight?.fontWeight ??
-                        TwFontWeight.defaultFlutterFontWeight,
-                    end.fontWeight?.fontWeight ??
-                        TwFontWeight.defaultFlutterFontWeight,
-                    t,
-                  )?.value ??
-                  400,
-            )
-          : null,
+      // Colors
+      textColor: lerpTextColor(begin.textColor, end.textColor, t),
+      backgroundColor:
+          lerpBackgroundColor(begin.backgroundColor, end.backgroundColor, t),
+      borderColor: lerpBorderColor(begin.borderColor, end.borderColor, t),
+      boxShadowColor:
+          lerpBoxShadowColor(begin.boxShadowColor, end.boxShadowColor, t),
+      textDecorationColor: lerpTextDecorationColor(
+        begin.textDecorationColor,
+        end.textDecorationColor,
+        t,
+      ),
+      // Sizing and constraints
+      width: lerpWidth(begin.width, end.width, t),
+      height: lerpHeight(begin.height, end.height, t),
+      minWidth: lerpMinWidth(begin.minWidth, end.minWidth, t),
+      maxWidth: lerpMaxWidth(begin.maxWidth, end.maxWidth, t),
+      minHeight: lerpMinHeight(begin.minHeight, end.minHeight, t),
+      maxHeight: lerpMaxHeight(begin.maxHeight, end.maxHeight, t),
+      // Borders
+      borderRadius: lerpBorderRadius(begin.borderRadius, end.borderRadius, t),
+      border: lerpBorderWidth(begin.border, end.border, t),
+      // Effects
+      boxShadow: lerpBoxShadows(
+        begin.boxShadow,
+        end.boxShadow,
+        t,
+        begin.boxShadowColor ??
+            TwBoxShadowColor.fromColor(begin.boxShadow?.firstColor),
+        end.boxShadowColor ??
+            TwBoxShadowColor.fromColor(end.boxShadow?.firstColor),
+      ),
+      opacity: lerpOpacity(begin.opacity, end.opacity, t),
+      // Typography
+      fontWeight: lerpFontWeight(begin.fontWeight, end.fontWeight, t),
       lineHeight: lineHeight,
-      fontSize: fontSize,
-      textDecorationThickness: has(TransitionProperty.textDecorationThickness)
-          ? TwTextDecorationThickness(
-              PxUnit(
-                ui.lerpDouble(
-                      begin.textDecorationThickness?.value
-                              .pixels(fontSize?.value.pixels()) ??
-                          0,
-                      end.textDecorationThickness?.value
-                              .pixels(fontSize?.value.pixels()) ??
-                          0,
-                      t,
-                    ) ??
-                    0,
-              ),
-            )
-          : const TwTextDecorationThickness(PxUnit(0)),
-      letterSpacing: has(TransitionProperty.letterSpacing)
-          ? TwLetterSpacing(
-              fontSize != null
-                  ? EmUnit(
-                      ui.lerpDouble(
-                            begin.letterSpacing?.value
-                                    .pixels(fontSize.value.pixels()) ??
-                                0,
-                            end.letterSpacing?.value
-                                    .pixels(fontSize.value.pixels()) ??
-                                0,
-                            t,
-                          ) ??
-                          0,
-                    )
-                  : const EmUnit(0),
-            )
-          : null,
+      fontSize: lerpFontSize(begin, end, t, lineHeight),
+      textDecorationThickness: lerpTextDecorationThickness(
+        begin.textDecorationThickness,
+        end.textDecorationThickness,
+        t,
+        begin.fontSize,
+        end.fontSize,
+      ),
+      letterSpacing: lerpLetterSpacing(
+        begin.letterSpacing,
+        end.letterSpacing,
+        t,
+        begin.fontSize,
+        end.fontSize,
+      ),
     );
   }
 }

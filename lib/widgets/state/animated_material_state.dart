@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_elements/config/options/transitions/transition_property.dart';
+import 'package:tailwind_elements/widgets/animation/style_tween.dart';
 import 'package:tailwind_elements/widgets/inherited/parent_constraints_data.dart';
 import 'package:tailwind_elements/widgets/state/material_state.dart';
 import 'package:tailwind_elements/widgets/state/stateful_widget.dart';
-import 'package:tailwind_elements/widgets/state/style_tween.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 
 /// An [TwMaterialState] with support for animated style transitions.
@@ -56,46 +56,46 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
   void handleStatesControllerChange() {
     super.handleStatesControllerChange();
     final currentStyle = getCurrentStyle();
-    _updateStyleTween(styleTween, currentStyle);
-    _animate(delay);
+    updateAnimationControllerData(currentStyle);
   }
 
   void updateAnimationControllerData(final TwStyle currentStyle) {
     /// Update animation controller curve and duration if the controller exists
     final animationController = this.animationController;
-    if (animationController != null) {
-      // Compute new animation curve using current style's transition timing function,
-      // with fallback to the default curve.
-      final Curve nextCurve =
-          currentStyle.transitionTimingFn?.curve ?? defaultCurve;
-      animationCurve ??= CurvedAnimation(
-        parent: animationController,
-        curve: nextCurve,
-      );
-      if (animationCurve!.curve != nextCurve) {
-        animationCurve!.curve = nextCurve;
-      }
+    if (animationController == null) return;
 
-      // Compute new animation duration using current style's transition timing function,
-      // with fallback to the default duration.
-      final Duration nextDuration =
-          currentStyle.transitionDuration?.duration.value ?? defaultDuration;
-      if (animationController.duration != nextDuration) {
-        animationController.duration = nextDuration;
-      }
-
-      // Compute new animation delay using current style's transition delay, with fallback to
-      // zero.
-      final Duration nextDelay =
-          currentStyle.transitionDelay?.delay.value ?? Duration.zero;
-      if (delay != nextDelay) {
-        delay = nextDelay;
-      }
-
-      // Update animation controller tween values
-      _updateStyleTween(styleTween, currentStyle);
-      _animate(delay);
+    // Compute new animation curve using current style's transition timing function,
+    // with fallback to the default curve.
+    final Curve nextCurve =
+        currentStyle.transitionTimingFn?.curve ?? defaultCurve;
+    this.animationCurve ??= CurvedAnimation(
+      parent: animationController,
+      curve: nextCurve,
+    );
+    final animationCurve = this.animationCurve;
+    if (animationCurve != null && animationCurve.curve != nextCurve) {
+      animationCurve.curve = nextCurve;
     }
+
+    // Compute new animation duration using current style's transition timing function,
+    // with fallback to the default duration.
+    final Duration nextDuration =
+        currentStyle.transitionDuration?.duration.value ?? defaultDuration;
+    if (animationController.duration != nextDuration) {
+      animationController.duration = nextDuration;
+    }
+
+    // Compute new animation delay using current style's transition delay, with fallback to
+    // zero.
+    final Duration nextDelay =
+        currentStyle.transitionDelay?.delay.value ?? Duration.zero;
+    if (delay != nextDelay) {
+      delay = nextDelay;
+    }
+
+    // Update animation controller tween values
+    _updateStyleTween(styleTween, currentStyle);
+    _animate(delay);
   }
 
   @override
