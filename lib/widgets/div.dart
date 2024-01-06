@@ -50,6 +50,7 @@ class TwDiv extends TwStatefulWidget {
     super.enableFeedback,
     super.canRequestFocus,
     super.autofocus,
+    super.includeFocusActions,
     // Input controllers
     super.hitTestBehavior,
     super.statesController,
@@ -93,7 +94,8 @@ class _TwDiv extends TwAnimatedMaterialState<TwDiv> {
     current = conditionallyWrapInputDetectors(current);
 
     // Will wrap the current widget with a [Focus] if [canRequestFocus] is true.
-    current = conditionallyWrapFocus(current);
+    current = conditionallyWrapFocus(current,
+        includeFocusActions: widget.includeFocusActions);
 
     return current;
   }

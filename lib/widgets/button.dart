@@ -90,6 +90,7 @@ class _TwButtonState extends TwAnimatedMaterialState<TwButton> {
 
     return conditionallyWrapFocus(
       conditionallyWrapInputDetectors(current),
+      includeFocusActions: true,
     );
   }
 }

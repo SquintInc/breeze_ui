@@ -32,6 +32,11 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
 
   Set<MaterialState> get currentStates => _statesController.value;
 
+  /// The internal focus node for this stateful widget.
+  late FocusNode? _focusNode;
+
+  FocusNode? get focusNode => widget.focusNode ?? _focusNode;
+
   /// If the widget is selectable, this keeps track of the widget's selection / toggle state.
   bool _isSelected = false;
 
@@ -40,6 +45,10 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     super.initState();
     // Track initial toggle selection state from the value passed to the widget
     _isSelected = widget.isToggled;
+    // Create a new focus node if one wasn't passed to the widget
+    if (widget.focusNode == null) {
+      _focusNode = FocusNode();
+    }
   }
 
   /// Rebuilds the widget when the material states controller changes.
@@ -104,6 +113,7 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   void dispose() {
     _statesController.removeListener(handleStatesControllerChange);
     _internalStatesController?.dispose();
+    _focusNode?.dispose();
     super.dispose();
   }
 
@@ -171,6 +181,10 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     }
   }
 
+  void handlePrimaryIntent(final Intent? intent) {
+    handleTap();
+  }
+
   void handleLongPress() {
     if (!widget.isDisabled) {
       if (widget.enableFeedback) {
@@ -231,18 +245,34 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     return child;
   }
 
+  late final Map<Type, Action<Intent>> _actionMap = <Type, Action<Intent>>{
+    ActivateIntent:
+        CallbackAction<ActivateIntent>(onInvoke: handlePrimaryIntent),
+    ButtonActivateIntent:
+        CallbackAction<ButtonActivateIntent>(onInvoke: handlePrimaryIntent),
+  };
+
   @protected
-  Widget conditionallyWrapFocus(final Widget child) {
+  Widget conditionallyWrapFocus(
+    final Widget child, {
+    final bool includeFocusActions = false,
+  }) {
     if (widget.canRequestFocus) {
-      return Focus(
+      final focus = Focus(
         onFocusChange: (final bool hasFocus) {
           _statesController.update(MaterialState.focused, hasFocus);
           widget.onFocusChange?.call(hasFocus);
         },
-        focusNode: widget.focusNode,
+        focusNode: focusNode,
         autofocus: widget.autofocus,
         child: child,
       );
+      return includeFocusActions
+          ? Actions(
+              actions: _actionMap,
+              child: focus,
+            )
+          : focus;
     }
     return child;
   }

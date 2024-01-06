@@ -81,6 +81,9 @@ abstract class TwStatefulWidget extends StatefulWidget {
   /// Whether or not this widget should request focus when mounted.
   final bool autofocus;
 
+  /// Whether or not to include focus actions for this widget. See [Actions] and [Intent] for more.
+  final bool includeFocusActions;
+
   /// The cursor for this widget used by the [MouseRegion] when [enableInputDetectors] is true.
   final MouseCursor? cursor;
 
@@ -110,6 +113,7 @@ abstract class TwStatefulWidget extends StatefulWidget {
     this.canRequestFocus = false,
     this.focusNode,
     this.autofocus = false,
+    this.includeFocusActions = false,
     this.cursor,
     super.key,
   });
