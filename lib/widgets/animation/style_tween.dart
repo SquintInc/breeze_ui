@@ -23,8 +23,14 @@ import 'package:tailwind_elements/widgets/style/style.dart';
 class TwStyleTween extends Tween<TwStyle?> {
   final Set<TransitionProperty> _properties = {};
   BoxConstraints? _parentConstraints;
+  BoxConstraints? _prevParentConstraints;
 
-  TwStyleTween({super.begin, super.end});
+  TwStyleTween({
+    final BoxConstraints? parentConstraints,
+    super.begin,
+    super.end,
+  })  : _parentConstraints = parentConstraints,
+        _prevParentConstraints = parentConstraints;
 
   void setProperties(final Set<TransitionProperty>? properties) {
     _properties.clear();
@@ -34,7 +40,10 @@ class TwStyleTween extends Tween<TwStyle?> {
   }
 
   void setParentConstraints(final BoxConstraints? parentConstraints) {
-    _parentConstraints = parentConstraints;
+    if (_parentConstraints != parentConstraints) {
+      _prevParentConstraints = _parentConstraints;
+      _parentConstraints = parentConstraints;
+    }
   }
 
   bool has(final TransitionProperty property) =>
@@ -138,14 +147,15 @@ class TwStyleTween extends Tween<TwStyle?> {
     if (!has(TransitionProperty.width) || (begin == null && end == null)) {
       return null;
     }
+    final prevConstraints = _prevParentConstraints;
     final parentConstraints = _parentConstraints;
     if (begin == null || end == null) return null;
     final beginMinWidthPx = switch (begin.value) {
       CssAbsoluteUnit() => (begin.value as CssAbsoluteUnit).pixels(),
-      CssRelativeUnit() => parentConstraints == null
+      CssRelativeUnit() => prevConstraints == null
           ? null
           : (begin.value as CssRelativeUnit).percentageFloat() *
-              parentConstraints.maxWidth,
+              prevConstraints.maxWidth,
     };
     final endMinWidthPx = switch (end.value) {
       CssAbsoluteUnit() => (end.value as CssAbsoluteUnit).pixels(),
@@ -167,14 +177,15 @@ class TwStyleTween extends Tween<TwStyle?> {
     if (!has(TransitionProperty.width) || (begin == null && end == null)) {
       return null;
     }
+    final prevConstraints = _prevParentConstraints;
     final parentConstraints = _parentConstraints;
     if (begin == null || end == null) return null;
     final beginMaxWidthPx = switch (begin.value) {
       CssAbsoluteUnit() => (begin.value as CssAbsoluteUnit).pixels(),
-      CssRelativeUnit() => parentConstraints == null
+      CssRelativeUnit() => prevConstraints == null
           ? null
           : (begin.value as CssRelativeUnit).percentageFloat() *
-              parentConstraints.maxWidth,
+              prevConstraints.maxWidth,
     };
     final endMaxWidthPx = switch (end.value) {
       CssAbsoluteUnit() => (end.value as CssAbsoluteUnit).pixels(),
@@ -196,14 +207,15 @@ class TwStyleTween extends Tween<TwStyle?> {
     if (!has(TransitionProperty.width) || (begin == null && end == null)) {
       return null;
     }
+    final prevConstraints = _prevParentConstraints;
     final parentConstraints = _parentConstraints;
     if (begin == null || end == null) return null;
     final beginWidthPx = switch (begin.value) {
       CssAbsoluteUnit() => (begin.value as CssAbsoluteUnit).pixels(),
-      CssRelativeUnit() => parentConstraints == null
+      CssRelativeUnit() => prevConstraints == null
           ? null
           : (begin.value as CssRelativeUnit).percentageFloat() *
-              parentConstraints.maxWidth,
+              prevConstraints.maxWidth,
     };
     final endWidthPx = switch (end.value) {
       CssAbsoluteUnit() => (end.value as CssAbsoluteUnit).pixels(),
@@ -225,14 +237,15 @@ class TwStyleTween extends Tween<TwStyle?> {
     if (!has(TransitionProperty.height) || (begin == null && end == null)) {
       return null;
     }
+    final prevConstraints = _prevParentConstraints;
     final parentConstraints = _parentConstraints;
     if (begin == null || end == null) return null;
     final beginHeightPx = switch (begin.value) {
       CssAbsoluteUnit() => (begin.value as CssAbsoluteUnit).pixels(),
-      CssRelativeUnit() => parentConstraints == null
+      CssRelativeUnit() => prevConstraints == null
           ? null
           : (begin.value as CssRelativeUnit).percentageFloat() *
-              parentConstraints.maxHeight,
+              prevConstraints.maxHeight,
     };
     final endHeightPx = switch (end.value) {
       CssAbsoluteUnit() => (end.value as CssAbsoluteUnit).pixels(),
@@ -254,14 +267,15 @@ class TwStyleTween extends Tween<TwStyle?> {
     if (!has(TransitionProperty.height) || (begin == null && end == null)) {
       return null;
     }
+    final prevConstraints = _prevParentConstraints;
     final parentConstraints = _parentConstraints;
     if (begin == null || end == null) return null;
     final beginMinHeightPx = switch (begin.value) {
       CssAbsoluteUnit() => (begin.value as CssAbsoluteUnit).pixels(),
-      CssRelativeUnit() => parentConstraints == null
+      CssRelativeUnit() => prevConstraints == null
           ? null
           : (begin.value as CssRelativeUnit).percentageFloat() *
-              parentConstraints.maxHeight,
+              prevConstraints.maxHeight,
     };
     final endMinHeightPx = switch (end.value) {
       CssAbsoluteUnit() => (end.value as CssAbsoluteUnit).pixels(),
@@ -283,14 +297,15 @@ class TwStyleTween extends Tween<TwStyle?> {
     if (!has(TransitionProperty.height) || (begin == null && end == null)) {
       return null;
     }
+    final prevConstraints = _prevParentConstraints;
     final parentConstraints = _parentConstraints;
     if (begin == null || end == null) return null;
     final beginMaxHeightPx = switch (begin.value) {
       CssAbsoluteUnit() => (begin.value as CssAbsoluteUnit).pixels(),
-      CssRelativeUnit() => parentConstraints == null
+      CssRelativeUnit() => prevConstraints == null
           ? null
           : (begin.value as CssRelativeUnit).percentageFloat() *
-              parentConstraints.maxHeight,
+              prevConstraints.maxHeight,
     };
     final endMaxHeightPx = switch (end.value) {
       CssAbsoluteUnit() => (end.value as CssAbsoluteUnit).pixels(),
@@ -510,7 +525,6 @@ class TwStyleTween extends Tween<TwStyle?> {
   TwStyle? lerp(final double t) {
     final begin = this.begin;
     final end = this.end;
-    if (begin == end) return begin;
     if (begin == null || end == null) return null;
 
     final lineHeight = lerpLineHeightAsPercentage(begin, end, t);

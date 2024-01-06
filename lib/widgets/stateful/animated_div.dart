@@ -40,7 +40,7 @@ class AnimatedDiv extends TwStatefulWidget {
     super.isDisabled,
     super.isToggleable,
     super.isToggled,
-    super.useInputDetectors,
+    super.enableInputDetectors,
     super.enableFeedback,
     super.key,
   });
@@ -52,10 +52,13 @@ class AnimatedDiv extends TwStatefulWidget {
 class _AnimatedDiv extends TwAnimatedMaterialState<AnimatedDiv> {
   @override
   Widget build(final BuildContext context) {
-    final animatedStyle = getAnimatedStyle();
+    final currentStyle = getCurrentStyle();
+    final animatedStyle = currentStyle.merge(getAnimatedStyle());
 
     final div = Div(
+      key: widget.key,
       style: animatedStyle,
+      staticConstraints: currentStyle.toConstraints(),
       alignment: widget.alignment,
       clipBehavior: widget.clipBehavior,
       transform: widget.transform,

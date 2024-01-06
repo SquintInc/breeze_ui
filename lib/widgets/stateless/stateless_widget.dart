@@ -7,5 +7,14 @@ abstract class TwStatelessWidget extends StatelessWidget {
   /// we only take in a single style.
   final TwStyle style;
 
-  const TwStatelessWidget({required this.style, super.key});
+  /// Static constraints that this widget should use. This may sometimes be passed in from a parent
+  /// animated widget, which would be used for tweening calculations when computing the relative
+  /// width and height.
+  final TwConstraints? staticConstraints;
+
+  const TwStatelessWidget({
+    required this.style,
+    this.staticConstraints,
+    super.key,
+  });
 }

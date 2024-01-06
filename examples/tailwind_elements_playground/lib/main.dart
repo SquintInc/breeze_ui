@@ -45,48 +45,62 @@ class _TailwindElementsPlaygroundState
               children: [
                 TwRow(
                   children: [
-                    Div(
+                    AnimatedDiv(
                       style: TwStyle(
                         width: w_frac_1_3,
                         height: toggled ? h_64 : h_36,
                         backgroundColor: bg_slate_800,
+                        transition: transition_all,
                       ),
                     ),
-                    Div(
+                    AnimatedDiv(
                       style: TwStyle(
                         width: w_frac_1_3,
                         height: toggled ? h_64 : h_36,
                         backgroundColor: bg_slate_700,
+                        transition: transition_all,
                       ),
                     ),
-                    Div(
+                    AnimatedDiv(
                       style: TwStyle(
                         width: w_frac_1_3,
                         height: toggled ? h_64 : h_36,
                         backgroundColor: bg_slate_600,
+                        transition: transition_all,
+                      ),
+                      hovered: const TwStyle(
+                        backgroundColor: bg_slate_500,
                       ),
                       child: TwRow(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Div(
+                          const AnimatedDiv(
                             style: TwStyle(
                               width: w_frac_1_2,
-                              height: toggled ? h_64 : h_36,
+                              height: h_frac_1_2,
                               backgroundColor: bg_red_500,
+                              transition: transition_all,
+                            ),
+                            hovered: TwStyle(
+                              backgroundColor: bg_red_400,
                             ),
                           ),
-                          Div(
+                          AnimatedDiv(
+                            alignment: Alignment.topLeft,
                             style: TwStyle(
                               width: w_frac_1_2,
-                              height: toggled ? h_64 : h_36,
+                              height: toggled ? h_64 : h_full,
                               backgroundColor: bg_blue_400,
+                              transition: transition_all,
                             ),
                             child: const TwColumn(
                               children: [
-                                Div(
+                                AnimatedDiv(
                                   style: TwStyle(
                                     width: w_frac_1_2,
                                     height: h_frac_1_3,
                                     backgroundColor: bg_green_500,
+                                    transition: transition_all,
                                   ),
                                 ),
                               ],
@@ -100,7 +114,7 @@ class _TailwindElementsPlaygroundState
                 TwRow(
                   children: [
                     AnimatedDiv(
-                      useInputDetectors: true,
+                      enableInputDetectors: true,
                       style: TwStyle(
                         width: w_frac_1_3,
                         height: toggled ? h_64 : h_36,

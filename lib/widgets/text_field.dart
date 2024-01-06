@@ -429,7 +429,8 @@ class TwTextField extends TextField {
       semanticCounterText: counter?.semanticText,
 
       // TextField container
-      constraints: _style.getSimpleConstraints(),
+      constraints:
+          _style.toConstraints().getSimpleConstraints(_style.fontSizePx),
       contentPadding: _style.padding?.toEdgeInsets(),
       // Don't set errorBorder, focusedBorder, focusedErrorBorder,
       // disabledBorder, nor enabledBorder, since we are using material state

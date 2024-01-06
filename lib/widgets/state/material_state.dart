@@ -190,7 +190,7 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   }
 
   Widget conditionallyWrapInputDetectors(final Widget child) {
-    if (widget.useInputDetectors) {
+    if (widget.enableInputDetectors) {
       return wrapMouseRegion(wrapGestureDetector(child));
     }
     return child;

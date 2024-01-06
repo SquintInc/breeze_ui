@@ -337,31 +337,14 @@ class TwStyle {
     );
   }
 
-  /// Compute simple box constraints for this style, using the min/max width and
-  /// height sizing values, assuming that they are logical pixels.
-  BoxConstraints? getSimpleConstraints() {
-    if (!hasConstraints) return null;
-    return BoxConstraints(
-      minWidth: switch (minWidth?.value) {
-        CssAbsoluteUnit() =>
-          (minWidth!.value as CssAbsoluteUnit).pixels(fontSizePx),
-        _ => 0.0,
-      },
-      maxWidth: switch (maxWidth?.value) {
-        CssAbsoluteUnit() =>
-          (maxWidth!.value as CssAbsoluteUnit).pixels(fontSizePx),
-        _ => double.infinity,
-      },
-      minHeight: switch (minHeight?.value) {
-        CssAbsoluteUnit() =>
-          (minHeight!.value as CssAbsoluteUnit).pixels(fontSizePx),
-        _ => 0.0,
-      },
-      maxHeight: switch (maxHeight?.value) {
-        CssAbsoluteUnit() =>
-          (maxHeight!.value as CssAbsoluteUnit).pixels(fontSizePx),
-        _ => double.infinity,
-      },
+  TwConstraints toConstraints() {
+    return TwConstraints(
+      minWidth: minWidth,
+      width: width,
+      maxWidth: maxWidth,
+      minHeight: minHeight,
+      height: height,
+      maxHeight: maxHeight,
     );
   }
 
@@ -747,4 +730,86 @@ class TwStyle {
       textDecorationThickness.hashCode ^
       leadingDistribution.hashCode ^
       wordSpacing.hashCode;
+}
+
+@immutable
+class TwConstraints {
+  final TwMinWidth? minWidth;
+  final TwWidth? width;
+  final TwMaxWidth? maxWidth;
+  final TwMinHeight? minHeight;
+  final TwHeight? height;
+  final TwMaxHeight? maxHeight;
+
+  const TwConstraints({
+    this.minWidth,
+    this.width,
+    this.maxWidth,
+    this.minHeight,
+    this.height,
+    this.maxHeight,
+  });
+
+  /// Determines whether the style has min/max width and height constraints.
+  bool get hasConstraints =>
+      minWidth != null ||
+      maxWidth != null ||
+      minHeight != null ||
+      maxHeight != null;
+
+  /// Determines whether the style has any sizing properties for width and
+  /// height.
+  bool get hasSizing => width != null || height != null || hasConstraints;
+
+  /// Determines whether the style has its min and max width set
+  bool get hasTightWidth =>
+      minWidth != null &&
+      maxWidth != null &&
+      minWidth!.value == maxWidth!.value;
+
+  /// Determines whether the style has its min and max height set
+  bool get hasTightHeight =>
+      minHeight != null &&
+      maxHeight != null &&
+      minHeight!.value == maxHeight!.value;
+
+  /// Determines if the style has any percentage based min/max sizing
+  /// constraints
+  bool get hasPercentageConstraints =>
+      (minWidth?.value is CssRelativeUnit) ||
+      (maxWidth?.value is CssRelativeUnit) ||
+      (minHeight?.value is CssRelativeUnit) ||
+      (maxHeight?.value is CssRelativeUnit);
+
+  /// Determines if the style has any percentage based sizing constraints
+  bool get hasPercentageSize =>
+      (width?.value is CssRelativeUnit) || (height?.value is CssRelativeUnit);
+
+  /// Compute simple box constraints for this style, using the min/max width and
+  /// height sizing values, assuming that they are logical pixels.
+  BoxConstraints? getSimpleConstraints(final double fontSizePx) {
+    if (!hasConstraints) return null;
+    return BoxConstraints(
+      minWidth: switch (minWidth?.value) {
+        CssAbsoluteUnit() =>
+          (minWidth!.value as CssAbsoluteUnit).pixels(fontSizePx),
+        _ => 0.0,
+      },
+      maxWidth: switch (maxWidth?.value) {
+        CssAbsoluteUnit() =>
+          (maxWidth!.value as CssAbsoluteUnit).pixels(fontSizePx),
+        _ => double.infinity,
+      },
+      minHeight: switch (minHeight?.value) {
+        CssAbsoluteUnit() =>
+          (minHeight!.value as CssAbsoluteUnit).pixels(fontSizePx),
+        _ => 0.0,
+      },
+      maxHeight: switch (maxHeight?.value) {
+        CssAbsoluteUnit() =>
+          (maxHeight!.value as CssAbsoluteUnit).pixels(fontSizePx),
+        _ => double.infinity,
+      },
+    );
+  }
 }

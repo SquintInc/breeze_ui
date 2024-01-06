@@ -1,11 +1,104 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:tailwind_elements/config/options/sizing/height.dart';
+import 'package:tailwind_elements/config/options/sizing/max_height.dart';
+import 'package:tailwind_elements/config/options/sizing/max_width.dart';
+import 'package:tailwind_elements/config/options/sizing/min_height.dart';
+import 'package:tailwind_elements/config/options/sizing/min_width.dart';
+import 'package:tailwind_elements/config/options/sizing/width.dart';
 import 'package:tailwind_elements/config/options/transitions/transition_property.dart';
 import 'package:tailwind_elements/widgets/animation/style_tween.dart';
 import 'package:tailwind_elements/widgets/inherited/parent_constraints_data.dart';
 import 'package:tailwind_elements/widgets/state/material_state.dart';
 import 'package:tailwind_elements/widgets/state/stateful_widget.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
+
+extension TransformConstraints on TwStyle {
+  TwStyle transformConstraints(final BoxConstraints? parentConstraints) {
+    if (parentConstraints == null) return this;
+
+    final widthToAbsolute = switch (width?.value) {
+      CssAbsoluteUnit() =>
+        TwWidth(PxUnit((width!.value as CssAbsoluteUnit).pixels())),
+      CssRelativeUnit() => TwWidth(
+          PxUnit(
+            (width!.value as CssRelativeUnit).percentageFloat() *
+                parentConstraints.maxWidth,
+          ),
+        ),
+      _ => null,
+    };
+
+    final heightToAbsolute = switch (height?.value) {
+      CssAbsoluteUnit() =>
+        TwHeight(PxUnit((height!.value as CssAbsoluteUnit).pixels())),
+      CssRelativeUnit() => TwHeight(
+          PxUnit(
+            (height!.value as CssRelativeUnit).percentageFloat() *
+                parentConstraints.maxHeight,
+          ),
+        ),
+      _ => null,
+    };
+
+    final minWidthToAbsolute = switch (minWidth?.value) {
+      CssAbsoluteUnit() =>
+        TwMinWidth(PxUnit((minWidth!.value as CssAbsoluteUnit).pixels())),
+      CssRelativeUnit() => TwMinWidth(
+          PxUnit(
+            (minWidth!.value as CssRelativeUnit).percentageFloat() *
+                parentConstraints.maxWidth,
+          ),
+        ),
+      _ => null,
+    };
+
+    final minHeightToAbsolute = switch (minHeight?.value) {
+      CssAbsoluteUnit() =>
+        TwMinHeight(PxUnit((minHeight!.value as CssAbsoluteUnit).pixels())),
+      CssRelativeUnit() => TwMinHeight(
+          PxUnit(
+            (minHeight!.value as CssRelativeUnit).percentageFloat() *
+                parentConstraints.maxHeight,
+          ),
+        ),
+      _ => null,
+    };
+
+    final maxWidthToAbsolute = switch (maxWidth?.value) {
+      CssAbsoluteUnit() =>
+        TwMaxWidth(PxUnit((maxWidth!.value as CssAbsoluteUnit).pixels())),
+      CssRelativeUnit() => TwMaxWidth(
+          PxUnit(
+            (maxWidth!.value as CssRelativeUnit).percentageFloat() *
+                parentConstraints.maxWidth,
+          ),
+        ),
+      _ => null,
+    };
+
+    final maxHeightToAbsolute = switch (maxHeight?.value) {
+      CssAbsoluteUnit() =>
+        TwMaxHeight(PxUnit((maxHeight!.value as CssAbsoluteUnit).pixels())),
+      CssRelativeUnit() => TwMaxHeight(
+          PxUnit(
+            (maxHeight!.value as CssRelativeUnit).percentageFloat() *
+                parentConstraints.maxHeight,
+          ),
+        ),
+      _ => null,
+    };
+
+    return copyWith(
+      width: widthToAbsolute,
+      height: heightToAbsolute,
+      minWidth: minWidthToAbsolute,
+      minHeight: minHeightToAbsolute,
+      maxWidth: maxWidthToAbsolute,
+      maxHeight: maxHeightToAbsolute,
+    );
+  }
+}
 
 /// An [TwMaterialState] with support for animated style transitions.
 abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
@@ -34,7 +127,7 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
   TwStyleTween? styleTween;
 
   /// Parent constraints data
-  BoxConstraints? _parentConstraints;
+  BoxConstraints? parentConstraints;
 
   /// Rebuilds the widget when the animation controller updates.
   void handleAnimationControllerUpdate() {
@@ -46,7 +139,7 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
     super.didChangeDependencies();
     final ParentConstraintsData? parentConstraintsData =
         ParentConstraintsData.of(context);
-    _parentConstraints = parentConstraintsData?.constraints;
+    parentConstraints = parentConstraintsData?.constraints;
     final currentStyle = getCurrentStyle();
     initAnimationController(currentStyle);
     updateAnimationControllerData(currentStyle);
@@ -56,6 +149,7 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
   void handleStatesControllerChange() {
     super.handleStatesControllerChange();
     final currentStyle = getCurrentStyle();
+    initAnimationController(currentStyle);
     updateAnimationControllerData(currentStyle);
   }
 
@@ -63,6 +157,9 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
     /// Update animation controller curve and duration if the controller exists
     final animationController = this.animationController;
     if (animationController == null) return;
+
+    styleTween?.setProperties(currentStyle.transition?.properties);
+    styleTween?.setParentConstraints(parentConstraints);
 
     // Compute new animation curve using current style's transition timing function,
     // with fallback to the default curve.
@@ -126,16 +223,15 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
       )..addListener(handleAnimationControllerUpdate);
 
       styleTween ??= TwStyleTween(
-        begin: styleTween?.end ?? widget.style,
-        end: widget.style,
+        begin: widget.style.transformConstraints(parentConstraints),
+        end: widget.style.transformConstraints(parentConstraints),
+        parentConstraints: parentConstraints,
       );
-      styleTween?.setProperties(currentStyle.transition?.properties);
-      styleTween?.setParentConstraints(_parentConstraints);
     }
   }
 
   void _updateStyleTween(
-    final Tween<TwStyle?>? tween,
+    final TwStyleTween? tween,
     final TwStyle targetStyle,
   ) {
     if (tween == null) {
@@ -147,7 +243,7 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
     }
     tween
       ..begin = tween.evaluate(animationCurve)
-      ..end = targetStyle;
+      ..end = targetStyle.transformConstraints(parentConstraints);
   }
 
   void _animate(final Duration delay) {
@@ -173,13 +269,11 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
     super.dispose();
   }
 
-  TwStyle getAnimatedStyle() {
-    final currentStyle = getCurrentStyle();
+  TwStyle? getAnimatedStyle() {
     final animationCurve = this.animationCurve;
     if (animationCurve != null) {
-      final tweenedStyle = styleTween?.evaluate(animationCurve);
-      return currentStyle.merge(tweenedStyle);
+      return styleTween?.evaluate(animationCurve);
     }
-    return currentStyle;
+    return null;
   }
 }

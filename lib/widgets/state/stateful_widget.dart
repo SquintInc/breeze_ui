@@ -64,7 +64,7 @@ abstract class TwStatefulWidget extends StatefulWidget {
 
   /// Whether or not the widget should use [GestureDetector] and [MouseRegion] to manage material
   /// state controller values.
-  final bool useInputDetectors;
+  final bool enableInputDetectors;
 
   /// [HitTestBehavior] for when [GestureDetector] or [MouseRegion] are being used.
   final HitTestBehavior? hitTestBehavior;
@@ -93,7 +93,7 @@ abstract class TwStatefulWidget extends StatefulWidget {
     this.isDisabled = false,
     this.isToggleable = false,
     this.isToggled = false,
-    this.useInputDetectors = false,
+    this.enableInputDetectors = false,
     this.enableFeedback = false,
     super.key,
   });

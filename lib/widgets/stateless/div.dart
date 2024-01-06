@@ -19,6 +19,7 @@ class Div extends TwStatelessWidget {
     this.clipBehavior = Clip.none,
     this.transform,
     this.transformAlignment,
+    super.staticConstraints,
     super.key,
   });
 
@@ -37,11 +38,21 @@ class Div extends TwStatelessWidget {
 
   /// Gets a [BoxConstraints] object that assumes usage of simple [PxUnit]
   /// values.
-  BoxConstraints? _tightenConstraints({
-    required final double? width,
-    required final double? height,
-    required final BoxConstraints? constraints,
-  }) {
+  BoxConstraints? _tightenConstraints(
+    final TwConstraints twConstraints,
+    final double fontSizePx,
+  ) {
+    final width = switch (twConstraints.width?.value) {
+      CssAbsoluteUnit() =>
+        (twConstraints.width!.value as CssAbsoluteUnit).pixels(),
+      _ => null,
+    };
+    final height = switch (twConstraints.height?.value) {
+      CssAbsoluteUnit() =>
+        (twConstraints.height!.value as CssAbsoluteUnit).pixels(),
+      _ => null,
+    };
+    final constraints = twConstraints.getSimpleConstraints(fontSizePx);
     final fullConstraints = (width != null || height != null)
         ? constraints?.tighten(
               width: width,
@@ -58,6 +69,7 @@ class Div extends TwStatelessWidget {
   Widget buildDiv(
     final BuildContext context,
     final BoxConstraints? constraints,
+    final BoxConstraints? staticConstraints,
   ) {
     final Widget? child = this.child;
     final AlignmentGeometry? alignment = this.alignment;
@@ -130,13 +142,16 @@ class Div extends TwStatelessWidget {
 
     // Use constraints passed in to render a [ConstrainedBox] if applicable.
     if (constraints != null) {
-      current = ParentConstraintsData(
+      current = ConstrainedBox(
         constraints: constraints,
-        child: ConstrainedBox(
-          constraints: constraints,
-          child: current,
-        ),
+        child: current,
       );
+      if (staticConstraints != null) {
+        current = ParentConstraintsData(
+          constraints: staticConstraints,
+          child: current,
+        );
+      }
     }
 
     // Wrap current widget with [Padding] to represent the margin if applicable.
@@ -175,33 +190,37 @@ class Div extends TwStatelessWidget {
   /// width and height values if they exist.
   BoxConstraints computeRelativeConstraints(
     final BoxConstraints parentConstraints,
-    final TwStyle style,
+    final TwConstraints twConstraints,
   ) {
-    final minWidthPx = switch (style.minWidth?.value) {
-      CssAbsoluteUnit() => (style.minWidth!.value as CssAbsoluteUnit).pixels(),
+    final minWidthPx = switch (twConstraints.minWidth?.value) {
+      CssAbsoluteUnit() =>
+        (twConstraints.minWidth!.value as CssAbsoluteUnit).pixels(),
       CssRelativeUnit() =>
-        (style.minWidth!.value as CssRelativeUnit).percentageFloat() *
+        (twConstraints.minWidth!.value as CssRelativeUnit).percentageFloat() *
             parentConstraints.maxWidth,
       _ => 0.0,
     };
-    final minHeightPx = switch (style.minHeight?.value) {
-      CssAbsoluteUnit() => (style.minHeight!.value as CssAbsoluteUnit).pixels(),
+    final minHeightPx = switch (twConstraints.minHeight?.value) {
+      CssAbsoluteUnit() =>
+        (twConstraints.minHeight!.value as CssAbsoluteUnit).pixels(),
       CssRelativeUnit() =>
-        (style.minHeight!.value as CssRelativeUnit).percentageFloat() *
+        (twConstraints.minHeight!.value as CssRelativeUnit).percentageFloat() *
             parentConstraints.maxHeight,
       _ => 0.0,
     };
-    final maxWidthPx = switch (style.maxWidth?.value) {
-      CssAbsoluteUnit() => (style.maxWidth!.value as CssAbsoluteUnit).pixels(),
+    final maxWidthPx = switch (twConstraints.maxWidth?.value) {
+      CssAbsoluteUnit() =>
+        (twConstraints.maxWidth!.value as CssAbsoluteUnit).pixels(),
       CssRelativeUnit() =>
-        (style.maxWidth!.value as CssRelativeUnit).percentageFloat() *
+        (twConstraints.maxWidth!.value as CssRelativeUnit).percentageFloat() *
             parentConstraints.maxWidth,
       _ => double.infinity,
     };
-    final maxHeightPx = switch (style.maxHeight?.value) {
-      CssAbsoluteUnit() => (style.maxHeight!.value as CssAbsoluteUnit).pixels(),
+    final maxHeightPx = switch (twConstraints.maxHeight?.value) {
+      CssAbsoluteUnit() =>
+        (twConstraints.maxHeight!.value as CssAbsoluteUnit).pixels(),
       CssRelativeUnit() =>
-        (style.maxHeight!.value as CssRelativeUnit).percentageFloat() *
+        (twConstraints.maxHeight!.value as CssRelativeUnit).percentageFloat() *
             parentConstraints.maxHeight,
       _ => double.infinity,
     };
@@ -213,17 +232,19 @@ class Div extends TwStatelessWidget {
       maxHeight: maxHeightPx,
     );
 
-    final widthPx = switch (style.width?.value) {
-      CssAbsoluteUnit() => (style.width!.value as CssAbsoluteUnit).pixels(),
+    final widthPx = switch (twConstraints.width?.value) {
+      CssAbsoluteUnit() =>
+        (twConstraints.width!.value as CssAbsoluteUnit).pixels(),
       CssRelativeUnit() =>
-        (style.width!.value as CssRelativeUnit).percentageFloat() *
+        (twConstraints.width!.value as CssRelativeUnit).percentageFloat() *
             parentConstraints.maxWidth,
       _ => null,
     };
-    final heightPx = switch (style.height?.value) {
-      CssAbsoluteUnit() => (style.height!.value as CssAbsoluteUnit).pixels(),
+    final heightPx = switch (twConstraints.height?.value) {
+      CssAbsoluteUnit() =>
+        (twConstraints.height!.value as CssAbsoluteUnit).pixels(),
       CssRelativeUnit() =>
-        (style.height!.value as CssRelativeUnit).percentageFloat() *
+        (twConstraints.height!.value as CssRelativeUnit).percentageFloat() *
             parentConstraints.maxHeight,
       _ => null,
     };
@@ -238,46 +259,59 @@ class Div extends TwStatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    if (style.hasPercentageSize || style.hasPercentageConstraints) {
+    if (style.hasPercentageSize ||
+        style.hasPercentageConstraints ||
+        (staticConstraints?.hasPercentageSize ?? false) ||
+        (staticConstraints?.hasPercentageConstraints ?? false)) {
       final ParentConstraintsData? parentConstraintsData =
           ParentConstraintsData.of(context);
       if (parentConstraintsData != null) {
         final constraints = computeRelativeConstraints(
           parentConstraintsData.constraints,
-          style,
+          style.toConstraints(),
         );
-        return buildDiv(context, constraints);
+        final staticBoxConstraints = staticConstraints != null
+            ? computeRelativeConstraints(
+                parentConstraintsData.constraints,
+                staticConstraints!,
+              )
+            : null;
+        return buildDiv(context, constraints, staticBoxConstraints);
       } else {
         return LayoutBuilder(
           builder: (
             final BuildContext context,
             final BoxConstraints parentConstraints,
           ) {
-            final constraints =
-                computeRelativeConstraints(parentConstraints, style);
+            final constraints = computeRelativeConstraints(
+              parentConstraints,
+              style.toConstraints(),
+            );
+            final staticBoxConstraints = staticConstraints != null
+                ? computeRelativeConstraints(
+                    parentConstraints,
+                    staticConstraints!,
+                  )
+                : null;
             return buildDiv(
               context,
               constraints,
+              staticBoxConstraints,
             );
           },
         );
       }
     }
 
-    final simpleConstraints = _tightenConstraints(
-      width: switch (style.width?.value) {
-        CssAbsoluteUnit() => (style.width!.value as CssAbsoluteUnit).pixels(),
-        _ => null,
-      },
-      height: switch (style.height?.value) {
-        CssAbsoluteUnit() => (style.height!.value as CssAbsoluteUnit).pixels(),
-        _ => null,
-      },
-      constraints: style.getSimpleConstraints(),
-    );
+    final simpleConstraints =
+        _tightenConstraints(style.toConstraints(), style.fontSizePx);
+    final staticConstraintss = staticConstraints != null
+        ? _tightenConstraints(staticConstraints!, style.fontSizePx)
+        : null;
     return buildDiv(
       context,
       simpleConstraints,
+      staticConstraintss,
     );
   }
 }
