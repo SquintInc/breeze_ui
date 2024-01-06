@@ -134,7 +134,7 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     return widget.style;
   }
 
-  MouseCursor? resolveCursor() {
+  MouseCursor? _resolveCursor() {
     final cursor = widget.cursor;
     if (cursor != null && cursor is MaterialStateMouseCursor) {
       return cursor.resolve(currentStates);
@@ -142,7 +142,7 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     return cursor;
   }
 
-  Widget wrapMouseRegion(final Widget child) {
+  Widget _wrapMouseRegion(final Widget child) {
     return MouseRegion(
       onEnter: (final event) {
         _statesController.update(MaterialState.hovered, true);
@@ -152,12 +152,12 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
         _statesController.update(MaterialState.hovered, false);
         widget.onHover?.call(false);
       },
-      cursor: resolveCursor() ?? MouseCursor.defer,
+      cursor: _resolveCursor() ?? MouseCursor.defer,
       child: child,
     );
   }
 
-  Widget wrapGestureDetector(final Widget child) {
+  Widget _wrapGestureDetector(final Widget child) {
     return GestureDetector(
       excludeFromSemantics: true,
       behavior: widget.hitTestBehavior,
@@ -221,13 +221,15 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     );
   }
 
+  @protected
   Widget conditionallyWrapInputDetectors(final Widget child) {
     if (widget.enableInputDetectors) {
-      return wrapMouseRegion(wrapGestureDetector(child));
+      return _wrapMouseRegion(_wrapGestureDetector(child));
     }
     return child;
   }
 
+  @protected
   Widget conditionallyWrapFocus(final Widget child) {
     if (widget.canRequestFocus) {
       return Focus(
