@@ -20,6 +20,8 @@ import 'package:tailwind_elements/config/options/typography/line_height.dart';
 import 'package:tailwind_elements/config/options/typography/text_decoration_thickness.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 
+/// [Tween] implementation that allows for interpolating various styling
+/// properties from between two different [TwStyle]s.
 class TwStyleTween extends Tween<TwStyle?> {
   final Set<TransitionProperty> _properties = {};
   BoxConstraints? _parentConstraints;

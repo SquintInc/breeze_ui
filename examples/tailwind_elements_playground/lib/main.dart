@@ -20,6 +20,7 @@ class TailwindElementsPlayground extends StatefulWidget {
 class _TailwindElementsPlaygroundState
     extends State<TailwindElementsPlayground> {
   bool toggled = true;
+  MaterialStatesController statesController = MaterialStatesController();
 
   @override
   Widget build(final BuildContext context) {
@@ -113,54 +114,56 @@ class _TailwindElementsPlaygroundState
                 ),
                 TwRow(
                   children: [
-                    AnimatedDiv(
-                      enableInputDetectors: true,
-                      style: TwStyle(
-                        width: w_frac_1_3,
-                        height: toggled ? h_64 : h_36,
-                        backgroundColor: bg_amber_500,
-                        transition: transition_all,
-                      ),
-                      pressed: const TwStyle(
-                        backgroundColor: bg_red_600,
-                        width: w_64,
-                      ),
-                      hovered: const TwStyle(
-                        backgroundColor: bg_amber_400,
-                        width: w_frac_2_3,
-                      ),
-                      focused: const TwStyle(
-                        backgroundColor: bg_amber_700,
-                      ),
-                      selected: const TwStyle(
-                        backgroundColor: bg_indigo_50,
-                      ),
-                      dragged: const TwStyle(
-                        backgroundColor: bg_blue_900,
-                      ),
+                    TwAnimationGroup(
                       child: AnimatedDiv(
+                        enableInputDetectors: true,
                         style: TwStyle(
-                          width: toggled ? w_frac_1_2 : w_64,
-                          height: toggled ? h_4 : h_frac_1_3,
-                          backgroundColor: bg_pink_500,
+                          width: w_frac_1_3,
+                          height: toggled ? h_64 : h_36,
+                          backgroundColor: bg_amber_500,
                           transition: transition_all,
                         ),
                         pressed: const TwStyle(
-                          backgroundColor: bg_pink_600,
+                          backgroundColor: bg_red_600,
                           width: w_64,
                         ),
                         hovered: const TwStyle(
-                          backgroundColor: bg_pink_400,
+                          backgroundColor: bg_amber_400,
                           width: w_frac_2_3,
                         ),
                         focused: const TwStyle(
-                          backgroundColor: bg_pink_700,
+                          backgroundColor: bg_amber_700,
                         ),
                         selected: const TwStyle(
-                          backgroundColor: bg_pink_50,
+                          backgroundColor: bg_indigo_50,
                         ),
                         dragged: const TwStyle(
-                          backgroundColor: bg_pink_900,
+                          backgroundColor: bg_blue_900,
+                        ),
+                        child: AnimatedDiv(
+                          style: TwStyle(
+                            width: toggled ? w_frac_1_2 : w_64,
+                            height: toggled ? h_4 : h_frac_1_3,
+                            backgroundColor: bg_pink_500,
+                            transition: transition_all,
+                          ),
+                          pressed: const TwStyle(
+                            backgroundColor: bg_pink_600,
+                            width: w_64,
+                          ),
+                          hovered: const TwStyle(
+                            backgroundColor: bg_pink_400,
+                            width: w_frac_2_3,
+                          ),
+                          focused: const TwStyle(
+                            backgroundColor: bg_pink_700,
+                          ),
+                          selected: const TwStyle(
+                            backgroundColor: bg_pink_50,
+                          ),
+                          dragged: const TwStyle(
+                            backgroundColor: bg_pink_900,
+                          ),
                         ),
                       ),
                     ),

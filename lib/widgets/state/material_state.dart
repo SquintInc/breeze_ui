@@ -48,7 +48,7 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   }
 
   void initStatesController() {
-    final AnimationGroupData? animationGroup = AnimationGroupData.of(context);
+    final MaterialStatesGroup? animationGroup = MaterialStatesGroup.of(context);
 
     // Determine material states controller type
     if (animationGroup != null) {

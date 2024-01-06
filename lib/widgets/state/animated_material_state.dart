@@ -16,7 +16,9 @@ import 'package:tailwind_elements/widgets/style/style.dart';
 /// Extension method for [TwStyle] that converts relative sizing units to absolute units on the
 /// constraint properties only. See also [TwConstraints].
 extension TransformConstraints on TwStyle {
-  TwStyle transformConstraintsToAbsolute(final BoxConstraints? parentConstraints) {
+  TwStyle transformConstraintsToAbsolute(
+    final BoxConstraints? parentConstraints,
+  ) {
     if (parentConstraints == null) return this;
 
     final widthToAbsolute = switch (width?.value) {
