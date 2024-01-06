@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:tailwind_elements/config/options/borders/border_radius.dart';
 import 'package:tailwind_elements/config/options/sizing/height.dart';
 import 'package:tailwind_elements/config/options/sizing/max_height.dart';
 import 'package:tailwind_elements/config/options/sizing/max_width.dart';
@@ -7,99 +10,145 @@ import 'package:tailwind_elements/config/options/sizing/min_height.dart';
 import 'package:tailwind_elements/config/options/sizing/min_width.dart';
 import 'package:tailwind_elements/config/options/sizing/width.dart';
 import 'package:tailwind_elements/config/options/transitions/transition_property.dart';
+import 'package:tailwind_elements/config/options/typography/font_size.dart';
+import 'package:tailwind_elements/config/options/typography/line_height.dart';
 import 'package:tailwind_elements/widgets/animation/style_tween.dart';
 import 'package:tailwind_elements/widgets/inherited/parent_constraints_data.dart';
 import 'package:tailwind_elements/widgets/state/material_state.dart';
 import 'package:tailwind_elements/widgets/state/stateful_widget.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 
+extension StyleRadiusExt on TwBorderRadius {
+  TwBorderRadius? minimizeCircle(
+    final PxUnit? width,
+    final PxUnit? height,
+    final TwFontSize fontSize,
+    final TwLineHeight lineHeight,
+  ) {
+    final halfWidth =
+        width != null ? (width.value / 2).ceilToDouble() : double.infinity;
+    final halfHeight =
+        height != null ? (height.value / 2).ceilToDouble() : double.infinity;
+    if (halfWidth.isInfinite && halfHeight.isInfinite) {
+      final fontSizePx = fontSize.value.pixels();
+      final lineHeightPercentFloat = lineHeight.asPercentageFloat(fontSizePx);
+      return TwBorderRadius.all(
+        TwBorderRadiusAll(
+          PxUnit(
+            (fontSize.value.pixels() * lineHeightPercentFloat).ceilToDouble(),
+          ),
+        ),
+      );
+    }
+    if (halfWidth.isInfinite) {
+      return TwBorderRadius.all(
+        TwBorderRadiusAll(
+          PxUnit(halfHeight),
+        ),
+      );
+    }
+    if (halfHeight.isInfinite) {
+      return TwBorderRadius.all(
+        TwBorderRadiusAll(
+          PxUnit(halfWidth),
+        ),
+      );
+    }
+    final minRadius = min(halfWidth, halfHeight);
+    return TwBorderRadius.all(
+      TwBorderRadiusAll(
+        PxUnit(minRadius),
+      ),
+    );
+  }
+}
+
 /// Extension method for [TwStyle] that converts relative sizing units to absolute units on the
-/// constraint properties only. See also [TwConstraints].
+/// constraint properties only (see also [TwConstraints]), and also minimizes the border radius
+/// values for 'rounded-full' to the minimum value required to create a circular border.
 extension TransformConstraints on TwStyle {
   TwStyle transformConstraintsToAbsolute(
     final BoxConstraints? parentConstraints,
   ) {
     if (parentConstraints == null) return this;
 
-    final widthToAbsolute = switch (width?.value) {
-      CssAbsoluteUnit() =>
-        TwWidth(PxUnit((width!.value as CssAbsoluteUnit).pixels())),
-      CssRelativeUnit() => TwWidth(
-          PxUnit(
-            (width!.value as CssRelativeUnit).percentageFloat() *
-                parentConstraints.maxWidth,
-          ),
+    final PxUnit? widthToAbsolute = switch (width?.value) {
+      CssAbsoluteUnit() => PxUnit((width!.value as CssAbsoluteUnit).pixels()),
+      CssRelativeUnit() => PxUnit(
+          (width!.value as CssRelativeUnit).percentageFloat() *
+              parentConstraints.maxWidth,
         ),
       _ => null,
     };
 
-    final heightToAbsolute = switch (height?.value) {
-      CssAbsoluteUnit() =>
-        TwHeight(PxUnit((height!.value as CssAbsoluteUnit).pixels())),
-      CssRelativeUnit() => TwHeight(
-          PxUnit(
-            (height!.value as CssRelativeUnit).percentageFloat() *
-                parentConstraints.maxHeight,
-          ),
+    final PxUnit? heightToAbsolute = switch (height?.value) {
+      CssAbsoluteUnit() => PxUnit((height!.value as CssAbsoluteUnit).pixels()),
+      CssRelativeUnit() => PxUnit(
+          (height!.value as CssRelativeUnit).percentageFloat() *
+              parentConstraints.maxHeight,
         ),
       _ => null,
     };
 
-    final minWidthToAbsolute = switch (minWidth?.value) {
+    final PxUnit? minWidthToAbsolute = switch (minWidth?.value) {
       CssAbsoluteUnit() =>
-        TwMinWidth(PxUnit((minWidth!.value as CssAbsoluteUnit).pixels())),
-      CssRelativeUnit() => TwMinWidth(
-          PxUnit(
-            (minWidth!.value as CssRelativeUnit).percentageFloat() *
-                parentConstraints.maxWidth,
-          ),
+        PxUnit((minWidth!.value as CssAbsoluteUnit).pixels()),
+      CssRelativeUnit() => PxUnit(
+          (minWidth!.value as CssRelativeUnit).percentageFloat() *
+              parentConstraints.maxWidth,
         ),
       _ => null,
     };
 
-    final minHeightToAbsolute = switch (minHeight?.value) {
+    final PxUnit? minHeightToAbsolute = switch (minHeight?.value) {
       CssAbsoluteUnit() =>
-        TwMinHeight(PxUnit((minHeight!.value as CssAbsoluteUnit).pixels())),
-      CssRelativeUnit() => TwMinHeight(
-          PxUnit(
-            (minHeight!.value as CssRelativeUnit).percentageFloat() *
-                parentConstraints.maxHeight,
-          ),
+        PxUnit((minHeight!.value as CssAbsoluteUnit).pixels()),
+      CssRelativeUnit() => PxUnit(
+          (minHeight!.value as CssRelativeUnit).percentageFloat() *
+              parentConstraints.maxHeight,
         ),
       _ => null,
     };
 
-    final maxWidthToAbsolute = switch (maxWidth?.value) {
+    final PxUnit? maxWidthToAbsolute = switch (maxWidth?.value) {
       CssAbsoluteUnit() =>
-        TwMaxWidth(PxUnit((maxWidth!.value as CssAbsoluteUnit).pixels())),
-      CssRelativeUnit() => TwMaxWidth(
-          PxUnit(
-            (maxWidth!.value as CssRelativeUnit).percentageFloat() *
-                parentConstraints.maxWidth,
-          ),
+        PxUnit((maxWidth!.value as CssAbsoluteUnit).pixels()),
+      CssRelativeUnit() => PxUnit(
+          (maxWidth!.value as CssRelativeUnit).percentageFloat() *
+              parentConstraints.maxWidth,
         ),
       _ => null,
     };
 
-    final maxHeightToAbsolute = switch (maxHeight?.value) {
+    final PxUnit? maxHeightToAbsolute = switch (maxHeight?.value) {
       CssAbsoluteUnit() =>
-        TwMaxHeight(PxUnit((maxHeight!.value as CssAbsoluteUnit).pixels())),
-      CssRelativeUnit() => TwMaxHeight(
-          PxUnit(
-            (maxHeight!.value as CssRelativeUnit).percentageFloat() *
-                parentConstraints.maxHeight,
-          ),
+        PxUnit((maxHeight!.value as CssAbsoluteUnit).pixels()),
+      CssRelativeUnit() => PxUnit(
+          (maxHeight!.value as CssRelativeUnit).percentageFloat() *
+              parentConstraints.maxHeight,
         ),
       _ => null,
     };
 
     return copyWith(
-      width: widthToAbsolute,
-      height: heightToAbsolute,
-      minWidth: minWidthToAbsolute,
-      minHeight: minHeightToAbsolute,
-      maxWidth: maxWidthToAbsolute,
-      maxHeight: maxHeightToAbsolute,
+      width: widthToAbsolute != null ? TwWidth(widthToAbsolute) : null,
+      height: heightToAbsolute != null ? TwHeight(heightToAbsolute) : null,
+      minWidth:
+          minWidthToAbsolute != null ? TwMinWidth(minWidthToAbsolute) : null,
+      minHeight:
+          minHeightToAbsolute != null ? TwMinHeight(minHeightToAbsolute) : null,
+      maxWidth:
+          maxWidthToAbsolute != null ? TwMaxWidth(maxWidthToAbsolute) : null,
+      maxHeight:
+          maxHeightToAbsolute != null ? TwMaxHeight(maxHeightToAbsolute) : null,
+      borderRadius: (borderRadius?.isCircle ?? false)
+          ? borderRadius?.minimizeCircle(
+              widthToAbsolute ?? maxWidthToAbsolute,
+              heightToAbsolute ?? maxHeightToAbsolute,
+              fontSize ?? TwFontSize.defaultFontSize,
+              lineHeight ?? TwLineHeight.defaultLineHeight,
+            )
+          : borderRadius,
     );
   }
 }

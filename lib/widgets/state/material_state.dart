@@ -181,9 +181,21 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
           _statesController.update(MaterialState.selected, _isSelected);
           widget.onSelected?.call(_isSelected);
         }
-        widget.onTap?.call();
+        if (widget.onTap != null) {
+          if (widget.enableFeedback) {
+            Feedback.forTap(context);
+          }
+          widget.onTap!();
+        }
       },
-      onLongPress: widget.onLongPress,
+      onLongPress: () {
+        if (widget.onLongPress != null) {
+          if (widget.enableFeedback) {
+            Feedback.forLongPress(context);
+          }
+          widget.onLongPress!();
+        }
+      },
       onDoubleTap: widget.onDoubleTap,
       child: child,
     );
@@ -192,6 +204,21 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   Widget conditionallyWrapInputDetectors(final Widget child) {
     if (widget.enableInputDetectors) {
       return wrapMouseRegion(wrapGestureDetector(child));
+    }
+    return child;
+  }
+
+  Widget conditionallyWrapFocus(final Widget child) {
+    if (widget.canRequestFocus) {
+      return Focus(
+        onFocusChange: (final bool hasFocus) {
+          _statesController.update(MaterialState.focused, hasFocus);
+          widget.onFocusChange?.call(hasFocus);
+        },
+        focusNode: widget.focusNode,
+        autofocus: widget.autofocus,
+        child: child,
+      );
     }
     return child;
   }

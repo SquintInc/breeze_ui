@@ -10,7 +10,7 @@ class TwColumn extends StatelessWidget {
   final List<Widget> children;
   final bool scrollable;
 
-  // Passthrough [Row] properties
+  // Passthrough [Column] properties
   final MainAxisAlignment mainAxisAlignment;
   final MainAxisSize mainAxisSize;
   final CrossAxisAlignment crossAxisAlignment;

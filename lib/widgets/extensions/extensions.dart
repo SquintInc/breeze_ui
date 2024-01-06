@@ -19,9 +19,3 @@ extension RadiusExt on BoxConstraints {
     return (min(minWidth, minHeight) / 2).ceilToDouble();
   }
 }
-
-extension BoxConstraintsExtension on BoxConstraints {
-  double limitedMaxWidth(final BuildContext context) {
-    return (maxWidth.isInfinite) ? MediaQuery.of(context).size.width : maxWidth;
-  }
-}

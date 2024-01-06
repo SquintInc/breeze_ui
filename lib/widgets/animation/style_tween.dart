@@ -330,13 +330,12 @@ class TwStyleTween extends Tween<TwStyle?> {
         (begin == null && end == null)) {
       return null;
     }
-    return TwBorderRadius.fromBorderRadius(
-      BorderRadius.lerp(
-        begin?.toBorderRadius() ?? BorderRadius.zero,
-        end?.toBorderRadius() ?? BorderRadius.zero,
-        t,
-      ),
+    final borderRadius = BorderRadius.lerp(
+      begin?.toBorderRadius() ?? BorderRadius.zero,
+      end?.toBorderRadius() ?? BorderRadius.zero,
+      t,
     );
+    return TwBorderRadius.fromBorderRadius(borderRadius);
   }
 
   TwBorder? lerpBorderWidth(
@@ -444,23 +443,20 @@ class TwStyleTween extends Tween<TwStyle?> {
         (begin.lineHeight == null && end.lineHeight == null)) {
       return null;
     }
-    final double beginLineHeightAsPercentage = (begin.lineHeight ??
-            begin.fontSize?.lineHeight ??
-            TwLineHeight.defaultLineHeight)
-        .asPercentageFloat(begin.fontSizePx);
-    final double endLineHeightAsPercentage = (end.lineHeight ??
-            end.fontSize?.lineHeight ??
-            TwLineHeight.defaultLineHeight)
-        .asPercentageFloat(end.fontSizePx);
+    final TwLineHeight beginLineHeight = begin.lineHeight ??
+        begin.fontSize?.lineHeight ??
+        TwLineHeight.defaultLineHeight;
+    final TwLineHeight endLineHeight = end.lineHeight ??
+        end.fontSize?.lineHeight ??
+        TwLineHeight.defaultLineHeight;
+    final lineHeightPercentage = ui.lerpDouble(
+      beginLineHeight.asPercentageFloat(begin.fontSizePx),
+      endLineHeight.asPercentageFloat(end.fontSizePx),
+      t,
+    );
+    if (lineHeightPercentage == null) return null;
     return TwLineHeight(
-      PercentUnit.fromFloat(
-        ui.lerpDouble(
-              beginLineHeightAsPercentage,
-              endLineHeightAsPercentage,
-              t,
-            ) ??
-            TwLineHeight.defaultLineHeightPercentage,
-      ),
+      PercentUnit.fromFloat(lineHeightPercentage),
     );
   }
 
@@ -468,18 +464,36 @@ class TwStyleTween extends Tween<TwStyle?> {
     final TwStyle begin,
     final TwStyle end,
     final double t,
-    final TwLineHeight? lerpedLineHeight,
   ) {
     if (!has(TransitionProperty.fontSize) ||
         (begin.fontSize == null && end.fontSize == null)) {
       return null;
     }
+
+    final fontSizePx = ui.lerpDouble(begin.fontSizePx, end.fontSizePx, t);
+    if (fontSizePx == null) return null;
+
+    final beginLineHeight = begin.lineHeight ??
+        begin.fontSize?.lineHeight ??
+        TwLineHeight.defaultLineHeight;
+    final endLineHeight = end.lineHeight ??
+        end.fontSize?.lineHeight ??
+        TwLineHeight.defaultLineHeight;
+
+    final lineHeightPercentage = ui.lerpDouble(
+      beginLineHeight.asPercentageFloat(begin.fontSizePx),
+      endLineHeight.asPercentageFloat(end.fontSizePx),
+      t,
+    );
+    final lineHeight = lineHeightPercentage != null
+        ? TwLineHeight(
+            PercentUnit.fromFloat(lineHeightPercentage),
+          )
+        : null;
+
     return TwFontSize(
-      PxUnit(
-        ui.lerpDouble(begin.fontSizePx, end.fontSizePx, t) ??
-            TwFontSize.defaultFontSizePx,
-      ),
-      lerpedLineHeight ?? TwLineHeight.defaultLineHeight,
+      PxUnit(fontSizePx),
+      lineHeight ?? TwLineHeight.defaultLineHeight,
     );
   }
 
@@ -568,7 +582,7 @@ class TwStyleTween extends Tween<TwStyle?> {
       // Typography
       fontWeight: lerpFontWeight(begin.fontWeight, end.fontWeight, t),
       lineHeight: lineHeight,
-      fontSize: lerpFontSize(begin, end, t, lineHeight),
+      fontSize: lerpFontSize(begin, end, t),
       textDecorationThickness: lerpTextDecorationThickness(
         begin.textDecorationThickness,
         end.textDecorationThickness,

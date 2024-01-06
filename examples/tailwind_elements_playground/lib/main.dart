@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tailwind_elements/base.dart';
 import 'package:tailwind_elements/widgets.dart';
 import 'package:tailwind_elements/widgets/inherited/parent_constraints_data.dart';
 import 'package:tailwind_elements/widgets/stateless/div.dart';
@@ -46,7 +47,7 @@ class _TailwindElementsPlaygroundState
               children: [
                 TwRow(
                   children: [
-                    AnimatedDiv(
+                    TwDiv(
                       style: TwStyle(
                         width: w_frac_1_3,
                         height: toggled ? h_64 : h_36,
@@ -54,7 +55,7 @@ class _TailwindElementsPlaygroundState
                         transition: transition_all,
                       ),
                     ),
-                    AnimatedDiv(
+                    TwDiv(
                       style: TwStyle(
                         width: w_frac_1_3,
                         height: toggled ? h_64 : h_36,
@@ -62,7 +63,7 @@ class _TailwindElementsPlaygroundState
                         transition: transition_all,
                       ),
                     ),
-                    AnimatedDiv(
+                    TwDiv(
                       style: TwStyle(
                         width: w_frac_1_3,
                         height: toggled ? h_64 : h_36,
@@ -75,7 +76,7 @@ class _TailwindElementsPlaygroundState
                       child: TwRow(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const AnimatedDiv(
+                          const TwDiv(
                             style: TwStyle(
                               width: w_frac_1_2,
                               height: h_frac_1_2,
@@ -86,7 +87,7 @@ class _TailwindElementsPlaygroundState
                               backgroundColor: bg_red_400,
                             ),
                           ),
-                          AnimatedDiv(
+                          TwDiv(
                             alignment: Alignment.topLeft,
                             style: TwStyle(
                               width: w_frac_1_2,
@@ -96,7 +97,7 @@ class _TailwindElementsPlaygroundState
                             ),
                             child: const TwColumn(
                               children: [
-                                AnimatedDiv(
+                                TwDiv(
                                   style: TwStyle(
                                     width: w_frac_1_2,
                                     height: h_frac_1_3,
@@ -115,7 +116,7 @@ class _TailwindElementsPlaygroundState
                 TwRow(
                   children: [
                     TwAnimationGroup(
-                      child: AnimatedDiv(
+                      child: TwDiv(
                         enableInputDetectors: true,
                         style: TwStyle(
                           width: w_frac_1_3,
@@ -131,16 +132,13 @@ class _TailwindElementsPlaygroundState
                           backgroundColor: bg_amber_400,
                           width: w_frac_2_3,
                         ),
-                        focused: const TwStyle(
-                          backgroundColor: bg_amber_700,
-                        ),
                         selected: const TwStyle(
                           backgroundColor: bg_indigo_50,
                         ),
                         dragged: const TwStyle(
                           backgroundColor: bg_blue_900,
                         ),
-                        child: AnimatedDiv(
+                        child: TwDiv(
                           style: TwStyle(
                             width: toggled ? w_frac_1_2 : w_64,
                             height: toggled ? h_4 : h_frac_1_3,
@@ -156,7 +154,8 @@ class _TailwindElementsPlaygroundState
                             width: w_frac_2_3,
                           ),
                           focused: const TwStyle(
-                            backgroundColor: bg_pink_700,
+                            backgroundColor: bg_pink_50,
+                            transitionDuration: duration_0,
                           ),
                           selected: const TwStyle(
                             backgroundColor: bg_pink_50,
@@ -164,6 +163,7 @@ class _TailwindElementsPlaygroundState
                           dragged: const TwStyle(
                             backgroundColor: bg_pink_900,
                           ),
+                          canRequestFocus: true,
                         ),
                       ),
                     ),
@@ -176,6 +176,35 @@ class _TailwindElementsPlaygroundState
                       toggled = !toggled;
                     });
                   },
+                ),
+                TwRow(
+                  children: [
+                    TwButton(
+                      onTap: () {
+                        // print current time in epoch
+                        print(DateTime.now().millisecondsSinceEpoch);
+                      },
+                      style: const TwStyle(
+                        borderColor: border_transparent,
+                        borderRadius: TwBorderRadius.all(rounded_full),
+                        padding: TwPadding.xy(px_2_5, py_1),
+                        backgroundColor: bg_indigo_600,
+                        fontSize: text_xs,
+                        textColor: text_white,
+                        boxShadow: shadow_sm,
+                        fontWeight: font_bold,
+                        transition: transition_all,
+                      ),
+                      hovered: const TwStyle(
+                        backgroundColor: bg_indigo_500,
+                      ),
+                      focused: const TwStyle(
+                        backgroundColor: bg_indigo_400,
+                        borderColor: border_blue_400,
+                      ),
+                      child: const TwText('Button Text'),
+                    ),
+                  ],
                 ),
               ],
             ),

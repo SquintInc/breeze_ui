@@ -37,7 +37,7 @@ abstract class TwStatefulWidget extends StatefulWidget {
   final ValueChanged<bool>? onDragged;
 
   /// Callback for when the widget is focused (if applicable).
-  final ValueChanged<bool>? onFocused;
+  final ValueChanged<bool>? onFocusChange;
 
   /// Callback for when the widget is tapped (if applicable).
   final GestureTapCallback? onTap;
@@ -72,6 +72,14 @@ abstract class TwStatefulWidget extends StatefulWidget {
   /// Whether or not to enable feedback for this widget.
   final bool enableFeedback;
 
+  /// Whether or not this widget can be focused.
+  final bool canRequestFocus;
+
+  /// The [FocusNode] for this widget.
+  final FocusNode? focusNode;
+
+  final bool autofocus;
+
   const TwStatefulWidget({
     this.style = const TwStyle(),
     this.disabled,
@@ -84,7 +92,7 @@ abstract class TwStatefulWidget extends StatefulWidget {
     this.onSelected,
     this.onHover,
     this.onDragged,
-    this.onFocused,
+    this.onFocusChange,
     this.onTap,
     this.onLongPress,
     this.onDoubleTap,
@@ -95,6 +103,9 @@ abstract class TwStatefulWidget extends StatefulWidget {
     this.isToggled = false,
     this.enableInputDetectors = false,
     this.enableFeedback = false,
+    this.canRequestFocus = false,
+    this.focusNode,
+    this.autofocus = false,
     super.key,
   });
 
