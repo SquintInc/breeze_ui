@@ -68,8 +68,6 @@ class _TwButtonState extends TwAnimatedMaterialState<TwButton> {
     final currentStyle = getCurrentStyle();
     final animatedStyle = currentStyle.merge(getAnimatedStyle());
 
-    // print(getAnimatedStyle());
-
     final div = Div(
       key: widget.key,
       style: animatedStyle,
