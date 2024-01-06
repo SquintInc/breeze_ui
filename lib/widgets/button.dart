@@ -18,7 +18,7 @@ class TwButton extends TwStatefulWidget {
   final AlignmentGeometry alignment;
 
   const TwButton({
-    required super.onTap,
+    required final GestureTapCallback onPressed,
     // Passthrough [TextButton] properties
     this.child,
     this.clipBehavior = Clip.none,
@@ -47,6 +47,7 @@ class TwButton extends TwStatefulWidget {
     super.focusNode,
     super.key,
   }) : super(
+          onTap: onPressed,
           enableFeedback: true,
           enableInputDetectors: true,
           canRequestFocus: true,
@@ -80,17 +81,9 @@ class _TwButtonState extends TwAnimatedMaterialState<TwButton> {
     );
 
     Widget current = div;
-
-    if (widget.hasOpacity) {
-      current = Opacity(
-        opacity: animatedStyle.opacity?.value ?? 1.0,
-        child: current,
-      );
-    }
-
-    return conditionallyWrapFocus(
-      conditionallyWrapInputDetectors(current),
-      includeFocusActions: true,
-    );
+    current = conditionallyWrapOpacity(current, animatedStyle);
+    current = conditionallyWrapInputDetectors(current);
+    current = conditionallyWrapFocus(current, includeFocusActions: true);
+    return current;
   }
 }

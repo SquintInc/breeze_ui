@@ -59,6 +59,9 @@ abstract class TwStatefulWidget extends StatefulWidget {
   /// Whether or not the widget can be toggle selected.
   final bool isToggleable;
 
+  /// Whether or not the widget can have a drag state.
+  final bool isDraggable;
+
   /// Whether or not the widget is toggle selected; initial toggle value if the widget is toggleable.
   final bool isToggled;
 
@@ -107,6 +110,7 @@ abstract class TwStatefulWidget extends StatefulWidget {
     this.hitTestBehavior,
     this.isDisabled = false,
     this.isToggleable = false,
+    this.isDraggable = false,
     this.isToggled = false,
     this.enableInputDetectors = false,
     this.enableFeedback = false,
@@ -118,7 +122,7 @@ abstract class TwStatefulWidget extends StatefulWidget {
     super.key,
   });
 
-  /// Statically determine if this animation-supported widget has any transitions in any of its
+  /// Determine upfront if this animation-supported widget has any transitions in any of its
   /// stateful styles.
   bool get hasTransitions =>
       !(style.transition?.isNone ?? true) ||
@@ -130,7 +134,7 @@ abstract class TwStatefulWidget extends StatefulWidget {
       !(selected?.transition?.isNone ?? true) ||
       !(errored?.transition?.isNone ?? true);
 
-  /// Statically determine if this animation-supported widget has any opacity values in any of its
+  /// Determine upfront if this animation-supported widget has any opacity values in any of its
   /// stateful styles.
   bool get hasOpacity =>
       style.opacity != null ||

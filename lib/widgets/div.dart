@@ -45,6 +45,7 @@ class TwDiv extends TwStatefulWidget {
     // Toggleable booleans
     super.isDisabled,
     super.isToggleable,
+    super.isDraggable,
     super.isToggled,
     super.enableInputDetectors,
     super.enableFeedback,
@@ -81,22 +82,12 @@ class _TwDiv extends TwAnimatedMaterialState<TwDiv> {
     );
 
     Widget current = div;
-
-    if (widget.hasOpacity) {
-      current = Opacity(
-        opacity: animatedStyle.opacity?.value ?? 1.0,
-        child: current,
-      );
-    }
-
-    // Will wrap the current widget with a [MouseRegion] and [GestureDetector]
-    // if [enableInputDetectors] is true.
+    current = conditionallyWrapOpacity(current, animatedStyle);
     current = conditionallyWrapInputDetectors(current);
-
-    // Will wrap the current widget with a [Focus] if [canRequestFocus] is true.
-    current = conditionallyWrapFocus(current,
-        includeFocusActions: widget.includeFocusActions);
-
+    current = conditionallyWrapFocus(
+      current,
+      includeFocusActions: widget.includeFocusActions,
+    );
     return current;
   }
 }

@@ -271,13 +271,13 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
       animationController ??= AnimationController(
         vsync: this,
         duration:
-            widget.style.transitionDuration?.duration.value ?? defaultDuration,
+            currentStyle.transitionDuration?.duration.value ?? defaultDuration,
         debugLabel: kDebugMode ? widget.toStringShort() : null,
       )..addListener(handleAnimationControllerUpdate);
 
       styleTween ??= TwStyleTween(
-        begin: widget.style.transformConstraintsToAbsolute(parentConstraints),
-        end: widget.style.transformConstraintsToAbsolute(parentConstraints),
+        begin: currentStyle.transformConstraintsToAbsolute(parentConstraints),
+        end: currentStyle.transformConstraintsToAbsolute(parentConstraints),
         parentConstraints: parentConstraints,
       );
     }

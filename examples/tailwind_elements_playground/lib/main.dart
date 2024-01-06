@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tailwind_elements/base.dart';
 import 'package:tailwind_elements/widgets.dart';
+import 'package:tailwind_elements/widgets/checkbox.dart';
 import 'package:tailwind_elements/widgets/inherited/parent_constraints_data.dart';
 import 'package:tailwind_elements/widgets/stateless/div.dart';
 import 'package:tailwind_elements_playground/tailwind_config.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 
 void main() {
   runApp(const TailwindElementsPlayground());
@@ -35,7 +37,7 @@ class _TailwindElementsPlaygroundState
         child: Div(
           style: const TwStyle(
             height: h_96,
-            backgroundColor: bg_black,
+            backgroundColor: bg_slate_50,
           ),
           child: ParentConstraintsData(
             constraints: BoxConstraints(
@@ -169,20 +171,49 @@ class _TailwindElementsPlaygroundState
                     ),
                   ],
                 ),
-                TextButton(
-                  child: Text('Toggle: $toggled'),
-                  onPressed: () {
-                    setState(() {
-                      toggled = !toggled;
-                    });
-                  },
-                ),
                 TwRow(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TwButton(
-                      onTap: () {
+                      onPressed: () {
+                        setState(() {
+                          toggled = !toggled;
+                        });
+                      },
+                      style: const TwStyle(
+                        borderColor: border_transparent,
+                        borderRadius: TwBorderRadius.all(rounded_full),
+                        padding: TwPadding.xy(px_2_5, py_1),
+                        backgroundColor: bg_indigo_600,
+                        fontSize: text_xs,
+                        textColor: text_white,
+                        boxShadow: shadow_sm,
+                        fontWeight: font_bold,
+                        transition: transition_all,
+                      ),
+                      hovered: const TwStyle(
+                        backgroundColor: bg_indigo_500,
+                      ),
+                      focused: const TwStyle(
+                        backgroundColor: bg_indigo_400,
+                        borderColor: border_blue_400,
+                      ),
+                      disabled: const TwStyle(
+                        backgroundColor: bg_indigo_200,
+                      ),
+                      child: Text('Toggle: $toggled'),
+                    ),
+                  ],
+                ),
+                TwRow(
+                  gap: gap_x_4,
+                  children: [
+                    TwButton(
+                      onPressed: () {
                         // print current time in epoch
-                        print(DateTime.now().millisecondsSinceEpoch);
+                        print(
+                          'Button pressed! Current epoch: ${DateTime.now().millisecondsSinceEpoch}',
+                        );
                       },
                       isDisabled: !toggled,
                       style: const TwStyle(
@@ -207,6 +238,34 @@ class _TailwindElementsPlaygroundState
                         backgroundColor: bg_indigo_200,
                       ),
                       child: const TwText('Button Text'),
+                    ),
+                    const TwIcon(
+                      icon: IconFontData(Icons.check),
+                    ),
+                    const TwIcon(
+                      icon: IconSvgData(
+                        AssetBytesLoader('assets/checkmark.svg.vec'),
+                      ),
+                    ),
+                    TwCheckbox(
+                      value: toggled,
+                      icon: const IconSvgData(
+                        AssetBytesLoader('assets/checkmark.svg.vec'),
+                      ),
+                      style: const TwStyle(
+                        backgroundColor: bg_indigo_200,
+                        transition: transition_all,
+                        width: w_6,
+                        height: h_6,
+                        textColor: text_indigo_800,
+                      ),
+                      selected: const TwStyle(
+                        backgroundColor: bg_indigo_300,
+                      ),
+                      // pressed: const TwStyle(
+                      //   backgroundColor: bg_indigo_200,
+                      // ),
+                      onToggled: (final bool value) {},
                     ),
                   ],
                 ),

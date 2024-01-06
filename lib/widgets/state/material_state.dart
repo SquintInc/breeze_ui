@@ -40,6 +40,9 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   /// If the widget is selectable, this keeps track of the widget's selection / toggle state.
   bool _isSelected = false;
 
+  /// Getter for [_isSelected].
+  bool get isSelected => _isSelected;
+
   @override
   void initState() {
     super.initState();
@@ -168,16 +171,23 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   }
 
   void handleTap() {
-    if (widget.isToggleable) {
-      _isSelected = !_isSelected;
-      _statesController.update(MaterialState.selected, _isSelected);
-      widget.onSelected?.call(_isSelected);
-    }
-    if (widget.onTap != null && !widget.isDisabled) {
-      if (widget.enableFeedback) {
-        Feedback.forTap(context);
+    if (!widget.isDisabled) {
+      if (widget.isToggleable) {
+        _isSelected = !_isSelected;
+        _statesController.update(MaterialState.selected, _isSelected);
+        if (widget.onSelected != null) {
+          widget.onSelected!(_isSelected);
+          if (widget.enableFeedback) {
+            Feedback.forTap(context);
+          }
+        }
       }
-      widget.onTap!();
+      if (widget.onTap != null) {
+        if (widget.enableFeedback) {
+          Feedback.forTap(context);
+        }
+        widget.onTap!();
+      }
     }
   }
 
@@ -208,21 +218,21 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
       excludeFromSemantics: true,
       behavior: widget.hitTestBehavior,
       onPanStart: (final DragStartDetails details) {
-        if (widget.dragged != null) {
+        if (widget.isDraggable) {
           _statesController.update(MaterialState.dragged, true);
           widget.onDragged?.call(true);
         }
       },
       onPanEnd: (final DragEndDetails details) {
         _statesController.update(MaterialState.pressed, false);
-        if (widget.dragged != null) {
+        if (widget.isDraggable) {
           _statesController.update(MaterialState.dragged, false);
           widget.onDragged?.call(false);
         }
       },
       onPanCancel: () {
         _statesController.update(MaterialState.pressed, false);
-        if (widget.dragged != null) {
+        if (widget.isDraggable) {
           _statesController.update(MaterialState.dragged, false);
           widget.onDragged?.call(false);
         }
@@ -230,14 +240,24 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
       onPanDown: (final DragDownDetails details) {
         _statesController.update(MaterialState.pressed, true);
       },
-      onTap: widget.onTap != null ? handleTap : null,
+      onTap:
+          widget.onTap != null || widget.onSelected != null ? handleTap : null,
       onLongPress: widget.onLongPress != null ? handleLongPress : null,
       onDoubleTap: widget.onDoubleTap != null ? handleDoubleTap : null,
       child: child,
     );
   }
 
-  @protected
+  Widget conditionallyWrapOpacity(final Widget child, final TwStyle style) {
+    if (widget.hasOpacity) {
+      return Opacity(
+        opacity: style.opacity?.value ?? 1.0,
+        child: child,
+      );
+    }
+    return child;
+  }
+
   Widget conditionallyWrapInputDetectors(final Widget child) {
     if (widget.enableInputDetectors) {
       return _wrapMouseRegion(_wrapGestureDetector(child));
@@ -252,7 +272,6 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
         CallbackAction<ButtonActivateIntent>(onInvoke: handlePrimaryIntent),
   };
 
-  @protected
   Widget conditionallyWrapFocus(
     final Widget child, {
     final bool includeFocusActions = false,
