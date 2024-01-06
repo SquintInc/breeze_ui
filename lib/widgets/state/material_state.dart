@@ -157,6 +157,38 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     );
   }
 
+  void handleTap() {
+    if (widget.isToggleable) {
+      _isSelected = !_isSelected;
+      _statesController.update(MaterialState.selected, _isSelected);
+      widget.onSelected?.call(_isSelected);
+    }
+    if (widget.onTap != null && !widget.isDisabled) {
+      if (widget.enableFeedback) {
+        Feedback.forTap(context);
+      }
+      widget.onTap!();
+    }
+  }
+
+  void handleLongPress() {
+    if (!widget.isDisabled) {
+      if (widget.enableFeedback) {
+        Feedback.forLongPress(context);
+      }
+      widget.onLongPress!();
+    }
+  }
+
+  void handleDoubleTap() {
+    if (!widget.isDisabled) {
+      if (widget.enableFeedback) {
+        Feedback.forTap(context);
+      }
+      widget.onDoubleTap!();
+    }
+  }
+
   Widget _wrapGestureDetector(final Widget child) {
     return GestureDetector(
       excludeFromSemantics: true,
@@ -184,39 +216,9 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
       onPanDown: (final DragDownDetails details) {
         _statesController.update(MaterialState.pressed, true);
       },
-      onTap: () {
-        if (widget.isToggleable) {
-          _isSelected = !_isSelected;
-          _statesController.update(MaterialState.selected, _isSelected);
-          widget.onSelected?.call(_isSelected);
-        }
-        if (widget.onTap != null && !widget.isDisabled) {
-          if (widget.enableFeedback) {
-            Feedback.forTap(context);
-          }
-          widget.onTap!();
-        }
-      },
-      onLongPress: widget.onLongPress != null
-          ? () {
-              if (!widget.isDisabled) {
-                if (widget.enableFeedback) {
-                  Feedback.forLongPress(context);
-                }
-                widget.onLongPress!();
-              }
-            }
-          : null,
-      onDoubleTap: widget.onDoubleTap != null
-          ? () {
-              if (!widget.isDisabled) {
-                if (widget.enableFeedback) {
-                  Feedback.forTap(context);
-                }
-                widget.onDoubleTap!();
-              }
-            }
-          : null,
+      onTap: widget.onTap != null ? handleTap : null,
+      onLongPress: widget.onLongPress != null ? handleLongPress : null,
+      onDoubleTap: widget.onDoubleTap != null ? handleDoubleTap : null,
       child: child,
     );
   }
