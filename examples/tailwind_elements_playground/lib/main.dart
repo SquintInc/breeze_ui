@@ -138,6 +138,31 @@ class _TailwindElementsPlaygroundState
                       dragged: const TwStyle(
                         backgroundColor: bg_blue_900,
                       ),
+                      child: AnimatedDiv(
+                        style: TwStyle(
+                          width: toggled ? w_frac_1_2 : w_64,
+                          height: toggled ? h_4 : h_frac_1_3,
+                          backgroundColor: bg_pink_500,
+                          transition: transition_all,
+                        ),
+                        pressed: const TwStyle(
+                          backgroundColor: bg_pink_600,
+                          width: w_64,
+                        ),
+                        hovered: const TwStyle(
+                          backgroundColor: bg_pink_400,
+                          width: w_frac_2_3,
+                        ),
+                        focused: const TwStyle(
+                          backgroundColor: bg_pink_700,
+                        ),
+                        selected: const TwStyle(
+                          backgroundColor: bg_pink_50,
+                        ),
+                        dragged: const TwStyle(
+                          backgroundColor: bg_pink_900,
+                        ),
+                      ),
                     ),
                   ],
                 ),

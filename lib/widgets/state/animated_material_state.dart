@@ -13,8 +13,10 @@ import 'package:tailwind_elements/widgets/state/material_state.dart';
 import 'package:tailwind_elements/widgets/state/stateful_widget.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 
+/// Extension method for [TwStyle] that converts relative sizing units to absolute units on the
+/// constraint properties only. See also [TwConstraints].
 extension TransformConstraints on TwStyle {
-  TwStyle transformConstraints(final BoxConstraints? parentConstraints) {
+  TwStyle transformConstraintsToAbsolute(final BoxConstraints? parentConstraints) {
     if (parentConstraints == null) return this;
 
     final widthToAbsolute = switch (width?.value) {
@@ -223,8 +225,8 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
       )..addListener(handleAnimationControllerUpdate);
 
       styleTween ??= TwStyleTween(
-        begin: widget.style.transformConstraints(parentConstraints),
-        end: widget.style.transformConstraints(parentConstraints),
+        begin: widget.style.transformConstraintsToAbsolute(parentConstraints),
+        end: widget.style.transformConstraintsToAbsolute(parentConstraints),
         parentConstraints: parentConstraints,
       );
     }
@@ -243,7 +245,7 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
     }
     tween
       ..begin = tween.evaluate(animationCurve)
-      ..end = targetStyle.transformConstraints(parentConstraints);
+      ..end = targetStyle.transformConstraintsToAbsolute(parentConstraints);
   }
 
   void _animate(final Duration delay) {

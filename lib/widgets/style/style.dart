@@ -812,4 +812,30 @@ class TwConstraints {
       },
     );
   }
+
+  @override
+  bool operator ==(final Object other) =>
+      identical(this, other) ||
+      other is TwConstraints &&
+          runtimeType == other.runtimeType &&
+          minWidth == other.minWidth &&
+          width == other.width &&
+          maxWidth == other.maxWidth &&
+          minHeight == other.minHeight &&
+          height == other.height &&
+          maxHeight == other.maxHeight;
+
+  @override
+  int get hashCode =>
+      minWidth.hashCode ^
+      width.hashCode ^
+      maxWidth.hashCode ^
+      minHeight.hashCode ^
+      height.hashCode ^
+      maxHeight.hashCode;
+
+  @override
+  String toString() {
+    return 'TwConstraints{minWidth: $minWidth, width: $width, maxWidth: $maxWidth, minHeight: $minHeight, height: $height, maxHeight: $maxHeight}';
+  }
 }
