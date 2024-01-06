@@ -184,6 +184,7 @@ class _TailwindElementsPlaygroundState
                         // print current time in epoch
                         print(DateTime.now().millisecondsSinceEpoch);
                       },
+                      isDisabled: !toggled,
                       style: const TwStyle(
                         borderColor: border_transparent,
                         borderRadius: TwBorderRadius.all(rounded_full),
@@ -201,6 +202,9 @@ class _TailwindElementsPlaygroundState
                       focused: const TwStyle(
                         backgroundColor: bg_indigo_400,
                         borderColor: border_blue_400,
+                      ),
+                      disabled: const TwStyle(
+                        backgroundColor: bg_indigo_200,
                       ),
                       child: const TwText('Button Text'),
                     ),

@@ -54,6 +54,7 @@ class TwDiv extends TwStatefulWidget {
     super.hitTestBehavior,
     super.statesController,
     super.focusNode,
+    super.cursor,
     super.key,
   });
 

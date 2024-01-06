@@ -50,6 +50,7 @@ class TwButton extends TwStatefulWidget {
           enableFeedback: true,
           enableInputDetectors: true,
           canRequestFocus: true,
+          cursor: MaterialStateMouseCursor.clickable,
         );
 
   @override

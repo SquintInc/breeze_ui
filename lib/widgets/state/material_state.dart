@@ -134,6 +134,14 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     return widget.style;
   }
 
+  MouseCursor? resolveCursor() {
+    final cursor = widget.cursor;
+    if (cursor != null && cursor is MaterialStateMouseCursor) {
+      return cursor.resolve(currentStates);
+    }
+    return cursor;
+  }
+
   Widget wrapMouseRegion(final Widget child) {
     return MouseRegion(
       onEnter: (final event) {
@@ -144,6 +152,7 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
         _statesController.update(MaterialState.hovered, false);
         widget.onHover?.call(false);
       },
+      cursor: resolveCursor() ?? MouseCursor.defer,
       child: child,
     );
   }
@@ -181,22 +190,33 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
           _statesController.update(MaterialState.selected, _isSelected);
           widget.onSelected?.call(_isSelected);
         }
-        if (widget.onTap != null) {
+        if (widget.onTap != null && !widget.isDisabled) {
           if (widget.enableFeedback) {
             Feedback.forTap(context);
           }
           widget.onTap!();
         }
       },
-      onLongPress: () {
-        if (widget.onLongPress != null) {
-          if (widget.enableFeedback) {
-            Feedback.forLongPress(context);
-          }
-          widget.onLongPress!();
-        }
-      },
-      onDoubleTap: widget.onDoubleTap,
+      onLongPress: widget.onLongPress != null
+          ? () {
+              if (!widget.isDisabled) {
+                if (widget.enableFeedback) {
+                  Feedback.forLongPress(context);
+                }
+                widget.onLongPress!();
+              }
+            }
+          : null,
+      onDoubleTap: widget.onDoubleTap != null
+          ? () {
+              if (!widget.isDisabled) {
+                if (widget.enableFeedback) {
+                  Feedback.forTap(context);
+                }
+                widget.onDoubleTap!();
+              }
+            }
+          : null,
       child: child,
     );
   }

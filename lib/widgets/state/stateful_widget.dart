@@ -78,7 +78,11 @@ abstract class TwStatefulWidget extends StatefulWidget {
   /// The [FocusNode] for this widget.
   final FocusNode? focusNode;
 
+  /// Whether or not this widget should request focus when mounted.
   final bool autofocus;
+
+  /// The cursor for this widget used by the [MouseRegion] when [enableInputDetectors] is true.
+  final MouseCursor? cursor;
 
   const TwStatefulWidget({
     this.style = const TwStyle(),
@@ -106,6 +110,7 @@ abstract class TwStatefulWidget extends StatefulWidget {
     this.canRequestFocus = false,
     this.focusNode,
     this.autofocus = false,
+    this.cursor,
     super.key,
   });
 
