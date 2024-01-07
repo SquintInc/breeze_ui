@@ -70,9 +70,13 @@ class _TwParentMaterialStatesState extends State<TwParentMaterialStates> {
   /// and calling setState within each state, let this parent widget know that
   /// the state has changed and it should rebuild itself including its children.
   void onStateChange() {
-    if (mounted) {
-      setState(() {});
-    }
+    // Wrap in a post-frame callback to ensure that all children have had a chance
+    // to update their states before rebuilding.
+    WidgetsBinding.instance.addPostFrameCallback((final _) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
   }
 
   @override
