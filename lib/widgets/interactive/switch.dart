@@ -220,6 +220,7 @@ class _SwitchTrackState extends TwAnimatedMaterialState<TwSwitch>
       ..value = isSelected ? 1.0 : 0.0;
   }
 
+  /// Animates the thumb in the corresponding direction, with an optional delay.
   void animateThumb(final Duration delay, {required final bool forward}) {
     final thumbController = this.thumbController;
     final thumbCurve = this.thumbCurve;
