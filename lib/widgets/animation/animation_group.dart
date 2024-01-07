@@ -18,7 +18,7 @@ class MaterialStatesGroup extends InheritedWidget {
 
   @override
   bool updateShouldNotify(final MaterialStatesGroup oldWidget) {
-    return statesController != oldWidget.statesController;
+    return !identical(statesController, oldWidget.statesController);
   }
 }
 

@@ -27,6 +27,18 @@ import 'package:tailwind_elements/config/options/units.dart';
 
 typedef StyleValueResolver<T> = T? Function(TwStyle? statusStyle);
 
+typedef StyleResolver = TwStyle Function(
+  Set<MaterialState> states, {
+  TwStyle normal,
+  TwStyle? disabled,
+  TwStyle? dragged,
+  TwStyle? errored,
+  TwStyle? focused,
+  TwStyle? selected,
+  TwStyle? pressed,
+  TwStyle? hovered,
+});
+
 MaterialStateProperty<T> always<T>(final T value) =>
     MaterialStatePropertyAll<T>(value);
 

@@ -21,7 +21,7 @@ class TailwindElementsPlayground extends StatefulWidget {
 class _TailwindElementsPlaygroundState
     extends State<TailwindElementsPlayground> {
   bool toggled = true;
-  MaterialStatesController statesController = MaterialStatesController();
+  final MaterialStatesController statesController = MaterialStatesController();
 
   @override
   Widget build(final BuildContext context) {
@@ -72,6 +72,7 @@ class _TailwindElementsPlaygroundState
                     ),
                     TwCheckbox(
                       value: toggled,
+                      isToggleable: false,
                       icon: const IconSvgData(
                         AssetBytesLoader('assets/checkmark.svg.vec'),
                       ),
@@ -92,6 +93,72 @@ class _TailwindElementsPlaygroundState
                       //   backgroundColor: bg_indigo_200,
                       // ),
                       onToggled: (final bool value) {},
+                    ),
+                    // TwSwitch(
+                    //   style: const TwStyle(
+                    //     backgroundColor: bg_gray_200,
+                    //     transition: transition_all,
+                    //     width: w_12,
+                    //     height: h_6,
+                    //     padding: TwPadding.xy(px_0_5, py_0_5),
+                    //     borderRadius: TwBorderRadius.all(rounded_full),
+                    //   ),
+                    //   selected: const TwStyle(
+                    //     backgroundColor: bg_indigo_500,
+                    //   ),
+                    //   onToggled: (final bool value) {
+                    //     print('switch toggled: $value');
+                    //   },
+                    //   statesController: statesController,
+                    //   thumb: TwDiv(
+                    //     style: TwStyle(
+                    //       backgroundColor: bg_white,
+                    //       transition: transition_all,
+                    //       width: w_5,
+                    //       height: h_5,
+                    //       borderRadius: TwBorderRadius.all(rounded_full),
+                    //     ),
+                    //     selected: TwStyle(
+                    //       backgroundColor: bg_red_500,
+                    //     ),
+                    //     statesController: statesController,
+                    //   ),
+                    // ),
+                    TwSwitch(
+                      value: toggled,
+                      isToggleable: true,
+                      style: const TwStyle(
+                        backgroundColor: bg_gray_200,
+                        transition: transition_all,
+                        width: w_12,
+                        height: h_6,
+                        padding: TwPadding.xy(px_0_5, py_0_5),
+                        borderRadius: TwBorderRadius.all(rounded_full),
+                      ),
+                      selected: const TwStyle(
+                        backgroundColor: bg_indigo_500,
+                      ),
+                      onToggled: (final bool value) {
+                        print('switch toggled: $value');
+                      },
+                      statesController: statesController,
+                      thumb: TwDiv(
+                        style: TwStyle(
+                          backgroundColor: bg_white,
+                          transition: transition_all,
+                          width: w_5,
+                          height: h_5,
+                          borderRadius: TwBorderRadius.all(rounded_full),
+                        ),
+                        hovered: TwStyle(
+                          backgroundColor: bg_red_400,
+                        ),
+                        selected: TwStyle(
+                          backgroundColor: bg_red_500,
+                        ),
+                        enableInputDetectors: true,
+                        statesController: statesController,
+                      ),
                     ),
                   ],
                 ),
@@ -171,6 +238,7 @@ class _TailwindElementsPlaygroundState
                     TwAnimationGroup(
                       child: TwDiv(
                         enableInputDetectors: true,
+                        isDraggable: true,
                         style: TwStyle(
                           width: w_frac_1_3,
                           height: toggled ? h_64 : h_36,
@@ -214,9 +282,13 @@ class _TailwindElementsPlaygroundState
                             backgroundColor: bg_pink_50,
                           ),
                           dragged: const TwStyle(
-                            backgroundColor: bg_pink_900,
+                            backgroundColor: bg_green_900,
                           ),
+                          onDragged: (final bool value) {
+                            print('div dragged: $value');
+                          },
                           canRequestFocus: true,
+                          isDraggable: true,
                         ),
                       ),
                     ),

@@ -48,7 +48,6 @@ class TwColumn extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final column = Column(
-      key: key,
       mainAxisAlignment: mainAxisAlignment,
       mainAxisSize: mainAxisSize,
       crossAxisAlignment: crossAxisAlignment,

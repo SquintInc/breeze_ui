@@ -22,7 +22,7 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   /// This value will be set if [_statesControllerType] is [MaterialStatesControllerType.inherited].
   MaterialStatesController? _animationGroupStatesController;
 
-  MaterialStatesController get _statesController =>
+  MaterialStatesController get statesController =>
       switch (_statesControllerType) {
         MaterialStatesControllerType.passedDown => widget.statesController!,
         MaterialStatesControllerType.internal => _internalStatesController!,
@@ -30,7 +30,7 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
           _animationGroupStatesController!,
       };
 
-  Set<MaterialState> get currentStates => _statesController.value;
+  Set<MaterialState> get currentStates => statesController.value;
 
   /// The internal focus node for this stateful widget.
   late FocusNode? _focusNode;
@@ -75,7 +75,7 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
 
     // Set initial widget state in case the states controller being used already
     // has values set.
-    _statesController
+    statesController
       ..update(MaterialState.disabled, widget.isDisabled)
       ..update(MaterialState.selected, _isSelected)
       ..addListener(handleStatesControllerChange);
@@ -100,29 +100,28 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
       initStatesController();
     }
     if (widget.isDisabled != oldWidget.isDisabled) {
-      _statesController.update(MaterialState.disabled, widget.isDisabled);
+      statesController.update(MaterialState.disabled, widget.isDisabled);
       // Remove pressed state if applicable, if the widget is now disabled
       if (widget.isDisabled) {
-        _statesController.update(MaterialState.pressed, false);
+        statesController.update(MaterialState.pressed, false);
       }
     }
     if (widget.isToggled != oldWidget.isToggled) {
       _isSelected = widget.isToggled;
-      _statesController.update(MaterialState.selected, _isSelected);
+      onIsSelectedChanged(isSelected: isSelected);
     }
   }
 
   @override
   void dispose() {
-    _statesController.removeListener(handleStatesControllerChange);
+    statesController.removeListener(handleStatesControllerChange);
     _internalStatesController?.dispose();
     _focusNode?.dispose();
     super.dispose();
   }
 
   @protected
-  TwStyle getCurrentStyle() {
-    final states = currentStates;
+  TwStyle getCurrentStyle(final Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) {
       return widget.style.merge(widget.disabled);
     }
@@ -155,14 +154,14 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     return cursor;
   }
 
-  Widget _wrapMouseRegion(final Widget child) {
+  Widget wrapMouseRegion(final Widget child) {
     return MouseRegion(
       onEnter: (final event) {
-        _statesController.update(MaterialState.hovered, true);
+        statesController.update(MaterialState.hovered, true);
         widget.onHover?.call(true);
       },
       onExit: (final event) {
-        _statesController.update(MaterialState.hovered, false);
+        statesController.update(MaterialState.hovered, false);
         widget.onHover?.call(false);
       },
       cursor: _resolveCursor() ?? MouseCursor.defer,
@@ -170,11 +169,15 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     );
   }
 
+  void onIsSelectedChanged({required final bool isSelected}) {
+    statesController.update(MaterialState.selected, isSelected);
+  }
+
   void handleTap() {
     if (!widget.isDisabled) {
       if (widget.isToggleable) {
         _isSelected = !_isSelected;
-        _statesController.update(MaterialState.selected, _isSelected);
+        onIsSelectedChanged(isSelected: isSelected);
         if (widget.onSelected != null) {
           widget.onSelected!(_isSelected);
           if (widget.enableFeedback) {
@@ -213,32 +216,32 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     }
   }
 
-  Widget _wrapGestureDetector(final Widget child) {
+  Widget wrapGestureDetector(final Widget child) {
     return GestureDetector(
       excludeFromSemantics: true,
       behavior: widget.hitTestBehavior,
-      onPanStart: (final DragStartDetails details) {
+      onPanUpdate: (final DragUpdateDetails details) {
         if (widget.isDraggable) {
-          _statesController.update(MaterialState.dragged, true);
+          statesController.update(MaterialState.dragged, true);
           widget.onDragged?.call(true);
         }
       },
       onPanEnd: (final DragEndDetails details) {
-        _statesController.update(MaterialState.pressed, false);
+        statesController.update(MaterialState.pressed, false);
         if (widget.isDraggable) {
-          _statesController.update(MaterialState.dragged, false);
+          statesController.update(MaterialState.dragged, false);
           widget.onDragged?.call(false);
         }
       },
       onPanCancel: () {
-        _statesController.update(MaterialState.pressed, false);
+        statesController.update(MaterialState.pressed, false);
         if (widget.isDraggable) {
-          _statesController.update(MaterialState.dragged, false);
+          statesController.update(MaterialState.dragged, false);
           widget.onDragged?.call(false);
         }
       },
       onPanDown: (final DragDownDetails details) {
-        _statesController.update(MaterialState.pressed, true);
+        statesController.update(MaterialState.pressed, true);
       },
       onTap:
           widget.onTap != null || widget.onSelected != null ? handleTap : null,
@@ -249,20 +252,16 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   }
 
   Widget conditionallyWrapOpacity(final Widget child, final TwStyle style) {
-    if (widget.hasOpacity) {
-      return Opacity(
-        opacity: style.opacity?.value ?? 1.0,
-        child: child,
-      );
-    }
-    return child;
+    if (!widget.hasOpacity) return child;
+    return Opacity(
+      opacity: style.opacity?.value ?? 1.0,
+      child: child,
+    );
   }
 
   Widget conditionallyWrapInputDetectors(final Widget child) {
-    if (widget.enableInputDetectors) {
-      return _wrapMouseRegion(_wrapGestureDetector(child));
-    }
-    return child;
+    if (!widget.enableInputDetectors) return child;
+    return wrapMouseRegion(wrapGestureDetector(child));
   }
 
   late final Map<Type, Action<Intent>> _actionMap = <Type, Action<Intent>>{
@@ -276,23 +275,21 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     final Widget child, {
     final bool includeFocusActions = false,
   }) {
-    if (widget.canRequestFocus) {
-      final focus = Focus(
-        onFocusChange: (final bool hasFocus) {
-          _statesController.update(MaterialState.focused, hasFocus);
-          widget.onFocusChange?.call(hasFocus);
-        },
-        focusNode: focusNode,
-        autofocus: widget.autofocus,
-        child: child,
-      );
-      return includeFocusActions
-          ? Actions(
-              actions: _actionMap,
-              child: focus,
-            )
-          : focus;
-    }
-    return child;
+    if (!widget.canRequestFocus) return child;
+    final focus = Focus(
+      onFocusChange: (final bool hasFocus) {
+        statesController.update(MaterialState.focused, hasFocus);
+        widget.onFocusChange?.call(hasFocus);
+      },
+      focusNode: focusNode,
+      autofocus: widget.autofocus,
+      child: child,
+    );
+    return includeFocusActions
+        ? Actions(
+            actions: _actionMap,
+            child: focus,
+          )
+        : focus;
   }
 }

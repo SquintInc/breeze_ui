@@ -70,29 +70,25 @@ class TwButton extends TwStatefulWidget {
       onTap != null || onLongPress != null || onDoubleTap != null;
 }
 
-class _TwButtonState extends TwAnimatedMaterialState<TwButton> {
+class _TwButtonState extends TwAnimatedMaterialState<TwButton>
+    with SingleTickerProviderStateMixin {
   /// Wrap the button by extending [TwStatefulWidget] and using a [Div] for simplicity of applying
   /// styles with support for animated transitions.
   @override
   Widget build(final BuildContext context) {
-    final currentStyle = getCurrentStyle();
+    final currentStyle = getCurrentStyle(currentStates);
     final animatedStyle = currentStyle.merge(getAnimatedStyle());
 
     final div = Div(
-      key: widget.key,
       style: animatedStyle,
       staticConstraints: currentStyle.toConstraints(),
+      parentControlsOpacity: true,
       alignment: widget.alignment,
       clipBehavior: widget.clipBehavior,
       transform: widget.transform,
       transformAlignment: widget.transformAlignment,
       child: widget.child,
     );
-
-    Widget current = div;
-    current = conditionallyWrapOpacity(current, animatedStyle);
-    current = conditionallyWrapInputDetectors(current);
-    current = conditionallyWrapFocus(current, includeFocusActions: true);
 
     // Input padding needs to be wrapped in Semantics for hit test to be constrained
     return Semantics(
@@ -101,8 +97,16 @@ class _TwButtonState extends TwAnimatedMaterialState<TwButton> {
       enabled: !widget.isDisabled,
       child: InputPadding(
         minSize: Size.square(widget.tapTargetSize.pixels()),
-        child: current,
+        child: conditionallyWrapFocus(
+          conditionallyWrapInputDetectors(
+            conditionallyWrapOpacity(div, animatedStyle),
+          ),
+          includeFocusActions: true,
+        ),
       ),
     );
   }
+
+  @override
+  TickerProvider getTickerProvider() => this;
 }

@@ -64,16 +64,17 @@ class TwDiv extends TwStatefulWidget {
   State createState() => _TwDiv();
 }
 
-class _TwDiv extends TwAnimatedMaterialState<TwDiv> {
+class _TwDiv extends TwAnimatedMaterialState<TwDiv>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(final BuildContext context) {
-    final currentStyle = getCurrentStyle();
+    final currentStyle = getCurrentStyle(currentStates);
     final animatedStyle = currentStyle.merge(getAnimatedStyle());
 
     final div = Div(
-      key: widget.key,
       style: animatedStyle,
       staticConstraints: currentStyle.toConstraints(),
+      parentControlsOpacity: true,
       alignment: widget.alignment,
       clipBehavior: widget.clipBehavior,
       transform: widget.transform,
@@ -81,13 +82,14 @@ class _TwDiv extends TwAnimatedMaterialState<TwDiv> {
       child: widget.child,
     );
 
-    Widget current = div;
-    current = conditionallyWrapOpacity(current, animatedStyle);
-    current = conditionallyWrapInputDetectors(current);
-    current = conditionallyWrapFocus(
-      current,
+    return conditionallyWrapFocus(
+      conditionallyWrapInputDetectors(
+        conditionallyWrapOpacity(div, animatedStyle),
+      ),
       includeFocusActions: widget.includeFocusActions,
     );
-    return current;
   }
+
+  @override
+  TickerProvider getTickerProvider() => this;
 }

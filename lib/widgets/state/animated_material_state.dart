@@ -156,7 +156,7 @@ extension TransformConstraints on TwStyle {
 
 /// An [TwMaterialState] with support for animated style transitions.
 abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
-    extends TwMaterialState<T> with SingleTickerProviderStateMixin {
+    extends TwMaterialState<T> {
   /// Default transition property duration if a transition property is set.
   /// Value taken from https://tailwindcss.com/docs/transition-property.
   static const defaultDuration = Duration(milliseconds: 150);
@@ -173,9 +173,6 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
 
   /// Internal (linear-time) animation controller for the widget using this class
   AnimationController? animationController;
-
-  /// Tracks the current style's list of properties that can be tweened.
-  Set<TransitionProperty> transitionProperties = {};
 
   /// Style tween
   TwStyleTween? styleTween;
@@ -194,17 +191,18 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
     final ParentConstraintsData? parentConstraintsData =
         ParentConstraintsData.of(context);
     parentConstraints = parentConstraintsData?.constraints;
-    final currentStyle = getCurrentStyle();
+    final currentStyle = getCurrentStyle(currentStates);
     initAnimationController(currentStyle);
     updateAnimationControllerData(currentStyle);
   }
 
   @override
   void handleStatesControllerChange() {
-    super.handleStatesControllerChange();
-    final currentStyle = getCurrentStyle();
+    final currentStyle = getCurrentStyle(currentStates);
     initAnimationController(currentStyle);
     updateAnimationControllerData(currentStyle);
+    // Notify state change
+    setState(() {});
   }
 
   void updateAnimationControllerData(final TwStyle currentStyle) {
@@ -245,14 +243,14 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
     }
 
     // Update animation controller tween values
-    _updateStyleTween(styleTween, currentStyle);
-    _animate(delay);
+    updateTweens(currentStyle);
+    animateTweens(delay);
   }
 
   @override
   void didUpdateWidget(final T oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final currentStyle = getCurrentStyle();
+    final currentStyle = getCurrentStyle(currentStates);
     if (widget.hasTransitions != oldWidget.hasTransitions) {
       // Dispose old animation controller and re-init a new one
       this.animationController?.removeListener(handleAnimationControllerUpdate);
@@ -265,12 +263,14 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
     updateAnimationControllerData(currentStyle);
   }
 
+  TickerProvider getTickerProvider();
+
   /// Initializes the animation controller and creates a new controller instance only if the widget
   /// has transitions enabled and if the controller has not already been initialized yet.
   void initAnimationController(final TwStyle currentStyle) {
     if (widget.hasTransitions) {
       animationController ??= AnimationController(
-        vsync: this,
+        vsync: getTickerProvider(),
         duration:
             currentStyle.transitionDuration?.duration.value ?? defaultDuration,
         debugLabel: kDebugMode ? widget.toStringShort() : null,
@@ -282,6 +282,10 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
         parentConstraints: parentConstraints,
       );
     }
+  }
+
+  void updateTweens(final TwStyle currentStyle) {
+    _updateStyleTween(styleTween, currentStyle);
   }
 
   void _updateStyleTween(
@@ -300,7 +304,7 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
       ..end = targetStyle.transformConstraintsToAbsolute(parentConstraints);
   }
 
-  void _animate(final Duration delay) {
+  void animateTweens(final Duration delay) {
     final animationController = this.animationController;
     final animationCurve = this.animationCurve;
     if (animationController != null && animationCurve != null) {

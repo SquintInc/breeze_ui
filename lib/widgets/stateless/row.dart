@@ -48,7 +48,6 @@ class TwRow extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final row = Row(
-      key: key,
       mainAxisAlignment: mainAxisAlignment,
       mainAxisSize: mainAxisSize,
       crossAxisAlignment: crossAxisAlignment,
