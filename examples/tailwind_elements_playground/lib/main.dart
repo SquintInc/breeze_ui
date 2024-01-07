@@ -7,6 +7,7 @@ import 'package:tailwind_elements/widgets/stateless/div.dart';
 import 'package:tailwind_elements_playground/tailwind_config.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
+// ignore_for_file: avoid_print
 void main() {
   runApp(const TailwindElementsPlayground());
 }
@@ -47,7 +48,60 @@ class _TailwindElementsPlaygroundState
               gap: gap_y_4,
               scrollable: true,
               children: [
+                Row(
+                  children: [
+                    TwCheckbox(
+                      value: toggled,
+                      icon: const IconSvgData(
+                        AssetBytesLoader('assets/checkmark.svg.vec'),
+                      ),
+                      style: const TwStyle(
+                        backgroundColor: bg_indigo_200,
+                        transition: transition_all,
+                        width: w_4,
+                        height: h_4,
+                        textColor: text_indigo_800,
+                      ),
+                      selected: const TwStyle(
+                        backgroundColor: bg_indigo_300,
+                      ),
+                      hovered: const TwStyle(
+                        backgroundColor: bg_indigo_400,
+                      ),
+                      // pressed: const TwStyle(
+                      //   backgroundColor: bg_indigo_200,
+                      // ),
+                      onToggled: (final bool value) {},
+                    ),
+                    TwCheckbox(
+                      value: toggled,
+                      icon: const IconSvgData(
+                        AssetBytesLoader('assets/checkmark.svg.vec'),
+                      ),
+                      style: const TwStyle(
+                        backgroundColor: bg_indigo_200,
+                        transition: transition_all,
+                        width: w_4,
+                        height: h_4,
+                        textColor: text_indigo_800,
+                      ),
+                      selected: const TwStyle(
+                        backgroundColor: bg_indigo_300,
+                      ),
+                      hovered: const TwStyle(
+                        backgroundColor: bg_indigo_400,
+                      ),
+                      // pressed: const TwStyle(
+                      //   backgroundColor: bg_indigo_200,
+                      // ),
+                      onToggled: (final bool value) {},
+                    ),
+                  ],
+                ),
                 TwRow(
+                  scrollable: true,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TwDiv(
                       style: TwStyle(
@@ -246,26 +300,6 @@ class _TailwindElementsPlaygroundState
                       icon: IconSvgData(
                         AssetBytesLoader('assets/checkmark.svg.vec'),
                       ),
-                    ),
-                    TwCheckbox(
-                      value: toggled,
-                      icon: const IconSvgData(
-                        AssetBytesLoader('assets/checkmark.svg.vec'),
-                      ),
-                      style: const TwStyle(
-                        backgroundColor: bg_indigo_200,
-                        transition: transition_all,
-                        width: w_6,
-                        height: h_6,
-                        textColor: text_indigo_800,
-                      ),
-                      selected: const TwStyle(
-                        backgroundColor: bg_indigo_300,
-                      ),
-                      // pressed: const TwStyle(
-                      //   backgroundColor: bg_indigo_200,
-                      // ),
-                      onToggled: (final bool value) {},
                     ),
                   ],
                 ),

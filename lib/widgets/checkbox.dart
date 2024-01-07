@@ -3,6 +3,7 @@ import 'package:tailwind_elements/config/options/colors.dart';
 import 'package:tailwind_elements/config/options/sizing/height.dart';
 import 'package:tailwind_elements/config/options/sizing/width.dart';
 import 'package:tailwind_elements/widgets.dart';
+import 'package:tailwind_elements/widgets/input_padding.dart';
 import 'package:tailwind_elements/widgets/state/animated_material_state.dart';
 import 'package:tailwind_elements/widgets/state/stateful_widget.dart';
 import 'package:tailwind_elements/widgets/stateless/div.dart';
@@ -11,11 +12,11 @@ import 'package:tailwind_elements/widgets/stateless/div.dart';
 /// styled properties.
 @immutable
 class TwCheckbox extends TwStatefulWidget {
-  static const double minTapTargetSizePx = 48.0;
-  static const double defaultCheckmarkSizePx = 16.0;
+  static const PxUnit minTapTargetSize = PxUnit(48.0);
+  static const PxUnit defaultCheckmarkSize = PxUnit(16.0);
   static const TwStyle defaultCheckboxStyle = TwStyle(
-    width: TwWidth(PxUnit(defaultCheckmarkSizePx)),
-    height: TwHeight(PxUnit(defaultCheckmarkSizePx)),
+    width: TwWidth(defaultCheckmarkSize),
+    height: TwHeight(defaultCheckmarkSize),
     textColor: TwTextColor(Colors.black),
   );
 
@@ -25,8 +26,8 @@ class TwCheckbox extends TwStatefulWidget {
   /// Called when the internal selected state of the checkbox changes.
   final ValueChanged<bool>? onToggled;
 
-  /// The tap target size of the checkbox widget, defaults to 48.0 pixels as per Material Design
-  /// guidelines.
+  /// The tap target size of the checkbox widget.
+  /// Defaults to 48.0 pixels as per Material Design guidelines.
   final CssAbsoluteUnit tapTargetSize;
 
   /// Custom icon to use for the checkmark icon.
@@ -35,7 +36,7 @@ class TwCheckbox extends TwStatefulWidget {
   const TwCheckbox({
     required this.value,
     this.onToggled,
-    this.tapTargetSize = const PxUnit(minTapTargetSizePx),
+    this.tapTargetSize = minTapTargetSize,
     this.icon = const IconFontData(Icons.check),
     super.style = defaultCheckboxStyle,
     super.disabled,
@@ -129,8 +130,15 @@ class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox> {
     current = conditionallyWrapInputDetectors(current);
     current = conditionallyWrapFocus(current, includeFocusActions: true);
 
-    // TODO: Implement tap target size
-
-    return current;
+    // Input padding needs to be wrapped in Semantics for hit test to be constrained
+    return Semantics(
+      container: true,
+      checked: widget.value ?? false,
+      enabled: !widget.isDisabled,
+      child: InputPadding(
+        minSize: Size.square(widget.tapTargetSize.pixels()),
+        child: current,
+      ),
+    );
   }
 }

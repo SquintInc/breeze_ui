@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tailwind_elements/widgets/input_padding.dart';
 import 'package:tailwind_elements/widgets/state/animated_material_state.dart';
 import 'package:tailwind_elements/widgets/state/stateful_widget.dart';
 import 'package:tailwind_elements/widgets/stateless/div.dart';
@@ -9,6 +10,8 @@ import 'package:tailwind_elements/widgets/style/style.dart';
 /// See the [build] method for more details about the implementation choice.
 @immutable
 class TwButton extends TwStatefulWidget {
+  static const PxUnit minTapTargetSize = PxUnit(48.0);
+
   // Pass-through properties for [TextButton]
   final Widget? child;
   final Clip clipBehavior;
@@ -17,8 +20,13 @@ class TwButton extends TwStatefulWidget {
   final AlignmentGeometry? transformAlignment;
   final AlignmentGeometry alignment;
 
+  /// The tap target size of the button widget.
+  /// Defaults to 48.0 pixels as per Material Design guidelines.
+  final CssAbsoluteUnit tapTargetSize;
+
   const TwButton({
     required final GestureTapCallback onPressed,
+    this.tapTargetSize = minTapTargetSize,
     // Passthrough [TextButton] properties
     this.child,
     this.clipBehavior = Clip.none,
@@ -84,6 +92,16 @@ class _TwButtonState extends TwAnimatedMaterialState<TwButton> {
     current = conditionallyWrapOpacity(current, animatedStyle);
     current = conditionallyWrapInputDetectors(current);
     current = conditionallyWrapFocus(current, includeFocusActions: true);
-    return current;
+
+    // Input padding needs to be wrapped in Semantics for hit test to be constrained
+    return Semantics(
+      container: true,
+      button: true,
+      enabled: !widget.isDisabled,
+      child: InputPadding(
+        minSize: Size.square(widget.tapTargetSize.pixels()),
+        child: current,
+      ),
+    );
   }
 }
