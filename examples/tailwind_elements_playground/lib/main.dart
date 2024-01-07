@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tailwind_elements/base.dart';
 import 'package:tailwind_elements/widgets.dart';
 import 'package:tailwind_elements_playground/tailwind_config.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 
+// ignore_for_file: avoid_print
 void main() {
   runApp(const TailwindElementsPlayground());
 }
@@ -18,10 +20,8 @@ class TailwindElementsPlayground extends StatefulWidget {
 
 class _TailwindElementsPlaygroundState
     extends State<TailwindElementsPlayground> {
-  TwTransitionProperty properties = transition_all;
-  String text = 'Hello world!';
-  final statesController = MaterialStatesController();
-  final textStatesController = MaterialStatesController();
+  bool toggled = true;
+  MaterialStatesController statesController = MaterialStatesController();
 
   @override
   Widget build(final BuildContext context) {
@@ -32,227 +32,276 @@ class _TailwindElementsPlaygroundState
         useMaterial3: true,
       ),
       home: Material(
-        child: TwDiv(
+        child: Div(
           style: const TwStyle(
             height: h_96,
-            backgroundColor: bg_slate_700,
+            backgroundColor: bg_slate_50,
           ),
-          child: TwColumn(
-            gap: gap_y_4,
-            scrollable: true,
-            children: [
-              TwButton(
-                alignment: Alignment.center,
-                style: const TwStyle(
-                  width: w_96,
-                  height: h_20,
-                  backgroundColor: bg_green_400,
-                  borderRadius: TwBorderRadius.all(rounded_lg),
-                  transition: transition_all,
-                  transitionDuration: duration_150,
-                  boxShadow: shadow_md,
-                  boxShadowColor: shadow_gray_500,
-                ),
-                hovered: const TwStyle(
-                  backgroundColor: bg_blue_400,
-                  boxShadow: shadow_2xl,
-                ),
-                pressed: const TwStyle(
-                  backgroundColor: bg_red_400,
-                  // borderRadius: TwBorderRadius.all(rounded_full),
-                ),
-                child: const TwText(
-                  'Top Button',
-                  style: TwStyle(
-                    fontSize: text_2xl,
-                    fontWeight: font_bold,
-                    textColor: text_white,
-                  ),
-                ),
-                onPressed: () {},
-                // onLongPress: () {
-                //   print('long press');
-                // },
-                onHover: (final hovered) {},
-              ),
-              TwButton(
-                onPressed: () {},
-                onLongPress: () {},
-                onHover: (final hovered) {},
-                style: const TwStyle(
-                  width: w_96,
-                  height: h_20,
-                  backgroundColor: bg_black,
-                  transition: transition_colors,
-                  transitionDuration: duration_150,
-                ),
-                hovered: const TwStyle(
-                  backgroundColor: bg_blue_400,
-                ),
-                child: const TwText(
-                  'Top Button',
-                  style: TwStyle(
-                    fontSize: text_2xl,
-                    fontWeight: font_bold,
-                    textColor: text_white,
-                  ),
-                ),
-              ),
-              TwButton(
-                style: const TwStyle(
-                  width: w_24,
-                  height: h_12,
-                  backgroundColor: bg_green_400,
-                  textColor: text_white,
-                  transition: transition_all,
-                ),
-                hovered: const TwStyle(
-                  backgroundColor: bg_blue_400,
-                  textColor: text_blue_700,
-                ),
-                pressed: const TwStyle(
-                  backgroundColor: bg_red_400,
-                  textColor: text_red_700,
-                ),
-                child: const Text('Bottom Button'),
-                onPressed: () {},
-              ),
-              const TwTextField(
-                style: TwStyle(
-                  border: TwBorder.all(border_8),
-                  borderRadius: TwBorderRadius.all(rounded_full),
-                  borderColor: border_green_400,
-                  padding: TwPadding.all(p_6),
-                ),
-                hovered: TwStyle(
-                  border: TwBorder.all(border_2),
-                  borderRadius: TwBorderRadius.all(rounded_full),
-                  borderColor: border_blue_400,
-                  padding: TwPadding.all(p_0),
-                ),
-              ),
-              const TwDiv(
-                alignment: Alignment.center,
-                style: TwStyle(
-                  width: w_96,
-                  height: h_20,
-                  backgroundColor: bg_green_400,
-                  textColor: text_gray_500,
-                  fontSize: text_2xl,
-                  fontWeight: font_bold,
-                  transition: transition_all,
-                  borderRadius: TwBorderRadius.all(rounded_lg),
-                  transitionDuration: duration_150,
-                  textDecorationStyle: TextDecorationStyle.dashed,
-                  textDecoration: TextDecoration.underline,
-                  textDecorationColor: TwTextDecorationColor(Color(0x01000000)),
-                  textDecorationThickness: decoration_2,
-                ),
-                hovered: TwStyle(
-                  backgroundColor: bg_blue_400,
-                  textColor: text_black,
-                  fontSize: text_3xl,
-                  textDecorationThickness: decoration_8,
-                  textDecorationColor: decoration_indigo_700,
-                ),
-                child: TwText('test inherited text style'),
-              ),
-              TwAnimationGroup(
-                child: TwDiv(
-                  alignment: Alignment.center,
-                  selected: const TwStyle(
-                    backgroundColor: bg_cyan_700,
-                  ),
-                  style: const TwStyle(
-                    width: w_48,
-                    height: h_24,
-                    border: TwBorder.all(border_8),
-                    borderRadius: TwBorderRadius.all(rounded_3xl),
-                    borderColor: border_green_600,
-                    backgroundColor: bg_teal_400,
-                    boxShadow: shadow_lg,
-                    boxShadowColor: shadow_gray_500,
-                    transition: transition_all,
-                    transitionDuration: duration_300,
-                    transitionTimingFn: ease_in_out,
-                    fontSize: text_2xl,
-                    fontWeight: font_bold,
-                    textColor: text_white,
-                  ),
-                  hovered: const TwStyle(
-                    width: w_64,
-                    maxWidth: max_w_screen_2xl,
-                    backgroundColor: bg_black,
-                    borderRadius: TwBorderRadius.all(rounded_full),
-                    borderColor: border_blue_600,
-                    // opacity: opacity_50,
-                    boxShadow: shadow_2xl,
-                    boxShadowColor: shadow_black,
-                  ),
-                  pressed: const TwStyle(
-                    backgroundColor: bg_red_500,
-                    border: TwBorder.all(border_2),
-                    // borderRadius: TwBorderRadius.all(rounded_full),
-                    // width: w_frac_3_4,
-                  ),
-                  disabled: const TwStyle(
-                    backgroundColor: bg_gray_500,
-                  ),
-                  dragged: const TwStyle(
-                    backgroundColor: bg_purple_500,
-                  ),
-                  child: TwAnimatedText(
-                    text,
-                    hovered: const TwStyle(
-                      textColor: text_blue_700,
-                    ),
-                  ),
-                ),
-              ),
-              const TwAnimationGroup(
-                child: TwAnimatedText.rich(
-                  TwTextSpan(
-                    children: [
-                      TwTextSpan(
-                        text: 'Hello ',
+          child: ParentConstraintsData(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width,
+            ),
+            child: TwColumn(
+              gap: gap_y_4,
+              scrollable: true,
+              children: [
+                Row(
+                  children: [
+                    TwCheckbox(
+                      value: toggled,
+                      icon: const IconSvgData(
+                        AssetBytesLoader('assets/checkmark.svg.vec'),
                       ),
-                      WidgetSpan(
-                        child: TwAnimatedText(
-                          'world!',
+                      style: const TwStyle(
+                        backgroundColor: bg_indigo_200,
+                        transition: transition_all,
+                        width: w_4,
+                        height: h_4,
+                        textColor: text_indigo_800,
+                      ),
+                      selected: const TwStyle(
+                        backgroundColor: bg_indigo_300,
+                      ),
+                      hovered: const TwStyle(
+                        backgroundColor: bg_indigo_400,
+                      ),
+                      // pressed: const TwStyle(
+                      //   backgroundColor: bg_indigo_200,
+                      // ),
+                      onToggled: (final bool value) {},
+                    ),
+                    TwCheckbox(
+                      value: toggled,
+                      icon: const IconSvgData(
+                        AssetBytesLoader('assets/checkmark.svg.vec'),
+                      ),
+                      style: const TwStyle(
+                        backgroundColor: bg_indigo_200,
+                        transition: transition_all,
+                        width: w_4,
+                        height: h_4,
+                        textColor: text_indigo_800,
+                      ),
+                      selected: const TwStyle(
+                        backgroundColor: bg_indigo_300,
+                      ),
+                      hovered: const TwStyle(
+                        backgroundColor: bg_indigo_400,
+                      ),
+                      // pressed: const TwStyle(
+                      //   backgroundColor: bg_indigo_200,
+                      // ),
+                      onToggled: (final bool value) {},
+                    ),
+                  ],
+                ),
+                TwRow(
+                  scrollable: true,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TwDiv(
+                      style: TwStyle(
+                        width: w_frac_1_3,
+                        height: toggled ? h_64 : h_36,
+                        backgroundColor: bg_slate_800,
+                        transition: transition_all,
+                      ),
+                    ),
+                    TwDiv(
+                      style: TwStyle(
+                        width: w_frac_1_3,
+                        height: toggled ? h_64 : h_36,
+                        backgroundColor: bg_slate_700,
+                        transition: transition_all,
+                      ),
+                    ),
+                    TwDiv(
+                      style: TwStyle(
+                        width: w_frac_1_3,
+                        height: toggled ? h_64 : h_36,
+                        backgroundColor: bg_slate_600,
+                        transition: transition_all,
+                      ),
+                      hovered: const TwStyle(
+                        backgroundColor: bg_slate_500,
+                      ),
+                      child: TwRow(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const TwDiv(
+                            style: TwStyle(
+                              width: w_frac_1_2,
+                              height: h_frac_1_2,
+                              backgroundColor: bg_red_500,
+                              transition: transition_all,
+                            ),
+                            hovered: TwStyle(
+                              backgroundColor: bg_red_400,
+                            ),
+                          ),
+                          TwDiv(
+                            alignment: Alignment.topLeft,
+                            style: TwStyle(
+                              width: w_frac_1_2,
+                              height: toggled ? h_64 : h_full,
+                              backgroundColor: bg_blue_400,
+                              transition: transition_all,
+                            ),
+                            child: const TwColumn(
+                              children: [
+                                TwDiv(
+                                  style: TwStyle(
+                                    width: w_frac_1_2,
+                                    height: h_frac_1_3,
+                                    backgroundColor: bg_green_500,
+                                    transition: transition_all,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                TwRow(
+                  children: [
+                    TwAnimationGroup(
+                      child: TwDiv(
+                        enableInputDetectors: true,
+                        style: TwStyle(
+                          width: w_frac_1_3,
+                          height: toggled ? h_64 : h_36,
+                          backgroundColor: bg_amber_500,
+                          transition: transition_all,
+                        ),
+                        pressed: const TwStyle(
+                          backgroundColor: bg_red_600,
+                          width: w_64,
+                        ),
+                        hovered: const TwStyle(
+                          backgroundColor: bg_amber_400,
+                          width: w_frac_2_3,
+                        ),
+                        selected: const TwStyle(
+                          backgroundColor: bg_indigo_50,
+                        ),
+                        dragged: const TwStyle(
+                          backgroundColor: bg_blue_900,
+                        ),
+                        child: TwDiv(
                           style: TwStyle(
-                            fontSize: text_2xl,
-                            fontWeight: font_bold,
-                            textColor: text_black,
+                            width: toggled ? w_frac_1_2 : w_64,
+                            height: toggled ? h_4 : h_frac_1_3,
+                            backgroundColor: bg_pink_500,
                             transition: transition_all,
-                            transitionDuration: duration_1000,
-                            transitionDelay: delay_1000,
                           ),
-                          hovered: TwStyle(
-                            // fontSize: text_4xl,
-                            textColor: text_gray_500,
+                          pressed: const TwStyle(
+                            backgroundColor: bg_pink_600,
+                            width: w_64,
                           ),
+                          hovered: const TwStyle(
+                            backgroundColor: bg_pink_400,
+                            width: w_frac_2_3,
+                          ),
+                          focused: const TwStyle(
+                            backgroundColor: bg_pink_50,
+                            transitionDuration: duration_0,
+                          ),
+                          selected: const TwStyle(
+                            backgroundColor: bg_pink_50,
+                          ),
+                          dragged: const TwStyle(
+                            backgroundColor: bg_pink_900,
+                          ),
+                          canRequestFocus: true,
                         ),
                       ),
-                    ],
-                  ),
-                  style: TwStyle(
-                    fontSize: text_2xl,
-                    textColor: text_white,
-                    transition: transition_all,
-                    transitionDuration: duration_1000,
-                    // transitionDelay: delay_300,
-                  ),
-                  hovered: TwStyle(
-                    // fontSize: text_4xl,
-                    textColor: text_gray_500,
-                  ),
-                  pressed: TwStyle(
-                    // fontSize: text_4xl,
-                    textColor: text_yellow_500,
-                  ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                TwRow(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TwButton(
+                      onPressed: () {
+                        setState(() {
+                          toggled = !toggled;
+                        });
+                      },
+                      style: const TwStyle(
+                        borderColor: border_transparent,
+                        borderRadius: TwBorderRadius.all(rounded_full),
+                        padding: TwPadding.xy(px_2_5, py_1),
+                        backgroundColor: bg_indigo_600,
+                        fontSize: text_xs,
+                        textColor: text_white,
+                        boxShadow: shadow_sm,
+                        fontWeight: font_bold,
+                        transition: transition_all,
+                      ),
+                      hovered: const TwStyle(
+                        backgroundColor: bg_indigo_500,
+                      ),
+                      focused: const TwStyle(
+                        backgroundColor: bg_indigo_400,
+                        borderColor: border_blue_400,
+                      ),
+                      disabled: const TwStyle(
+                        backgroundColor: bg_indigo_200,
+                      ),
+                      child: Text('Toggle: $toggled'),
+                    ),
+                  ],
+                ),
+                TwRow(
+                  gap: gap_x_4,
+                  children: [
+                    TwButton(
+                      onPressed: () {
+                        // print current time in epoch
+                        print(
+                          'Button pressed! Current epoch: ${DateTime.now().millisecondsSinceEpoch}',
+                        );
+                      },
+                      isDisabled: !toggled,
+                      style: const TwStyle(
+                        borderColor: border_transparent,
+                        borderRadius: TwBorderRadius.all(rounded_full),
+                        padding: TwPadding.xy(px_2_5, py_1),
+                        backgroundColor: bg_indigo_600,
+                        fontSize: text_xs,
+                        textColor: text_white,
+                        boxShadow: shadow_sm,
+                        fontWeight: font_bold,
+                        transition: transition_all,
+                      ),
+                      hovered: const TwStyle(
+                        backgroundColor: bg_indigo_500,
+                      ),
+                      focused: const TwStyle(
+                        backgroundColor: bg_indigo_400,
+                        borderColor: border_blue_400,
+                      ),
+                      disabled: const TwStyle(
+                        backgroundColor: bg_indigo_200,
+                      ),
+                      child: const TwText('Button Text'),
+                    ),
+                    const TwIcon(
+                      icon: IconFontData(Icons.check),
+                    ),
+                    const TwIcon(
+                      icon: IconSvgData(
+                        AssetBytesLoader('assets/checkmark.svg.vec'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

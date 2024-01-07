@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:tailwind_elements/config/options/borders/border_radius.dart';
 import 'package:tailwind_elements/config/options/borders/border_width.dart';
@@ -22,16 +24,28 @@ import 'package:tailwind_elements/config/options/typography/letter_spacing.dart'
 import 'package:tailwind_elements/config/options/typography/line_height.dart';
 import 'package:tailwind_elements/config/options/typography/text_decoration_thickness.dart';
 import 'package:tailwind_elements/config/options/units.dart';
-import 'package:tailwind_elements/widgets/extensions/extensions.dart';
-import 'package:tailwind_elements/widgets/state/widget_state.dart';
-
-export 'package:tailwind_elements/config/options/units.dart';
-export 'package:tailwind_elements/widgets/extensions/extensions.dart';
 
 typedef StyleValueResolver<T> = T? Function(TwStyle? statusStyle);
 
 MaterialStateProperty<T> always<T>(final T value) =>
     MaterialStatePropertyAll<T>(value);
+
+extension RadiusExt on BoxConstraints {
+  double get circleRadius {
+    final bool hasInfiniteHeight = maxHeight.isInfinite;
+    final bool hasInfiniteWidth = maxWidth.isInfinite;
+    if (hasInfiniteWidth && hasInfiniteHeight) {
+      return TwBorderRadius.fullRadiusPx;
+    }
+    if (hasInfiniteWidth) {
+      return (maxHeight / 2).ceilToDouble();
+    }
+    if (hasInfiniteHeight) {
+      return (maxWidth / 2).ceilToDouble();
+    }
+    return (min(minWidth, minHeight) / 2).ceilToDouble();
+  }
+}
 
 /// Flattened style data class for Tailwind CSS properties.
 /// Some properties may not be applicable to certain widgets (e.g. typography
@@ -338,31 +352,14 @@ class TwStyle {
     );
   }
 
-  /// Compute simple box constraints for this style, using the min/max width and
-  /// height sizing values, assuming that they are logical pixels.
-  BoxConstraints? getSimpleConstraints() {
-    if (!hasConstraints) return null;
-    return BoxConstraints(
-      minWidth: switch (minWidth?.value) {
-        CssAbsoluteUnit() =>
-          (minWidth!.value as CssAbsoluteUnit).pixels(fontSizePx),
-        _ => 0.0,
-      },
-      maxWidth: switch (maxWidth?.value) {
-        CssAbsoluteUnit() =>
-          (maxWidth!.value as CssAbsoluteUnit).pixels(fontSizePx),
-        _ => double.infinity,
-      },
-      minHeight: switch (minHeight?.value) {
-        CssAbsoluteUnit() =>
-          (minHeight!.value as CssAbsoluteUnit).pixels(fontSizePx),
-        _ => 0.0,
-      },
-      maxHeight: switch (maxHeight?.value) {
-        CssAbsoluteUnit() =>
-          (maxHeight!.value as CssAbsoluteUnit).pixels(fontSizePx),
-        _ => double.infinity,
-      },
+  TwConstraints toConstraints() {
+    return TwConstraints(
+      minWidth: minWidth,
+      width: width,
+      maxWidth: maxWidth,
+      minHeight: minHeight,
+      height: height,
+      maxHeight: maxHeight,
     );
   }
 
@@ -403,6 +400,41 @@ class TwStyle {
         )
       : InputBorder.none;
 
+  static TwStyle defaultStyleResolver(
+    final Set<MaterialState> states, {
+    required final TwStyle normal,
+    required final TwStyle? disabled,
+    required final TwStyle? dragged,
+    required final TwStyle? errored,
+    required final TwStyle? focused,
+    required final TwStyle? selected,
+    required final TwStyle? pressed,
+    required final TwStyle? hovered,
+  }) {
+    if (states.contains(MaterialState.disabled)) {
+      return normal.merge(disabled);
+    }
+    if (states.contains(MaterialState.dragged)) {
+      return normal.merge(pressed).merge(dragged);
+    }
+    if (states.contains(MaterialState.error)) {
+      return normal.merge(errored);
+    }
+    if (states.contains(MaterialState.focused)) {
+      return normal.merge(focused);
+    }
+    if (states.contains(MaterialState.pressed)) {
+      return normal.merge(pressed);
+    }
+    if (states.contains(MaterialState.selected)) {
+      return normal.merge(selected);
+    }
+    if (states.contains(MaterialState.hovered)) {
+      return normal.merge(hovered);
+    }
+    return normal;
+  }
+
   static InputBorder? resolveMaterialInputBorder(
     final TwStyle normal, {
     required final TwStyle? disabled,
@@ -415,17 +447,18 @@ class TwStyle {
   }) =>
       MaterialStateOutlineInputBorder.resolveWith(
           (final Set<MaterialState> states) {
-        final TwStyle? statusStyle = switch (getPrimaryWidgetState(states)) {
-          TwWidgetState.disabled => disabled,
-          TwWidgetState.dragged => dragged,
-          TwWidgetState.error => error,
-          TwWidgetState.focused => focused,
-          TwWidgetState.selected => selected,
-          TwWidgetState.pressed => pressed,
-          TwWidgetState.hovered => hovered,
-          _ => normal,
-        };
-        return statusStyle?.toBorder() ?? normal.toBorder() ?? InputBorder.none;
+        final currentStyle = defaultStyleResolver(
+          states,
+          normal: normal,
+          disabled: disabled,
+          dragged: dragged,
+          errored: error,
+          focused: focused,
+          selected: selected,
+          pressed: pressed,
+          hovered: hovered,
+        );
+        return currentStyle.toBorder() ?? InputBorder.none;
       });
 
   static MaterialStateTextStyle resolveMaterialTextStyle(
@@ -440,17 +473,18 @@ class TwStyle {
   }) {
     return MaterialStateTextStyle.resolveWith(
         (final Set<MaterialState> states) {
-      final TwStyle? statusStyle = switch (getPrimaryWidgetState(states)) {
-        TwWidgetState.disabled => disabled,
-        TwWidgetState.dragged => dragged,
-        TwWidgetState.error => error,
-        TwWidgetState.focused => focused,
-        TwWidgetState.selected => selected,
-        TwWidgetState.pressed => pressed,
-        TwWidgetState.hovered => hovered,
-        _ => normal,
-      };
-      return normal.merge(statusStyle).toTextStyle();
+      final currentStyle = defaultStyleResolver(
+        states,
+        normal: normal,
+        disabled: disabled,
+        dragged: dragged,
+        errored: error,
+        focused: focused,
+        selected: selected,
+        pressed: pressed,
+        hovered: hovered,
+      );
+      return currentStyle.toTextStyle();
     });
   }
 
@@ -711,4 +745,112 @@ class TwStyle {
       textDecorationThickness.hashCode ^
       leadingDistribution.hashCode ^
       wordSpacing.hashCode;
+}
+
+@immutable
+class TwConstraints {
+  final TwMinWidth? minWidth;
+  final TwWidth? width;
+  final TwMaxWidth? maxWidth;
+  final TwMinHeight? minHeight;
+  final TwHeight? height;
+  final TwMaxHeight? maxHeight;
+
+  const TwConstraints({
+    this.minWidth,
+    this.width,
+    this.maxWidth,
+    this.minHeight,
+    this.height,
+    this.maxHeight,
+  });
+
+  /// Determines whether the style has min/max width and height constraints.
+  bool get hasConstraints =>
+      minWidth != null ||
+      maxWidth != null ||
+      minHeight != null ||
+      maxHeight != null;
+
+  /// Determines whether the style has any sizing properties for width and
+  /// height.
+  bool get hasSizing => width != null || height != null || hasConstraints;
+
+  /// Determines whether the style has its min and max width set
+  bool get hasTightWidth =>
+      minWidth != null &&
+      maxWidth != null &&
+      minWidth!.value == maxWidth!.value;
+
+  /// Determines whether the style has its min and max height set
+  bool get hasTightHeight =>
+      minHeight != null &&
+      maxHeight != null &&
+      minHeight!.value == maxHeight!.value;
+
+  /// Determines if the style has any percentage based min/max sizing
+  /// constraints
+  bool get hasPercentageConstraints =>
+      (minWidth?.value is CssRelativeUnit) ||
+      (maxWidth?.value is CssRelativeUnit) ||
+      (minHeight?.value is CssRelativeUnit) ||
+      (maxHeight?.value is CssRelativeUnit);
+
+  /// Determines if the style has any percentage based sizing constraints
+  bool get hasPercentageSize =>
+      (width?.value is CssRelativeUnit) || (height?.value is CssRelativeUnit);
+
+  /// Compute simple box constraints for this style, using the min/max width and
+  /// height sizing values, assuming that they are logical pixels.
+  BoxConstraints? getSimpleConstraints(final double fontSizePx) {
+    if (!hasConstraints) return null;
+    return BoxConstraints(
+      minWidth: switch (minWidth?.value) {
+        CssAbsoluteUnit() =>
+          (minWidth!.value as CssAbsoluteUnit).pixels(fontSizePx),
+        _ => 0.0,
+      },
+      maxWidth: switch (maxWidth?.value) {
+        CssAbsoluteUnit() =>
+          (maxWidth!.value as CssAbsoluteUnit).pixels(fontSizePx),
+        _ => double.infinity,
+      },
+      minHeight: switch (minHeight?.value) {
+        CssAbsoluteUnit() =>
+          (minHeight!.value as CssAbsoluteUnit).pixels(fontSizePx),
+        _ => 0.0,
+      },
+      maxHeight: switch (maxHeight?.value) {
+        CssAbsoluteUnit() =>
+          (maxHeight!.value as CssAbsoluteUnit).pixels(fontSizePx),
+        _ => double.infinity,
+      },
+    );
+  }
+
+  @override
+  bool operator ==(final Object other) =>
+      identical(this, other) ||
+      other is TwConstraints &&
+          runtimeType == other.runtimeType &&
+          minWidth == other.minWidth &&
+          width == other.width &&
+          maxWidth == other.maxWidth &&
+          minHeight == other.minHeight &&
+          height == other.height &&
+          maxHeight == other.maxHeight;
+
+  @override
+  int get hashCode =>
+      minWidth.hashCode ^
+      width.hashCode ^
+      maxWidth.hashCode ^
+      minHeight.hashCode ^
+      height.hashCode ^
+      maxHeight.hashCode;
+
+  @override
+  String toString() {
+    return 'TwConstraints{minWidth: $minWidth, width: $width, maxWidth: $maxWidth, minHeight: $minHeight, height: $height, maxHeight: $maxHeight}';
+  }
 }

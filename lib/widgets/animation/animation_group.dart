@@ -3,26 +3,26 @@ import 'package:flutter/material.dart';
 /// An [InheritedWidget] that provides a [MaterialStatesController] to its
 /// descendants. Prefer using [TwAnimationGroup] to create a new instance of
 /// this widget as it can manage the lifecycle of the controller.
-class AnimationGroupData extends InheritedWidget {
+class MaterialStatesGroup extends InheritedWidget {
   final MaterialStatesController statesController;
 
-  const AnimationGroupData({
+  const MaterialStatesGroup({
     required this.statesController,
     required super.child,
     super.key,
   });
 
-  static AnimationGroupData? of(final BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<AnimationGroupData>();
+  static MaterialStatesGroup? of(final BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MaterialStatesGroup>();
   }
 
   @override
-  bool updateShouldNotify(final AnimationGroupData oldWidget) {
+  bool updateShouldNotify(final MaterialStatesGroup oldWidget) {
     return statesController != oldWidget.statesController;
   }
 }
 
-/// A [StatefulWidget] that wraps an [AnimationGroupData] to provide a
+/// A [StatefulWidget] that wraps an [MaterialStatesGroup] to provide a
 /// [MaterialStatesController] to its descendants.
 class TwAnimationGroup extends StatefulWidget {
   final Widget child;
@@ -43,29 +43,29 @@ class TwAnimationGroup extends StatefulWidget {
 }
 
 class _TwAnimationGroupState extends State<TwAnimationGroup> {
-  MaterialStatesController? internalStatesController;
+  MaterialStatesController? _internalStatesController;
 
   MaterialStatesController get statesController =>
-      widget.statesController ?? internalStatesController!;
+      widget.statesController ?? _internalStatesController!;
 
   @override
   void initState() {
     super.initState();
     if (widget.statesController == null) {
-      internalStatesController = MaterialStatesController();
+      _internalStatesController = MaterialStatesController();
     }
   }
 
   @override
   void dispose() {
-    internalStatesController?.dispose();
+    _internalStatesController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(final BuildContext context) {
-    return AnimationGroupData(
-      statesController: MaterialStatesController(),
+    return MaterialStatesGroup(
+      statesController: statesController,
       child: widget.child,
     );
   }
