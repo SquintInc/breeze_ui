@@ -53,14 +53,14 @@ abstract class TwStatefulWidget extends StatefulWidget {
   /// the same states to all widgets within this 'group'.
   final MaterialStatesController? statesController;
 
-  /// Whether or not the widget is disabled.
-  final bool isDisabled;
-
   /// Whether or not the widget can be toggle selected.
   final bool isToggleable;
 
   /// Whether or not the widget can have a drag state.
   final bool isDraggable;
+
+  /// Whether or not the widget is disabled.
+  final bool isDisabled;
 
   /// Whether or not the widget is toggle selected; initial toggle value if the widget is toggleable.
   final bool isToggled;

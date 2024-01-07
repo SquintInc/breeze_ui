@@ -56,6 +56,9 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   /// widget initialization.
   bool _isSelected = false;
 
+  /// This keeps track of the widget's disabled state upon widget initialization.
+  bool _isDisabled = false;
+
   /// Getter for [_isSelected].
   bool get isSelected => _isSelected;
 
@@ -64,6 +67,10 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     super.initState();
     // Track initial toggle selection state from the value passed to the widget
     _isSelected = widget.isToggled;
+
+    // Track initial disabled state from the value passed to the widget
+    _isDisabled = widget.isDisabled;
+
     // Create a new focus node if one wasn't passed to the widget
     if (widget.focusNode == null) {
       _focusNode = FocusNode();
@@ -78,37 +85,70 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     }
   }
 
+  /// Updates the [statesController] values to match the widget's initial state.
+  /// This should only be called after [initState] is called.
+  void _updateInitialControllerStates() {
+    statesController
+      ..update(MaterialState.disabled, _isDisabled)
+      ..update(MaterialState.selected, _isSelected);
+  }
+
+  /// Initializes the [statesController] based on the [statesControllerType].
+  ///
+  /// Attempts to read the [ParentMaterialStatesData] from the widget tree, and if it exists, uses
+  /// the [ParentMaterialStatesData.controller] as the [MaterialStatesControllerType.inherited]
+  /// [statesController] for this widget.
+  ///
+  /// Then, if the [TwStatefulWidget.statesController] is not null, it will be used as the
+  /// [MaterialStatesControllerType.passedDown] [statesController] for this widget.
+  ///
+  /// Otherwise, a new internal [MaterialStatesController] will be created and used as the
+  /// [MaterialStatesControllerType.internal] [statesController] for this widget.
   void initStatesController() {
     final ParentMaterialStatesData? parentStates =
         ParentMaterialStatesData.of(context);
-
-    // Determine material states controller type
     if (parentStates != null) {
       _parentStates = parentStates;
       _statesControllerType = MaterialStatesControllerType.inherited;
+
       if (parentStates.child == widget) {
-        statesController.update(MaterialState.selected, _isSelected);
+        // This widget is the top-most widget in the [ParentMaterialStatesData] tree, so update the
+        // material states controller's values to match the widget's initial state.
+        _updateInitialControllerStates();
+        statesController
+          ..removeListener(parentStates.onStateChange)
+          ..addListener(parentStates.onStateChange);
       } else {
+        // Descendant widgets under the top-most widget in the [ParentMaterialStatesData] tree
+        // should read and use the material states controller's selected state.
+        //
+        // Since the top-level [TwParentMaterialStates] calls setState in a post-frame callback,
+        // these descendant widgets can listen and react to the material states controller's changes
+        // via setState directly, as these will resolve first before the top-level widget's setState
+        // call.
         _isSelected =
             parentStates.controller.value.contains(MaterialState.selected);
+        _isDisabled =
+            parentStates.controller.value.contains(MaterialState.disabled);
+        statesController
+          ..removeListener(handleStatesControllerChange)
+          ..addListener(handleStatesControllerChange);
       }
-    } else if (widget.statesController != null) {
+      return;
+    }
+
+    // [ParentMaterialStatesData] was not found, so determine if the widget has an external
+    // states controller passed in or not.
+    if (widget.statesController != null) {
       _statesControllerType = MaterialStatesControllerType.passedDown;
     } else {
       _statesControllerType = MaterialStatesControllerType.internal;
       _internalStatesController = MaterialStatesController();
     }
-
-    // Set initial widget state in case the states controller being used already
-    // has values set.
+    _updateInitialControllerStates();
     statesController
-      ..update(MaterialState.disabled, widget.isDisabled)
-      ..update(MaterialState.selected, _isSelected);
-    if (parentStates != null && parentStates.child == widget) {
-      statesController.addListener(parentStates.onStateChange);
-    } else {
-      statesController.addListener(handleStatesControllerChange);
-    }
+      ..removeListener(handleStatesControllerChange)
+      ..addListener(handleStatesControllerChange);
   }
 
   /// Called when an [InheritedWidget] that this widget depends on changes
