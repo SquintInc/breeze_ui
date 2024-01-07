@@ -157,7 +157,9 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     if (states.contains(MaterialState.pressed)) {
       return widget.style.merge(widget.pressed);
     }
-    if (states.contains(MaterialState.selected)) {
+    // The widget could have its [isToggled] property set to true, but the states controller may
+    // not have been updated yet.
+    if (isSelected || states.contains(MaterialState.selected)) {
       return widget.style.merge(widget.selected);
     }
     if (states.contains(MaterialState.hovered)) {
