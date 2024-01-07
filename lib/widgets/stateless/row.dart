@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:tailwind_elements/config/options/sizing/gap.dart';
 import 'package:tailwind_elements/config/options/sizing/width.dart';
-import 'package:tailwind_elements/widgets.dart';
+import 'package:tailwind_elements/widgets/stateless/sized_box.dart';
 
 /// A [Row] widget wrapper with support for Tailwind styled properties.
 @immutable

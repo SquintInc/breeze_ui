@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// A simple [InheritedWidget] that provides the constraints of a parent widget to its descendants.
 @immutable
 class ParentConstraintsData extends InheritedWidget {
   final BoxConstraints constraints;

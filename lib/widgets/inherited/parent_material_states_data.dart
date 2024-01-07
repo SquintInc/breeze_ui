@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+/// An [InheritedWidget] that allows a single [MaterialStatesController] to be shared by its
+/// descendants.
+///
+/// Example widgets that use this include:
+/// - [TwSwitch]
 @immutable
 class ParentMaterialStatesData extends InheritedWidget {
   final MaterialStatesController controller;
