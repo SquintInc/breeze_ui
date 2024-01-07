@@ -226,6 +226,11 @@ class _SwitchTrackState extends TwAnimatedMaterialState<TwSwitchTrack>
       return;
     }
 
+    // Don't animate if the thumb is already in the desired position
+    if (thumbController.value == (forward ? 1.0 : 0.0)) {
+      return;
+    }
+
     thumbController.value = forward ? 0.0 : 1.0;
 
     if (delay != Duration.zero) {
