@@ -62,6 +62,9 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   /// Getter for [_isSelected].
   bool get isSelected => _isSelected;
 
+  /// Getter for [_isDisabled].
+  bool get isDisabled => _isDisabled;
+
   @override
   void initState() {
     super.initState();
@@ -89,8 +92,8 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   /// This should only be called after [initState] is called.
   void _updateInitialControllerStates() {
     statesController
-      ..update(MaterialState.disabled, _isDisabled)
-      ..update(MaterialState.selected, _isSelected);
+      ..update(MaterialState.disabled, isDisabled)
+      ..update(MaterialState.selected, isSelected);
   }
 
   /// Initializes the [statesController] based on the [statesControllerType].
@@ -197,7 +200,7 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
 
   @protected
   TwStyle getCurrentStyle(final Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
+    if (isDisabled || states.contains(MaterialState.disabled)) {
       return widget.style.merge(widget.disabled);
     }
     if (states.contains(MaterialState.dragged)) {
