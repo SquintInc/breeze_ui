@@ -12,6 +12,7 @@ import 'package:tailwind_elements/config/options/sizing/width.dart';
 import 'package:tailwind_elements/config/options/transitions/transition_property.dart';
 import 'package:tailwind_elements/config/options/typography/font_size.dart';
 import 'package:tailwind_elements/config/options/typography/line_height.dart';
+import 'package:tailwind_elements/config/options/units/measurement_unit.dart';
 import 'package:tailwind_elements/widgets/animation/style_tween.dart';
 import 'package:tailwind_elements/widgets/inherited/parent_constraints_data.dart';
 import 'package:tailwind_elements/widgets/state/material_state.dart';

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:tailwind_elements/config/options/borders/border_radius.dart';
 import 'package:tailwind_elements/config/options/borders/border_width.dart';
@@ -22,15 +24,28 @@ import 'package:tailwind_elements/config/options/typography/letter_spacing.dart'
 import 'package:tailwind_elements/config/options/typography/line_height.dart';
 import 'package:tailwind_elements/config/options/typography/text_decoration_thickness.dart';
 import 'package:tailwind_elements/config/options/units.dart';
-import 'package:tailwind_elements/widgets/extensions/extensions.dart';
-
-export 'package:tailwind_elements/config/options/units.dart';
-export 'package:tailwind_elements/widgets/extensions/extensions.dart';
 
 typedef StyleValueResolver<T> = T? Function(TwStyle? statusStyle);
 
 MaterialStateProperty<T> always<T>(final T value) =>
     MaterialStatePropertyAll<T>(value);
+
+extension RadiusExt on BoxConstraints {
+  double get circleRadius {
+    final bool hasInfiniteHeight = maxHeight.isInfinite;
+    final bool hasInfiniteWidth = maxWidth.isInfinite;
+    if (hasInfiniteWidth && hasInfiniteHeight) {
+      return TwBorderRadius.fullRadiusPx;
+    }
+    if (hasInfiniteWidth) {
+      return (maxHeight / 2).ceilToDouble();
+    }
+    if (hasInfiniteHeight) {
+      return (maxWidth / 2).ceilToDouble();
+    }
+    return (min(minWidth, minHeight) / 2).ceilToDouble();
+  }
+}
 
 /// Flattened style data class for Tailwind CSS properties.
 /// Some properties may not be applicable to certain widgets (e.g. typography

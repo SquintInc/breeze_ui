@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:tailwind_elements/config/options/colors.dart';
 import 'package:tailwind_elements/config/options/sizing/height.dart';
 import 'package:tailwind_elements/config/options/sizing/width.dart';
-import 'package:tailwind_elements/widgets.dart';
-import 'package:tailwind_elements/widgets/input_padding.dart';
+import 'package:tailwind_elements/config/options/units/measurement_unit.dart';
+import 'package:tailwind_elements/widgets/rendering/input_padding.dart';
 import 'package:tailwind_elements/widgets/state/animated_material_state.dart';
 import 'package:tailwind_elements/widgets/state/stateful_widget.dart';
 import 'package:tailwind_elements/widgets/stateless/div.dart';
+import 'package:tailwind_elements/widgets/stateless/icon.dart';
+import 'package:tailwind_elements/widgets/style/style.dart';
 
 /// A widget meant to represent a [Checkbox] with custom styling via Tailwind
 /// styled properties.

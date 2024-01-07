@@ -18,6 +18,7 @@ import 'package:tailwind_elements/config/options/typography/font_weight.dart';
 import 'package:tailwind_elements/config/options/typography/letter_spacing.dart';
 import 'package:tailwind_elements/config/options/typography/line_height.dart';
 import 'package:tailwind_elements/config/options/typography/text_decoration_thickness.dart';
+import 'package:tailwind_elements/config/options/units/measurement_unit.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 
 /// [Tween] implementation that allows for interpolating various styling

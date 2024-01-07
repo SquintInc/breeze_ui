@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/widgets.dart';
+import 'package:tailwind_elements/config/options/units/measurement_unit.dart';
 import 'package:tailwind_elements/widgets/inherited/parent_constraints_data.dart';
 import 'package:tailwind_elements/widgets/stateless/stateless_widget.dart';
+import 'package:tailwind_elements/widgets/style/style.dart';
 
-/// A [Container] widget wrapper with support for Tailwind styled properties.
+/// A [Container]-like widget with support for Tailwind styled properties.
 class Div extends TwStatelessWidget {
   // Passthrough [Container] properties
   final Widget? child;

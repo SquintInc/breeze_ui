@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tailwind_elements/base.dart';
 import 'package:tailwind_elements/widgets.dart';
-import 'package:tailwind_elements/widgets/checkbox.dart';
-import 'package:tailwind_elements/widgets/inherited/parent_constraints_data.dart';
-import 'package:tailwind_elements/widgets/stateless/div.dart';
 import 'package:tailwind_elements_playground/tailwind_config.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
