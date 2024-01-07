@@ -9,18 +9,17 @@ import 'package:tailwind_elements/widgets/stateless/div.dart';
 import 'package:tailwind_elements/widgets/stateless/stateless_widget.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 
-/// A Switch widget with support for Tailwind styled properties.
+/// A Switch widget with support for Tailwind styled properties, as well as independently
+/// specifying different styling options for the thumb and track.
 ///
-/// This is a [StatelessWidget] wrapper around [TwSwitchTrack], which wraps the [TwSwitchTrack] in
+/// This is a [StatelessWidget] wrapper around [TwSwitch], which wraps the [TwSwitch] in
 /// a [TwParentMaterialStates] to share the same material states between the switch track and the
 /// switch thumb, therefore also allowing independently tweened styling properties (e.g. track and
 /// thumb can have different background colors respectively, when the switch is toggled enabled).
 ///
-/// Consider using a [TwSwitchTrack] directly if the thumb does not need to be animated.
+/// Consider using a [TwSwitch] directly if the thumb does not need to be animated.
 @immutable
-class TwSwitch extends TwStatelessWidget {
-  static const PxUnit minTapTargetSize = PxUnit(48.0);
-
+class TwSwitchIndependent extends TwStatelessWidget {
   // Copy over all the properties that [TwSwitchTrack] supports.
 
   final bool value;
@@ -39,11 +38,11 @@ class TwSwitch extends TwStatelessWidget {
   final MaterialStatesController? statesController;
   final FocusNode? focusNode;
 
-  const TwSwitch({
+  const TwSwitchIndependent({
     required this.thumb,
     this.onToggled,
     this.value = false,
-    this.tapTargetSize = minTapTargetSize,
+    this.tapTargetSize = TwSwitch.minTapTargetSize,
     // Style properties
     super.style = const TwStyle(),
     this.disabled,
@@ -65,7 +64,7 @@ class TwSwitch extends TwStatelessWidget {
   @override
   Widget build(final BuildContext context) {
     return TwParentMaterialStates(
-      child: TwSwitchTrack(
+      child: TwSwitch(
         thumb: thumb,
         onToggled: onToggled,
         value: value,
@@ -93,11 +92,13 @@ class TwSwitch extends TwStatelessWidget {
 /// A Switch widget with support for Tailwind styled properties. This widget allows animating the
 /// alignment of the thumb, but does not support sharing material states with the thumb itself.
 ///
-/// Consider using [TwSwitch] if the thumb needs to support Tailwind styling and share the same
-/// material states as the track, as this allows both the [TwSwitchTrack] and the thumb widget to
-/// share the same [MaterialStatesController].
+/// Consider using [TwSwitchIndependent] if the thumb needs to support Tailwind styling and share
+/// the same material states as the track, as this allows both the [TwSwitch] and the thumb widget
+/// to share the same [MaterialStatesController].
 @immutable
-class TwSwitchTrack extends TwStatefulWidget {
+class TwSwitch extends TwStatefulWidget {
+  static const PxUnit minTapTargetSize = PxUnit(48.0);
+
   /// Initial value of the switch.
   final bool value;
 
@@ -111,9 +112,9 @@ class TwSwitchTrack extends TwStatefulWidget {
   /// The thumb widget to use for the switch.
   final Widget thumb;
 
-  const TwSwitchTrack({
+  const TwSwitch({
     required this.thumb,
-    required this.tapTargetSize,
+    this.tapTargetSize = minTapTargetSize,
     this.onToggled,
     this.value = false,
     // Style properties
@@ -146,7 +147,7 @@ class TwSwitchTrack extends TwStatefulWidget {
   State createState() => _SwitchTrackState();
 }
 
-class _SwitchTrackState extends TwAnimatedMaterialState<TwSwitchTrack>
+class _SwitchTrackState extends TwAnimatedMaterialState<TwSwitch>
     with TickerProviderStateMixin {
   /// Internal (linear-time) animation controller for the thumb position
   AnimationController? thumbController;

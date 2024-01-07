@@ -95,7 +95,7 @@ class _TailwindElementsPlaygroundState
                       // ),
                       onToggled: (final bool value) {},
                     ),
-                    TwSwitch(
+                    TwSwitchIndependent(
                       value: toggled,
                       style: const TwStyle(
                         backgroundColor: bg_gray_200,
@@ -127,6 +127,34 @@ class _TailwindElementsPlaygroundState
                         ),
                         selected: TwStyle(
                           backgroundColor: bg_red_500,
+                        ),
+                      ),
+                    ),
+                    TwSwitch(
+                      value: toggled,
+                      style: const TwStyle(
+                        backgroundColor: bg_gray_200,
+                        transition: transition_all,
+                        width: w_12,
+                        height: h_6,
+                        padding: TwPadding.xy(px_0_5, py_0_5),
+                        borderRadius: TwBorderRadius.all(rounded_full),
+                      ),
+                      pressed: const TwStyle(
+                        backgroundColor: bg_indigo_400,
+                      ),
+                      selected: const TwStyle(
+                        backgroundColor: bg_indigo_500,
+                      ),
+                      onToggled: (final bool value) {
+                        print('switch toggled: $value');
+                      },
+                      thumb: const Div(
+                        style: TwStyle(
+                          backgroundColor: bg_white,
+                          width: w_5,
+                          height: h_5,
+                          borderRadius: TwBorderRadius.all(rounded_full),
                         ),
                       ),
                     ),
