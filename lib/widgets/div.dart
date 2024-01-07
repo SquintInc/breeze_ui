@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tailwind_elements/base.dart';
+import 'package:tailwind_elements/widgets/inherited/parent_material_states_data.dart';
 import 'package:tailwind_elements/widgets/state/animated_material_state.dart';
 import 'package:tailwind_elements/widgets/state/stateful_widget.dart';
 import 'package:tailwind_elements/widgets/stateless/div.dart';
@@ -8,7 +9,7 @@ import 'package:tailwind_elements/widgets/style/style.dart';
 /// A [Div] widget wrapper with support for Tailwind styled properties
 /// and animated property transitions.
 ///
-/// A [TwAnimationGroup] may be used to reuse the same animation controller
+/// A [TwParentMaterialStates] may be used to reuse the same animation controller
 /// for multiple [TwStatefulWidget]s that support animations.
 class TwDiv extends TwStatefulWidget {
   // Passthrough [Container] properties
@@ -64,16 +65,17 @@ class TwDiv extends TwStatefulWidget {
   State createState() => _TwDiv();
 }
 
-class _TwDiv extends TwAnimatedMaterialState<TwDiv> {
+class _TwDiv extends TwAnimatedMaterialState<TwDiv>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(final BuildContext context) {
-    final currentStyle = getCurrentStyle();
+    final currentStyle = getCurrentStyle(currentStates);
     final animatedStyle = currentStyle.merge(getAnimatedStyle());
 
     final div = Div(
-      key: widget.key,
       style: animatedStyle,
       staticConstraints: currentStyle.toConstraints(),
+      parentControlsOpacity: true,
       alignment: widget.alignment,
       clipBehavior: widget.clipBehavior,
       transform: widget.transform,
@@ -81,13 +83,14 @@ class _TwDiv extends TwAnimatedMaterialState<TwDiv> {
       child: widget.child,
     );
 
-    Widget current = div;
-    current = conditionallyWrapOpacity(current, animatedStyle);
-    current = conditionallyWrapInputDetectors(current);
-    current = conditionallyWrapFocus(
-      current,
+    return conditionallyWrapFocus(
+      conditionallyWrapInputDetectors(
+        conditionallyWrapOpacity(div, animatedStyle),
+      ),
       includeFocusActions: widget.includeFocusActions,
     );
-    return current;
   }
+
+  @override
+  TickerProvider getTickerProvider() => this;
 }

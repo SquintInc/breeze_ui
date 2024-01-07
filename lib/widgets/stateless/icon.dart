@@ -83,6 +83,7 @@ class TwIcon extends TwStatelessWidget {
     return Div(
       style: style,
       staticConstraints: staticConstraints,
+      parentControlsOpacity: true,
       child: iconWidget,
     );
   }

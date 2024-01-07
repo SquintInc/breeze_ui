@@ -1,9 +1,10 @@
 export 'package:tailwind_elements/config/options/units.dart';
-export 'package:tailwind_elements/widgets/animation/animation_group.dart';
 export 'package:tailwind_elements/widgets/div.dart';
 export 'package:tailwind_elements/widgets/inherited/parent_constraints_data.dart';
+export 'package:tailwind_elements/widgets/inherited/parent_material_states_data.dart';
 export 'package:tailwind_elements/widgets/interactive/button.dart';
 export 'package:tailwind_elements/widgets/interactive/checkbox.dart';
+export 'package:tailwind_elements/widgets/interactive/switch.dart';
 export 'package:tailwind_elements/widgets/interactive/text.dart';
 export 'package:tailwind_elements/widgets/interactive/text_field.dart';
 export 'package:tailwind_elements/widgets/interactive/text_span.dart';

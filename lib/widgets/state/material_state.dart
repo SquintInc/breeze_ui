@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/widgets/animation/animation_group.dart';
+import 'package:tailwind_elements/widgets/inherited/parent_material_states_data.dart';
 import 'package:tailwind_elements/widgets/state/stateful_widget.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 
@@ -16,71 +16,146 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   /// The internal material states controller for this stateful widget.
   late MaterialStatesControllerType _statesControllerType;
 
-  /// This value will be set if [_statesControllerType] is [MaterialStatesControllerType.internal].
+  /// This value will be set if [statesControllerType] is [MaterialStatesControllerType.internal].
   MaterialStatesController? _internalStatesController;
 
-  /// This value will be set if [_statesControllerType] is [MaterialStatesControllerType.inherited].
-  MaterialStatesController? _animationGroupStatesController;
+  /// This value will be set if [statesControllerType] is [MaterialStatesControllerType.inherited]
+  /// and if a [ParentMaterialStatesData] is found.
+  ParentMaterialStatesData? _parentStates;
 
-  MaterialStatesController get _statesController =>
-      switch (_statesControllerType) {
+  /// Getter for [_statesControllerType].
+  MaterialStatesControllerType get statesControllerType =>
+      _statesControllerType;
+
+  /// Gets the correct states controller based on the [statesControllerType]
+  MaterialStatesController get statesController =>
+      switch (statesControllerType) {
         MaterialStatesControllerType.passedDown => widget.statesController!,
         MaterialStatesControllerType.internal => _internalStatesController!,
-        MaterialStatesControllerType.inherited =>
-          _animationGroupStatesController!,
+        MaterialStatesControllerType.inherited => _parentStates!.controller,
       };
 
-  Set<MaterialState> get currentStates => _statesController.value;
+  /// Getter for [_parentStates].
+  ParentMaterialStatesData? get parentStates => _parentStates;
+
+  /// Returns the material state controller's current states.
+  /// Returns the current states from the [ParentMaterialStatesData] if it exists,
+  /// otherwise returns the [statesController] state values which depends on the
+  /// [statesControllerType].
+  Set<MaterialState> get currentStates =>
+      parentStates != null ? parentStates!.states : statesController.value;
 
   /// The internal focus node for this stateful widget.
   late FocusNode? _focusNode;
 
+  /// Getter for the widget's focus node, or the internal [_focusNode] if the widget's focus node
+  /// is null.
   FocusNode? get focusNode => widget.focusNode ?? _focusNode;
 
-  /// If the widget is selectable, this keeps track of the widget's selection / toggle state.
+  /// If the widget is selectable, this keeps track of the widget's selection / toggle state upon
+  /// widget initialization.
   bool _isSelected = false;
+
+  /// This keeps track of the widget's disabled state upon widget initialization.
+  bool _isDisabled = false;
 
   /// Getter for [_isSelected].
   bool get isSelected => _isSelected;
+
+  /// Getter for [_isDisabled].
+  bool get isDisabled => _isDisabled;
 
   @override
   void initState() {
     super.initState();
     // Track initial toggle selection state from the value passed to the widget
     _isSelected = widget.isToggled;
+
+    // Track initial disabled state from the value passed to the widget
+    _isDisabled = widget.isDisabled;
+
     // Create a new focus node if one wasn't passed to the widget
     if (widget.focusNode == null) {
       _focusNode = FocusNode();
     }
   }
 
-  /// Rebuilds the widget when the material states controller changes.
+  /// Called when the set of [MaterialState]s stored by the [statesController]
+  /// changes.
   void handleStatesControllerChange() {
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
-  void initStatesController() {
-    final MaterialStatesGroup? animationGroup = MaterialStatesGroup.of(context);
+  /// Updates the [statesController] values to match the widget's initial state.
+  /// This should only be called after [initState] is called.
+  void _updateInitialControllerStates() {
+    statesController
+      ..update(MaterialState.disabled, isDisabled)
+      ..update(MaterialState.selected, isSelected);
+  }
 
-    // Determine material states controller type
-    if (animationGroup != null) {
+  /// Initializes the [statesController] based on the [statesControllerType].
+  ///
+  /// Attempts to read the [ParentMaterialStatesData] from the widget tree, and if it exists, uses
+  /// the [ParentMaterialStatesData.controller] as the [MaterialStatesControllerType.inherited]
+  /// [statesController] for this widget.
+  ///
+  /// Then, if the [TwStatefulWidget.statesController] is not null, it will be used as the
+  /// [MaterialStatesControllerType.passedDown] [statesController] for this widget.
+  ///
+  /// Otherwise, a new internal [MaterialStatesController] will be created and used as the
+  /// [MaterialStatesControllerType.internal] [statesController] for this widget.
+  void initStatesController() {
+    final ParentMaterialStatesData? parentStates =
+        ParentMaterialStatesData.of(context);
+    if (parentStates != null) {
+      _parentStates = parentStates;
       _statesControllerType = MaterialStatesControllerType.inherited;
-      _animationGroupStatesController = animationGroup.statesController;
-    } else if (widget.statesController != null) {
+
+      if (parentStates.child == widget) {
+        // This widget is the top-most widget in the [ParentMaterialStatesData] tree, so update the
+        // material states controller's values to match the widget's initial state.
+        _updateInitialControllerStates();
+        statesController
+          ..removeListener(parentStates.onStateChange)
+          ..addListener(parentStates.onStateChange);
+      } else {
+        // Descendant widgets under the top-most widget in the [ParentMaterialStatesData] tree
+        // should read and use the material states controller's selected state.
+        //
+        // Since the top-level [TwParentMaterialStates] calls setState in a post-frame callback,
+        // these descendant widgets can listen and react to the material states controller's changes
+        // via setState directly, as these will resolve first before the top-level widget's setState
+        // call.
+        _isSelected =
+            parentStates.controller.value.contains(MaterialState.selected);
+        _isDisabled =
+            parentStates.controller.value.contains(MaterialState.disabled);
+        statesController
+          ..removeListener(handleStatesControllerChange)
+          ..addListener(handleStatesControllerChange);
+      }
+      return;
+    }
+
+    // [ParentMaterialStatesData] was not found, so determine if the widget has an external
+    // states controller passed in or not.
+    if (widget.statesController != null) {
       _statesControllerType = MaterialStatesControllerType.passedDown;
     } else {
       _statesControllerType = MaterialStatesControllerType.internal;
       _internalStatesController = MaterialStatesController();
     }
-
-    // Set initial widget state in case the states controller being used already
-    // has values set.
-    _statesController
-      ..update(MaterialState.disabled, widget.isDisabled)
-      ..update(MaterialState.selected, _isSelected)
+    _updateInitialControllerStates();
+    statesController
+      ..removeListener(handleStatesControllerChange)
       ..addListener(handleStatesControllerChange);
   }
 
+  /// Called when an [InheritedWidget] that this widget depends on changes
+  /// from upstream.
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -100,30 +175,32 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
       initStatesController();
     }
     if (widget.isDisabled != oldWidget.isDisabled) {
-      _statesController.update(MaterialState.disabled, widget.isDisabled);
+      statesController.update(MaterialState.disabled, widget.isDisabled);
       // Remove pressed state if applicable, if the widget is now disabled
       if (widget.isDisabled) {
-        _statesController.update(MaterialState.pressed, false);
+        statesController.update(MaterialState.pressed, false);
       }
     }
     if (widget.isToggled != oldWidget.isToggled) {
       _isSelected = widget.isToggled;
-      _statesController.update(MaterialState.selected, _isSelected);
+      onIsSelectedChanged(isSelected: isSelected);
     }
   }
 
   @override
   void dispose() {
-    _statesController.removeListener(handleStatesControllerChange);
+    if (parentStates?.onStateChange != null) {
+      statesController.removeListener(parentStates!.onStateChange);
+    }
+    statesController.removeListener(handleStatesControllerChange);
     _internalStatesController?.dispose();
     _focusNode?.dispose();
     super.dispose();
   }
 
   @protected
-  TwStyle getCurrentStyle() {
-    final states = currentStates;
-    if (states.contains(MaterialState.disabled)) {
+  TwStyle getCurrentStyle(final Set<MaterialState> states) {
+    if (isDisabled || states.contains(MaterialState.disabled)) {
       return widget.style.merge(widget.disabled);
     }
     if (states.contains(MaterialState.dragged)) {
@@ -138,7 +215,9 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     if (states.contains(MaterialState.pressed)) {
       return widget.style.merge(widget.pressed);
     }
-    if (states.contains(MaterialState.selected)) {
+    // The widget could have its [isToggled] property set to true, but the states controller may
+    // not have been updated yet.
+    if (isSelected || states.contains(MaterialState.selected)) {
       return widget.style.merge(widget.selected);
     }
     if (states.contains(MaterialState.hovered)) {
@@ -155,14 +234,14 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     return cursor;
   }
 
-  Widget _wrapMouseRegion(final Widget child) {
+  Widget wrapMouseRegion(final Widget child) {
     return MouseRegion(
       onEnter: (final event) {
-        _statesController.update(MaterialState.hovered, true);
+        statesController.update(MaterialState.hovered, true);
         widget.onHover?.call(true);
       },
       onExit: (final event) {
-        _statesController.update(MaterialState.hovered, false);
+        statesController.update(MaterialState.hovered, false);
         widget.onHover?.call(false);
       },
       cursor: _resolveCursor() ?? MouseCursor.defer,
@@ -170,11 +249,15 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     );
   }
 
+  void onIsSelectedChanged({required final bool isSelected}) {
+    statesController.update(MaterialState.selected, isSelected);
+  }
+
   void handleTap() {
     if (!widget.isDisabled) {
       if (widget.isToggleable) {
         _isSelected = !_isSelected;
-        _statesController.update(MaterialState.selected, _isSelected);
+        onIsSelectedChanged(isSelected: isSelected);
         if (widget.onSelected != null) {
           widget.onSelected!(_isSelected);
           if (widget.enableFeedback) {
@@ -213,32 +296,32 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     }
   }
 
-  Widget _wrapGestureDetector(final Widget child) {
+  Widget wrapGestureDetector(final Widget child) {
     return GestureDetector(
       excludeFromSemantics: true,
       behavior: widget.hitTestBehavior,
-      onPanStart: (final DragStartDetails details) {
+      onPanUpdate: (final DragUpdateDetails details) {
         if (widget.isDraggable) {
-          _statesController.update(MaterialState.dragged, true);
+          statesController.update(MaterialState.dragged, true);
           widget.onDragged?.call(true);
         }
       },
       onPanEnd: (final DragEndDetails details) {
-        _statesController.update(MaterialState.pressed, false);
+        statesController.update(MaterialState.pressed, false);
         if (widget.isDraggable) {
-          _statesController.update(MaterialState.dragged, false);
+          statesController.update(MaterialState.dragged, false);
           widget.onDragged?.call(false);
         }
       },
       onPanCancel: () {
-        _statesController.update(MaterialState.pressed, false);
+        statesController.update(MaterialState.pressed, false);
         if (widget.isDraggable) {
-          _statesController.update(MaterialState.dragged, false);
+          statesController.update(MaterialState.dragged, false);
           widget.onDragged?.call(false);
         }
       },
       onPanDown: (final DragDownDetails details) {
-        _statesController.update(MaterialState.pressed, true);
+        statesController.update(MaterialState.pressed, true);
       },
       onTap:
           widget.onTap != null || widget.onSelected != null ? handleTap : null,
@@ -249,20 +332,16 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   }
 
   Widget conditionallyWrapOpacity(final Widget child, final TwStyle style) {
-    if (widget.hasOpacity) {
-      return Opacity(
-        opacity: style.opacity?.value ?? 1.0,
-        child: child,
-      );
-    }
-    return child;
+    if (!widget.hasOpacity) return child;
+    return Opacity(
+      opacity: style.opacity?.value ?? 1.0,
+      child: child,
+    );
   }
 
   Widget conditionallyWrapInputDetectors(final Widget child) {
-    if (widget.enableInputDetectors) {
-      return _wrapMouseRegion(_wrapGestureDetector(child));
-    }
-    return child;
+    if (!widget.enableInputDetectors) return child;
+    return wrapMouseRegion(wrapGestureDetector(child));
   }
 
   late final Map<Type, Action<Intent>> _actionMap = <Type, Action<Intent>>{
@@ -276,23 +355,21 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     final Widget child, {
     final bool includeFocusActions = false,
   }) {
-    if (widget.canRequestFocus) {
-      final focus = Focus(
-        onFocusChange: (final bool hasFocus) {
-          _statesController.update(MaterialState.focused, hasFocus);
-          widget.onFocusChange?.call(hasFocus);
-        },
-        focusNode: focusNode,
-        autofocus: widget.autofocus,
-        child: child,
-      );
-      return includeFocusActions
-          ? Actions(
-              actions: _actionMap,
-              child: focus,
-            )
-          : focus;
-    }
-    return child;
+    if (!widget.canRequestFocus) return child;
+    final focus = Focus(
+      onFocusChange: (final bool hasFocus) {
+        statesController.update(MaterialState.focused, hasFocus);
+        widget.onFocusChange?.call(hasFocus);
+      },
+      focusNode: focusNode,
+      autofocus: widget.autofocus,
+      child: child,
+    );
+    return includeFocusActions
+        ? Actions(
+            actions: _actionMap,
+            child: focus,
+          )
+        : focus;
   }
 }

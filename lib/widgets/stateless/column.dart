@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:tailwind_elements/config/options/sizing/gap.dart';
 import 'package:tailwind_elements/config/options/sizing/height.dart';
-import 'package:tailwind_elements/widgets.dart';
+import 'package:tailwind_elements/widgets/stateless/sized_box.dart';
 
 /// A [Column] widget wrapper with support for Tailwind styled properties.
 @immutable
@@ -48,7 +48,6 @@ class TwColumn extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final column = Column(
-      key: key,
       mainAxisAlignment: mainAxisAlignment,
       mainAxisSize: mainAxisSize,
       crossAxisAlignment: crossAxisAlignment,

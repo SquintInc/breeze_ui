@@ -10,8 +10,7 @@ import 'package:tailwind_elements/widgets/stateless/div.dart';
 import 'package:tailwind_elements/widgets/stateless/icon.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 
-/// A widget meant to represent a [Checkbox] with custom styling via Tailwind
-/// styled properties.
+/// A Checkbox widget with support for Tailwind styled properties.
 @immutable
 class TwCheckbox extends TwStatefulWidget {
   static const PxUnit minTapTargetSize = PxUnit(48.0);
@@ -23,7 +22,7 @@ class TwCheckbox extends TwStatefulWidget {
   );
 
   /// Initial value of the checkbox.
-  final bool? value;
+  final bool value;
 
   /// Called when the internal selected state of the checkbox changes.
   final ValueChanged<bool>? onToggled;
@@ -36,10 +35,11 @@ class TwCheckbox extends TwStatefulWidget {
   final TwIconData icon;
 
   const TwCheckbox({
-    required this.value,
     this.onToggled,
+    this.value = false,
     this.tapTargetSize = minTapTargetSize,
     this.icon = const IconFontData(Icons.check),
+    // Style properties
     super.style = defaultCheckboxStyle,
     super.disabled,
     super.pressed,
@@ -48,17 +48,20 @@ class TwCheckbox extends TwStatefulWidget {
     super.focused,
     super.selected,
     super.errored,
+    // Toggleable booleans
     super.isDisabled,
     super.isToggleable = true,
+    // Input controllers,
+    super.statesController,
+    super.focusNode,
     super.key,
   }) : super(
-          // Have the checkbox for display only if "isSelectable" is false
           enableInputDetectors: isToggleable,
-          enableFeedback: true,
+          enableFeedback: isToggleable,
           canRequestFocus: isToggleable,
           cursor: MaterialStateMouseCursor.clickable,
           onSelected: onToggled,
-          isToggled: value ?? false,
+          isToggled: value,
           isDraggable: true,
         );
 
@@ -66,10 +69,10 @@ class TwCheckbox extends TwStatefulWidget {
   State createState() => _CheckboxState();
 }
 
-class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox> {
+class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox>
+    with SingleTickerProviderStateMixin {
   @override
-  TwStyle getCurrentStyle() {
-    final states = currentStates;
+  TwStyle getCurrentStyle(final Set<MaterialState> states) {
     final normalStyle = widget.style.copyWith(
       textColor: isSelected
           ? widget.selected?.textColor ?? widget.style.textColor
@@ -109,7 +112,7 @@ class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox> {
 
   @override
   Widget build(final BuildContext context) {
-    final currentStyle = getCurrentStyle();
+    final currentStyle = getCurrentStyle(currentStates);
     final animatedStyle = currentStyle.merge(getAnimatedStyle());
 
     final TwIcon checkmarkIcon = TwIcon(
@@ -121,26 +124,29 @@ class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox> {
     );
 
     final div = Div(
-      key: widget.key,
       style: animatedStyle,
       staticConstraints: currentStyle.toConstraints(),
+      parentControlsOpacity: true,
       child: checkmarkIcon,
     );
-
-    Widget current = div;
-    current = conditionallyWrapOpacity(current, animatedStyle);
-    current = conditionallyWrapInputDetectors(current);
-    current = conditionallyWrapFocus(current, includeFocusActions: true);
 
     // Input padding needs to be wrapped in Semantics for hit test to be constrained
     return Semantics(
       container: true,
-      checked: widget.value ?? false,
+      checked: widget.value,
       enabled: !widget.isDisabled,
       child: InputPadding(
         minSize: Size.square(widget.tapTargetSize.pixels()),
-        child: current,
+        child: conditionallyWrapFocus(
+          conditionallyWrapInputDetectors(
+            conditionallyWrapOpacity(div, animatedStyle),
+          ),
+          includeFocusActions: true,
+        ),
       ),
     );
   }
+
+  @override
+  TickerProvider getTickerProvider() => this;
 }

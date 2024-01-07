@@ -13,6 +13,10 @@ class Div extends TwStatelessWidget {
   final Matrix4? transform;
   final AlignmentGeometry? transformAlignment;
 
+  // Whether to use opacity from this widget's style, or if it is determined
+  // by the parent widget.
+  final bool? parentControlsOpacity;
+
   const Div({
     super.style = const TwStyle(),
     this.child,
@@ -20,6 +24,7 @@ class Div extends TwStatelessWidget {
     this.clipBehavior = Clip.none,
     this.transform,
     this.transformAlignment,
+    this.parentControlsOpacity,
     super.staticConstraints,
     super.key,
   });
@@ -170,7 +175,7 @@ class Div extends TwStatelessWidget {
     }
 
     // Apply opacity effect if applicable.
-    if (style.opacity != null) {
+    if (style.opacity != null && parentControlsOpacity != true) {
       current = Opacity(
         opacity: style.opacity?.value ?? 1.0,
         child: current,
