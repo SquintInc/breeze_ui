@@ -16,29 +16,44 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   /// The internal material states controller for this stateful widget.
   late MaterialStatesControllerType _statesControllerType;
 
-  /// This value will be set if [_statesControllerType] is [MaterialStatesControllerType.internal].
+  /// This value will be set if [statesControllerType] is [MaterialStatesControllerType.internal].
   MaterialStatesController? _internalStatesController;
 
+  /// This value will be set if [statesControllerType] is [MaterialStatesControllerType.inherited]
+  /// and if a [ParentMaterialStatesData] is found.
+  ParentMaterialStatesData? _parentStates;
+
+  /// Getter for [_statesControllerType].
+  MaterialStatesControllerType get statesControllerType =>
+      _statesControllerType;
+
+  /// Gets the correct states controller based on the [statesControllerType]
   MaterialStatesController get statesController =>
-      switch (_statesControllerType) {
+      switch (statesControllerType) {
         MaterialStatesControllerType.passedDown => widget.statesController!,
         MaterialStatesControllerType.internal => _internalStatesController!,
         MaterialStatesControllerType.inherited => _parentStates!.controller,
       };
 
-  ParentMaterialStatesData? _parentStates;
-
+  /// Getter for [_parentStates].
   ParentMaterialStatesData? get parentStates => _parentStates;
 
+  /// Returns the material state controller's current states.
+  /// Returns the current states from the [ParentMaterialStatesData] if it exists,
+  /// otherwise returns the [statesController] state values which depends on the
+  /// [statesControllerType].
   Set<MaterialState> get currentStates =>
       parentStates != null ? parentStates!.states : statesController.value;
 
   /// The internal focus node for this stateful widget.
   late FocusNode? _focusNode;
 
+  /// Getter for the widget's focus node, or the internal [_focusNode] if the widget's focus node
+  /// is null.
   FocusNode? get focusNode => widget.focusNode ?? _focusNode;
 
-  /// If the widget is selectable, this keeps track of the widget's selection / toggle state.
+  /// If the widget is selectable, this keeps track of the widget's selection / toggle state upon
+  /// widget initialization.
   bool _isSelected = false;
 
   /// Getter for [_isSelected].
