@@ -6,9 +6,7 @@ import 'package:tailwind_elements/widgets/state/stateful_widget.dart';
 import 'package:tailwind_elements/widgets/stateless/div.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 
-/// A [TextButton] widget wrapper with support for Tailwind styled properties.
-///
-/// See the [build] method for more details about the implementation choice.
+/// A Button widget with support for Tailwind styled properties.
 @immutable
 class TwButton extends TwStatefulWidget {
   static const PxUnit minTapTargetSize = PxUnit(48.0);

@@ -9,7 +9,6 @@ import 'package:tailwind_elements/config/options/sizing/max_width.dart';
 import 'package:tailwind_elements/config/options/sizing/min_height.dart';
 import 'package:tailwind_elements/config/options/sizing/min_width.dart';
 import 'package:tailwind_elements/config/options/sizing/width.dart';
-import 'package:tailwind_elements/config/options/transitions/transition_property.dart';
 import 'package:tailwind_elements/config/options/typography/font_size.dart';
 import 'package:tailwind_elements/config/options/typography/line_height.dart';
 import 'package:tailwind_elements/config/options/units/measurement_unit.dart';
@@ -182,9 +181,13 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
 
   /// Rebuilds the widget when the animation controller updates.
   void handleAnimationControllerUpdate() {
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
+  /// Called when an [InheritedWidget] that this widget depends on changes
+  /// from upstream.
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -196,13 +199,15 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
     updateAnimationControllerData(currentStyle);
   }
 
+  /// Called when the set of [MaterialState]s stored by the [statesController]
+  /// changes.
   @override
   void handleStatesControllerChange() {
     final currentStyle = getCurrentStyle(currentStates);
     initAnimationController(currentStyle);
     updateAnimationControllerData(currentStyle);
     // Notify state change
-    setState(() {});
+    super.handleStatesControllerChange();
   }
 
   void updateAnimationControllerData(final TwStyle currentStyle) {
@@ -307,15 +312,18 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
   void animateTweens(final Duration delay) {
     final animationController = this.animationController;
     final animationCurve = this.animationCurve;
-    if (animationController != null && animationCurve != null) {
-      animationController.value = 0.0;
-      if (delay != Duration.zero) {
-        Future.delayed(delay, () {
-          animationController.forward();
-        });
-      } else {
+    if (!(animationController != null && animationCurve != null && mounted)) {
+      return;
+    }
+
+    animationController.value = 0.0;
+
+    if (delay != Duration.zero) {
+      Future.delayed(delay, () {
         animationController.forward();
-      }
+      });
+    } else {
+      animationController.forward();
     }
   }
 

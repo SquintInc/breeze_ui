@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tailwind_elements/base.dart';
+import 'package:tailwind_elements/widgets/inherited/parent_material_states_data.dart';
 import 'package:tailwind_elements/widgets/state/animated_material_state.dart';
 import 'package:tailwind_elements/widgets/state/stateful_widget.dart';
 import 'package:tailwind_elements/widgets/stateless/div.dart';
@@ -8,7 +9,7 @@ import 'package:tailwind_elements/widgets/style/style.dart';
 /// A [Div] widget wrapper with support for Tailwind styled properties
 /// and animated property transitions.
 ///
-/// A [TwAnimationGroup] may be used to reuse the same animation controller
+/// A [TwParentMaterialStates] may be used to reuse the same animation controller
 /// for multiple [TwStatefulWidget]s that support animations.
 class TwDiv extends TwStatefulWidget {
   // Passthrough [Container] properties

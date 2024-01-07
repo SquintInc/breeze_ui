@@ -21,6 +21,7 @@ class TailwindElementsPlayground extends StatefulWidget {
 class _TailwindElementsPlaygroundState
     extends State<TailwindElementsPlayground> {
   bool toggled = true;
+  bool hideSwitch = false;
   final MaterialStatesController statesController = MaterialStatesController();
 
   @override
@@ -94,39 +95,8 @@ class _TailwindElementsPlaygroundState
                       // ),
                       onToggled: (final bool value) {},
                     ),
-                    // TwSwitch(
-                    //   style: const TwStyle(
-                    //     backgroundColor: bg_gray_200,
-                    //     transition: transition_all,
-                    //     width: w_12,
-                    //     height: h_6,
-                    //     padding: TwPadding.xy(px_0_5, py_0_5),
-                    //     borderRadius: TwBorderRadius.all(rounded_full),
-                    //   ),
-                    //   selected: const TwStyle(
-                    //     backgroundColor: bg_indigo_500,
-                    //   ),
-                    //   onToggled: (final bool value) {
-                    //     print('switch toggled: $value');
-                    //   },
-                    //   statesController: statesController,
-                    //   thumb: TwDiv(
-                    //     style: TwStyle(
-                    //       backgroundColor: bg_white,
-                    //       transition: transition_all,
-                    //       width: w_5,
-                    //       height: h_5,
-                    //       borderRadius: TwBorderRadius.all(rounded_full),
-                    //     ),
-                    //     selected: TwStyle(
-                    //       backgroundColor: bg_red_500,
-                    //     ),
-                    //     statesController: statesController,
-                    //   ),
-                    // ),
                     TwSwitch(
                       value: toggled,
-                      isToggleable: true,
                       style: const TwStyle(
                         backgroundColor: bg_gray_200,
                         transition: transition_all,
@@ -135,14 +105,16 @@ class _TailwindElementsPlaygroundState
                         padding: TwPadding.xy(px_0_5, py_0_5),
                         borderRadius: TwBorderRadius.all(rounded_full),
                       ),
+                      pressed: const TwStyle(
+                        backgroundColor: bg_indigo_400,
+                      ),
                       selected: const TwStyle(
                         backgroundColor: bg_indigo_500,
                       ),
                       onToggled: (final bool value) {
                         print('switch toggled: $value');
                       },
-                      statesController: statesController,
-                      thumb: TwDiv(
+                      thumb: const TwDiv(
                         style: TwStyle(
                           backgroundColor: bg_white,
                           transition: transition_all,
@@ -151,21 +123,17 @@ class _TailwindElementsPlaygroundState
                           borderRadius: TwBorderRadius.all(rounded_full),
                         ),
                         hovered: TwStyle(
-                          backgroundColor: bg_red_400,
+                          backgroundColor: bg_blue_400,
                         ),
                         selected: TwStyle(
                           backgroundColor: bg_red_500,
                         ),
-                        enableInputDetectors: true,
-                        statesController: statesController,
                       ),
                     ),
                   ],
                 ),
                 TwRow(
                   scrollable: true,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TwDiv(
                       style: TwStyle(
@@ -235,7 +203,7 @@ class _TailwindElementsPlaygroundState
                 ),
                 TwRow(
                   children: [
-                    TwAnimationGroup(
+                    TwParentMaterialStates(
                       child: TwDiv(
                         enableInputDetectors: true,
                         isDraggable: true,

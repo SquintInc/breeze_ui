@@ -10,8 +10,7 @@ import 'package:tailwind_elements/widgets/stateless/div.dart';
 import 'package:tailwind_elements/widgets/stateless/icon.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 
-/// A widget meant to represent a [Checkbox] with custom styling via Tailwind
-/// styled properties.
+/// A Checkbox widget with support for Tailwind styled properties.
 @immutable
 class TwCheckbox extends TwStatefulWidget {
   static const PxUnit minTapTargetSize = PxUnit(48.0);
@@ -70,7 +69,8 @@ class TwCheckbox extends TwStatefulWidget {
   State createState() => _CheckboxState();
 }
 
-class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox> with SingleTickerProviderStateMixin {
+class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox>
+    with SingleTickerProviderStateMixin {
   @override
   TwStyle getCurrentStyle(final Set<MaterialState> states) {
     final normalStyle = widget.style.copyWith(

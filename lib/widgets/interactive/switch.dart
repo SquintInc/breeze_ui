@@ -1,18 +1,96 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_elements/config/options/units/measurement_unit.dart';
+import 'package:tailwind_elements/widgets/inherited/parent_material_states_data.dart';
 import 'package:tailwind_elements/widgets/rendering/input_padding.dart';
 import 'package:tailwind_elements/widgets/state/animated_material_state.dart';
 import 'package:tailwind_elements/widgets/state/stateful_widget.dart';
 import 'package:tailwind_elements/widgets/stateless/div.dart';
+import 'package:tailwind_elements/widgets/stateless/stateless_widget.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
+
+/// A Switch widget with support for Tailwind styled properties. This is a [StatelessWidget] wrapper
+/// around [TwSwitchTrack], which wraps the [TwSwitchTrack] in a [TwParentMaterialStates] to share
+/// the same material states between the switch track and the switch thumb, therefore also allowing
+/// independently tweened styling properties (e.g. track and thumb can have different background
+/// colors respectively, when the switch is toggled enabled).
+@immutable
+class TwSwitch extends TwStatelessWidget {
+  static const PxUnit minTapTargetSize = PxUnit(48.0);
+
+  // Copy over all the properties that [TwSwitchTrack] supports.
+
+  final bool value;
+  final ValueChanged<bool>? onToggled;
+  final CssAbsoluteUnit tapTargetSize;
+  final Widget thumb;
+  final TwStyle? disabled;
+  final TwStyle? pressed;
+  final TwStyle? hovered;
+  final TwStyle? dragged;
+  final TwStyle? focused;
+  final TwStyle? selected;
+  final TwStyle? errored;
+  final bool isDisabled;
+  final bool isToggleable;
+  final MaterialStatesController? statesController;
+  final FocusNode? focusNode;
+
+  const TwSwitch({
+    required this.thumb,
+    this.onToggled,
+    this.value = false,
+    this.tapTargetSize = minTapTargetSize,
+    // Style properties
+    super.style = const TwStyle(),
+    this.disabled,
+    this.pressed,
+    this.hovered,
+    this.dragged,
+    this.focused,
+    this.selected,
+    this.errored,
+    // Toggleable booleans
+    this.isDisabled = false,
+    this.isToggleable = true,
+    // Input controllers
+    this.statesController,
+    this.focusNode,
+    super.key,
+  });
+
+  @override
+  Widget build(final BuildContext context) {
+    return TwParentMaterialStates(
+      child: TwSwitchTrack(
+        thumb: thumb,
+        onToggled: onToggled,
+        value: value,
+        tapTargetSize: tapTargetSize,
+        // Style properties
+        style: style,
+        disabled: disabled,
+        pressed: pressed,
+        hovered: hovered,
+        dragged: dragged,
+        focused: focused,
+        selected: selected,
+        errored: errored,
+        // Toggleable booleans
+        isDisabled: isDisabled,
+        isToggleable: isToggleable,
+        // Input controllers
+        statesController: statesController,
+        focusNode: focusNode,
+      ),
+    );
+  }
+}
 
 /// A widget meant to represent a [Switch] with custom styling via Tailwind
 /// styled properties.
 @immutable
-class TwSwitch extends TwStatefulWidget {
-  static const PxUnit minTapTargetSize = PxUnit(48.0);
-
+class TwSwitchTrack extends TwStatefulWidget {
   /// Initial value of the switch.
   final bool value;
 
@@ -26,11 +104,11 @@ class TwSwitch extends TwStatefulWidget {
   /// The thumb widget to use for the switch.
   final Widget thumb;
 
-  const TwSwitch({
+  const TwSwitchTrack({
     required this.thumb,
+    required this.tapTargetSize,
     this.onToggled,
     this.value = false,
-    this.tapTargetSize = minTapTargetSize,
     // Style properties
     super.style = const TwStyle(),
     super.disabled,
@@ -41,7 +119,7 @@ class TwSwitch extends TwStatefulWidget {
     super.selected,
     super.errored,
     // Toggleable booleans
-    super.isDisabled,
+    super.isDisabled = false,
     super.isToggleable = true,
     // Input controllers
     super.statesController,
@@ -61,7 +139,7 @@ class TwSwitch extends TwStatefulWidget {
   State createState() => _SwitchTrackState();
 }
 
-class _SwitchTrackState extends TwAnimatedMaterialState<TwSwitch>
+class _SwitchTrackState extends TwAnimatedMaterialState<TwSwitchTrack>
     with TickerProviderStateMixin {
   /// Internal (linear-time) animation controller for the thumb position
   AnimationController? thumbController;
@@ -137,22 +215,25 @@ class _SwitchTrackState extends TwAnimatedMaterialState<TwSwitch>
   void animateThumb(final Duration delay, {required final bool forward}) {
     final thumbController = this.thumbController;
     final thumbCurve = this.thumbCurve;
-    if (thumbController != null && thumbCurve != null) {
-      thumbController.value = forward ? 0.0 : 1.0;
-      if (delay != Duration.zero) {
-        Future.delayed(delay, () {
-          if (forward) {
-            thumbController.forward();
-          } else {
-            thumbController.reverse();
-          }
-        });
-      } else {
+    if (!(thumbController != null && thumbCurve != null && mounted)) {
+      return;
+    }
+
+    thumbController.value = forward ? 0.0 : 1.0;
+
+    if (delay != Duration.zero) {
+      Future.delayed(delay, () {
         if (forward) {
           thumbController.forward();
         } else {
           thumbController.reverse();
         }
+      });
+    } else {
+      if (forward) {
+        thumbController.forward();
+      } else {
+        thumbController.reverse();
       }
     }
   }

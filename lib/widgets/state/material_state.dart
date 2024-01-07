@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/widgets/animation/animation_group.dart';
+import 'package:tailwind_elements/widgets/inherited/parent_material_states_data.dart';
 import 'package:tailwind_elements/widgets/state/stateful_widget.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 
@@ -19,18 +19,19 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   /// This value will be set if [_statesControllerType] is [MaterialStatesControllerType.internal].
   MaterialStatesController? _internalStatesController;
 
-  /// This value will be set if [_statesControllerType] is [MaterialStatesControllerType.inherited].
-  MaterialStatesController? _animationGroupStatesController;
-
   MaterialStatesController get statesController =>
       switch (_statesControllerType) {
         MaterialStatesControllerType.passedDown => widget.statesController!,
         MaterialStatesControllerType.internal => _internalStatesController!,
-        MaterialStatesControllerType.inherited =>
-          _animationGroupStatesController!,
+        MaterialStatesControllerType.inherited => _parentStates!.controller,
       };
 
-  Set<MaterialState> get currentStates => statesController.value;
+  ParentMaterialStatesData? _parentStates;
+
+  ParentMaterialStatesData? get parentStates => _parentStates;
+
+  Set<MaterialState> get currentStates =>
+      parentStates != null ? parentStates!.states : statesController.value;
 
   /// The internal focus node for this stateful widget.
   late FocusNode? _focusNode;
@@ -54,18 +55,28 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     }
   }
 
-  /// Rebuilds the widget when the material states controller changes.
+  /// Called when the set of [MaterialState]s stored by the [statesController]
+  /// changes.
   void handleStatesControllerChange() {
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void initStatesController() {
-    final MaterialStatesGroup? animationGroup = MaterialStatesGroup.of(context);
+    final ParentMaterialStatesData? parentStates =
+        ParentMaterialStatesData.of(context);
 
     // Determine material states controller type
-    if (animationGroup != null) {
+    if (parentStates != null) {
+      _parentStates = parentStates;
       _statesControllerType = MaterialStatesControllerType.inherited;
-      _animationGroupStatesController = animationGroup.statesController;
+      if (parentStates.child == widget) {
+        statesController.update(MaterialState.selected, _isSelected);
+      } else {
+        _isSelected =
+            parentStates.controller.value.contains(MaterialState.selected);
+      }
     } else if (widget.statesController != null) {
       _statesControllerType = MaterialStatesControllerType.passedDown;
     } else {
@@ -77,10 +88,16 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     // has values set.
     statesController
       ..update(MaterialState.disabled, widget.isDisabled)
-      ..update(MaterialState.selected, _isSelected)
-      ..addListener(handleStatesControllerChange);
+      ..update(MaterialState.selected, _isSelected);
+    if (parentStates != null && parentStates.child == widget) {
+      statesController.addListener(parentStates.onStateChange);
+    } else {
+      statesController.addListener(handleStatesControllerChange);
+    }
   }
 
+  /// Called when an [InheritedWidget] that this widget depends on changes
+  /// from upstream.
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -114,6 +131,9 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
 
   @override
   void dispose() {
+    if (parentStates?.onStateChange != null) {
+      statesController.removeListener(parentStates!.onStateChange);
+    }
     statesController.removeListener(handleStatesControllerChange);
     _internalStatesController?.dispose();
     _focusNode?.dispose();
