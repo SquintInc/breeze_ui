@@ -74,9 +74,10 @@ class _TwParentMaterialStatesState extends State<TwParentMaterialStates> {
   /// Rather than letting the individual child widgets listen to a state change
   /// and calling setState within each state, let this parent widget know that
   /// the state has changed and it should rebuild itself including its children.
+  ///
+  /// Also wraps setState in a post-frame callback to ensure that all children
+  /// have had a chance to update and cascade their states before rebuilding.
   void onStateChange() {
-    // Wrap in a post-frame callback to ensure that all children have had a chance
-    // to update their states before rebuilding.
     WidgetsBinding.instance.addPostFrameCallback((final _) {
       if (mounted) {
         setState(() {});
@@ -88,6 +89,7 @@ class _TwParentMaterialStatesState extends State<TwParentMaterialStates> {
   Widget build(final BuildContext context) {
     return ParentMaterialStatesData(
       controller: statesController,
+      // states needs to be copied to prevent comparing the same underlying set object
       states: Set.unmodifiable(statesController.value),
       onStateChange: onStateChange,
       child: widget.child,
