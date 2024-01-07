@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 /// An [InheritedWidget] that allows a single [MaterialStatesController] to be shared by its
 /// descendants.
 ///
+/// Use [TwMaterialStatesGroup] to automatically provide this widget and manage the internal
+/// [MaterialStatesController] to its descendants.
+///
 /// Example widgets that use this include:
 /// - [TwSwitch]
 @immutable
@@ -31,9 +34,10 @@ class ParentMaterialStatesData extends InheritedWidget {
   }
 }
 
-/// A [StatefulWidget] that provides [ParentMaterialStatesData] to its
-/// descendants.
-class TwParentMaterialStates extends StatefulWidget {
+/// A [StatefulWidget] that provides [ParentMaterialStatesData] to its descendants,
+/// and automatically manages the lifecycle of an internalized [MaterialStatesController]
+/// if one is not provided directly.
+class TwMaterialStatesGroup extends StatefulWidget {
   final Widget child;
 
   /// Optionally pass in an external [MaterialStatesController] to use instead,
@@ -41,17 +45,17 @@ class TwParentMaterialStates extends StatefulWidget {
   /// dispose external controllers passed in this way.
   final MaterialStatesController? statesController;
 
-  const TwParentMaterialStates({
+  const TwMaterialStatesGroup({
     required this.child,
     this.statesController,
     super.key,
   });
 
   @override
-  State createState() => _TwParentMaterialStatesState();
+  State createState() => _TwMaterialStatesGroupState();
 }
 
-class _TwParentMaterialStatesState extends State<TwParentMaterialStates> {
+class _TwMaterialStatesGroupState extends State<TwMaterialStatesGroup> {
   MaterialStatesController? _internalStatesController;
 
   MaterialStatesController get statesController =>
