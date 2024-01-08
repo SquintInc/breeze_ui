@@ -227,7 +227,7 @@ class TwStyle {
   /// Determines if the style has any border decoration at all (e.g. border
   /// thickness, border radius)
   bool get hasBorderDecoration =>
-      (border != null && !(border?.isEmpty ?? true)) || borderRadius != null;
+      (border != null && !border!.isEmpty) || borderRadius != null;
 
   /// Determines if the style has any box shadow decoration at all
   bool get hasBoxShadowDecoration => boxShadow != null;
@@ -291,7 +291,7 @@ class TwStyle {
   /// Compute the box decoration for this style, based on the merged style and
   /// the current widget's constraints (if applicable, e.g. computed from a
   /// [LayoutBuilder]).
-  Decoration? getBoxDecoration(final BoxConstraints? constraints) {
+  BoxDecoration? getBoxDecoration(final BoxConstraints? constraints) {
     if (!hasDecorations) {
       return null;
     }

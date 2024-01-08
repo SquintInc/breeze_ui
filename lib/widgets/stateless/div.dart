@@ -18,7 +18,7 @@ class Div extends TwStatelessWidget {
   final bool? parentControlsOpacity;
 
   const Div({
-    super.style = const TwStyle(),
+    required super.style,
     this.child,
     this.alignment = Alignment.topLeft,
     this.clipBehavior = Clip.none,
@@ -29,22 +29,25 @@ class Div extends TwStatelessWidget {
     super.key,
   });
 
-  EdgeInsetsGeometry? _paddingIncludingDecoration(final TwStyle style) {
-    final padding = style.padding;
-    final paddingEdgeInsets = padding?.toEdgeInsets();
-    if (!style.hasBorderDecoration) return paddingEdgeInsets;
-    final EdgeInsetsGeometry decorationPadding = style.border
-            ?.toBorder(style.borderColor?.color, style.borderStrokeAlign)
-            ?.dimensions ??
-        EdgeInsets.zero;
-    return (paddingEdgeInsets == null)
-        ? decorationPadding
-        : paddingEdgeInsets.add(decorationPadding);
+  EdgeInsetsGeometry? _paddingIncludingDecoration(
+    final TwStyle style,
+    final BoxDecoration? decoration,
+  ) {
+    final stylePadding = style.padding;
+    final padding = stylePadding?.toEdgeInsets();
+    if (decoration == null) {
+      return padding;
+    }
+    final EdgeInsetsGeometry decorationPadding = decoration.padding;
+    if (padding == null) {
+      return decorationPadding;
+    }
+    return padding.add(decorationPadding);
   }
 
   /// Gets a [BoxConstraints] object that assumes usage of simple [PxUnit]
   /// values.
-  BoxConstraints? _tightenConstraints(
+  BoxConstraints? tightenAbsoluteConstraints(
     final TwConstraints twConstraints,
     final double fontSizePx,
   ) {
@@ -110,17 +113,22 @@ class Div extends TwStatelessWidget {
       );
     }
 
+    final bool hasOnlyBackgroundColor =
+        style.hasDecorations && style.hasOnlyBackgroundColorDecoration;
+    final BoxDecoration? decoration =
+        hasOnlyBackgroundColor ? null : style.getBoxDecoration(constraints);
+
     // Render effective padding (including border widths) around the current
     // widget if applicable.
     final EdgeInsetsGeometry? effectivePadding =
-        _paddingIncludingDecoration(style);
+        _paddingIncludingDecoration(style, decoration);
     if (effectivePadding != null) {
       current = Padding(padding: effectivePadding, child: current);
     }
 
     // Render a [ColoredBox] if the widget has its background color property set
     // and no other decoration settings.
-    if (style.hasOnlyBackgroundColorDecoration) {
+    if (hasOnlyBackgroundColor) {
       current = ColoredBox(
         color: style.backgroundColor?.color ?? Colors.transparent,
         child: current,
@@ -128,8 +136,9 @@ class Div extends TwStatelessWidget {
     }
 
     // Render [ClipPath]
-    final Decoration? decoration = style.getBoxDecoration(constraints);
-    if (clipBehavior != Clip.none && decoration != null) {
+    if (clipBehavior != Clip.none &&
+        decoration != null &&
+        !hasOnlyBackgroundColor) {
       current = ClipPath(
         clipper: DecorationClipper(
           textDirection: Directionality.maybeOf(context),
@@ -142,7 +151,7 @@ class Div extends TwStatelessWidget {
 
     // Render a [DecoratedBox] only if the background decoration exists and is not
     // just a background color (otherwise a [ColoredBox] would be rendered).
-    if (style.hasDecorations && decoration != null) {
+    if (decoration != null && !hasOnlyBackgroundColor) {
       current = DecoratedBox(decoration: decoration, child: current);
     }
 
@@ -310,9 +319,9 @@ class Div extends TwStatelessWidget {
     }
 
     final simpleConstraints =
-        _tightenConstraints(style.toConstraints(), style.fontSizePx);
+        tightenAbsoluteConstraints(style.toConstraints(), style.fontSizePx);
     final staticConstraintss = staticConstraints != null
-        ? _tightenConstraints(staticConstraints!, style.fontSizePx)
+        ? tightenAbsoluteConstraints(staticConstraints!, style.fontSizePx)
         : null;
     return buildDiv(
       context,
