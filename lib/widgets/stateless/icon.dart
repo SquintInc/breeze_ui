@@ -40,7 +40,8 @@ class IconDataSvg implements TwIconData {
 /// percent based sizing constraints will work).
 ///
 /// If a [style] is not provided, the [defaultIconStyle] will be used: a black icon with width and
-/// height of 24.0 pixels.
+/// height of 24.0 pixels. Set [preserveIconColors] to true to preserve the original colors of the
+/// icon / SVG.
 @immutable
 class TwIcon extends TwStatelessWidget {
   static const double defaultWidthPx = 24.0;
@@ -49,7 +50,6 @@ class TwIcon extends TwStatelessWidget {
   static const TwStyle defaultIconStyle = TwStyle(
     width: TwWidth(PxUnit(defaultWidthPx)),
     height: TwHeight(PxUnit(defaultHeightPx)),
-    textColor: TwTextColor(defaultIconColor),
   );
   static const BoxConstraints defaultConstraints =
       BoxConstraints.tightForFinite(
@@ -68,30 +68,21 @@ class TwIcon extends TwStatelessWidget {
   /// Defaults to true.
   final bool expand;
 
+  /// Whether the icon should preserve its original colors. For example, this is useful for SVGs
+  /// of logos with multiple colors.
+  ///
+  /// Defaults to false and will use [defaultIconColor] if not enabled.
+  final bool preserveIconColors;
+
   const TwIcon({
     required this.icon,
     this.alignment,
     this.expand = true,
+    this.preserveIconColors = false,
     super.style = defaultIconStyle,
     super.staticConstraints,
     super.key,
   });
-
-  TwIcon.icon({
-    required final IconData iconData,
-    final Alignment? alignment,
-    final bool expand = true,
-    final TwStyle style = defaultIconStyle,
-    final TwConstraints? staticConstraints,
-    final Key? key,
-  }) : this(
-          icon: TwIconData.icon(iconData),
-          alignment: alignment,
-          expand: expand,
-          style: style,
-          staticConstraints: staticConstraints,
-          key: key,
-        );
 
   Widget buildIcon(
     final BuildContext context,
@@ -103,17 +94,21 @@ class TwIcon extends TwStatelessWidget {
           fit: BoxFit.contain,
           child: SvgPicture(
             svg,
-            colorFilter: ColorFilter.mode(
-              style.textColor?.color ?? defaultIconColor,
-              BlendMode.srcIn,
-            ),
+            colorFilter: preserveIconColors
+                ? null
+                : ColorFilter.mode(
+                    style.textColor?.color ?? defaultIconColor,
+                    BlendMode.srcIn,
+                  ),
           ),
         ),
       IconDataFont(iconData: final iconData) => FittedBox(
           fit: BoxFit.contain,
           child: Icon(
             iconData,
-            color: style.textColor?.color ?? defaultIconColor,
+            color: preserveIconColors
+                ? null
+                : (style.textColor?.color ?? defaultIconColor),
           ),
         ),
     };
