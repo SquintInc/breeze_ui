@@ -40,7 +40,7 @@ class TwCheckbox extends TwStatefulWidget {
     this.onToggled,
     this.value = false,
     this.tapTargetSize = minTapTargetSize,
-    this.icon = const IconFontData(Icons.check),
+    this.icon = const IconDataFont(Icons.check),
     // Style properties
     super.style = defaultCheckboxStyle,
     super.disabled,

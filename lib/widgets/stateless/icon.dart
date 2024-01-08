@@ -10,25 +10,29 @@ import 'package:tailwind_elements/widgets/style/style.dart';
 /// Sealed class representing the icon data using either an [IconData] or svg [BytesLoader].
 @immutable
 sealed class TwIconData {
-  static IconSvgData svg(final BytesLoader svg) => IconSvgData(svg);
+  /// Non-const static method to create an [IconDataSvg] svg icon.
+  static IconDataSvg svg(final BytesLoader svg) => IconDataSvg(svg);
 
-  static IconFontData icon(final IconData iconData) => IconFontData(iconData);
+  /// Non-const static method to create an [IconDataFont] font glyph icon.
+  static IconDataFont icon(final IconData iconData) => IconDataFont(iconData);
 }
 
-/// Icon data using an [IconData].
+/// Icon data using an [IconData] font glyph.
 @immutable
-class IconFontData implements TwIconData {
+class IconDataFont implements TwIconData {
   final IconData iconData;
 
-  const IconFontData(this.iconData);
+  const IconDataFont(this.iconData);
 }
 
 /// Icon data using an svg [BytesLoader].
+/// Prefer using [AssetBytesLoader] with svg assets that have been pre-compiled to a *.vec
+/// file via [flutter_svg](https://pub.dev/packages/flutter_svg#precompiling-and-optimizing-svgs).
 @immutable
-class IconSvgData implements TwIconData {
+class IconDataSvg implements TwIconData {
   final BytesLoader svg;
 
-  const IconSvgData(this.svg);
+  const IconDataSvg(this.svg);
 }
 
 /// A widget representing an [Icon] or [SvgPicture] with support for Tailwind styled properties.
@@ -73,13 +77,29 @@ class TwIcon extends TwStatelessWidget {
     super.key,
   });
 
+  TwIcon.icon({
+    required final IconData iconData,
+    final Alignment? alignment,
+    final bool expand = true,
+    final TwStyle style = defaultIconStyle,
+    final TwConstraints? staticConstraints,
+    final Key? key,
+  }) : this(
+          icon: TwIconData.icon(iconData),
+          alignment: alignment,
+          expand: expand,
+          style: style,
+          staticConstraints: staticConstraints,
+          key: key,
+        );
+
   Widget buildIcon(
     final BuildContext context,
     final BoxConstraints? constraints,
     final BoxConstraints? staticBoxConstraints,
   ) {
     final Widget iconWidget = switch (icon) {
-      IconSvgData(svg: final svg) => FittedBox(
+      IconDataSvg(svg: final svg) => FittedBox(
           fit: BoxFit.contain,
           child: SvgPicture(
             svg,
@@ -89,7 +109,7 @@ class TwIcon extends TwStatelessWidget {
             ),
           ),
         ),
-      IconFontData(iconData: final iconData) => FittedBox(
+      IconDataFont(iconData: final iconData) => FittedBox(
           fit: BoxFit.contain,
           child: Icon(
             iconData,
