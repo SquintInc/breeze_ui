@@ -119,6 +119,7 @@ class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox>
 
     final TwIcon checkmarkIcon = TwIcon(
       icon: widget.icon,
+      expand: true,
       staticConstraints: currentStyle.toConstraints(),
       style: TwCheckbox.defaultCheckboxStyle.copyWith(
         textColor: animatedStyle.textColor ??

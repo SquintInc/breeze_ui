@@ -37,18 +37,35 @@ class IconSvgData implements TwIconData {
 /// height of 24.0 pixels.
 @immutable
 class TwIcon extends TwStatelessWidget {
+  static const double defaultWidthPx = 24.0;
+  static const double defaultHeightPx = 24.0;
   static const Color defaultIconColor = Colors.black;
   static const TwStyle defaultIconStyle = TwStyle(
-    width: TwWidth(PxUnit(24.0)),
-    height: TwHeight(PxUnit(24.0)),
+    width: TwWidth(PxUnit(defaultWidthPx)),
+    height: TwHeight(PxUnit(defaultHeightPx)),
     textColor: TwTextColor(defaultIconColor),
+  );
+  static const BoxConstraints defaultConstraints =
+      BoxConstraints.tightForFinite(
+    width: defaultWidthPx,
+    height: defaultHeightPx,
   );
 
   /// The icon data to use for display. Can be either an [IconData] or svg [BytesLoader].
   final TwIconData icon;
 
+  /// The alignment of the icon within the [Div] widget. Defaults to [Alignment.center].
+  final Alignment? alignment;
+
+  /// Whether the icon should expand to fill the available space. This is accomplished by wrapping
+  /// the icon in a [SizedBox.expand].
+  /// Defaults to false.
+  final bool expand;
+
   const TwIcon({
     required this.icon,
+    this.alignment,
+    this.expand = false,
     super.style = defaultIconStyle,
     super.staticConstraints,
     super.key,
@@ -56,35 +73,34 @@ class TwIcon extends TwStatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
+    final styleConstraints = staticConstraints ?? style.toConstraints();
     final Widget iconWidget = switch (icon) {
-      IconSvgData(svg: final svg) => SizedBox.expand(
-          child: FittedBox(
-            fit: BoxFit.contain,
-            child: SvgPicture(
-              svg,
-              colorFilter: ColorFilter.mode(
-                style.textColor?.color ?? defaultIconColor,
-                BlendMode.srcIn,
-              ),
-            ),
+      IconSvgData(svg: final svg) => SvgPicture(
+          svg,
+          colorFilter: ColorFilter.mode(
+            style.textColor?.color ?? defaultIconColor,
+            BlendMode.srcIn,
           ),
         ),
-      IconFontData(iconData: final iconData) => SizedBox.expand(
-          child: FittedBox(
-            fit: BoxFit.contain,
-            child: Icon(
-              iconData,
-              color: style.textColor?.color ?? defaultIconColor,
-            ),
-          ),
+      IconFontData(iconData: final iconData) => Icon(
+          iconData,
+          color: style.textColor?.color ?? defaultIconColor,
         ),
     };
 
     return Div(
       style: style,
-      staticConstraints: staticConstraints,
+      staticConstraints: styleConstraints,
       parentControlsOpacity: true,
-      child: iconWidget,
+      alignment: alignment ?? Alignment.center,
+      child: expand
+          ? SizedBox.expand(
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: iconWidget,
+              ),
+            )
+          : iconWidget,
     );
   }
 }
