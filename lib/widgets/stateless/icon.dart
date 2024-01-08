@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tailwind_elements/base.dart';
+import 'package:tailwind_elements/widgets/inherited/parent_constraints_data.dart';
+import 'package:tailwind_elements/widgets/stateless/constraints.dart';
 import 'package:tailwind_elements/widgets/stateless/div.dart';
 import 'package:tailwind_elements/widgets/stateless/stateless_widget.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
@@ -58,49 +60,87 @@ class TwIcon extends TwStatelessWidget {
   final Alignment? alignment;
 
   /// Whether the icon should expand to fill the available space. This is accomplished by wrapping
-  /// the icon in a [SizedBox.expand].
-  /// Defaults to false.
+  /// the icon in a [ConstrainedBox].
+  /// Defaults to true.
   final bool expand;
 
   const TwIcon({
     required this.icon,
     this.alignment,
-    this.expand = false,
+    this.expand = true,
     super.style = defaultIconStyle,
     super.staticConstraints,
     super.key,
   });
 
-  @override
-  Widget build(final BuildContext context) {
-    final styleConstraints = staticConstraints ?? style.toConstraints();
+  Widget buildIcon(
+    final BuildContext context,
+    final BoxConstraints? constraints,
+    final BoxConstraints? staticBoxConstraints,
+  ) {
     final Widget iconWidget = switch (icon) {
-      IconSvgData(svg: final svg) => SvgPicture(
-          svg,
-          colorFilter: ColorFilter.mode(
-            style.textColor?.color ?? defaultIconColor,
-            BlendMode.srcIn,
+      IconSvgData(svg: final svg) => FittedBox(
+          fit: BoxFit.contain,
+          child: SvgPicture(
+            svg,
+            colorFilter: ColorFilter.mode(
+              style.textColor?.color ?? defaultIconColor,
+              BlendMode.srcIn,
+            ),
           ),
         ),
-      IconFontData(iconData: final iconData) => Icon(
-          iconData,
-          color: style.textColor?.color ?? defaultIconColor,
+      IconFontData(iconData: final iconData) => FittedBox(
+          fit: BoxFit.contain,
+          child: Icon(
+            iconData,
+            color: style.textColor?.color ?? defaultIconColor,
+          ),
         ),
     };
 
     return Div(
       style: style,
-      staticConstraints: styleConstraints,
+      staticConstraints: staticConstraints,
       parentControlsOpacity: true,
       alignment: alignment ?? Alignment.center,
       child: expand
-          ? SizedBox.expand(
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: iconWidget,
-              ),
+          ? ConstrainedBox(
+              constraints: constraints ?? defaultConstraints,
+              child: iconWidget,
             )
           : iconWidget,
+    );
+  }
+
+  @override
+  Widget build(final BuildContext context) {
+    final ParentConstraintsData? parentConstraintsData =
+        ParentConstraintsData.of(context);
+
+    final styleConstraints = staticConstraints ?? style.toConstraints();
+    if (parentConstraintsData != null) {
+      final constraints = computeRelativeConstraints(
+        parentConstraintsData.constraints,
+        styleConstraints,
+      );
+      final staticBoxConstraints = staticConstraints != null
+          ? computeRelativeConstraints(
+              parentConstraintsData.constraints,
+              staticConstraints!,
+            )
+          : null;
+      return buildIcon(context, constraints, staticBoxConstraints);
+    }
+
+    final simpleConstraints =
+        tightenAbsoluteConstraints(style.toConstraints(), style.fontSizePx);
+    final staticBoxConstraints = staticConstraints != null
+        ? tightenAbsoluteConstraints(staticConstraints!, style.fontSizePx)
+        : null;
+    return buildIcon(
+      context,
+      simpleConstraints,
+      staticBoxConstraints,
     );
   }
 }
