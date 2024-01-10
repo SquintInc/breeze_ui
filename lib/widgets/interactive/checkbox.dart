@@ -22,16 +22,12 @@ class TwCheckbox extends TwStatefulWidget {
   );
 
   /// Initial value of the checkbox.
-  /// The value can only be set to null if [tristate] is true.
+  /// The value can only be set to null if [isTristate] is true.
   /// Defaults to false.
   final bool? value;
 
-  /// Whether this checkbox is a tristate checkbox. If enabled, the checkbox supports
-  /// three states: true, false, and null.
-  final bool tristate;
-
   /// Called when the internal selected state of the checkbox changes.
-  /// The boolean value can be null if [tristate] is true.
+  /// The boolean value can be null if [isTristate] is true.
   final ValueChanged<bool?>? onToggled;
 
   /// The tap target size of the checkbox widget.
@@ -51,7 +47,6 @@ class TwCheckbox extends TwStatefulWidget {
   const TwCheckbox({
     this.onToggled,
     this.value = false,
-    this.tristate = false,
     this.tapTargetSize = minTapTargetSize,
     this.checkedIcon = const IconDataFont(Icons.check),
     this.neutralIcon = const IconDataFont(Icons.remove),
@@ -73,7 +68,7 @@ class TwCheckbox extends TwStatefulWidget {
     super.statesController,
     super.focusNode,
     super.key,
-  })  : assert(tristate || value != null),
+  })  : assert(isTristate || value != null),
         super(
           enableInputDetectors: isToggleable,
           enableFeedback: isToggleable,
