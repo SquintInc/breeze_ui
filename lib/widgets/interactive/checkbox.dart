@@ -11,6 +11,11 @@ import 'package:tailwind_elements/widgets/stateless/div.dart';
 import 'package:tailwind_elements/widgets/stateless/icon.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
 
+typedef IconStyleResolver = Function(
+  TwStyle currStyle,
+  Set<MaterialState> states,
+);
+
 /// A Checkbox widget with support for Tailwind styled properties.
 @immutable
 class TwCheckbox extends TwStatefulWidget {
@@ -49,6 +54,12 @@ class TwCheckbox extends TwStatefulWidget {
   /// overriding the default style resolution behavior from [TwMaterialState].
   final TwStyleResolver? styleResolver;
 
+  final IconStyleResolver? checkedIconStyleResolver;
+
+  final IconStyleResolver? uncheckedIconStyleResolver;
+
+  final IconStyleResolver? neutralIconStyleResolver;
+
   const TwCheckbox({
     this.onToggled,
     this.value = false,
@@ -57,6 +68,9 @@ class TwCheckbox extends TwStatefulWidget {
     this.neutralIcon = const IconDataFont(Icons.remove),
     this.uncheckedIcon,
     this.styleResolver,
+    this.checkedIconStyleResolver,
+    this.uncheckedIconStyleResolver,
+    this.neutralIconStyleResolver,
     // Style properties
     super.style = defaultCheckboxStyle,
     super.disabled,
@@ -120,6 +134,13 @@ class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox>
     return super.getCurrentStyle(states);
   }
 
+  TwStyle? iconStyle(final TwStyle currStyle) => switch (isSelected) {
+        true => widget.checkedIconStyleResolver?.call(currStyle, currentStates),
+        null => widget.neutralIconStyleResolver?.call(currStyle, currentStates),
+        false =>
+          widget.uncheckedIconStyleResolver?.call(currStyle, currentStates),
+      };
+
   @override
   Widget build(final BuildContext context) {
     final currentStyle = getCurrentStyle(currentStates);
@@ -130,14 +151,16 @@ class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox>
             icon: iconData!,
             expand: true,
             staticConstraints: currentStyle.toConstraints(),
-            style: TwCheckbox.defaultCheckboxStyle.copyWith(
-              textColor: animatedStyle.textColor ??
-                  TwCheckbox.defaultCheckboxStyle.textColor,
-              width:
-                  animatedStyle.width ?? TwCheckbox.defaultCheckboxStyle.width,
-              height: animatedStyle.height ??
-                  TwCheckbox.defaultCheckboxStyle.height,
-            ),
+            style: TwCheckbox.defaultCheckboxStyle
+                .copyWith(
+                  textColor: animatedStyle.textColor ??
+                      TwCheckbox.defaultCheckboxStyle.textColor,
+                  width: animatedStyle.width ??
+                      TwCheckbox.defaultCheckboxStyle.width,
+                  height: animatedStyle.height ??
+                      TwCheckbox.defaultCheckboxStyle.height,
+                )
+                .merge(iconStyle(animatedStyle)),
           )
         : null;
 
