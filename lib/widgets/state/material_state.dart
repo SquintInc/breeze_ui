@@ -54,13 +54,20 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
 
   /// If the widget is selectable, this keeps track of the widget's selection / toggle state upon
   /// widget initialization.
-  bool _isSelected = false;
+  bool? _isSelected = false;
+
+  /// If the widget is selectable and tristate is enabled, this keeps track of the widget's
+  /// previous value.
+  bool? _previousSelected = false;
 
   /// This keeps track of the widget's disabled state upon widget initialization.
   bool _isDisabled = false;
 
   /// Getter for [_isSelected].
-  bool get isSelected => _isSelected;
+  bool? get isSelected => _isSelected;
+
+  /// Getter for [_previousSelected].
+  bool? get previousSelected => _previousSelected;
 
   /// Getter for [_isDisabled].
   bool get isDisabled => _isDisabled;
@@ -70,6 +77,7 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     super.initState();
     // Track initial toggle selection state from the value passed to the widget
     _isSelected = widget.isToggled;
+    _previousSelected = widget.isToggled;
 
     // Track initial disabled state from the value passed to the widget
     _isDisabled = widget.isDisabled;
@@ -93,7 +101,7 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   void _updateInitialControllerStates() {
     statesController
       ..update(MaterialState.disabled, isDisabled)
-      ..update(MaterialState.selected, isSelected);
+      ..update(MaterialState.selected, isSelected ?? false);
   }
 
   /// Initializes the [statesController] based on the [statesControllerType].
@@ -183,6 +191,7 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     }
     if (widget.isToggled != oldWidget.isToggled) {
       _isSelected = widget.isToggled;
+      _previousSelected = oldWidget.isToggled;
       onIsSelectedChanged(isSelected: isSelected);
     }
   }
@@ -217,7 +226,7 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     }
     // The widget could have its [isToggled] property set to true, but the states controller may
     // not have been updated yet.
-    if (isSelected || states.contains(MaterialState.selected)) {
+    if ((isSelected ?? false) || states.contains(MaterialState.selected)) {
       return widget.style.merge(widget.selected);
     }
     if (states.contains(MaterialState.hovered)) {
@@ -249,28 +258,58 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     );
   }
 
-  void onIsSelectedChanged({required final bool isSelected}) {
+  void onIsSelectedChanged({required final bool? isSelected}) {
+    if (isSelected == null) {
+      handleStatesControllerChange();
+      return;
+    }
     statesController.update(MaterialState.selected, isSelected);
+  }
+
+  bool? _computeIsSelected(
+    final bool isTristate,
+    final bool? isSelected,
+    final bool? previousSelected,
+  ) {
+    if (isTristate) {
+      if (isSelected == null) {
+        return previousSelected != null ? !previousSelected : true;
+      }
+      return null;
+    }
+    // [previousSelected] should never be null if [isTristate] is false
+    return !isSelected!;
+  }
+
+  void _handleTapForToggleable() {
+    final nextIsSelected =
+        _computeIsSelected(widget.isTristate, _isSelected, _previousSelected);
+    _previousSelected = _isSelected;
+    _isSelected = nextIsSelected;
+    onIsSelectedChanged(isSelected: isSelected);
+    if (widget.onSelected != null) {
+      widget.onSelected!(_isSelected);
+      if (widget.enableFeedback) {
+        Feedback.forTap(context);
+      }
+    }
+  }
+
+  void _handleTapForTappable() {
+    if (widget.onTap != null) {
+      if (widget.enableFeedback) {
+        Feedback.forTap(context);
+      }
+      widget.onTap!();
+    }
   }
 
   void handleTap() {
     if (!widget.isDisabled) {
       if (widget.isToggleable) {
-        _isSelected = !_isSelected;
-        onIsSelectedChanged(isSelected: isSelected);
-        if (widget.onSelected != null) {
-          widget.onSelected!(_isSelected);
-          if (widget.enableFeedback) {
-            Feedback.forTap(context);
-          }
-        }
+        _handleTapForToggleable();
       }
-      if (widget.onTap != null) {
-        if (widget.enableFeedback) {
-          Feedback.forTap(context);
-        }
-        widget.onTap!();
-      }
+      _handleTapForTappable();
     }
   }
 

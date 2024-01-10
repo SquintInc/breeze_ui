@@ -20,7 +20,7 @@ class TwSwitch extends TwStatefulWidget {
   final bool value;
 
   /// Called when the internal selected state of the switch changes.
-  final ValueChanged<bool>? onToggled;
+  final ValueChanged<bool?>? onToggled;
 
   /// The tap target size of the switch widget.
   /// Defaults to 48.0 pixels as per Material Design guidelines.
@@ -79,9 +79,9 @@ class _SwitchTrackState extends TwAnimatedMaterialState<TwSwitch>
   );
 
   @override
-  void onIsSelectedChanged({required final bool isSelected}) {
+  void onIsSelectedChanged({required final bool? isSelected}) {
     super.onIsSelectedChanged(isSelected: isSelected);
-    animateThumb(delay, forward: isSelected);
+    animateThumb(delay, forward: isSelected ?? false);
   }
 
   @override
@@ -134,7 +134,7 @@ class _SwitchTrackState extends TwAnimatedMaterialState<TwSwitch>
       debugLabel: kDebugMode ? '${widget.toStringShort()}_thumb' : null,
     )
       ..addListener(handleAnimationControllerUpdate)
-      ..value = isSelected ? 1.0 : 0.0;
+      ..value = (isSelected ?? false) ? 1.0 : 0.0;
   }
 
   /// Animates the thumb in the corresponding direction, with an optional delay.
