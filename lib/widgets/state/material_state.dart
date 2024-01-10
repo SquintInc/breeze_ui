@@ -226,7 +226,8 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
     }
     // The widget could have its [isToggled] property set to true, but the states controller may
     // not have been updated yet.
-    if ((isSelected ?? false) || states.contains(MaterialState.selected)) {
+    // Also default to true if the widget supports tristates and the value is neutral (null).
+    if ((isSelected ?? true) || states.contains(MaterialState.selected)) {
       return widget.style.merge(widget.selected);
     }
     if (states.contains(MaterialState.hovered)) {
