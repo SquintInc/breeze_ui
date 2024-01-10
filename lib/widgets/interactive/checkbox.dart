@@ -20,8 +20,6 @@ class TwCheckbox extends TwStatefulWidget {
     height: TwHeight(defaultCheckmarkSize),
     textColor: TwTextColor(Colors.black),
   );
-  static const TwTextColor defaultUncheckedTextColor =
-      TwTextColor(Colors.transparent);
 
   /// Initial value of the checkbox.
   /// The value can only be set to null if [tristate] is true.
@@ -112,10 +110,7 @@ class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox>
             staticConstraints: currentStyle.toConstraints(),
             style: TwCheckbox.defaultCheckboxStyle.copyWith(
               textColor: animatedStyle.textColor ??
-                  ((isSelected ?? true)
-                      ? (widget.selected?.textColor ??
-                          TwCheckbox.defaultCheckboxStyle.textColor)
-                      : TwCheckbox.defaultUncheckedTextColor),
+                  TwCheckbox.defaultCheckboxStyle.textColor,
               width:
                   animatedStyle.width ?? TwCheckbox.defaultCheckboxStyle.width,
               height: animatedStyle.height ??

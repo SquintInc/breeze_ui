@@ -259,7 +259,11 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
   }
 
   void onIsSelectedChanged({required final bool? isSelected}) {
-    statesController.update(MaterialState.selected, isSelected ?? false);
+    if (isSelected == null) {
+      handleStatesControllerChange();
+      return;
+    }
+    statesController.update(MaterialState.selected, isSelected);
   }
 
   bool? _computeIsSelected(
