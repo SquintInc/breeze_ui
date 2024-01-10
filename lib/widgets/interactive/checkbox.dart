@@ -47,12 +47,7 @@ class TwCheckbox extends TwStatefulWidget {
 
   /// A custom function that resolves the style for the checkbox based on the current state, allows
   /// overriding the default style resolution behavior from [TwMaterialState].
-  final TwStyle Function(
-    Set<MaterialState> states, {
-    required bool? isSelected,
-    required bool? previousSelected,
-    required bool isDisabled,
-  })? styleResolver;
+  final TwStyleResolver? styleResolver;
 
   const TwCheckbox({
     this.onToggled,
@@ -112,6 +107,14 @@ class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox>
         isSelected: isSelected,
         previousSelected: previousSelected,
         isDisabled: isDisabled,
+        style: widget.style,
+        disabled: widget.disabled,
+        pressed: widget.pressed,
+        hovered: widget.hovered,
+        dragged: widget.dragged,
+        focused: widget.focused,
+        selected: widget.selected,
+        errored: widget.errored,
       );
     }
     return super.getCurrentStyle(states);
