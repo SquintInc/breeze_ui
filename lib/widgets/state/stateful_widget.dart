@@ -27,8 +27,9 @@ abstract class TwStatefulWidget extends StatefulWidget {
   /// Style override for when the widget has an error (if applicable).
   final TwStyle? errored;
 
-  /// Callback for when the widget is selected (if applicable).
-  final ValueChanged<bool>? onSelected;
+  /// Callback for when the widget is selected (if applicable). The boolean value can
+  /// be null if [isTristate] is true.
+  final ValueChanged<bool?>? onSelected;
 
   /// Callback for when the widget is hovered (if applicable).
   final ValueChanged<bool>? onHover;
@@ -56,6 +57,10 @@ abstract class TwStatefulWidget extends StatefulWidget {
   /// Whether or not the widget can be toggle selected.
   final bool isToggleable;
 
+  /// If the widget is toggleable, whether or not the widget supports three states: true, false,
+  /// and null.
+  final bool isTristate;
+
   /// Whether or not the widget can have a drag state.
   final bool isDraggable;
 
@@ -63,7 +68,8 @@ abstract class TwStatefulWidget extends StatefulWidget {
   final bool isDisabled;
 
   /// Whether or not the widget is toggle selected; initial toggle value if the widget is toggleable.
-  final bool isToggled;
+  /// This value can be null if [isTristate] is true (which also implies [isToggleable] is true.
+  final bool? isToggled;
 
   /// Whether or not the widget should use [GestureDetector] and [MouseRegion] to manage material
   /// state controller values.
@@ -110,6 +116,7 @@ abstract class TwStatefulWidget extends StatefulWidget {
     this.hitTestBehavior,
     this.isDisabled = false,
     this.isToggleable = false,
+    this.isTristate = false,
     this.isDraggable = false,
     this.isToggled = false,
     this.enableInputDetectors = false,

@@ -24,23 +24,40 @@ class TwCheckbox extends TwStatefulWidget {
       TwTextColor(Colors.transparent);
 
   /// Initial value of the checkbox.
-  final bool value;
+  /// The value can only be set to null if [tristate] is true.
+  /// Defaults to false.
+  final bool? value;
+
+  /// Whether this checkbox is a tristate checkbox. If enabled, the checkbox supports
+  /// three states: true, false, and null.
+  final bool tristate;
 
   /// Called when the internal selected state of the checkbox changes.
-  final ValueChanged<bool>? onToggled;
+  /// The boolean value can be null if [tristate] is true.
+  final ValueChanged<bool?>? onToggled;
 
   /// The tap target size of the checkbox widget.
   /// Defaults to 48.0 pixels as per Material Design guidelines.
   final CssAbsoluteUnit tapTargetSize;
 
-  /// Custom icon to use for the checkmark icon.
-  final TwIconData icon;
+  /// Custom icon to use for when the checkbox is checked.
+  final TwIconData checkedIcon;
+
+  /// Custom icon to use for when [isTristate] is true and the checkbox is in the neutral (null)
+  /// state.
+  final TwIconData? neutralIcon;
+
+  /// Custom icon to use for when the checkbox is unchecked.
+  final TwIconData? uncheckedIcon;
 
   const TwCheckbox({
     this.onToggled,
     this.value = false,
+    this.tristate = false,
     this.tapTargetSize = minTapTargetSize,
-    this.icon = const IconDataFont(Icons.check),
+    this.checkedIcon = const IconDataFont(Icons.check),
+    this.neutralIcon = const IconDataFont(Icons.remove),
+    this.uncheckedIcon,
     // Style properties
     super.style = defaultCheckboxStyle,
     super.disabled,
@@ -53,17 +70,19 @@ class TwCheckbox extends TwStatefulWidget {
     // Toggleable booleans
     super.isDisabled,
     super.isToggleable = true,
+    super.isTristate = false,
     // Input controllers,
     super.statesController,
     super.focusNode,
     super.key,
-  }) : super(
+  })  : assert(tristate || value != null),
+        super(
           enableInputDetectors: isToggleable,
           enableFeedback: isToggleable,
           canRequestFocus: isToggleable,
           cursor: MaterialStateMouseCursor.clickable,
           onSelected: onToggled,
-          isToggled: value,
+          isToggled: value != null && value,
           isDraggable: true,
         );
 
@@ -73,43 +92,12 @@ class TwCheckbox extends TwStatefulWidget {
 
 class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox>
     with SingleTickerProviderStateMixin {
-  @override
-  TwStyle getCurrentStyle(final Set<MaterialState> states) {
-    final normalStyle = widget.style.copyWith(
-      textColor: isSelected
-          ? widget.selected?.textColor ?? widget.style.textColor
-          : const TwTextColor(Colors.transparent),
-    );
-    if (states.contains(MaterialState.disabled)) {
-      return normalStyle.merge(widget.disabled);
-    }
-    if (states.contains(MaterialState.dragged)) {
-      return normalStyle.merge(widget.pressed).merge(widget.dragged).copyWith(
-            textColor: isSelected
-                ? widget.selected?.textColor ?? widget.style.textColor
-                : const TwTextColor(Colors.transparent),
-          );
-    }
-    if (states.contains(MaterialState.error)) {
-      return normalStyle.merge(widget.errored);
-    }
-    if (states.contains(MaterialState.focused)) {
-      return normalStyle.merge(widget.focused);
-    }
-    if (states.contains(MaterialState.pressed)) {
-      return normalStyle.merge(widget.pressed).copyWith(
-            textColor: !isSelected
-                ? widget.selected?.textColor ?? widget.style.textColor
-                : const TwTextColor(Colors.transparent),
-          );
-    }
-    if (states.contains(MaterialState.selected)) {
-      return normalStyle.merge(widget.selected);
-    }
-    if (states.contains(MaterialState.hovered)) {
-      return normalStyle.merge(widget.hovered);
-    }
-    return normalStyle;
+  TwIconData? get currIcon {
+    return switch (isSelected) {
+      true => widget.checkedIcon,
+      null => widget.neutralIcon,
+      false => widget.uncheckedIcon,
+    };
   }
 
   @override
@@ -117,26 +105,30 @@ class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox>
     final currentStyle = getCurrentStyle(currentStates);
     final animatedStyle = currentStyle.merge(getAnimatedStyle());
 
-    final TwIcon checkmarkIcon = TwIcon(
-      icon: widget.icon,
-      expand: true,
-      staticConstraints: currentStyle.toConstraints(),
-      style: TwCheckbox.defaultCheckboxStyle.copyWith(
-        textColor: animatedStyle.textColor ??
-            (isSelected
-                ? (widget.selected?.textColor ??
-                    TwCheckbox.defaultCheckboxStyle.textColor)
-                : TwCheckbox.defaultUncheckedTextColor),
-        width: animatedStyle.width ?? TwCheckbox.defaultCheckboxStyle.width,
-        height: animatedStyle.height ?? TwCheckbox.defaultCheckboxStyle.height,
-      ),
-    );
+    final TwIcon? icon = currIcon != null
+        ? TwIcon(
+            icon: currIcon!,
+            expand: true,
+            staticConstraints: currentStyle.toConstraints(),
+            style: TwCheckbox.defaultCheckboxStyle.copyWith(
+              textColor: animatedStyle.textColor ??
+                  ((isSelected ?? true)
+                      ? (widget.selected?.textColor ??
+                          TwCheckbox.defaultCheckboxStyle.textColor)
+                      : TwCheckbox.defaultUncheckedTextColor),
+              width:
+                  animatedStyle.width ?? TwCheckbox.defaultCheckboxStyle.width,
+              height: animatedStyle.height ??
+                  TwCheckbox.defaultCheckboxStyle.height,
+            ),
+          )
+        : null;
 
     final div = Div(
       style: animatedStyle,
       staticConstraints: currentStyle.toConstraints(),
       parentControlsOpacity: true,
-      child: checkmarkIcon,
+      child: icon,
     );
 
     // Input padding needs to be wrapped in Semantics for hit test to be constrained

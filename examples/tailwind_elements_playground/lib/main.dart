@@ -50,7 +50,7 @@ class _TailwindElementsPlaygroundState
                   children: [
                     TwCheckbox(
                       value: toggled,
-                      icon: const IconSvgData(
+                      checkedIcon: const IconDataSvg(
                         AssetBytesLoader('assets/checkmark.svg.vec'),
                       ),
                       style: const TwStyle(
@@ -69,12 +69,36 @@ class _TailwindElementsPlaygroundState
                       // pressed: const TwStyle(
                       //   backgroundColor: bg_indigo_200,
                       // ),
-                      onToggled: (final bool value) {},
+                      onToggled: (final bool? value) {},
+                    ),
+                    TwCheckbox(
+                      value: toggled,
+                      isTristate: true,
+                      checkedIcon: const IconDataSvg(
+                        AssetBytesLoader('assets/checkmark.svg.vec'),
+                      ),
+                      style: const TwStyle(
+                        backgroundColor: bg_indigo_200,
+                        transition: transition_all,
+                        width: w_4,
+                        height: h_4,
+                        textColor: text_indigo_800,
+                      ),
+                      selected: const TwStyle(
+                        backgroundColor: bg_indigo_300,
+                      ),
+                      hovered: const TwStyle(
+                        backgroundColor: bg_indigo_400,
+                      ),
+                      // pressed: const TwStyle(
+                      //   backgroundColor: bg_indigo_200,
+                      // ),
+                      onToggled: (final bool? value) {},
                     ),
                     TwCheckbox(
                       value: toggled,
                       isToggleable: false,
-                      icon: const IconSvgData(
+                      checkedIcon: const IconDataSvg(
                         AssetBytesLoader('assets/checkmark.svg.vec'),
                       ),
                       style: const TwStyle(
@@ -93,7 +117,7 @@ class _TailwindElementsPlaygroundState
                       // pressed: const TwStyle(
                       //   backgroundColor: bg_indigo_200,
                       // ),
-                      onToggled: (final bool value) {},
+                      onToggled: (final bool? value) {},
                     ),
                     TwMaterialStatesGroup(
                       child: TwSwitch(
@@ -112,7 +136,7 @@ class _TailwindElementsPlaygroundState
                         selected: const TwStyle(
                           backgroundColor: bg_indigo_500,
                         ),
-                        onToggled: (final bool value) {
+                        onToggled: (final bool? value) {
                           print('switch toggled: $value');
                         },
                         thumb: const TwDiv(
@@ -148,7 +172,7 @@ class _TailwindElementsPlaygroundState
                       selected: const TwStyle(
                         backgroundColor: bg_indigo_500,
                       ),
-                      onToggled: (final bool value) {
+                      onToggled: (final bool? value) {
                         print('switch toggled: $value');
                       },
                       thumb: const Div(
@@ -361,10 +385,10 @@ class _TailwindElementsPlaygroundState
                       child: const TwText('Button Text'),
                     ),
                     const TwIcon(
-                      icon: IconFontData(Icons.check),
+                      icon: IconDataFont(Icons.check),
                     ),
                     const TwIcon(
-                      icon: IconSvgData(
+                      icon: IconDataSvg(
                         AssetBytesLoader('assets/checkmark.svg.vec'),
                       ),
                     ),
