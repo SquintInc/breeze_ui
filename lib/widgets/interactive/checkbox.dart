@@ -92,7 +92,7 @@ class TwCheckbox extends TwStatefulWidget {
 
 class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox>
     with SingleTickerProviderStateMixin {
-  TwIconData? get currIcon {
+  TwIconData? get iconData {
     return switch (isSelected) {
       true => widget.checkedIcon,
       null => widget.neutralIcon,
@@ -105,9 +105,9 @@ class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox>
     final currentStyle = getCurrentStyle(currentStates);
     final animatedStyle = currentStyle.merge(getAnimatedStyle());
 
-    final TwIcon? icon = currIcon != null
+    final TwIcon? icon = iconData != null
         ? TwIcon(
-            icon: currIcon!,
+            icon: iconData!,
             expand: true,
             staticConstraints: currentStyle.toConstraints(),
             style: TwCheckbox.defaultCheckboxStyle.copyWith(
