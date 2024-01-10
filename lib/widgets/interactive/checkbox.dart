@@ -81,7 +81,7 @@ class TwCheckbox extends TwStatefulWidget {
           canRequestFocus: isToggleable,
           cursor: MaterialStateMouseCursor.clickable,
           onSelected: onToggled,
-          isToggled: value != null && value,
+          isToggled: value,
           isDraggable: true,
         );
 
