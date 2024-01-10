@@ -25,18 +25,19 @@ import 'package:tailwind_elements/config/options/typography/line_height.dart';
 import 'package:tailwind_elements/config/options/typography/text_decoration_thickness.dart';
 import 'package:tailwind_elements/config/options/units.dart';
 
-typedef StyleValueResolver<T> = T? Function(TwStyle? statusStyle);
-
-typedef StyleResolver = TwStyle Function(
+typedef TwStyleResolver = TwStyle Function(
   Set<MaterialState> states, {
-  TwStyle normal,
-  TwStyle? disabled,
-  TwStyle? dragged,
-  TwStyle? errored,
-  TwStyle? focused,
-  TwStyle? selected,
-  TwStyle? pressed,
-  TwStyle? hovered,
+  required bool? isSelected,
+  required bool? previousSelected,
+  required bool isDisabled,
+  required TwStyle style,
+  required TwStyle? disabled,
+  required TwStyle? pressed,
+  required TwStyle? hovered,
+  required TwStyle? dragged,
+  required TwStyle? focused,
+  required TwStyle? selected,
+  required TwStyle? errored,
 });
 
 MaterialStateProperty<T> always<T>(final T value) =>
