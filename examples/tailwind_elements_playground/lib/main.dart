@@ -50,29 +50,6 @@ class _TailwindElementsPlaygroundState
                   children: [
                     TwCheckbox(
                       value: toggled,
-                      checkedIcon: const IconDataSvg(
-                        AssetBytesLoader('assets/checkmark.svg.vec'),
-                      ),
-                      style: const TwStyle(
-                        backgroundColor: bg_indigo_200,
-                        transition: transition_all,
-                        width: w_4,
-                        height: h_4,
-                        textColor: text_indigo_800,
-                      ),
-                      selected: const TwStyle(
-                        backgroundColor: bg_indigo_300,
-                      ),
-                      hovered: const TwStyle(
-                        backgroundColor: bg_indigo_400,
-                      ),
-                      // pressed: const TwStyle(
-                      //   backgroundColor: bg_indigo_200,
-                      // ),
-                      onToggled: (final bool? value) {},
-                    ),
-                    TwCheckbox(
-                      value: toggled,
                       isTristate: true,
                       checkedIcon: const IconDataSvg(
                         AssetBytesLoader('assets/checkmark.svg.vec'),
@@ -90,9 +67,6 @@ class _TailwindElementsPlaygroundState
                       hovered: const TwStyle(
                         backgroundColor: bg_indigo_400,
                       ),
-                      // pressed: const TwStyle(
-                      //   backgroundColor: bg_indigo_200,
-                      // ),
                       onToggled: (final bool? value) {},
                     ),
                     TwCheckbox(
@@ -114,9 +88,6 @@ class _TailwindElementsPlaygroundState
                       hovered: const TwStyle(
                         backgroundColor: bg_indigo_400,
                       ),
-                      // pressed: const TwStyle(
-                      //   backgroundColor: bg_indigo_200,
-                      // ),
                       onToggled: (final bool? value) {},
                     ),
                     TwCheckbox(
@@ -138,9 +109,6 @@ class _TailwindElementsPlaygroundState
                       hovered: const TwStyle(
                         backgroundColor: bg_indigo_400,
                       ),
-                      // pressed: const TwStyle(
-                      //   backgroundColor: bg_indigo_200,
-                      // ),
                       onToggled: (final bool? value) {},
                     ),
                     TwMaterialStatesGroup(

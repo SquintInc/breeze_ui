@@ -35,6 +35,7 @@ class TwDiv extends TwStatefulWidget {
     super.focused,
     super.selected,
     super.errored,
+    super.styleResolver,
     // Callbacks
     super.onSelected,
     super.onHover,
@@ -48,6 +49,7 @@ class TwDiv extends TwStatefulWidget {
     super.isToggleable,
     super.isDraggable,
     super.isToggled,
+    super.isTristate,
     super.enableInputDetectors,
     super.enableFeedback,
     super.canRequestFocus,

@@ -43,6 +43,7 @@ class TwSwitch extends TwStatefulWidget {
     super.focused,
     super.selected,
     super.errored,
+    super.styleResolver,
     // Toggleable booleans
     super.isDisabled = false,
     super.isToggleable = true,
