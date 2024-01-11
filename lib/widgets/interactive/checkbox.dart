@@ -5,7 +5,6 @@ import 'package:tailwind_elements/config/options/sizing/width.dart';
 import 'package:tailwind_elements/config/options/units/measurement_unit.dart';
 import 'package:tailwind_elements/widgets/rendering/input_padding.dart';
 import 'package:tailwind_elements/widgets/state/animated_material_state.dart';
-import 'package:tailwind_elements/widgets/state/material_state.dart';
 import 'package:tailwind_elements/widgets/state/stateful_widget.dart';
 import 'package:tailwind_elements/widgets/stateless/div.dart';
 import 'package:tailwind_elements/widgets/stateless/icon.dart';
@@ -50,14 +49,13 @@ class TwCheckbox extends TwStatefulWidget {
   /// Custom icon to use for when the checkbox is unchecked.
   final TwIconData? uncheckedIcon;
 
-  /// A custom function that resolves the style for the checkbox based on the current state, allows
-  /// overriding the default style resolution behavior from [TwMaterialState].
-  final TwStyleResolver? styleResolver;
-
+  /// A custom function that resolves the style for the checked icon based on the current state.
   final IconStyleResolver? checkedIconStyleResolver;
 
+  /// A custom function that resolves the style for the unchecked icon based on the current state.
   final IconStyleResolver? uncheckedIconStyleResolver;
 
+  /// A custom function that resolves the style for the neutral icon based on the current state.
   final IconStyleResolver? neutralIconStyleResolver;
 
   const TwCheckbox({
@@ -67,7 +65,6 @@ class TwCheckbox extends TwStatefulWidget {
     this.checkedIcon = const IconDataFont(Icons.check),
     this.neutralIcon = const IconDataFont(Icons.remove),
     this.uncheckedIcon,
-    this.styleResolver,
     this.checkedIconStyleResolver,
     this.uncheckedIconStyleResolver,
     this.neutralIconStyleResolver,
@@ -80,6 +77,7 @@ class TwCheckbox extends TwStatefulWidget {
     super.focused,
     super.selected,
     super.errored,
+    super.styleResolver,
     // Toggleable booleans
     super.isDisabled,
     super.isToggleable = true,
@@ -111,27 +109,6 @@ class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox>
       null => widget.neutralIcon,
       false => widget.uncheckedIcon,
     };
-  }
-
-  @override
-  TwStyle getCurrentStyle(final Set<MaterialState> states) {
-    if (widget.styleResolver != null) {
-      return widget.styleResolver!(
-        states,
-        isSelected: isSelected,
-        previousSelected: previousSelected,
-        isDisabled: isDisabled,
-        style: widget.style,
-        disabled: widget.disabled,
-        pressed: widget.pressed,
-        hovered: widget.hovered,
-        dragged: widget.dragged,
-        focused: widget.focused,
-        selected: widget.selected,
-        errored: widget.errored,
-      );
-    }
-    return super.getCurrentStyle(states);
   }
 
   TwStyle? iconStyle(final TwStyle currStyle) => switch (isSelected) {

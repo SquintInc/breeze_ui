@@ -137,10 +137,20 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
         // these descendant widgets can listen and react to the material states controller's changes
         // via setState directly, as these will resolve first before the top-level widget's setState
         // call.
-        _isSelected =
-            parentStates.controller.value.contains(MaterialState.selected);
-        _isDisabled =
-            parentStates.controller.value.contains(MaterialState.disabled);
+
+        // For isSelected, only update from the parent if the widget is not tristate enabled.
+        if (!widget.isTristate) {
+          _isSelected =
+              parentStates.controller.value.contains(MaterialState.selected);
+        }
+
+        // For isDisabled, if the current widget isn't already disabled, update from the parent
+        // to see if the parent is also disabled.
+        if (!widget.isDisabled) {
+          _isDisabled =
+              parentStates.controller.value.contains(MaterialState.disabled);
+        }
+
         statesController
           ..removeListener(handleStatesControllerChange)
           ..addListener(handleStatesControllerChange);
@@ -209,6 +219,23 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
 
   @protected
   TwStyle getCurrentStyle(final Set<MaterialState> states) {
+    if (widget.styleResolver != null) {
+      return widget.styleResolver!(
+        states,
+        isSelected: isSelected,
+        previousSelected: previousSelected,
+        isDisabled: isDisabled,
+        style: widget.style,
+        disabled: widget.disabled,
+        pressed: widget.pressed,
+        hovered: widget.hovered,
+        dragged: widget.dragged,
+        focused: widget.focused,
+        selected: widget.selected,
+        errored: widget.errored,
+      );
+    }
+
     if (isDisabled || states.contains(MaterialState.disabled)) {
       return widget.style.merge(widget.disabled);
     }

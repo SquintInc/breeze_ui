@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tailwind_elements/widgets/style/style.dart';
+import 'package:tailwind_elements/widgets/style/style_group.dart';
 
 /// A [StatefulWidget] subclass with support for [MaterialStatesController].
 abstract class TwStatefulWidget extends StatefulWidget {
@@ -26,6 +27,9 @@ abstract class TwStatefulWidget extends StatefulWidget {
 
   /// Style override for when the widget has an error (if applicable).
   final TwStyle? errored;
+
+  /// A custom function that resolves the style for the widget based on the current state.
+  final TwStyleResolver? styleResolver;
 
   /// Callback for when the widget is selected (if applicable). The boolean value can
   /// be null if [isTristate] is true.
@@ -105,6 +109,7 @@ abstract class TwStatefulWidget extends StatefulWidget {
     this.focused,
     this.selected,
     this.errored,
+    this.styleResolver,
     this.onSelected,
     this.onHover,
     this.onDragged,

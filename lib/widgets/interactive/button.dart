@@ -42,6 +42,7 @@ class TwButton extends TwStatefulWidget {
     super.focused,
     super.selected,
     super.errored,
+    super.styleResolver,
     // Callbacks
     super.onDoubleTap,
     super.onLongPress,
