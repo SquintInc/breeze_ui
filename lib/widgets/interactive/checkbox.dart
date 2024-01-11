@@ -15,13 +15,6 @@ typedef IconStyleResolver = Function(
   Set<MaterialState> states,
 );
 
-enum LabelPosition {
-  top,
-  right,
-  bottom,
-  left,
-}
-
 /// A Checkbox widget with support for Tailwind styled properties.
 @immutable
 class TwCheckbox extends TwStatefulWidget {
