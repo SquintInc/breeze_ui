@@ -204,32 +204,46 @@ class TwBorder {
     if (isEmpty) return null;
 
     return switch (type) {
-      BoxSideType.all => Border.all(
-          color: borderColor ?? const Color(0xFF000000),
-          width: all.value.pixels(),
-          strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
-        ),
+      BoxSideType.all => all.value.pixels() > 0
+          ? Border.all(
+              color: borderColor ?? const Color(0xFF000000),
+              width: all.value.pixels(),
+              strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
+            )
+          : const Border(),
       BoxSideType.trbl => Border(
-          top: BorderSide(
-            color: borderColor ?? const Color(0xFF000000),
-            width: top.value.pixels(),
-            strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
-          ),
-          right: BorderSide(
-            color: borderColor ?? const Color(0xFF000000),
-            width: right.value.pixels(),
-            strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
-          ),
-          bottom: BorderSide(
-            color: borderColor ?? const Color(0xFF000000),
-            width: bottom.value.pixels(),
-            strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
-          ),
-          left: BorderSide(
-            color: borderColor ?? const Color(0xFF000000),
-            width: left.value.pixels(),
-            strokeAlign: borderStrokeAlign ?? BorderSide.strokeAlignInside,
-          ),
+          top: top.value.pixels() > 0
+              ? BorderSide(
+                  color: borderColor ?? const Color(0xFF000000),
+                  width: top.value.pixels(),
+                  strokeAlign:
+                      borderStrokeAlign ?? BorderSide.strokeAlignInside,
+                )
+              : BorderSide.none,
+          right: right.value.pixels() > 0
+              ? BorderSide(
+                  color: borderColor ?? const Color(0xFF000000),
+                  width: right.value.pixels(),
+                  strokeAlign:
+                      borderStrokeAlign ?? BorderSide.strokeAlignInside,
+                )
+              : BorderSide.none,
+          bottom: bottom.value.pixels() > 0
+              ? BorderSide(
+                  color: borderColor ?? const Color(0xFF000000),
+                  width: bottom.value.pixels(),
+                  strokeAlign:
+                      borderStrokeAlign ?? BorderSide.strokeAlignInside,
+                )
+              : BorderSide.none,
+          left: left.value.pixels() > 0
+              ? BorderSide(
+                  color: borderColor ?? const Color(0xFF000000),
+                  width: left.value.pixels(),
+                  strokeAlign:
+                      borderStrokeAlign ?? BorderSide.strokeAlignInside,
+                )
+              : BorderSide.none,
         ),
       BoxSideType.x || BoxSideType.y || BoxSideType.xy => Border.symmetric(
           horizontal: x.value.pixels() > 0
