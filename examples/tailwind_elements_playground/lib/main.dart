@@ -337,8 +337,11 @@ class _TailwindElementsPlaygroundState
                         transition: transition_all,
                         backdropBlur: backdrop_blur,
                       ),
-                      hovered: const TwStyle(
-                        backgroundColor: bg_indigo_500,
+                      hovered: TwStyle(
+                        backgroundColor: TwBackgroundColor.fromColor(
+                          bg_indigo_600.color.withOpacity(0.2),
+                        ),
+                        backdropBlur: backdrop_blur_sm,
                       ),
                       focused: const TwStyle(
                         backgroundColor: bg_indigo_400,
