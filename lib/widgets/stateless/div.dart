@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:tailwind_elements/widgets/inherited/parent_constraints_data.dart';
 import 'package:tailwind_elements/widgets/stateless/constraints.dart';
@@ -123,6 +125,23 @@ class Div extends TwStatelessWidget {
     // just a background color (otherwise a [ColoredBox] would be rendered).
     if (decoration != null && !hasOnlyBackgroundColor) {
       current = DecoratedBox(decoration: decoration, child: current);
+    }
+
+    // Render filters if applicable.
+    if (style.hasFilters && decoration != null) {
+      final backdropBlur = style.backdropBlur;
+      if (backdropBlur != null) {
+        current = ClipRRect(
+          borderRadius: decoration.borderRadius ?? BorderRadius.zero,
+          child: BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: backdropBlur.blur.pixels(style.fontSizePx),
+              sigmaY: backdropBlur.blur.pixels(style.fontSizePx),
+            ),
+            child: current,
+          ),
+        );
+      }
     }
 
     // Use constraints passed in to render a [ConstrainedBox] if applicable.
