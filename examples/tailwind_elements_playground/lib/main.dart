@@ -48,18 +48,6 @@ class _TailwindElementsPlaygroundState
               children: [
                 Row(
                   children: [
-                    const Div(
-                      style: TwStyle(
-                        width: w_12,
-                        height: h_12,
-                        border: TwBorder(
-                          top: border_t_0,
-                          right: border_r_0,
-                          bottom: border_b,
-                          left: border_l_0,
-                        ),
-                      ),
-                    ),
                     TwCheckbox(
                       value: toggled,
                       isTristate: true,

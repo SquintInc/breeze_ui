@@ -5,6 +5,7 @@ import 'package:tailwind_elements/config/builder/builders/colors/border_color_bu
 import 'package:tailwind_elements/config/builder/builders/colors/box_shadow_color_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/colors/text_color_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/colors/text_decoration_color_builder.dart';
+import 'package:tailwind_elements/config/builder/builders/options/backdrop_filter_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/options/border_radius_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/options/border_width_builder.dart';
 import 'package:tailwind_elements/config/builder/builders/options/box_shadow_builder.dart';
@@ -46,6 +47,8 @@ Builder tailwindConfigBuilder(final BuilderOptions options) {
       // Generate effect constants
       BoxShadowBuilder(options, config),
       OpacityBuilder(options, config),
+      // Generate filter constants
+      BackdropBlurBuilder(options, config),
       // Generate sizing constants
       GapBuilder(options, config),
       WidthBuilder(options, config),
