@@ -232,6 +232,20 @@ const opacity_95 = TwOpacity(0.95);
 const opacity_100 = TwOpacity(1);
 
 // **************************************************************************
+// Generator: BackdropBlurBuilder
+// **************************************************************************
+
+const backdrop_blur_0 = TwBackdropBlur(PxUnit(0.0));
+const backdrop_blur_none = TwBackdropBlur(PxUnit(0.0));
+const backdrop_blur_sm = TwBackdropBlur(PxUnit(4.0));
+const backdrop_blur = TwBackdropBlur(PxUnit(8.0));
+const backdrop_blur_md = TwBackdropBlur(PxUnit(12.0));
+const backdrop_blur_lg = TwBackdropBlur(PxUnit(16.0));
+const backdrop_blur_xl = TwBackdropBlur(PxUnit(24.0));
+const backdrop_blur_2xl = TwBackdropBlur(PxUnit(40.0));
+const backdrop_blur_3xl = TwBackdropBlur(PxUnit(64.0));
+
+// **************************************************************************
 // Generator: GapBuilder
 // **************************************************************************
 

@@ -157,4 +157,16 @@ abstract class TwStatefulWidget extends StatefulWidget {
       dragged?.opacity != null ||
       selected?.opacity != null ||
       errored?.opacity != null;
+
+  /// Determine upfront if this animation-supported widget has any filters in any of its
+  /// stateful styles.
+  bool get hasFilters =>
+      style.hasFilters ||
+      disabled?.hasFilters == true ||
+      focused?.hasFilters == true ||
+      pressed?.hasFilters == true ||
+      hovered?.hasFilters == true ||
+      dragged?.hasFilters == true ||
+      selected?.hasFilters == true ||
+      errored?.hasFilters == true;
 }

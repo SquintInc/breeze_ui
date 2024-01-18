@@ -82,6 +82,7 @@ class _TwDiv extends TwAnimatedMaterialState<TwDiv>
       clipBehavior: widget.clipBehavior,
       transform: widget.transform,
       transformAlignment: widget.transformAlignment,
+      alwaysIncludeFilters: widget.hasFilters,
       child: widget.child,
     );
 

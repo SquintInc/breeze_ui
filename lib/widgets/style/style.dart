@@ -6,6 +6,7 @@ import 'package:tailwind_elements/config/options/borders/border_width.dart';
 import 'package:tailwind_elements/config/options/colors.dart';
 import 'package:tailwind_elements/config/options/effects/box_shadow.dart';
 import 'package:tailwind_elements/config/options/effects/opacity.dart';
+import 'package:tailwind_elements/config/options/filters/backdrop_blur.dart';
 import 'package:tailwind_elements/config/options/sizing/height.dart';
 import 'package:tailwind_elements/config/options/sizing/max_height.dart';
 import 'package:tailwind_elements/config/options/sizing/max_width.dart';
@@ -70,6 +71,9 @@ class TwStyle {
   final TwBoxShadowColor? boxShadowColor;
   final TwOpacity? opacity;
 
+  // Filter styling
+  final TwBackdropBlur? backdropBlur;
+
   // Border styling
   final TwBorder? border;
   final TwBorderColor? borderColor;
@@ -122,6 +126,9 @@ class TwStyle {
     this.boxShadow,
     this.boxShadowColor,
     this.opacity,
+
+    // Filter styling
+    this.backdropBlur,
 
     // Border styling
     this.border,
@@ -247,6 +254,9 @@ class TwStyle {
       textDecorationThickness != null ||
       leadingDistribution != null ||
       wordSpacing != null;
+
+  /// Determines if the style has any filter properties
+  bool get hasFilters => backdropBlur != null;
 
   /// Calculates the width of this widget in pixels, based on a percentage of
   /// its parent widget's width, or via this widget's own logical pixel width.
@@ -498,6 +508,7 @@ class TwStyle {
     if (boxShadow != null) buf.add('boxShadow: $boxShadow');
     if (boxShadowColor != null) buf.add('boxShadowColor: $boxShadowColor');
     if (opacity != null) buf.add('opacity: $opacity');
+    if (backdropBlur != null) buf.add('backdropBlur: $backdropBlur');
     if (border != null) buf.add('border: $border');
     if (borderColor != null) buf.add('borderColor: $borderColor');
     if (borderRadius != null) buf.add('borderRadius: $borderRadius');
@@ -551,28 +562,37 @@ class TwStyle {
     }
 
     return copyWith(
+      // Background styling
       backgroundColor: other.backgroundColor,
       backgroundImage: other.backgroundImage,
       backgroundGradient: other.backgroundGradient,
+      // Effect styling
       boxShadow: other.boxShadow,
       boxShadowColor: other.boxShadowColor,
       opacity: other.opacity,
+      // Filter styling
+      backdropBlur: other.backdropBlur,
+      // Border styling
       border: other.border,
       borderColor: other.borderColor,
       borderRadius: other.borderRadius,
       borderStrokeAlign: other.borderStrokeAlign,
+      // Sizing styling
       minWidth: other.minWidth,
       width: other.width,
       maxWidth: other.maxWidth,
       minHeight: other.minHeight,
       height: other.height,
       maxHeight: other.maxHeight,
+      // Spacing styling
       padding: other.padding,
       margin: other.margin,
+      // Transition styling
       transition: other.transition,
       transitionDuration: other.transitionDuration,
       transitionTimingFn: other.transitionTimingFn,
       transitionDelay: other.transitionDelay,
+      // Typography styling
       fontSize: other.fontSize,
       fontStyle: other.fontStyle,
       fontWeight: other.fontWeight,
@@ -590,28 +610,37 @@ class TwStyle {
   }
 
   TwStyle copyWith({
+    // Background styling
     final TwBackgroundColor? backgroundColor,
     final DecorationImage? backgroundImage,
     final Gradient? backgroundGradient,
+    // Effect styling
     final TwBoxShadows? boxShadow,
     final TwBoxShadowColor? boxShadowColor,
     final TwOpacity? opacity,
+    // Filter styling
+    final TwBackdropBlur? backdropBlur,
+    // Border styling
     final TwBorder? border,
     final TwBorderColor? borderColor,
     final TwBorderRadius? borderRadius,
     final double? borderStrokeAlign,
+    // Sizing styling
     final TwMinWidth? minWidth,
     final TwWidth? width,
     final TwMaxWidth? maxWidth,
     final TwMinHeight? minHeight,
     final TwHeight? height,
     final TwMaxHeight? maxHeight,
+    // Spacing styling
     final TwPadding? padding,
     final TwMargin? margin,
+    // Transition styling
     final TwTransitionProperty? transition,
     final TwTransitionDuration? transitionDuration,
     final TwTransitionTimingFunction? transitionTimingFn,
     final TwTransitionDelay? transitionDelay,
+    // Typography styling
     final TwFontSize? fontSize,
     final FontStyle? fontStyle,
     final TwFontWeight? fontWeight,
@@ -632,6 +661,7 @@ class TwStyle {
         backgroundGradient: backgroundGradient ?? this.backgroundGradient,
         boxShadow: boxShadow ?? this.boxShadow,
         boxShadowColor: boxShadowColor ?? this.boxShadowColor,
+        backdropBlur: backdropBlur ?? this.backdropBlur,
         opacity: opacity ?? this.opacity,
         border: border ?? this.border,
         borderColor: borderColor ?? this.borderColor,

@@ -86,6 +86,7 @@ class _TwButtonState extends TwAnimatedMaterialState<TwButton>
       clipBehavior: widget.clipBehavior,
       transform: widget.transform,
       transformAlignment: widget.transformAlignment,
+      alwaysIncludeFilters: widget.hasFilters,
       child: widget.child,
     );
 

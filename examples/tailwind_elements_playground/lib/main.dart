@@ -37,6 +37,12 @@ class _TailwindElementsPlaygroundState
           style: const TwStyle(
             height: h_96,
             backgroundColor: bg_slate_50,
+            backgroundImage: DecorationImage(
+              image: NetworkImage(
+                'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg',
+              ),
+              fit: BoxFit.cover,
+            ),
           ),
           child: ParentConstraintsData(
             constraints: BoxConstraints(
@@ -48,18 +54,6 @@ class _TailwindElementsPlaygroundState
               children: [
                 Row(
                   children: [
-                    const Div(
-                      style: TwStyle(
-                        width: w_12,
-                        height: h_12,
-                        border: TwBorder(
-                          top: border_t_0,
-                          right: border_r_0,
-                          bottom: border_b,
-                          left: border_l_0,
-                        ),
-                      ),
-                    ),
                     TwCheckbox(
                       value: toggled,
                       isTristate: true,
@@ -329,19 +323,25 @@ class _TailwindElementsPlaygroundState
                           toggled = !toggled;
                         });
                       },
-                      style: const TwStyle(
+                      style: TwStyle(
                         borderColor: border_transparent,
-                        borderRadius: TwBorderRadius.all(rounded_full),
-                        padding: TwPadding.xy(px_2_5, py_1),
-                        backgroundColor: bg_indigo_600,
+                        borderRadius: const TwBorderRadius.all(rounded_full),
+                        padding: const TwPadding.xy(px_2_5, py_1),
+                        backgroundColor: TwBackgroundColor.fromColor(
+                          bg_indigo_600.color.withOpacity(0.2),
+                        ),
                         fontSize: text_xs,
                         textColor: text_white,
                         boxShadow: shadow_sm,
                         fontWeight: font_bold,
                         transition: transition_all,
+                        backdropBlur: backdrop_blur,
                       ),
-                      hovered: const TwStyle(
-                        backgroundColor: bg_indigo_500,
+                      hovered: TwStyle(
+                        backgroundColor: TwBackgroundColor.fromColor(
+                          bg_indigo_600.color.withOpacity(0.2),
+                        ),
+                        backdropBlur: backdrop_blur_sm,
                       ),
                       focused: const TwStyle(
                         backgroundColor: bg_indigo_400,

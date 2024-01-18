@@ -198,6 +198,7 @@ class _SwitchTrackState extends TwAnimatedMaterialState<TwSwitch>
       style: animatedStyle,
       staticConstraints: currentStyle.toConstraints(),
       parentControlsOpacity: true,
+      alwaysIncludeFilters: widget.hasFilters,
       child: thumb,
     );
 

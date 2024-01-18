@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:tailwind_elements/base.dart';
 import 'package:tailwind_elements/widgets/inherited/parent_constraints_data.dart';
 import 'package:tailwind_elements/widgets/stateless/constraints.dart';
 import 'package:tailwind_elements/widgets/stateless/stateless_widget.dart';
@@ -13,8 +16,8 @@ class Div extends TwStatelessWidget {
   final Matrix4? transform;
   final AlignmentGeometry? transformAlignment;
 
-  // Whether to use opacity from this widget's style, or if it is determined
-  // by the parent widget.
+  /// Whether to use opacity from this widget's style, or if it is determined
+  /// by the parent widget.
   final bool? parentControlsOpacity;
 
   const Div({
@@ -25,6 +28,7 @@ class Div extends TwStatelessWidget {
     this.transform,
     this.transformAlignment,
     this.parentControlsOpacity,
+    super.alwaysIncludeFilters,
     super.staticConstraints,
     super.key,
   });
@@ -123,6 +127,22 @@ class Div extends TwStatelessWidget {
     // just a background color (otherwise a [ColoredBox] would be rendered).
     if (decoration != null && !hasOnlyBackgroundColor) {
       current = DecoratedBox(decoration: decoration, child: current);
+    }
+
+    // Render filters if applicable.
+    if ((alwaysIncludeFilters == true || style.hasFilters) &&
+        decoration != null) {
+      final backdropBlur = style.backdropBlur ?? TwBackdropBlur.zero;
+      current = ClipRRect(
+        borderRadius: decoration.borderRadius ?? BorderRadius.zero,
+        child: BackdropFilter(
+          filter: ImageFilter.blur(
+            sigmaX: backdropBlur.blur.pixels(style.fontSizePx),
+            sigmaY: backdropBlur.blur.pixels(style.fontSizePx),
+          ),
+          child: current,
+        ),
+      );
     }
 
     // Use constraints passed in to render a [ConstrainedBox] if applicable.

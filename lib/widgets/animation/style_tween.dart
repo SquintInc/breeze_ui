@@ -6,6 +6,7 @@ import 'package:tailwind_elements/config/options/borders/border_width.dart';
 import 'package:tailwind_elements/config/options/colors.dart';
 import 'package:tailwind_elements/config/options/effects/box_shadow.dart';
 import 'package:tailwind_elements/config/options/effects/opacity.dart';
+import 'package:tailwind_elements/config/options/filters/backdrop_blur.dart';
 import 'package:tailwind_elements/config/options/sizing/height.dart';
 import 'package:tailwind_elements/config/options/sizing/max_height.dart';
 import 'package:tailwind_elements/config/options/sizing/max_width.dart';
@@ -538,6 +539,26 @@ class TwStyleTween extends Tween<TwStyle?> {
     return TwLetterSpacing(PxUnit(letterSpacingPx));
   }
 
+  TwBackdropBlur? lerpBackdropBlur(
+    final TwBackdropBlur? begin,
+    final TwBackdropBlur? end,
+    final double t,
+    final TwFontSize? beginFontSize,
+    final TwFontSize? endFontSize,
+  ) {
+    if (!has(TransitionProperty.backdropFilter) ||
+        begin == null && end == null) {
+      return null;
+    }
+    final backdropBlurPx = ui.lerpDouble(
+      begin?.blur.pixels(beginFontSize?.value.pixels()),
+      end?.blur.pixels(endFontSize?.value.pixels()),
+      t,
+    );
+    if (backdropBlurPx == null) return null;
+    return TwBackdropBlur(PxUnit(backdropBlurPx));
+  }
+
   @override
   TwStyle? lerp(final double t) {
     final begin = this.begin;
@@ -580,6 +601,14 @@ class TwStyleTween extends Tween<TwStyle?> {
             TwBoxShadowColor.fromColor(end.boxShadow?.firstColor),
       ),
       opacity: lerpOpacity(begin.opacity, end.opacity, t),
+      // Filters
+      backdropBlur: lerpBackdropBlur(
+        begin.backdropBlur,
+        end.backdropBlur,
+        t,
+        begin.fontSize,
+        end.fontSize,
+      ),
       // Typography
       fontWeight: lerpFontWeight(begin.fontWeight, end.fontWeight, t),
       lineHeight: lineHeight,
