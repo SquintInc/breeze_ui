@@ -128,6 +128,7 @@ class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox>
             icon: iconData!,
             expand: true,
             staticConstraints: currentStyle.toConstraints(),
+            alwaysIncludeFilters: widget.hasFilters,
             style: TwCheckbox.defaultCheckboxStyle
                 .copyWith(
                   textColor: animatedStyle.textColor ??
@@ -145,6 +146,7 @@ class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox>
       style: animatedStyle,
       staticConstraints: currentStyle.toConstraints(),
       parentControlsOpacity: true,
+      alwaysIncludeFilters: widget.hasFilters,
       child: icon,
     );
 

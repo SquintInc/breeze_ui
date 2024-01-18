@@ -3,6 +3,8 @@ import 'package:tailwind_elements/config/options/units/measurement_unit.dart';
 
 @immutable
 class TwBackdropBlur {
+  static const TwBackdropBlur zero = TwBackdropBlur(PxUnit(0.0));
+
   final CssAbsoluteUnit blur;
 
   const TwBackdropBlur(this.blur);

@@ -81,6 +81,7 @@ class TwIcon extends TwStatelessWidget {
     this.preserveIconColors = false,
     super.style = defaultIconStyle,
     super.staticConstraints,
+    super.alwaysIncludeFilters,
     super.key,
   });
 
@@ -118,6 +119,7 @@ class TwIcon extends TwStatelessWidget {
       staticConstraints: staticConstraints,
       parentControlsOpacity: true,
       alignment: alignment ?? Alignment.center,
+      alwaysIncludeFilters: alwaysIncludeFilters,
       child: expand
           ? ConstrainedBox(
               constraints: constraints ?? defaultConstraints,

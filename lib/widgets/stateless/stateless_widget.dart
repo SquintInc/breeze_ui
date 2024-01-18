@@ -12,9 +12,17 @@ abstract class TwStatelessWidget extends StatelessWidget {
   /// width and height.
   final TwConstraints? staticConstraints;
 
+  /// Whether to always include filters in the widget tree, even if the current
+  /// style does not have any filters set.
+  ///
+  /// This may be used by animated parent widgets (e.g. TwButton or TwDiv) to maintain the widget
+  /// tree structure when transitioning between styles with and without filters.
+  final bool? alwaysIncludeFilters;
+
   const TwStatelessWidget({
     required this.style,
     this.staticConstraints,
+    this.alwaysIncludeFilters,
     super.key,
   });
 }
