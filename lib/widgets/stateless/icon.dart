@@ -9,13 +9,7 @@ import 'package:tailwind_elements/widgets/style/style.dart';
 
 /// Sealed class representing the icon data using either an [IconData] or svg [BytesLoader].
 @immutable
-sealed class TwIconData {
-  /// Non-const static method to create an [IconDataSvg] svg icon.
-  static IconDataSvg svg(final BytesLoader svg) => IconDataSvg(svg);
-
-  /// Non-const static method to create an [IconDataFont] font glyph icon.
-  static IconDataFont icon(final IconData iconData) => IconDataFont(iconData);
-}
+sealed class TwIconData {}
 
 /// Icon data using an [IconData] font glyph.
 @immutable
