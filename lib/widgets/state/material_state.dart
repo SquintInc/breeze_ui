@@ -193,6 +193,7 @@ abstract class TwMaterialState<T extends TwStatefulWidget> extends State<T> {
       initStatesController();
     }
     if (widget.isDisabled != oldWidget.isDisabled) {
+      _isDisabled = widget.isDisabled;
       statesController.update(MaterialState.disabled, widget.isDisabled);
       // Remove pressed state if applicable, if the widget is now disabled
       if (widget.isDisabled) {
