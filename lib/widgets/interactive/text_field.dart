@@ -286,6 +286,7 @@ class TwTextField extends TextField {
     super.controller,
     super.focusNode,
     super.undoController,
+    super.keyboardType,
     super.textInputAction,
     super.textCapitalization = TextCapitalization.none,
     super.strutStyle,
