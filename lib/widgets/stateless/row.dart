@@ -33,7 +33,7 @@ class TwRow extends StatelessWidget {
 
   List<Widget> gappedChildren() {
     final gap = this.gap;
-    if (gap == null) {
+    if (gap == null || children.isEmpty) {
       return children;
     }
 
