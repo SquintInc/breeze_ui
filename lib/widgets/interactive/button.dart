@@ -53,6 +53,7 @@ class TwButton extends TwStatefulWidget {
     // Input controllers,
     super.statesController,
     super.focusNode,
+    super.hitTestBehavior,
     super.key,
   }) : super(
           onTap: onPressed,
