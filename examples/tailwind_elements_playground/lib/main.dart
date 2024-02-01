@@ -398,6 +398,13 @@ class _TailwindElementsPlaygroundState
                     ),
                   ],
                 ),
+                const Div(
+                  style: TwStyle(
+                    width: w_screen,
+                    height: h_screen,
+                    backgroundColor: bg_red_500,
+                  ),
+                ),
               ],
             ),
           ),

@@ -200,11 +200,13 @@ class Div extends TwStatelessWidget {
           ParentConstraintsData.of(context);
       if (parentConstraintsData != null) {
         final constraints = computeRelativeConstraints(
+          context,
           parentConstraintsData.constraints,
           style.toConstraints(),
         );
         final staticBoxConstraints = staticConstraints != null
             ? computeRelativeConstraints(
+                context,
                 parentConstraintsData.constraints,
                 staticConstraints!,
               )
@@ -217,11 +219,13 @@ class Div extends TwStatelessWidget {
             final BoxConstraints parentConstraints,
           ) {
             final constraints = computeRelativeConstraints(
+              context,
               parentConstraints,
               style.toConstraints(),
             );
             final staticBoxConstraints = staticConstraints != null
                 ? computeRelativeConstraints(
+                    context,
                     parentConstraints,
                     staticConstraints!,
                   )

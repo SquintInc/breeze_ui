@@ -131,11 +131,13 @@ class TwIcon extends TwStatelessWidget {
     final styleConstraints = staticConstraints ?? style.toConstraints();
     if (parentConstraintsData != null) {
       final constraints = computeRelativeConstraints(
+        context,
         parentConstraintsData.constraints,
         styleConstraints,
       );
       final staticBoxConstraints = staticConstraints != null
           ? computeRelativeConstraints(
+              context,
               parentConstraintsData.constraints,
               staticConstraints!,
             )

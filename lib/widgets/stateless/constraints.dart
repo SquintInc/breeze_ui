@@ -36,40 +36,65 @@ BoxConstraints? tightenAbsoluteConstraints(
 /// the parent constraints. Then tightens the constraints using the given
 /// width and height values if they exist.
 BoxConstraints computeRelativeConstraints(
+  final BuildContext context,
   final BoxConstraints parentConstraints,
   final TwConstraints twConstraints,
 ) {
   final minWidthPx = switch (twConstraints.minWidth?.value) {
     CssAbsoluteUnit() =>
       (twConstraints.minWidth!.value as CssAbsoluteUnit).pixels(),
-    CssRelativeUnit() =>
-      (twConstraints.minWidth!.value as CssRelativeUnit).percentageFloat() *
+    PercentUnit() =>
+      (twConstraints.minWidth!.value as PercentUnit).percentageFloat() *
           parentConstraints.maxWidth,
-    _ => 0.0,
+    ViewportUnit() ||
+    SmallViewportUnit() ||
+    LargeViewportUnit() ||
+    DynamicViewportUnit() =>
+      (twConstraints.minWidth!.value as CssRelativeUnit).percentageFloat() *
+          MediaQuery.of(context).size.width,
+    null => 0.0,
   };
   final minHeightPx = switch (twConstraints.minHeight?.value) {
     CssAbsoluteUnit() =>
       (twConstraints.minHeight!.value as CssAbsoluteUnit).pixels(),
-    CssRelativeUnit() =>
-      (twConstraints.minHeight!.value as CssRelativeUnit).percentageFloat() *
+    PercentUnit() =>
+      (twConstraints.minHeight!.value as PercentUnit).percentageFloat() *
           parentConstraints.maxHeight,
-    _ => 0.0,
+    ViewportUnit() ||
+    SmallViewportUnit() ||
+    LargeViewportUnit() ||
+    DynamicViewportUnit() =>
+      (twConstraints.minWidth!.value as CssRelativeUnit).percentageFloat() *
+          MediaQuery.of(context).size.height,
+    null => 0.0,
   };
   final maxWidthPx = switch (twConstraints.maxWidth?.value) {
     CssAbsoluteUnit() =>
       (twConstraints.maxWidth!.value as CssAbsoluteUnit).pixels(),
-    CssRelativeUnit() =>
-      (twConstraints.maxWidth!.value as CssRelativeUnit).percentageFloat() *
+    PercentUnit() =>
+      (twConstraints.maxWidth!.value as PercentUnit).percentageFloat() *
           parentConstraints.maxWidth,
-    _ => double.infinity,
+    ViewportUnit() ||
+    SmallViewportUnit() ||
+    LargeViewportUnit() ||
+    DynamicViewportUnit() =>
+      (twConstraints.maxWidth!.value as CssRelativeUnit).percentageFloat() *
+          MediaQuery.of(context).size.width,
+    null => double.infinity,
   };
   final maxHeightPx = switch (twConstraints.maxHeight?.value) {
     CssAbsoluteUnit() =>
       (twConstraints.maxHeight!.value as CssAbsoluteUnit).pixels(),
-    CssRelativeUnit() =>
-      (twConstraints.maxHeight!.value as CssRelativeUnit).percentageFloat() *
+    PercentUnit() =>
+      (twConstraints.maxHeight!.value as PercentUnit).percentageFloat() *
           parentConstraints.maxHeight,
-    _ => double.infinity,
+    ViewportUnit() ||
+    SmallViewportUnit() ||
+    LargeViewportUnit() ||
+    DynamicViewportUnit() =>
+      (twConstraints.maxHeight!.value as CssRelativeUnit).percentageFloat() *
+          MediaQuery.of(context).size.height,
+    null => double.infinity,
   };
 
   final constraints = BoxConstraints(
@@ -82,18 +107,30 @@ BoxConstraints computeRelativeConstraints(
   final widthPx = switch (twConstraints.width?.value) {
     CssAbsoluteUnit() =>
       (twConstraints.width!.value as CssAbsoluteUnit).pixels(),
-    CssRelativeUnit() =>
-      (twConstraints.width!.value as CssRelativeUnit).percentageFloat() *
+    PercentUnit() =>
+      (twConstraints.width!.value as PercentUnit).percentageFloat() *
           parentConstraints.maxWidth,
-    _ => null,
+    ViewportUnit() ||
+    SmallViewportUnit() ||
+    LargeViewportUnit() ||
+    DynamicViewportUnit() =>
+      (twConstraints.width!.value as CssRelativeUnit).percentageFloat() *
+          MediaQuery.of(context).size.width,
+    null => null,
   };
   final heightPx = switch (twConstraints.height?.value) {
     CssAbsoluteUnit() =>
       (twConstraints.height!.value as CssAbsoluteUnit).pixels(),
-    CssRelativeUnit() =>
-      (twConstraints.height!.value as CssRelativeUnit).percentageFloat() *
+    PercentUnit() =>
+      (twConstraints.height!.value as PercentUnit).percentageFloat() *
           parentConstraints.maxHeight,
-    _ => null,
+    ViewportUnit() ||
+    SmallViewportUnit() ||
+    LargeViewportUnit() ||
+    DynamicViewportUnit() =>
+      (twConstraints.height!.value as CssRelativeUnit).percentageFloat() *
+          MediaQuery.of(context).size.height,
+    null => null,
   };
 
   final tightConstraints = constraints.tighten(
