@@ -1,5 +1,5 @@
-import 'package:tailwind_elements/config/builder/builders/generators.dart';
-import 'package:tailwind_elements/config/options/typography/text_decoration_thickness.dart';
+import 'package:breeze_ui/config/builder/builders/generators.dart';
+import 'package:breeze_ui/config/options/typography/text_decoration_thickness.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'decoration-*' text
 /// decoration thickness constants to the .g.dart part file.

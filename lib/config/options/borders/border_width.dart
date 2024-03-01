@@ -1,7 +1,7 @@
+import 'package:breeze_ui/config/options/box_types.dart';
+import 'package:breeze_ui/config/options/units.dart';
 import 'package:flutter/painting.dart';
 import 'package:meta/meta.dart';
-import 'package:tailwind_elements/config/options/box_types.dart';
-import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwBorderTop {

@@ -1,5 +1,5 @@
+import 'package:breeze_ui/config/options/spacing/padding.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tailwind_elements/config/options/spacing/padding.dart';
 
 /// Wrapper for [SliverPadding] with support for Tailwind padding constants.
 class TwSliverPadding extends SliverPadding {

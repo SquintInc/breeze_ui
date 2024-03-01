@@ -1,6 +1,6 @@
+import 'package:breeze_ui/config/builder/builders/generators.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:tailwind_elements/config/builder/builders/generators.dart';
 
 const String _linear = 'linear';
 const String _cubicBezier = 'cubic-bezier';

@@ -1,25 +1,24 @@
+import 'package:breeze_ui/base.dart';
+import 'package:breeze_ui/widgets.dart';
+import 'package:breeze_ui_playground/tailwind_config.dart';
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/base.dart';
-import 'package:tailwind_elements/widgets.dart';
-import 'package:tailwind_elements_playground/tailwind_config.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
 // ignore_for_file: avoid_print
 void main() {
-  runApp(const TailwindElementsPlayground());
+  runApp(const BreezeUIPlayground());
 }
 
-class TailwindElementsPlayground extends StatefulWidget {
-  const TailwindElementsPlayground({super.key});
+class BreezeUIPlayground extends StatefulWidget {
+  const BreezeUIPlayground({super.key});
 
   @override
   State createState() {
-    return _TailwindElementsPlaygroundState();
+    return _BreezeUIPlaygroundState();
   }
 }
 
-class _TailwindElementsPlaygroundState
-    extends State<TailwindElementsPlayground> {
+class _BreezeUIPlaygroundState extends State<BreezeUIPlayground> {
   bool toggled = true;
   bool hideSwitch = false;
   final MaterialStatesController statesController = MaterialStatesController();

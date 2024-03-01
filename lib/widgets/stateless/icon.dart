@@ -1,11 +1,11 @@
+import 'package:breeze_ui/base.dart';
+import 'package:breeze_ui/widgets/inherited/parent_constraints_data.dart';
+import 'package:breeze_ui/widgets/stateless/constraints.dart';
+import 'package:breeze_ui/widgets/stateless/div.dart';
+import 'package:breeze_ui/widgets/stateless/stateless_widget.dart';
+import 'package:breeze_ui/widgets/style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tailwind_elements/base.dart';
-import 'package:tailwind_elements/widgets/inherited/parent_constraints_data.dart';
-import 'package:tailwind_elements/widgets/stateless/constraints.dart';
-import 'package:tailwind_elements/widgets/stateless/div.dart';
-import 'package:tailwind_elements/widgets/stateless/stateless_widget.dart';
-import 'package:tailwind_elements/widgets/style/style.dart';
 
 /// Sealed class representing the icon data using either an [IconData] or svg [BytesLoader].
 @immutable

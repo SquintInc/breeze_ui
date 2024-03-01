@@ -1,26 +1,26 @@
 import 'dart:ui' as ui;
 
+import 'package:breeze_ui/config/options/borders/border_radius.dart';
+import 'package:breeze_ui/config/options/borders/border_width.dart';
+import 'package:breeze_ui/config/options/colors.dart';
+import 'package:breeze_ui/config/options/effects/box_shadow.dart';
+import 'package:breeze_ui/config/options/effects/opacity.dart';
+import 'package:breeze_ui/config/options/filters/backdrop_blur.dart';
+import 'package:breeze_ui/config/options/sizing/height.dart';
+import 'package:breeze_ui/config/options/sizing/max_height.dart';
+import 'package:breeze_ui/config/options/sizing/max_width.dart';
+import 'package:breeze_ui/config/options/sizing/min_height.dart';
+import 'package:breeze_ui/config/options/sizing/min_width.dart';
+import 'package:breeze_ui/config/options/sizing/width.dart';
+import 'package:breeze_ui/config/options/transitions/transition_property.dart';
+import 'package:breeze_ui/config/options/typography/font_size.dart';
+import 'package:breeze_ui/config/options/typography/font_weight.dart';
+import 'package:breeze_ui/config/options/typography/letter_spacing.dart';
+import 'package:breeze_ui/config/options/typography/line_height.dart';
+import 'package:breeze_ui/config/options/typography/text_decoration_thickness.dart';
+import 'package:breeze_ui/config/options/units/measurement_unit.dart';
+import 'package:breeze_ui/widgets/style/style.dart';
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/config/options/borders/border_radius.dart';
-import 'package:tailwind_elements/config/options/borders/border_width.dart';
-import 'package:tailwind_elements/config/options/colors.dart';
-import 'package:tailwind_elements/config/options/effects/box_shadow.dart';
-import 'package:tailwind_elements/config/options/effects/opacity.dart';
-import 'package:tailwind_elements/config/options/filters/backdrop_blur.dart';
-import 'package:tailwind_elements/config/options/sizing/height.dart';
-import 'package:tailwind_elements/config/options/sizing/max_height.dart';
-import 'package:tailwind_elements/config/options/sizing/max_width.dart';
-import 'package:tailwind_elements/config/options/sizing/min_height.dart';
-import 'package:tailwind_elements/config/options/sizing/min_width.dart';
-import 'package:tailwind_elements/config/options/sizing/width.dart';
-import 'package:tailwind_elements/config/options/transitions/transition_property.dart';
-import 'package:tailwind_elements/config/options/typography/font_size.dart';
-import 'package:tailwind_elements/config/options/typography/font_weight.dart';
-import 'package:tailwind_elements/config/options/typography/letter_spacing.dart';
-import 'package:tailwind_elements/config/options/typography/line_height.dart';
-import 'package:tailwind_elements/config/options/typography/text_decoration_thickness.dart';
-import 'package:tailwind_elements/config/options/units/measurement_unit.dart';
-import 'package:tailwind_elements/widgets/style/style.dart';
 
 /// [Tween] implementation that allows for interpolating various styling
 /// properties from between two different [TwStyle]s.

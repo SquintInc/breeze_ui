@@ -1,4 +1,4 @@
-import 'package:tailwind_elements/config/builder/builders/generators.dart';
+import 'package:breeze_ui/config/builder/builders/generators.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'p-*' padding constants
 /// to the .g.dart part file.

@@ -1,5 +1,5 @@
+import 'package:breeze_ui/widgets/style/style.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tailwind_elements/widgets/style/style.dart';
 
 @immutable
 abstract class TwStatelessWidget extends StatelessWidget {

@@ -1,6 +1,6 @@
+import 'package:breeze_ui/config/options/units/measurement_unit.dart';
+import 'package:breeze_ui/widgets/style/style.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tailwind_elements/config/options/units/measurement_unit.dart';
-import 'package:tailwind_elements/widgets/style/style.dart';
 
 /// Gets a [BoxConstraints] object that assumes usage of simple [PxUnit]
 /// values.

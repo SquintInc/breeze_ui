@@ -9,8 +9,8 @@ on:
     paths:
       - "lib/**"
       - "test/**"
-      - "examples/tailwind_elements_playground/lib/**"
-      - "examples/tailwind_elements_playground/test/**"
+      - "examples/breeze_ui_playground/lib/**"
+      - "examples/breeze_ui_playground/test/**"
 
 jobs:
   build:
@@ -38,7 +38,7 @@ jobs:
 
       - name: Get examples Flutter Dependencies
         run: flutter pub get
-        working-directory: examples/tailwind_elements_playground
+        working-directory: examples/breeze_ui_playground
 
       - name: Run Dart analysis
         run: dart analyze

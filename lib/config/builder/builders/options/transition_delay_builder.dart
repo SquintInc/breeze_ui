@@ -1,5 +1,5 @@
-import 'package:tailwind_elements/config/builder/builders/generators.dart';
-import 'package:tailwind_elements/config/options/transitions/transition_delay.dart';
+import 'package:breeze_ui/config/builder/builders/generators.dart';
+import 'package:breeze_ui/config/options/transitions/transition_delay.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'delay-*' constants to the
 /// .g.dart part file.

@@ -1,7 +1,7 @@
+import 'package:breeze_ui/widgets/inherited/parent_material_states_data.dart';
+import 'package:breeze_ui/widgets/state/stateful_widget.dart';
+import 'package:breeze_ui/widgets/style/style.dart';
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/widgets/inherited/parent_material_states_data.dart';
-import 'package:tailwind_elements/widgets/state/stateful_widget.dart';
-import 'package:tailwind_elements/widgets/style/style.dart';
 
 enum MaterialStatesControllerType {
   passedDown,

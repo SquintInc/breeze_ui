@@ -1,5 +1,5 @@
-name: tailwind_elements_playground
-description: "A new Flutter project."
+name: breeze_ui_playground
+description: "A playground for Breeze UI widgets."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  tailwind_elements:
+  breeze_ui:
     path: "../../"
 
 

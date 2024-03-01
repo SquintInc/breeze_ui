@@ -1,11 +1,11 @@
 import 'dart:ui';
 
+import 'package:breeze_ui/base.dart';
+import 'package:breeze_ui/widgets/inherited/parent_constraints_data.dart';
+import 'package:breeze_ui/widgets/stateless/constraints.dart';
+import 'package:breeze_ui/widgets/stateless/stateless_widget.dart';
+import 'package:breeze_ui/widgets/style/style.dart';
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/base.dart';
-import 'package:tailwind_elements/widgets/inherited/parent_constraints_data.dart';
-import 'package:tailwind_elements/widgets/stateless/constraints.dart';
-import 'package:tailwind_elements/widgets/stateless/stateless_widget.dart';
-import 'package:tailwind_elements/widgets/style/style.dart';
 
 /// A [Container]-like widget with support for Tailwind styled properties.
 class Div extends TwStatelessWidget {

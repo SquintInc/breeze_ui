@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:breeze_ui/config/builder/build_runner/rgba_color.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tailwind_elements/config/builder/build_runner/rgba_color.dart';
 
 void main() {
   test('RgbaColor constructor takes in individual r, g, b, a components', () {

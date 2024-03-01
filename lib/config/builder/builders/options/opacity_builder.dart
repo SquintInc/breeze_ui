@@ -1,5 +1,5 @@
-import 'package:tailwind_elements/config/builder/builders/generators.dart';
-import 'package:tailwind_elements/config/options/effects/opacity.dart';
+import 'package:breeze_ui/config/builder/builders/generators.dart';
+import 'package:breeze_ui/config/options/effects/opacity.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'opacity-*' constants to
 /// the .g.dart part file.
