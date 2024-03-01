@@ -20,7 +20,7 @@ know whether this package might be useful for them.
 
 The following tables lists all the TailwindCSS options (from the sidebar
 on https://tailwindcss.com/docs/configuration) and whether they have an equivalent representation in
-Flutter via `tailwind_elements`.
+Flutter via `breeze_ui`.
 
 <details open>
 <summary>Layout</summary>

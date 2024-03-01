@@ -1,7 +1,7 @@
 targets:
   $default:
     builders:
-      tailwind_elements|tailwind_config_builder:
+      breeze_ui|tailwind_config_builder:
         generate_for:
           - lib/tailwind_config.dart
       source_gen|combining_builder:

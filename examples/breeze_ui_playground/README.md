@@ -1,4 +1,4 @@
-# tailwind_elements_playground
+# breeze_ui_playground
 
 A new Flutter project.
 
