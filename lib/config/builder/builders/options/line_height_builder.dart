@@ -1,5 +1,5 @@
-import 'package:tailwind_elements/config/builder/builders/generators.dart';
-import 'package:tailwind_elements/config/options/typography/line_height.dart';
+import 'package:breeze_ui/config/builder/builders/generators.dart';
+import 'package:breeze_ui/config/options/typography/line_height.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'leading-*' line height
 /// constants to the .g.dart part file.

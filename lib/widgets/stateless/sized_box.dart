@@ -1,7 +1,7 @@
+import 'package:breeze_ui/config/options/sizing/height.dart';
+import 'package:breeze_ui/config/options/sizing/width.dart';
+import 'package:breeze_ui/config/options/units.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tailwind_elements/config/options/sizing/height.dart';
-import 'package:tailwind_elements/config/options/sizing/width.dart';
-import 'package:tailwind_elements/config/options/units.dart';
 
 /// A simple, unstyled [SizedBox] wrapper with constrained width and height.
 @immutable

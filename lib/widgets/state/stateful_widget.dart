@@ -1,6 +1,6 @@
+import 'package:breeze_ui/widgets/style/style.dart';
+import 'package:breeze_ui/widgets/style/style_group.dart';
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/widgets/style/style.dart';
-import 'package:tailwind_elements/widgets/style/style_group.dart';
 
 /// A [StatefulWidget] subclass with support for [MaterialStatesController].
 abstract class TwStatefulWidget extends StatefulWidget {

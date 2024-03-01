@@ -1,4 +1,4 @@
-import 'package:tailwind_elements/config/builder/builders/generators.dart';
+import 'package:breeze_ui/config/builder/builders/generators.dart';
 
 /// A [ColorConstantsGenerator] used to generate Tailwind 'text-*' colors
 /// to the .g.dart part file.

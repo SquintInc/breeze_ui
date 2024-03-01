@@ -1,7 +1,7 @@
+import 'package:breeze_ui/base.dart';
+import 'package:breeze_ui/widgets.dart';
+import 'package:breeze_ui_playground/tailwind_config.dart';
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/base.dart';
-import 'package:tailwind_elements/widgets.dart';
-import 'package:tailwind_elements_playground/tailwind_config.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
 // ignore_for_file: avoid_print

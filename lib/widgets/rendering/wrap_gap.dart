@@ -1,6 +1,6 @@
+import 'package:breeze_ui/config/options/sizing/gap.dart';
+import 'package:breeze_ui/config/options/units/measurement_unit.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tailwind_elements/config/options/sizing/gap.dart';
-import 'package:tailwind_elements/config/options/units/measurement_unit.dart';
 
 /// Wrapper for [Wrap] on the horizontal axis with support for Tailwind styled gap spacing.
 class TwWrapX extends Wrap {

@@ -1,5 +1,5 @@
-import 'package:tailwind_elements/config/builder/builders/generators.dart';
-import 'package:tailwind_elements/config/options/filters/backdrop_blur.dart';
+import 'package:breeze_ui/config/builder/builders/generators.dart';
+import 'package:breeze_ui/config/options/filters/backdrop_blur.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'backdrop-blur-*' constants to the
 /// .g.dart part file.

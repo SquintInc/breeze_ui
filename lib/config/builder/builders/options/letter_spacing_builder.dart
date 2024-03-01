@@ -1,5 +1,5 @@
-import 'package:tailwind_elements/config/builder/builders/generators.dart';
-import 'package:tailwind_elements/config/options/typography/letter_spacing.dart';
+import 'package:breeze_ui/config/builder/builders/generators.dart';
+import 'package:breeze_ui/config/options/typography/letter_spacing.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'tracking-*' letter spacing
 /// constants to the .g.dart part file.

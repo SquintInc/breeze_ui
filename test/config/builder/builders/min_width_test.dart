@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:breeze_ui/base.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tailwind_elements/base.dart';
 
 import '../tailwind_config_example.dart';
 

@@ -1,22 +1,22 @@
 import 'dart:math';
 
+import 'package:breeze_ui/config/options/borders/border_radius.dart';
+import 'package:breeze_ui/config/options/sizing/height.dart';
+import 'package:breeze_ui/config/options/sizing/max_height.dart';
+import 'package:breeze_ui/config/options/sizing/max_width.dart';
+import 'package:breeze_ui/config/options/sizing/min_height.dart';
+import 'package:breeze_ui/config/options/sizing/min_width.dart';
+import 'package:breeze_ui/config/options/sizing/width.dart';
+import 'package:breeze_ui/config/options/typography/font_size.dart';
+import 'package:breeze_ui/config/options/typography/line_height.dart';
+import 'package:breeze_ui/config/options/units/measurement_unit.dart';
+import 'package:breeze_ui/widgets/animation/style_tween.dart';
+import 'package:breeze_ui/widgets/inherited/parent_constraints_data.dart';
+import 'package:breeze_ui/widgets/state/material_state.dart';
+import 'package:breeze_ui/widgets/state/stateful_widget.dart';
+import 'package:breeze_ui/widgets/style/style.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/config/options/borders/border_radius.dart';
-import 'package:tailwind_elements/config/options/sizing/height.dart';
-import 'package:tailwind_elements/config/options/sizing/max_height.dart';
-import 'package:tailwind_elements/config/options/sizing/max_width.dart';
-import 'package:tailwind_elements/config/options/sizing/min_height.dart';
-import 'package:tailwind_elements/config/options/sizing/min_width.dart';
-import 'package:tailwind_elements/config/options/sizing/width.dart';
-import 'package:tailwind_elements/config/options/typography/font_size.dart';
-import 'package:tailwind_elements/config/options/typography/line_height.dart';
-import 'package:tailwind_elements/config/options/units/measurement_unit.dart';
-import 'package:tailwind_elements/widgets/animation/style_tween.dart';
-import 'package:tailwind_elements/widgets/inherited/parent_constraints_data.dart';
-import 'package:tailwind_elements/widgets/state/material_state.dart';
-import 'package:tailwind_elements/widgets/state/stateful_widget.dart';
-import 'package:tailwind_elements/widgets/style/style.dart';
 
 extension StyleRadiusExt on TwBorderRadius {
   TwBorderRadius? minimizeCircle(

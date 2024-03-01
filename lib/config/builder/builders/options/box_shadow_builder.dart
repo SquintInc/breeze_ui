@@ -1,7 +1,7 @@
+import 'package:breeze_ui/config/builder/build_runner/box_shadow_parser.dart';
+import 'package:breeze_ui/config/builder/builders/generators.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:tailwind_elements/config/builder/build_runner/box_shadow_parser.dart';
-import 'package:tailwind_elements/config/builder/builders/generators.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'shadow-*' box shadow
 /// constants to the .g.dart part file.

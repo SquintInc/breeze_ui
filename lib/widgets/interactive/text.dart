@@ -1,5 +1,5 @@
+import 'package:breeze_ui/widgets/style/style.dart';
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/widgets/style/style.dart';
 
 /// A [Text] widget wrapper with support for Tailwind styled properties. If
 /// animated property transitions are wanted, use [TwAnimatedText] instead.

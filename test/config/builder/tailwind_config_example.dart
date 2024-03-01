@@ -1,4 +1,4 @@
-import 'package:tailwind_elements/base.dart';
+import 'package:breeze_ui/base.dart';
 
 part 'tailwind_config_example.g.dart';
 

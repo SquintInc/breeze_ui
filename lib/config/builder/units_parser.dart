@@ -1,4 +1,4 @@
-import 'package:tailwind_elements/config/options/units.dart';
+import 'package:breeze_ui/config/options/units.dart';
 
 CssTimeUnit parseTimeUnit(final String value) {
   if (value == '0') {

@@ -1,11 +1,11 @@
+import 'package:breeze_ui/config/options/units/measurement_unit.dart';
+import 'package:breeze_ui/widgets/rendering/input_padding.dart';
+import 'package:breeze_ui/widgets/state/animated_material_state.dart';
+import 'package:breeze_ui/widgets/state/stateful_widget.dart';
+import 'package:breeze_ui/widgets/stateless/div.dart';
+import 'package:breeze_ui/widgets/style/style.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:tailwind_elements/config/options/units/measurement_unit.dart';
-import 'package:tailwind_elements/widgets/rendering/input_padding.dart';
-import 'package:tailwind_elements/widgets/state/animated_material_state.dart';
-import 'package:tailwind_elements/widgets/state/stateful_widget.dart';
-import 'package:tailwind_elements/widgets/stateless/div.dart';
-import 'package:tailwind_elements/widgets/style/style.dart';
 
 /// A Switch widget with support for Tailwind styled properties. This widget allows animating the
 /// alignment of the thumb, but does not support sharing material states with the thumb itself.

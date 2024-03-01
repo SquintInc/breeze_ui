@@ -1,5 +1,5 @@
-import 'package:tailwind_elements/config/builder/builders/generators.dart';
-import 'package:tailwind_elements/config/options/transitions/transition_duration.dart';
+import 'package:breeze_ui/config/builder/builders/generators.dart';
+import 'package:breeze_ui/config/options/transitions/transition_duration.dart';
 
 /// A [ConstantsGenerator] used to generate Tailwind 'duration-*' constants to
 /// the .g.dart part file.

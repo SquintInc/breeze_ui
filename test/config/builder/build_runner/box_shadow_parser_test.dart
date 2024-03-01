@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:breeze_ui/base.dart';
+import 'package:breeze_ui/config/builder/build_runner/box_shadow_parser.dart';
+import 'package:breeze_ui/config/builder/build_runner/rgba_color.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tailwind_elements/base.dart';
-import 'package:tailwind_elements/config/builder/build_runner/box_shadow_parser.dart';
-import 'package:tailwind_elements/config/builder/build_runner/rgba_color.dart';
 
 void main() {
   test('box shadow parseBoxShadow() function parses CSS box shadow string', () {
@@ -31,12 +31,12 @@ void main() {
     expect(
       BoxShadowParser.parse(boxShadowCssString).toDartConstructor(),
       equals('''[
-TwBoxShadow(color: TwBoxShadowColor(Color(0x1A000000)), offsetX: PxUnit(0.0), offsetY: PxUnit(1.0), blurRadius: PxUnit(3.0), spreadRadius: PxUnit(0.0)),
-TwBoxShadow(color: TwBoxShadowColor(Color(0x1A000000)), offsetX: PxUnit(0.0), offsetY: PxUnit(1.0), blurRadius: PxUnit(2.0), spreadRadius: PxUnit(-1.0)),
+BoxShadow(color: Color(0x1A000000), offset: Offset(0.0, 1.0), blurRadius: 3.0, spreadRadius: 0.0),
+BoxShadow(color: Color(0x1A000000), offset: Offset(0.0, 1.0), blurRadius: 2.0, spreadRadius: -1.0),
 ]
 '''),
     );
 
-    expect(BoxShadowParser([]).toDartConstructor(), equals('<TwBoxShadow>[]'));
+    expect(BoxShadowParser([]).toDartConstructor(), equals('<BoxShadow>[]'));
   });
 }

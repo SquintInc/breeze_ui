@@ -1,6 +1,6 @@
+import 'package:breeze_ui/config/options/typography/line_height.dart';
+import 'package:breeze_ui/config/options/units.dart';
 import 'package:meta/meta.dart';
-import 'package:tailwind_elements/config/options/typography/line_height.dart';
-import 'package:tailwind_elements/config/options/units.dart';
 
 @immutable
 class TwFontSize {

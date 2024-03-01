@@ -1,6 +1,6 @@
+import 'package:breeze_ui/config/options/colors.dart';
 import 'package:flutter/painting.dart';
 import 'package:meta/meta.dart';
-import 'package:tailwind_elements/config/options/colors.dart';
 
 @immutable
 class TwBoxShadows {

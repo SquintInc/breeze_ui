@@ -1,10 +1,10 @@
+import 'package:breeze_ui/config/builder/build_runner/rgba_color.dart';
+import 'package:breeze_ui/config/builder/tailwind_config.dart';
+import 'package:breeze_ui/config/builder/units_parser.dart';
+import 'package:breeze_ui/config/options/units.dart';
 import 'package:build/build.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:tailwind_elements/config/builder/build_runner/rgba_color.dart';
-import 'package:tailwind_elements/config/builder/tailwind_config.dart';
-import 'package:tailwind_elements/config/builder/units_parser.dart';
-import 'package:tailwind_elements/config/options/units.dart';
 
 extension StringExt on String {
   String toSnakeCase() {

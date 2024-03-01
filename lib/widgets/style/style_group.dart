@@ -1,7 +1,7 @@
+import 'package:breeze_ui/widgets/state/material_state.dart';
+import 'package:breeze_ui/widgets/style/style.dart';
 import 'package:flutter/material.dart' show MaterialState;
 import 'package:meta/meta.dart';
-import 'package:tailwind_elements/widgets/state/material_state.dart';
-import 'package:tailwind_elements/widgets/style/style.dart';
 
 typedef TwStyleResolver = TwStyle Function(
   Set<MaterialState> states, {
