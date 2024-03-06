@@ -327,12 +327,11 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
     }
   }
 
-  @override
-  void dispose() {
+  @protected
+  void disposeController() {
     animationController?.removeListener(handleAnimationControllerUpdate);
     animationController?.dispose();
     animationCurve?.dispose();
-    super.dispose();
   }
 
   TwStyle? getAnimatedStyle() {

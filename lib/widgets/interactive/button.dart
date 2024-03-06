@@ -110,4 +110,10 @@ class _TwButtonState extends TwAnimatedMaterialState<TwButton>
 
   @override
   TickerProvider getTickerProvider() => this;
+
+  @override
+  void dispose() {
+    disposeController();
+    super.dispose();
+  }
 }

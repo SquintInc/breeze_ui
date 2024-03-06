@@ -169,4 +169,10 @@ class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox>
 
   @override
   TickerProvider getTickerProvider() => this;
+
+  @override
+  void dispose() {
+    disposeController();
+    super.dispose();
+  }
 }
