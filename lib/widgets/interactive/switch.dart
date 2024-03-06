@@ -182,6 +182,7 @@ class _SwitchTrackState extends TwAnimatedMaterialState<TwSwitch>
   void dispose() {
     thumbController?.removeListener(handleAnimationControllerUpdate);
     thumbController?.dispose();
+    disposeController();
     super.dispose();
   }
 

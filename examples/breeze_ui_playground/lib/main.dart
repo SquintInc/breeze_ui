@@ -2,7 +2,6 @@ import 'package:breeze_ui/base.dart';
 import 'package:breeze_ui/widgets.dart';
 import 'package:breeze_ui_playground/tailwind_config.dart';
 import 'package:flutter/material.dart';
-import 'package:vector_graphics/vector_graphics.dart';
 
 // ignore_for_file: avoid_print
 void main() {
@@ -56,9 +55,7 @@ class _BreezeUIPlaygroundState extends State<BreezeUIPlayground> {
                     TwCheckbox(
                       value: toggled,
                       isTristate: true,
-                      checkedIcon: const IconDataSvg(
-                        AssetBytesLoader('assets/checkmark.svg.vec'),
-                      ),
+                      checkedIcon: const IconDataFont(Icons.check),
                       style: const TwStyle(
                         backgroundColor: bg_indigo_200,
                         transition: transition_all,
@@ -77,9 +74,7 @@ class _BreezeUIPlaygroundState extends State<BreezeUIPlayground> {
                     TwCheckbox(
                       value: null,
                       isTristate: true,
-                      checkedIcon: const IconDataSvg(
-                        AssetBytesLoader('assets/checkmark.svg.vec'),
-                      ),
+                      checkedIcon: const IconDataFont(Icons.check),
                       style: const TwStyle(
                         backgroundColor: bg_indigo_200,
                         transition: transition_all,
@@ -98,9 +93,7 @@ class _BreezeUIPlaygroundState extends State<BreezeUIPlayground> {
                     TwCheckbox(
                       value: toggled,
                       isToggleable: false,
-                      checkedIcon: const IconDataSvg(
-                        AssetBytesLoader('assets/checkmark.svg.vec'),
-                      ),
+                      checkedIcon: const IconDataFont(Icons.check),
                       style: const TwStyle(
                         backgroundColor: bg_indigo_200,
                         transition: transition_all,
@@ -389,11 +382,6 @@ class _BreezeUIPlaygroundState extends State<BreezeUIPlayground> {
                     ),
                     const TwIcon(
                       icon: IconDataFont(Icons.check),
-                    ),
-                    const TwIcon(
-                      icon: IconDataSvg(
-                        AssetBytesLoader('assets/checkmark.svg.vec'),
-                      ),
                     ),
                   ],
                 ),

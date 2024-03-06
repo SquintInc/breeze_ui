@@ -327,12 +327,16 @@ abstract class TwAnimatedMaterialState<T extends TwStatefulWidget>
     }
   }
 
-  @override
-  void dispose() {
+  /// This method disposes the animation controller and the underlying ticker
+  /// from the ticker provider mixin.
+  ///
+  /// IMPORTANT: It is necessary for this method to be called in any subclassed
+  /// state as the first part of the [dispose] method.
+  @protected
+  void disposeController() {
     animationController?.removeListener(handleAnimationControllerUpdate);
     animationController?.dispose();
     animationCurve?.dispose();
-    super.dispose();
   }
 
   TwStyle? getAnimatedStyle() {

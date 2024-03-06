@@ -96,4 +96,10 @@ class _TwDiv extends TwAnimatedMaterialState<TwDiv>
 
   @override
   TickerProvider getTickerProvider() => this;
+
+  @override
+  void dispose() {
+    disposeController();
+    super.dispose();
+  }
 }
