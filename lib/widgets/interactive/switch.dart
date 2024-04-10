@@ -195,7 +195,7 @@ class _SwitchTrackState extends TwAnimatedMaterialState<TwSwitch>
       alignment: getAnimatedAlignment() ?? Alignment.centerLeft,
       child: widget.thumb,
     );
-    final div = Div(
+    final div = TwDiv(
       style: animatedStyle,
       staticConstraints: currentStyle.toConstraints(),
       parentControlsOpacity: true,

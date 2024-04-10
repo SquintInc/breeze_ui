@@ -6,12 +6,12 @@ import 'package:breeze_ui/widgets/stateless/div.dart';
 import 'package:breeze_ui/widgets/style/style.dart';
 import 'package:flutter/material.dart';
 
-/// A [Div] widget wrapper with support for Tailwind styled properties
+/// A [TwDiv] widget wrapper with support for Tailwind styled properties
 /// and animated property transitions.
 ///
 /// A [TwMaterialStatesGroup] may be used to reuse the same animation controller
 /// for multiple [TwStatefulWidget]s that support animations.
-class TwDiv extends TwStatefulWidget {
+class TwDivInteractive extends TwStatefulWidget {
   // Passthrough [Container] properties
   final Widget? child;
   final AlignmentGeometry? alignment;
@@ -19,7 +19,7 @@ class TwDiv extends TwStatefulWidget {
   final Matrix4? transform;
   final AlignmentGeometry? transformAlignment;
 
-  const TwDiv({
+  const TwDivInteractive({
     this.child,
     // Passthrough [Container] properties
     this.alignment = Alignment.topLeft,
@@ -64,17 +64,17 @@ class TwDiv extends TwStatefulWidget {
   });
 
   @override
-  State createState() => _TwDiv();
+  State createState() => _TwDivInteractive();
 }
 
-class _TwDiv extends TwAnimatedMaterialState<TwDiv>
+class _TwDivInteractive extends TwAnimatedMaterialState<TwDivInteractive>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(final BuildContext context) {
     final currentStyle = getCurrentStyle(currentStates);
     final animatedStyle = currentStyle.merge(getAnimatedStyle());
 
-    final div = Div(
+    final div = TwDiv(
       style: animatedStyle,
       staticConstraints: currentStyle.toConstraints(),
       parentControlsOpacity: true,

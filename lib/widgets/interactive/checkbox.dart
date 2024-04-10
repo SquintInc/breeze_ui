@@ -142,7 +142,7 @@ class _CheckboxState extends TwAnimatedMaterialState<TwCheckbox>
           )
         : null;
 
-    final div = Div(
+    final div = TwDiv(
       style: animatedStyle,
       staticConstraints: currentStyle.toConstraints(),
       parentControlsOpacity: true,

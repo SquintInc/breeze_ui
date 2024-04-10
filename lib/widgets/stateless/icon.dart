@@ -30,7 +30,7 @@ class IconDataSvg implements TwIconData {
 }
 
 /// A widget representing an [Icon] or [SvgPicture] with support for Tailwind styled properties.
-/// The icon is rendered as a child of a [Div] widget for full styling support (meaning relative
+/// The icon is rendered as a child of a [TwDiv] widget for full styling support (meaning relative
 /// percent based sizing constraints will work).
 ///
 /// If a [style] is not provided, the [defaultIconStyle] will be used: a black icon with width and
@@ -54,7 +54,7 @@ class TwIcon extends TwStatelessWidget {
   /// The icon data to use for display. Can be either an [IconData] or svg [BytesLoader].
   final TwIconData icon;
 
-  /// The alignment of the icon within the [Div] widget. Defaults to [Alignment.center].
+  /// The alignment of the icon within the [TwDiv] widget. Defaults to [Alignment.center].
   final Alignment? alignment;
 
   /// Whether the icon should expand to fill the available space. This is accomplished by wrapping
@@ -108,7 +108,7 @@ class TwIcon extends TwStatelessWidget {
         ),
     };
 
-    return Div(
+    return TwDiv(
       style: style,
       staticConstraints: staticConstraints,
       parentControlsOpacity: true,
