@@ -72,14 +72,14 @@ class TwButton extends TwStatefulWidget {
 
 class _TwButtonState extends TwAnimatedMaterialState<TwButton>
     with SingleTickerProviderStateMixin {
-  /// Wrap the button by extending [TwStatefulWidget] and using a [Div] for simplicity of applying
+  /// Wrap the button by extending [TwStatefulWidget] and using a [TwDiv] for simplicity of applying
   /// styles with support for animated transitions.
   @override
   Widget build(final BuildContext context) {
     final currentStyle = getCurrentStyle(currentStates);
     final animatedStyle = currentStyle.merge(getAnimatedStyle());
 
-    final div = Div(
+    final div = TwDiv(
       style: animatedStyle,
       staticConstraints: currentStyle.toConstraints(),
       parentControlsOpacity: true,

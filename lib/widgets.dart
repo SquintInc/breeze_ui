@@ -1,5 +1,5 @@
 export 'package:breeze_ui/config/options/units.dart';
-export 'package:breeze_ui/widgets/div.dart';
+export 'package:breeze_ui/widgets/div_interactive.dart';
 export 'package:breeze_ui/widgets/inherited/parent_constraints_data.dart';
 export 'package:breeze_ui/widgets/inherited/parent_material_states_data.dart';
 export 'package:breeze_ui/widgets/interactive/button.dart';

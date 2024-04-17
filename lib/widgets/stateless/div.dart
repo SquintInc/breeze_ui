@@ -8,7 +8,7 @@ import 'package:breeze_ui/widgets/style/style.dart';
 import 'package:flutter/material.dart';
 
 /// A [Container]-like widget with support for Tailwind styled properties.
-class Div extends TwStatelessWidget {
+class TwDiv extends TwStatelessWidget {
   // Passthrough [Container] properties
   final Widget? child;
   final AlignmentGeometry? alignment;
@@ -20,7 +20,7 @@ class Div extends TwStatelessWidget {
   /// by the parent widget.
   final bool? parentControlsOpacity;
 
-  const Div({
+  const TwDiv({
     required super.style,
     this.child,
     this.alignment = Alignment.topLeft,

@@ -31,7 +31,7 @@ class _BreezeUIPlaygroundState extends State<BreezeUIPlayground> {
         useMaterial3: true,
       ),
       home: Material(
-        child: Div(
+        child: TwDiv(
           style: const TwStyle(
             height: h_96,
             backgroundColor: bg_slate_50,
@@ -129,7 +129,7 @@ class _BreezeUIPlaygroundState extends State<BreezeUIPlayground> {
                         onToggled: (final bool? value) {
                           print('switch toggled: $value');
                         },
-                        thumb: const TwDiv(
+                        thumb: const TwDivInteractive(
                           style: TwStyle(
                             backgroundColor: bg_white,
                             transition: transition_all,
@@ -165,7 +165,7 @@ class _BreezeUIPlaygroundState extends State<BreezeUIPlayground> {
                       onToggled: (final bool? value) {
                         print('switch toggled: $value');
                       },
-                      thumb: const Div(
+                      thumb: const TwDiv(
                         style: TwStyle(
                           backgroundColor: bg_white,
                           width: w_5,
@@ -179,7 +179,7 @@ class _BreezeUIPlaygroundState extends State<BreezeUIPlayground> {
                 TwRow(
                   scrollable: true,
                   children: [
-                    TwDiv(
+                    TwDivInteractive(
                       style: TwStyle(
                         width: w_frac_1_3,
                         height: toggled ? h_64 : h_36,
@@ -187,7 +187,7 @@ class _BreezeUIPlaygroundState extends State<BreezeUIPlayground> {
                         transition: transition_all,
                       ),
                     ),
-                    TwDiv(
+                    TwDivInteractive(
                       style: TwStyle(
                         width: w_frac_1_3,
                         height: toggled ? h_64 : h_36,
@@ -195,7 +195,7 @@ class _BreezeUIPlaygroundState extends State<BreezeUIPlayground> {
                         transition: transition_all,
                       ),
                     ),
-                    TwDiv(
+                    TwDivInteractive(
                       style: TwStyle(
                         width: w_frac_1_3,
                         height: toggled ? h_64 : h_36,
@@ -208,7 +208,7 @@ class _BreezeUIPlaygroundState extends State<BreezeUIPlayground> {
                       child: TwRow(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const TwDiv(
+                          const TwDivInteractive(
                             style: TwStyle(
                               width: w_frac_1_2,
                               height: h_frac_1_2,
@@ -219,7 +219,7 @@ class _BreezeUIPlaygroundState extends State<BreezeUIPlayground> {
                               backgroundColor: bg_red_400,
                             ),
                           ),
-                          TwDiv(
+                          TwDivInteractive(
                             alignment: Alignment.topLeft,
                             style: TwStyle(
                               width: w_frac_1_2,
@@ -229,7 +229,7 @@ class _BreezeUIPlaygroundState extends State<BreezeUIPlayground> {
                             ),
                             child: const TwColumn(
                               children: [
-                                TwDiv(
+                                TwDivInteractive(
                                   style: TwStyle(
                                     width: w_frac_1_2,
                                     height: h_frac_1_3,
@@ -248,7 +248,7 @@ class _BreezeUIPlaygroundState extends State<BreezeUIPlayground> {
                 TwRow(
                   children: [
                     TwMaterialStatesGroup(
-                      child: TwDiv(
+                      child: TwDivInteractive(
                         enableInputDetectors: true,
                         isDraggable: true,
                         style: TwStyle(
@@ -271,7 +271,7 @@ class _BreezeUIPlaygroundState extends State<BreezeUIPlayground> {
                         dragged: const TwStyle(
                           backgroundColor: bg_blue_900,
                         ),
-                        child: TwDiv(
+                        child: TwDivInteractive(
                           style: TwStyle(
                             width: toggled ? w_frac_1_2 : w_64,
                             height: toggled ? h_4 : h_frac_1_3,
@@ -385,7 +385,7 @@ class _BreezeUIPlaygroundState extends State<BreezeUIPlayground> {
                     ),
                   ],
                 ),
-                const Div(
+                const TwDiv(
                   style: TwStyle(
                     width: w_screen,
                     height: h_screen,
