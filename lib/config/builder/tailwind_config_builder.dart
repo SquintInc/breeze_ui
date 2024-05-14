@@ -9,9 +9,9 @@ import 'package:path/path.dart' as path;
 import 'package:source_gen/source_gen.dart';
 
 const String configFullJsUrl =
-    'https://raw.githubusercontent.com/tailwindlabs/tailwindcss/master/stubs/config.full.js';
+    'https://raw.githubusercontent.com/tailwindlabs/tailwindcss/v3.4.3/stubs/config.full.js';
 const String configColorsJsUrl =
-    'https://raw.githubusercontent.com/tailwindlabs/tailwindcss/master/src/public/colors.js';
+    'https://raw.githubusercontent.com/tailwindlabs/tailwindcss/v3.4.3/src/public/colors.js';
 const additionalFunctionsPackage =
     'package:breeze_ui/config/builder/config_functions.template.dart';
 const templateRemovePriorIdentifier =
