@@ -259,6 +259,9 @@ class TwTextField extends TextField {
   /// TextField counter sub-component
   final TwCounter? counter;
 
+  /// TextField suffix icon sub-component
+  final Widget? suffixIcon;
+
   /// Copied directly from [TextField._defaultContextMenuBuilder]
   static Widget _defaultContextMenuBuilder(
     final BuildContext context,
@@ -282,6 +285,8 @@ class TwTextField extends TextField {
     this.placeholder,
     this.errorLabel,
     this.counter,
+    this.suffixIcon,
+
     // Passthrough properties
     super.controller,
     super.focusNode,
@@ -428,6 +433,9 @@ class TwTextField extends TextField {
       counterText: counter?.text,
       counterStyle: counter?.toMaterialTextStyle(_style),
       semanticCounterText: counter?.semanticText,
+
+      // Suffix Icon
+      suffixIcon: suffixIcon,
 
       // TextField container
       constraints:
