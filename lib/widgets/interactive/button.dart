@@ -17,7 +17,7 @@ class TwButton extends TwStatefulWidget {
   final bool isSemanticButton;
   final Matrix4? transform;
   final AlignmentGeometry? transformAlignment;
-  final AlignmentGeometry alignment;
+  final AlignmentGeometry? alignment;
 
   /// The tap target size of the button widget.
   /// Defaults to 48.0 pixels as per Material Design guidelines.
