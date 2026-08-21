@@ -385,7 +385,11 @@ class TwStyle {
       color: textColor?.color ?? Colors.black,
       leadingDistribution: leadingDistribution ?? TextLeadingDistribution.even,
       decoration: textDecoration,
-      decorationColor: textDecorationColor?.color,
+      // Flutter's TextStyle.decorationColor has no documented fallback when null,
+      // and consumers commonly assume it will match the text color.
+      // Defaulting decorationColor to textColor here gives the expected behavior.
+      decorationColor: textDecorationColor?.color ??
+          (textDecoration != null ? textColor?.color : null),
       decorationStyle: textDecorationStyle,
       decorationThickness: textDecorationThickness?.value.pixels(fontSizePx),
       wordSpacing: wordSpacing,
